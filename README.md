@@ -176,6 +176,18 @@ Offline-capable: household create/edit, amenities edit, member create/edit, chil
 
 This project's database was set up by importing a schema dump rather than running every migration through Laravel, so `php artisan migrate:status` shows a large number of migrations — including ones for tables that plainly already exist and work daily — as "Pending." Three real bugs surfaced during this project's development were all guarded migrations that genuinely had never been run (`chatbot_messages.language/category`, `resident_accounts.resident_id`, `notifications.recipient_context/place/event_date/event_time`) and silently degraded instead of crashing until a resident/announcement flow exercised them. **Never run a blanket `php artisan migrate`** on this database — a `create_X_table` migration for a table that already exists could fail or, worse, partially succeed destructively. When a "Column not found" error appears, find the specific migration, confirm its `up()` is guarded with `Schema::hasTable`/`hasColumn` checks, and run only that one file with `--path=database/migrations/<file>.php --force`.
 
+## 10. Running with Docker
+
+The app ships as a PHP 8.2 + Apache image (front-end assets are built inside the image) plus a MySQL 8 container.
+
+1. Make sure `.env` has `APP_KEY`, `LMLINGA_AT_REST_KEY`, `DB_DATABASE`, `DB_USERNAME` and `DB_PASSWORD` set. Compose overrides `DB_HOST` to `db`.
+2. Build and start: `docker compose up -d --build`
+3. Load the schema once (the database is a schema dump, not migrations — see above):
+   `docker compose exec -T db sh -c 'mysql -uroot -p"$MYSQL_ROOT_PASSWORD" "$MYSQL_DATABASE"' < path/to/dump.sql`
+4. Open http://localhost:8080 (change with `APP_PORT`). MySQL is exposed on host port `3307` (`DB_FORWARD_PORT`).
+
+Uploaded files and logs persist in the `app-storage` volume; database data in `db-data`. Migrations do **not** run automatically; set `RUN_MIGRATIONS=true` only on a fresh database built purely from migrations. Run artisan commands with `docker compose exec app php artisan <command>`.
+
 ---
 
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>

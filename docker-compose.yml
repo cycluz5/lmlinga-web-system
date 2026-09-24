@@ -1,0 +1,40 @@
+services:
+  app:
+    build: .
+    image: lmlinga-web-system
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      RUN_MIGRATIONS: ${RUN_MIGRATIONS:-false}
+    ports:
+      - "${APP_PORT:-8080}:80"
+    volumes:
+      - app-storage:/var/www/html/storage
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      # The app connects as DB_USERNAME=root, so DB_PASSWORD is the root password.
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      TZ: Asia/Manila
+    ports:
+      - "${DB_FORWARD_PORT:-3307}:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -u root -p\"$$MYSQL_ROOT_PASSWORD\" --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+volumes:
+  app-storage:
+  db-data:
