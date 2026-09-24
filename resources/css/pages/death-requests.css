@@ -1,0 +1,369 @@
+/**
+ * Admin Death Requests queue and verify screen.
+ * Reuses Household Requests table primitives (.lml-hr*).
+ */
+
+.lml-dr,
+.lml-dr-verify {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.lml-dr__status--pending {
+    background-color: #fff7ed;
+    color: #9a3412;
+}
+
+.lml-dr__status--approved {
+    background-color: rgba(var(--lml-primary-rgb), 0.16);
+    color: var(--lml-deep-green);
+}
+
+.lml-dr__status--rejected {
+    background-color: #fef2f2;
+    color: #b91c1c;
+}
+
+.lml-dr-verify__card {
+    padding: 1.1rem 1.15rem 1.2rem;
+    background: #fff;
+    border: 1px solid rgba(var(--lml-primary-rgb), 0.42);
+    border-radius: 0.625rem;
+    box-shadow: 0 1px 6px rgba(15, 23, 42, 0.04);
+}
+
+.lml-dr-verify__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.85rem;
+}
+
+.lml-dr-verify__back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    min-width: 2.5rem;
+    height: 2.5rem;
+    margin: 0;
+    color: var(--lml-deep-green);
+    font-size: 1.15rem;
+    line-height: 1;
+    text-decoration: none;
+    border-radius: var(--lml-radius-md);
+}
+
+.lml-dr-verify__resident {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.75rem;
+}
+
+.lml-dr-verify__resident-name {
+    margin: 0;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+.lml-dr-verify__resident-meta {
+    margin: 0.15rem 0 0;
+    color: #6b7280;
+    font-size: 0.85rem;
+}
+
+.lml-dr-verify .lml-dr-verify__details {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 4rem;
+    row-gap: 1.5rem;
+    margin: 0;
+}
+
+.lml-dr-verify .lml-dr-verify__details > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    min-width: 0;
+}
+
+.lml-dr-verify .lml-dr-verify__details dt,
+.lml-dr-verify .lml-dr-verify__details dd {
+    margin: 0;
+}
+
+.lml-dr-verify .lml-dr-verify__details dt,
+.lml-dr-verify__file .lml-hr-death-form__label {
+    font-weight: 700;
+}
+
+.lml-dr-verify .lml-dr-verify__details dd {
+    font-weight: 400;
+}
+
+.lml-dr-verify__file {
+    margin-top: 1.75rem;
+}
+
+.lml-dr-verify__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.55rem;
+    margin-top: 1.75rem;
+}
+
+.lml-dr-verify__btn {
+    min-height: 2.55rem;
+    padding: 0.4rem 1rem;
+    border-radius: 0.5rem;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.875rem;
+    cursor: pointer;
+    appearance: none;
+}
+
+.lml-dr-verify__btn--reject {
+    border: 1px solid #b91c1c;
+    background: #fff;
+    color: #b91c1c;
+}
+
+.lml-dr-verify__btn--approve {
+    border: 1px solid #157347;
+    background: #157347;
+    color: #fff;
+}
+
+/* ── Death Requests table: 3-column list ── */
+.lml-dr .lml-dr__table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.lml-dr .lml-dr__table {
+    width: 100%;
+    min-width: 0;
+    table-layout: fixed;
+    border-collapse: collapse;
+}
+
+.lml-dr .lml-dr__col--name {
+    width: auto;
+}
+
+.lml-dr .lml-dr__col--status {
+    width: 15rem;
+}
+
+.lml-dr .lml-dr__col--action {
+    width: 10.5rem;
+}
+
+.lml-dr .lml-dr__table thead th,
+.lml-dr .lml-dr__table td,
+.lml-dr .lml-dr__table .lml-hr-table__cell {
+    vertical-align: middle;
+}
+
+.lml-dr .lml-dr__table thead th {
+    padding: 1rem 1.25rem;
+}
+
+.lml-dr .lml-dr__table td,
+.lml-dr .lml-dr__table .lml-hr-table__cell {
+    padding: 1.15rem 1.35rem;
+}
+
+.lml-dr .lml-dr__table thead th:nth-child(1),
+.lml-dr .lml-dr__table .lml-dr__cell--name {
+    text-align: left;
+}
+
+.lml-dr .lml-dr__table thead th:nth-child(2),
+.lml-dr .lml-dr__table .lml-dr__cell--status {
+    padding-left: 2rem;
+    padding-right: 2.75rem;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.lml-dr .lml-dr__table thead th:nth-child(3),
+.lml-dr .lml-dr__table thead th:last-child,
+.lml-dr .lml-dr__table .lml-dr__cell--action,
+.lml-dr .lml-dr__table .lml-hr-table__cell--actions {
+    padding-left: 1.5rem;
+    padding-right: 1.6rem;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.lml-dr .lml-dr__identity-name {
+    display: block;
+    font-weight: 600;
+    text-align: left;
+}
+
+.lml-dr .lml-dr__table .lml-hr-table__status {
+    justify-content: center;
+}
+
+.lml-dr .lml-dr__review-btn,
+.lml-dr .lml-dr__review-btn:visited,
+.lml-dr .lml-dr__review-btn:visited:hover {
+    background-color: var(--lml-deep-green);
+    border-color: var(--lml-deep-green);
+    color: #fff;
+    transform: none;
+}
+
+.lml-dr .lml-dr__review-btn i {
+    color: inherit;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .lml-dr .lml-dr__review-btn:hover,
+    .lml-dr .lml-dr__review-btn:visited:hover,
+    .lml-dr .lml-dr__review-btn:hover:focus-visible:not(:active) {
+        background-color: var(--lml-deep-green);
+        border-color: var(--lml-deep-green);
+        color: #fff;
+    }
+}
+
+.lml-dr .lml-dr__review-btn:focus-visible {
+    outline: 2px solid var(--lml-primary);
+    outline-offset: 2px;
+}
+
+.lml-dr .lml-dr__review-btn:focus-visible:not(:active) {
+    background-color: var(--lml-deep-green);
+    border-color: var(--lml-deep-green);
+    color: #fff;
+}
+
+.lml-dr .lml-dr__review-btn:active,
+.lml-dr .lml-dr__review-btn:visited:active,
+.lml-dr .lml-dr__review-btn:focus-visible:active {
+    background-color: #fff;
+    border-color: rgba(var(--lml-primary-rgb), 0.35);
+    color: var(--lml-deep-green);
+    box-shadow: none;
+    transform: none;
+}
+
+@media (max-width: 820px) {
+    .lml-dr .lml-dr__table-wrap,
+    .lml-dr .lml-hr-table-wrap {
+        overflow-x: auto;
+    }
+
+    .lml-dr .lml-dr__col--status {
+        width: 13.5rem;
+    }
+
+    .lml-dr .lml-dr__col--action {
+        width: 9.75rem;
+    }
+
+    .lml-dr .lml-dr__table thead th:nth-child(2),
+    .lml-dr .lml-dr__table .lml-dr__cell--status {
+        padding-left: 1.5rem;
+        padding-right: 2.25rem;
+    }
+
+    .lml-dr-verify .lml-dr-verify__details {
+        column-gap: 2rem;
+        row-gap: 1.35rem;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .lml-dr .lml-dr__table {
+        min-width: 0;
+        table-layout: auto;
+    }
+
+    .lml-dr .lml-dr__col--status,
+    .lml-dr .lml-dr__col--action {
+        width: auto;
+    }
+
+    .lml-dr .lml-dr__table thead th,
+    .lml-dr .lml-dr__table thead th:last-child,
+    .lml-dr .lml-dr__table td,
+    .lml-dr .lml-dr__table .lml-hr-table__cell,
+    .lml-dr .lml-dr__table .lml-dr__cell--status,
+    .lml-dr .lml-dr__table .lml-dr__cell--action {
+        padding: 0;
+        text-align: right;
+        vertical-align: middle;
+        width: auto;
+        white-space: normal;
+    }
+
+    .lml-dr .lml-dr__table .lml-hr-table__cell--name,
+    .lml-dr .lml-dr__table .lml-dr__cell--name,
+    .lml-dr .lml-dr__identity-name {
+        text-align: left;
+    }
+
+    .lml-dr .lml-dr__table .lml-hr-table__cell--actions {
+        padding-top: 0.55rem;
+        text-align: left;
+    }
+
+    .lml-dr .lml-dr__review-btn {
+        width: 100%;
+    }
+
+    .lml-dr-verify .lml-dr-verify__details {
+        grid-template-columns: minmax(0, 1fr);
+        column-gap: 0;
+        row-gap: 1.25rem;
+        text-align: left;
+    }
+
+    .lml-dr-verify .lml-dr-verify__details > div,
+    .lml-dr-verify .lml-dr-verify__details dt,
+    .lml-dr-verify .lml-dr-verify__details dd {
+        align-items: flex-start;
+        text-align: left;
+    }
+
+    .lml-dr-verify__resident {
+        justify-content: flex-start;
+        margin-bottom: 1.5rem;
+        text-align: left;
+    }
+
+    .lml-dr-verify__resident-name {
+        text-align: left;
+    }
+
+    .lml-dr-verify__file,
+    .lml-dr-verify__file .lml-hr-death-form__label,
+    .lml-dr-verify__file .lml-hr-death-form__file-link {
+        text-align: left;
+    }
+
+    .lml-dr-verify__file,
+    .lml-dr-verify__actions {
+        margin-top: 1.5rem;
+    }
+}
+
+@media (max-width: 390px) {
+    .lml-dr-verify__actions,
+    .lml-dr-verify__btn {
+        width: 100%;
+    }
+}

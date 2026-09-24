@@ -1,0 +1,64 @@
+# git status porcelain 
+===== A. THIS FAMILY PLANNING PATCH  
+ M lmlingaFinal/resources/css/pages/health-records-family-planning.css
+ M lmlingaFinal/resources/views/pages/health-records/family-planning.blade.php
+ M lmlingaFinal/tests/Feature/HealthRecordsFamilyPlanningTest.php
+ M lmlingaFinal/tests/Feature/HealthRecordsNonResidentFamilyPlanningTest.php
+ 
+===== B. FULL WORKING TREE (unrelated work included; do not treat as this patch)  
+ M lmlingaFinal/resources/css/pages/dashboard.css
+ M lmlingaFinal/resources/css/pages/health-records-family-planning.css
+ M lmlingaFinal/resources/js/app.js
+ M lmlingaFinal/resources/js/pages/spot-mapping.js
+ M lmlingaFinal/resources/views/pages/dashboard/index.blade.php
+ M lmlingaFinal/resources/views/pages/health-records/child-care-deworming.blade.php
+ M lmlingaFinal/resources/views/pages/health-records/child-care-operation-timbang.blade.php
+ M lmlingaFinal/resources/views/pages/health-records/child-care-vitamin-a.blade.php
+ M lmlingaFinal/resources/views/pages/health-records/child-care.blade.php
+ M lmlingaFinal/resources/views/pages/health-records/family-planning.blade.php
+ M lmlingaFinal/resources/views/pages/health-records/maternal.blade.php
+ M lmlingaFinal/tests/Feature/HealthRecordsChildCareSummaryTest.php
+ M lmlingaFinal/tests/Feature/HealthRecordsDewormingTest.php
+ M lmlingaFinal/tests/Feature/HealthRecordsFamilyPlanningTest.php
+ M lmlingaFinal/tests/Feature/HealthRecordsMaternalTest.php
+ M lmlingaFinal/tests/Feature/HealthRecordsNonResidentChildCareTest.php
+ M lmlingaFinal/tests/Feature/HealthRecordsNonResidentFamilyPlanningTest.php
+ M lmlingaFinal/tests/Feature/HealthRecordsOperationTimbangTest.php
+ M lmlingaFinal/tests/Feature/HealthRecordsVitaminATest.php
+?? lmlingaFinal/app/Support/DashboardUiData.php
+?? lmlingaFinal/docs/qa/evidence/health-records-child-care-remove-nr-entry/
+?? lmlingaFinal/docs/qa/freezes/2026-08-16-dashboard-production-freeze.md
+?? lmlingaFinal/docs/qa/freezes/2026-08-16-hr-child-care-remove-nr-entry-production-freeze.md
+?? lmlingaFinal/docs/qa/review-bundles/
+?? lmlingaFinal/docs/qa/review-packages/LMLinga-Health-Records-Child-Care-Remove-Non-Residents-Claude-Review.zip
+?? lmlingaFinal/docs/qa/review-packages/family-planning-remove-non-residents-claude-review-package/
+?? lmlingaFinal/docs/qa/review-packages/health-records-child-care-remove-nr-entry/
+?? lmlingaFinal/docs/qa/screenshots/dashboard-13-indicators/
+?? lmlingaFinal/docs/qa/screenshots/dashboard-card-scale-spacing/
+?? lmlingaFinal/docs/qa/screenshots/dashboard-css-duplicate-cleanup/
+?? lmlingaFinal/docs/qa/screenshots/dashboard-desktop-figma-visual/
+?? lmlingaFinal/docs/qa/screenshots/dashboard-desktop-width-fill/
+?? lmlingaFinal/docs/qa/screenshots/dashboard-figma-composition/
+?? lmlingaFinal/docs/qa/screenshots/dashboard-figma-content-structure/
+?? lmlingaFinal/docs/qa/screenshots/dashboard-figma-indicator-icons/
+?? lmlingaFinal/docs/qa/screenshots/dashboard-figma-refinement/
+?? lmlingaFinal/docs/qa/screenshots/dashboard-figma-structure-correction/
+?? lmlingaFinal/docs/qa/screenshots/dashboard-final-map-mobile-refinement/
+?? lmlingaFinal/docs/qa/screenshots/dashboard-indicator-icon-styling/
+?? lmlingaFinal/docs/qa/screenshots/dashboard-indicator-semantic-icons/
+?? lmlingaFinal/docs/qa/screenshots/dashboard-indicators-width-align/
+?? lmlingaFinal/docs/qa/screenshots/dashboard-map-caption-overlap-fix/
+?? lmlingaFinal/docs/qa/screenshots/dashboard-mobile-2col-indicators/
+?? lmlingaFinal/docs/qa/screenshots/dashboard-mobile-alignment-headers/
+?? lmlingaFinal/docs/qa/screenshots/dashboard-summary-counts/
+?? lmlingaFinal/docs/qa/screenshots/dashboard-visual-polish/
+?? lmlingaFinal/docs/qa/screenshots/health-records-family-planning-no-nr-access/
+?? lmlingaFinal/docs/qa/screenshots/health-records-maternal-hide-nr-nav/
+?? lmlingaFinal/resources/js/maps/
+?? lmlingaFinal/resources/js/pages/dashboard-home.js
+?? lmlingaFinal/resources/views/components/lml/dashboard/count-card.blade.php
+?? lmlingaFinal/resources/views/components/lml/dashboard/indicator-pictogram.blade.php
+?? lmlingaFinal/scripts/capture-dashboard-summary-counts.mjs
+?? lmlingaFinal/scripts/capture-hr-maternal-hide-nr-nav.mjs
+?? lmlingaFinal/tests/Feature/DashboardSummaryUiTest.php
+?? lmlingaFinal/tests/Unit/DashboardUiDataTest.php

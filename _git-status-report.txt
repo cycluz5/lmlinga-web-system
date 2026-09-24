@@ -1,0 +1,7 @@
+﻿ M lmlingaFinal/resources/views/pages/household-profiling/member-view.blade.php
+ M lmlingaFinal/routes/web.php
+?? lmlingaFinal/app/Http/Controllers/HouseholdProfiling/DeathController.php
+?? lmlingaFinal/app/Support/DemoDeath.php
+?? lmlingaFinal/resources/css/pages/death.css
+?? lmlingaFinal/resources/js/pages/death.js
+?? lmlingaFinal/resources/views/pages/household-profiling/death.blade.php

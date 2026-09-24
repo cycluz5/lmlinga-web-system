@@ -1,0 +1,1974 @@
+/**
+ * Household Water Supply Information — Step 1
+ * Presentation-only responsive polish (Blade/CSS).
+ */
+
+.lml-hws {
+    --hws-green: var(--lml-primary);
+    --hws-green-deep: var(--lml-deep-green);
+    --hws-green-text: var(--lml-text-green);
+    --hws-green-soft: var(--lml-soft-green);
+    --hws-green-muted: #86efac;
+    --hws-green-fill: #ecfdf3;
+    --hws-green-border: #86efac;
+    --hws-title: #111827;
+    --hws-muted: #6b7280;
+    --hws-step-size: 2.5rem; /* 40px mobile */
+    --hws-step-radius: calc(var(--hws-step-size) / 2);
+    --hws-space-heading: 1rem; /* 16px heading → panel */
+    --hws-space-panel: 1.5rem; /* 24px panel → panel */
+    --hws-space-button: 1.75rem; /* 28px panel → button */
+    --hws-panel-pad: 1rem; /* 16px mobile */
+    --hws-panel-radius: 1rem;
+
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin-inline: auto;
+    padding-inline: 1rem; /* 16px */
+    overflow-x: clip;
+}
+
+.lml-hws *,
+.lml-hws *::before,
+.lml-hws *::after {
+    box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+    .lml-hws {
+        --hws-panel-pad: 1.25rem; /* 20px tablet */
+        width: 95%;
+        max-width: 1400px;
+        padding-inline: 0;
+    }
+
+    .lml-dashboard__content:has(.lml-hws) {
+        padding-inline: 1.75rem;
+    }
+}
+
+@media (min-width: 992px) {
+    .lml-hws {
+        --hws-panel-pad: 1.5rem; /* 24px desktop */
+        width: 92%;
+    }
+
+    .lml-dashboard__content:has(.lml-hws) {
+        padding-inline: 2.25rem;
+        padding-top: 1.5rem;
+    }
+}
+
+@media (min-width: 1400px) {
+    .lml-dashboard__content:has(.lml-hws) {
+        padding-inline: 2.5rem;
+        padding-top: 1.85rem;
+    }
+}
+
+.lml-hws__body {
+    width: 100%;
+    min-width: 0;
+    padding: 0.5rem 0 0.5rem;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+}
+
+.lml-hws__form {
+    width: 100%;
+    min-width: 0;
+}
+
+/* ── Intro: back | centered cluster | balance ───────────────── */
+.lml-hws__intro {
+    width: 100%;
+    margin-bottom: var(--hws-space-heading);
+    padding-top: 0.25rem;
+}
+
+.lml-hws__intro-shell {
+    display: grid;
+    grid-template-columns: 2.75rem minmax(0, 1fr) 2.75rem;
+    align-items: start;
+    column-gap: 0.35rem;
+    width: 100%;
+    min-width: 0;
+}
+
+.lml-hws__back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    grid-column: 1;
+    width: 2.75rem;
+    height: 2.75rem;
+    min-width: 44px;
+    min-height: 44px;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: var(--lml-radius-md);
+    background: transparent;
+    color: var(--hws-green);
+    font-size: 1.35rem;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.lml-hws__back:hover {
+    color: var(--hws-green-deep);
+    background-color: rgba(var(--lml-primary-rgb), 0.1);
+}
+
+.lml-hws__intro-balance {
+    grid-column: 3;
+    width: 2.75rem;
+    height: 2.75rem;
+    pointer-events: none;
+}
+
+.lml-hws__intro-center {
+    display: flex;
+    grid-column: 2;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.55rem;
+    min-width: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.lml-hws__header-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    color: var(--hws-green);
+    font-size: 1.65rem;
+}
+
+.lml-hws__program-title {
+    margin: 0;
+    max-width: 52rem;
+    padding-inline: 0.15rem;
+    color: var(--hws-green);
+    font-size: 1.375rem; /* 22px mobile */
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 1.3;
+    text-transform: uppercase;
+    text-align: center;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+/* ── Step indicator ─────────────────────────────────────────── */
+.lml-hws__stepper {
+    width: 90%;
+    max-width: 24rem;
+    min-width: 0;
+    margin: 0.1rem auto 0;
+}
+
+.lml-hws__steps {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    flex-wrap: nowrap;
+    width: 100%;
+}
+
+.lml-hws__step {
+    position: relative;
+    display: flex;
+    flex: 1 1 0;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+}
+
+.lml-hws__step:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: calc(50% + var(--hws-step-radius));
+    right: calc(-50% + var(--hws-step-radius));
+    height: 2.5px;
+    background-color: var(--hws-green-soft);
+    border-radius: 999px;
+    transform: translateY(-50%);
+    z-index: 0;
+}
+
+.lml-hws__step.is-complete:not(:last-child)::after,
+.lml-hws__step.is-current:not(:last-child)::after {
+    background-color: var(--hws-green);
+}
+
+.lml-hws__step-marker {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--hws-step-size);
+    height: var(--hws-step-size);
+    border-radius: 50%;
+    border: 2.5px solid var(--hws-green-muted);
+    background-color: #fff;
+    color: var(--hws-green-text);
+    font-size: 1.0625rem; /* 17px */
+    font-weight: 700;
+    line-height: 1;
+    flex-shrink: 0;
+}
+
+.lml-hws__step.is-upcoming .lml-hws__step-marker {
+    border-color: var(--hws-green-muted);
+    background-color: #fff;
+    color: #6b7280;
+}
+
+.lml-hws__step.is-current .lml-hws__step-marker {
+    border-color: var(--hws-green);
+    background-color: var(--hws-green);
+    color: #fff;
+    box-shadow: 0 0 0 0.22rem rgba(var(--lml-primary-rgb), 0.2);
+}
+
+.lml-hws__step.is-complete .lml-hws__step-marker {
+    border-color: var(--hws-green-deep);
+    background-color: var(--hws-green-deep);
+    color: #fff;
+    font-size: 1.15rem;
+}
+
+.lml-hws__page-title {
+    margin: 0.05rem 0 1.5rem; /* clear space above Water Supply Status on mobile */
+    color: var(--hws-title);
+    font-size: 1.1875rem; /* ~19px mobile */
+    font-weight: 700;
+    line-height: 1.25;
+    text-align: center;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+/* Labeled sub-step steppers (e.g. Part 1.2: 1 — 1.2 — 2 — 3) */
+.lml-hws__stepper--labeled {
+    width: 96%;
+    max-width: 28rem;
+}
+
+.lml-hws__stepper--labeled .lml-hws__step-marker {
+    font-size: 0.8125rem;
+    letter-spacing: -0.02em;
+}
+
+.lml-hws__server-alert {
+    margin: 0 0 var(--hws-space-panel);
+    padding: 0.85rem 1rem;
+    border: 1px solid #fecaca;
+    border-radius: var(--lml-radius-md);
+    background-color: #fef2f2;
+}
+
+.lml-hws__server-alert-text {
+    margin: 0;
+    color: #dc2626;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.lml-hws__missing {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 0.5rem 0.75rem;
+    text-align: center;
+}
+
+.lml-hws__missing-text {
+    margin: 0;
+    color: #4b5563;
+    font-size: 1rem;
+    line-height: 1.5;
+}
+
+.lml-hws__missing-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;
+    padding: 0.6rem 1.4rem;
+    border: 0;
+    border-radius: var(--lml-radius-md);
+    background-color: var(--hws-green);
+    color: #fff;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.lml-hws__missing-link:hover {
+    background-color: var(--hws-green-deep);
+    color: #fff;
+}
+
+/* ── Water Supply Status panel ──────────────────────────────── */
+.lml-hws__section {
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: var(--hws-space-panel);
+}
+
+.lml-hws__status-panel {
+    position: relative;
+    width: 100%;
+    margin-top: 0;
+    padding: var(--hws-panel-pad);
+    border: 1px solid var(--hws-green-soft);
+    border-radius: var(--hws-panel-radius);
+    background-color: #fff;
+    box-shadow: 0 1px 6px rgba(var(--lml-dark-green-rgb), 0.06);
+}
+
+.lml-hws__status-panel-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 0.75rem;
+    width: 100%;
+    margin: 0 0 1rem;
+    min-width: 0;
+}
+
+.lml-hws__section-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin: 0 0 1rem;
+    color: var(--hws-green-text);
+    font-size: 1.125rem; /* 18px mobile */
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.lml-hws__section-title--panel {
+    position: static;
+    flex: 1 1 auto;
+    min-width: 0;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    transform: none;
+    font-size: 1.125rem; /* 18px mobile */
+}
+
+.lml-hws__section-title .bi {
+    color: var(--hws-green);
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.lml-hws__section-title--panel .bi {
+    font-size: 1.15rem;
+}
+
+/* Derived basic-safe-water status pill (display-only; never submitted) */
+.lml-hws__safe-water-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 1 auto;
+    max-width: 100%;
+    margin: 0;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: 0.01em;
+    text-align: center;
+    white-space: normal;
+}
+
+.lml-hws__safe-water-badge.is-pending {
+    border: 1px solid #d1d5db;
+    background-color: #f3f4f6;
+    color: #4b5563;
+}
+
+.lml-hws__safe-water-badge.is-with {
+    border: 1px solid #86efac;
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.lml-hws__safe-water-badge.is-without {
+    border: 1px solid #dc2626;
+    background-color: #dc2626;
+    color: #fff;
+}
+
+.lml-hws__level-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+    align-items: stretch;
+    width: 100%;
+    margin-inline: auto;
+}
+
+.lml-hws__level-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    height: 100%;
+    min-height: 7.5rem;
+    padding: 1.15rem 0.85rem 1.05rem;
+    border: 1px solid #e5e7eb;
+    border-radius: var(--lml-radius-lg);
+    background-color: #fff;
+    color: var(--hws-title);
+    text-align: center;
+    cursor: pointer;
+    transition:
+        border-color 0.15s ease,
+        background-color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.lml-hws__level-card:hover {
+    border-color: var(--hws-green);
+    background-color: var(--hws-green-fill);
+}
+
+.lml-hws__level-card:has(.lml-hws__level-input:checked),
+.lml-hws__level-card.is-selected {
+    border-color: var(--hws-green);
+    background-color: var(--hws-green-fill);
+    box-shadow: 0 0 0 0.12rem rgba(var(--lml-primary-rgb), 0.16);
+}
+
+.lml-hws__level-card:has(.lml-hws__level-input:focus-visible) {
+    outline: 2px solid var(--hws-green);
+    outline-offset: 2px;
+}
+
+.lml-hws__level-input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+    margin: 0;
+    pointer-events: none;
+}
+
+.lml-hws__level-radio {
+    position: absolute;
+    top: 0.65rem;
+    left: 0.65rem;
+    width: 1.05rem;
+    height: 1.05rem;
+    border: 2px solid var(--hws-green-muted);
+    border-radius: 50%;
+    background-color: #fff;
+}
+
+.lml-hws__level-card:has(.lml-hws__level-input:checked) .lml-hws__level-radio,
+.lml-hws__level-card.is-selected .lml-hws__level-radio {
+    border-color: var(--hws-green);
+    background-color: var(--hws-green);
+    box-shadow: inset 0 0 0 0.2rem #fff;
+}
+
+/* Draft restore notice (unobtrusive; auto-dismissible) */
+.lml-hws__draft-notice {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    width: 100%;
+    margin: 0 0 1rem;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid var(--hws-green-soft);
+    border-radius: var(--lml-radius-md);
+    background-color: var(--hws-green-fill);
+}
+
+.lml-hws__draft-notice-text {
+    margin: 0;
+    color: var(--hws-green-text);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+.lml-hws__draft-notice-dismiss {
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0.25rem 0.55rem;
+    border: 0;
+    border-radius: var(--lml-radius-sm);
+    background: transparent;
+    color: var(--hws-green-deep);
+    font-family: inherit;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.lml-hws__draft-notice-dismiss:hover {
+    background-color: rgba(var(--lml-primary-rgb), 0.12);
+}
+
+.lml-hws__level-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.125rem;
+    height: 2.125rem;
+    margin-bottom: 0.05rem;
+    color: var(--hws-green);
+    font-size: 2.125rem; /* ~34px mobile */
+}
+
+.lml-hws__level-label {
+    font-size: 1rem; /* 16px mobile */
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--hws-title);
+    text-align: center;
+}
+
+.lml-hws__level-desc {
+    color: var(--hws-muted);
+    font-size: 0.875rem; /* 14px mobile */
+    font-weight: 500;
+    line-height: 1.35;
+    text-align: center;
+}
+
+/* ── Specify (inside status panel) ──────────────────────────── */
+.lml-hws__specify {
+    width: 100%;
+    margin: 1.1rem 0 0;
+}
+
+.lml-hws__specify[hidden] {
+    display: none !important;
+}
+
+.lml-hws__specify-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--hws-green-deep);
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.lml-hws__required {
+    color: #dc2626;
+}
+
+.lml-hws__specify-input {
+    width: 100%;
+    max-width: 100%;
+    min-height: 3rem;
+    border: 1px solid var(--hws-green-muted);
+    border-radius: var(--lml-radius-lg);
+    font-size: 1rem;
+}
+
+.lml-hws__specify-input:focus {
+    border-color: var(--hws-green);
+    box-shadow: 0 0 0 0.2rem rgba(var(--lml-primary-rgb), 0.18);
+}
+
+.lml-hws__specify-input::placeholder {
+    font-size: 0.95rem;
+    color: #9ca3af;
+}
+
+.lml-hws__specify-input.is-invalid {
+    border-color: #dc2626;
+}
+
+/* ── Location / Availability panels ─────────────────────────── */
+.lml-hws__questions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--hws-space-panel);
+    margin-top: 0;
+    margin-bottom: var(--hws-space-button);
+    align-items: stretch;
+    width: 100%;
+}
+
+.lml-hws__question {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: var(--hws-panel-pad);
+    border: 1px solid var(--hws-green-soft);
+    border-radius: var(--hws-panel-radius);
+    background-color: #fff;
+    box-shadow: 0 1px 5px rgba(var(--lml-dark-green-rgb), 0.05);
+}
+
+.lml-hws__question-legend {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    float: none;
+    width: 100%;
+    margin-bottom: 0.55rem;
+    padding: 0;
+    color: var(--hws-green-text);
+    font-size: 1.125rem; /* 18px mobile */
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.lml-hws__question-legend .bi {
+    color: var(--hws-green);
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.lml-hws__question-title {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.lml-hws__question-text {
+    margin: 0 0 0.9rem;
+    color: var(--hws-title);
+    font-size: 1rem; /* 16px mobile */
+    font-weight: 500;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.lml-hws__radio-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+}
+
+.lml-hws__choice {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 2.75rem;
+    padding: 0.2rem 0.3rem;
+    color: var(--hws-title);
+    font-size: 1rem; /* 16px mobile */
+    font-weight: 600;
+    cursor: pointer;
+    border-radius: var(--lml-radius-sm);
+}
+
+.lml-hws__choice input[type='radio'] {
+    width: 1.15rem;
+    height: 1.15rem;
+    margin: 0;
+    accent-color: var(--hws-green);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.lml-hws__choice input[type='checkbox'] {
+    width: 1.15rem;
+    height: 1.15rem;
+    margin: 0;
+    accent-color: var(--hws-green);
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.lml-hws__error {
+    margin: 0.65rem 0 0;
+    color: #dc2626;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+.lml-hws__error[hidden] {
+    display: none !important;
+}
+
+.lml-hws__actions {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding-top: 0;
+    padding-bottom: 0.75rem;
+}
+
+.lml-hws__next {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 480px;
+    min-width: 0;
+    height: 54px;
+    min-height: 54px;
+    padding: 0.75rem 1.5rem;
+    border: 0;
+    border-radius: 14px;
+    background-color: var(--hws-green);
+    color: #fff;
+    font-family: inherit;
+    font-size: 1.125rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.lml-hws__next:hover:not(:disabled) {
+    background-color: var(--hws-green-deep);
+}
+
+.lml-hws__next:disabled {
+    background-color: var(--hws-green-muted);
+    color: #fff;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* ── Confirm dialog ─────────────────────────────────────────── */
+.lml-hws__dialog-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 1050;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background-color: rgba(15, 23, 42, 0.45);
+}
+
+.lml-hws__dialog-backdrop[hidden] {
+    display: none !important;
+}
+
+.lml-hws__dialog {
+    width: min(100%, 24rem);
+    max-height: calc(100vh - 2rem);
+    overflow: auto;
+    padding: 1.35rem 1.25rem 1.2rem;
+    border-radius: var(--lml-radius-lg);
+    background-color: #fff;
+    box-shadow: var(--lml-shadow-lg);
+    outline: none;
+}
+
+.lml-hws__dialog-title {
+    margin: 0 0 0.65rem;
+    color: #111827;
+    font-size: 1.125rem;
+    font-weight: 700;
+}
+
+.lml-hws__dialog-message {
+    margin: 0 0 1.25rem;
+    color: #4b5563;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.lml-hws__dialog-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.55rem;
+}
+
+.lml-hws__dialog-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;
+    padding: 0.5rem 1.1rem;
+    border-radius: var(--lml-radius-md);
+    font-family: inherit;
+    font-size: 0.875rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.lml-hws__dialog-btn--stay {
+    border: 1px solid #d1d5db;
+    background-color: #fff;
+    color: #374151;
+}
+
+.lml-hws__dialog-btn--leave {
+    border: 1px solid #dc2626;
+    background-color: #dc2626;
+    color: #fff;
+}
+
+/* ── Small phones ───────────────────────────────────────────── */
+@media (max-width: 479.98px) {
+    .lml-hws {
+        --hws-step-size: 2.375rem; /* 38px */
+    }
+
+    .lml-hws__level-grid {
+        grid-template-columns: 1fr;
+        gap: 0.85rem;
+    }
+
+    .lml-hws__level-card {
+        min-height: 7.25rem;
+    }
+
+    .lml-hws__stepper {
+        width: 94%;
+        max-width: none;
+    }
+
+    .lml-hws__step-marker {
+        font-size: 1rem;
+    }
+
+    .lml-hws__program-title {
+        font-size: 1.25rem; /* 20–22px readable */
+        letter-spacing: 0.03em;
+    }
+
+    .lml-hws__page-title {
+        margin-bottom: 1.5rem; /* clear separation from status panel */
+        font-size: 1.125rem; /* 18px */
+    }
+
+    .lml-hws__section-title--panel {
+        font-size: 1.0625rem;
+    }
+
+    .lml-hws__status-panel-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.55rem;
+        margin-bottom: 0.9rem;
+    }
+
+    .lml-hws__safe-water-badge {
+        align-self: flex-start;
+        font-size: 0.6875rem;
+        padding: 0.3rem 0.7rem;
+    }
+}
+
+/* ── 2-col card grid (large phones / small tablets) ─────────── */
+@media (min-width: 480px) {
+    .lml-hws {
+        --hws-step-size: 2.625rem; /* 42px */
+    }
+
+    .lml-hws__level-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.9rem;
+    }
+
+    .lml-hws__level-card {
+        min-height: 8rem;
+    }
+
+    .lml-hws__stepper {
+        width: 88%;
+        max-width: 30rem;
+    }
+}
+
+/* ── Tablet ─────────────────────────────────────────────────── */
+@media (min-width: 768px) {
+    .lml-hws {
+        --hws-step-size: 2.75rem; /* 44px */
+    }
+
+    .lml-hws__body {
+        padding-top: 0.85rem;
+    }
+
+    .lml-hws__intro {
+        margin-bottom: 1.15rem;
+        padding-top: 0.5rem;
+    }
+
+    .lml-hws__intro-shell {
+        column-gap: 0.5rem;
+    }
+
+    .lml-hws__intro-center {
+        gap: 0.75rem;
+    }
+
+    .lml-hws__header-icon {
+        width: 2.75rem;
+        height: 2.75rem;
+        font-size: 1.85rem;
+    }
+
+    .lml-hws__program-title {
+        font-size: 1.5rem; /* 24px */
+    }
+
+    .lml-hws__page-title {
+        font-size: 1.5rem; /* 24px */
+    }
+
+    .lml-hws__stepper {
+        width: 78%;
+        max-width: 42rem;
+        min-width: min(100%, 28rem);
+        margin-top: 0.2rem;
+    }
+
+    .lml-hws__stepper--labeled {
+        width: 92%;
+        max-width: 36rem;
+        min-width: min(100%, 22rem);
+    }
+
+    .lml-hws__stepper--labeled .lml-hws__step-marker {
+        font-size: 0.875rem;
+    }
+
+    .lml-hws__step-marker {
+        font-size: 1.125rem;
+        border-width: 3px;
+    }
+
+    .lml-hws__status-panel {
+        margin-top: 0.75rem;
+    }
+
+    .lml-hws__section-title,
+    .lml-hws__section-title--panel {
+        font-size: 1.25rem; /* 20px */
+    }
+
+    .lml-hws__status-panel-header {
+        margin-bottom: 1.1rem;
+        gap: 0.55rem 1rem;
+    }
+
+    .lml-hws__safe-water-badge {
+        font-size: 0.8125rem;
+        padding: 0.4rem 0.95rem;
+    }
+
+    .lml-hws__level-card {
+        min-height: 9rem;
+        padding: 1.25rem 1rem 1.15rem;
+    }
+
+    .lml-hws__level-icon {
+        width: 2.25rem;
+        height: 2.25rem;
+        font-size: 2.25rem;
+    }
+
+    .lml-hws__level-label {
+        font-size: 1.0625rem; /* 17px */
+    }
+
+    .lml-hws__level-desc {
+        font-size: 0.9375rem; /* 15px */
+    }
+
+    .lml-hws__level-radio {
+        top: 0.7rem;
+        left: 0.7rem;
+        width: 1.1rem;
+        height: 1.1rem;
+    }
+
+    .lml-hws__questions {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .lml-hws__question-legend {
+        font-size: 1.25rem;
+    }
+
+    .lml-hws__question-text,
+    .lml-hws__choice {
+        font-size: 1.0625rem; /* 17px */
+    }
+
+    .lml-hws__next {
+        width: 12.5rem;
+        max-width: none;
+        min-width: 12.5rem;
+        height: auto;
+        min-height: 3.5rem;
+        border-radius: 999px;
+        font-size: 1.2rem;
+    }
+}
+
+/* ── Laptop ─────────────────────────────────────────────────── */
+@media (min-width: 992px) {
+    .lml-hws {
+        --hws-step-size: 2.875rem; /* 46px */
+    }
+
+    .lml-hws__body {
+        padding-top: 1.1rem;
+    }
+
+    .lml-hws__intro {
+        margin-bottom: 1.25rem;
+        padding-top: 0.75rem;
+    }
+
+    .lml-hws__intro-center {
+        gap: 0.95rem;
+    }
+
+    .lml-hws__program-title {
+        font-size: 1.75rem; /* 28px → toward 32 */
+    }
+
+    .lml-hws__page-title {
+        font-size: 1.875rem; /* 30px */
+    }
+
+    .lml-hws__stepper {
+        width: 75%;
+        max-width: 56rem;
+        min-width: min(100%, 40.625rem);
+        margin-top: 0.35rem;
+    }
+
+    .lml-hws__stepper--labeled {
+        width: 70%;
+        max-width: 42rem;
+        min-width: min(100%, 28rem);
+    }
+
+    .lml-hws__stepper--labeled .lml-hws__step-marker {
+        font-size: 0.9375rem;
+    }
+
+    .lml-hws__step:not(:last-child)::after {
+        height: 3px;
+    }
+
+    .lml-hws__level-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 1.15rem;
+    }
+
+    .lml-hws__section-title,
+    .lml-hws__section-title--panel {
+        font-size: 1.375rem; /* 22px */
+    }
+
+    .lml-hws__status-panel-header {
+        margin-bottom: 1.15rem;
+        gap: 0.55rem 1rem;
+    }
+
+    .lml-hws__section-title--panel .bi {
+        font-size: 1.35rem;
+    }
+
+    .lml-hws__safe-water-badge {
+        font-size: 0.875rem;
+    }
+
+    .lml-hws__level-card {
+        min-height: 10rem;
+        padding: 1.35rem 1rem 1.25rem; /* ~20–24px */
+    }
+
+    .lml-hws__level-icon {
+        width: 2.375rem;
+        height: 2.375rem;
+        font-size: 2.375rem; /* ~38px */
+    }
+
+    .lml-hws__level-label {
+        font-size: 1.125rem; /* 18px */
+    }
+
+    .lml-hws__level-desc {
+        font-size: 0.9375rem; /* 15px */
+    }
+
+    .lml-hws__question-legend {
+        font-size: 1.375rem; /* 22px */
+    }
+
+    .lml-hws__question-text,
+    .lml-hws__choice {
+        font-size: 1.0625rem; /* 17px */
+    }
+
+    .lml-hws__next {
+        width: 13rem;
+        min-width: 13rem;
+        min-height: 3.6rem;
+        font-size: 1.25rem;
+    }
+
+    .lml-hws__actions {
+        padding-bottom: 1rem;
+    }
+}
+
+/* ── Desktop ────────────────────────────────────────────────── */
+@media (min-width: 1200px) {
+    .lml-hws {
+        --hws-step-size: 3rem; /* 48px */
+    }
+
+    .lml-hws__intro-center {
+        gap: 1.05rem;
+    }
+
+    .lml-hws__program-title {
+        font-size: 2rem; /* 32px */
+    }
+
+    .lml-hws__stepper {
+        width: 78%;
+        max-width: 64rem;
+        min-width: min(100%, 42rem);
+    }
+
+    .lml-hws__step-marker {
+        font-size: 1.1875rem; /* 19px */
+    }
+
+    .lml-hws__level-grid {
+        gap: 1.25rem;
+    }
+
+    .lml-hws__level-card {
+        min-height: 10.25rem;
+    }
+
+    .lml-hws__next {
+        width: 13.5rem;
+        min-width: 13.5rem;
+    }
+}
+
+@media (min-width: 1400px) {
+    .lml-hws__stepper {
+        width: 80%;
+        max-width: 68.75rem; /* 1100px */
+    }
+}
+
+/* ── Final desktop/laptop polish (>=1024px only) ───────────── */
+@media (min-width: 1024px) {
+    .lml-hws {
+        /* Scale desktop visuals down (~10–15%) without impacting tablet/mobile. */
+        --hws-step-size: 2.625rem; /* 42px (was 46–48px via wider breakpoints) */
+        --hws-step-radius: calc(var(--hws-step-size) / 2);
+    }
+
+    .lml-hws__body {
+        /* More white space around the main flow on desktop */
+        padding-top: 2.7rem; /* 43px */
+        padding-bottom: 3.6rem; /* 58px */
+    }
+
+    .lml-hws__intro {
+        margin-bottom: 0;
+        padding-top: 0;
+    }
+
+    .lml-hws__intro-center {
+        gap: 0;
+    }
+
+    .lml-hws__program-title {
+        margin-bottom: 1.75rem; /* 28px */
+        font-size: 2rem; /* 32px */
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+    .lml-hws__stepper {
+        width: 78%;
+        max-width: 66rem;
+        min-width: min(100%, 44rem);
+        margin-top: 0;
+        margin-bottom: 2.5rem; /* 40px */
+    }
+
+    .lml-hws__stepper--labeled {
+        width: 68%;
+        max-width: 44rem;
+        min-width: min(100%, 30rem);
+    }
+
+    .lml-hws__page-title {
+        margin-top: 0;
+        margin-bottom: 1.5rem; /* 24px */
+        font-size: 2rem; /* 32px */
+        font-weight: 700;
+        line-height: 1.2;
+    }
+
+    .lml-hws__section {
+        margin-top: 0;
+        margin-bottom: 1.625rem; /* 26px */
+    }
+
+    .lml-hws__status-panel {
+        margin-top: 0;
+        padding: 1.6rem 1.7rem 1.7rem; /* ~26px 27px 27px */
+    }
+
+    .lml-hws__level-grid {
+        gap: 1.25rem; /* ~20px */
+    }
+
+    .lml-hws__level-label {
+        font-size: 1.0625rem; /* 17px (compact) */
+    }
+
+    .lml-hws__level-card {
+        gap: 0.2rem;
+        min-height: 8.25rem; /* ~132px */
+        padding: 1rem 0.85rem 0.9rem;
+    }
+
+    .lml-hws__level-icon {
+        width: 2.125rem;
+        height: 2.125rem;
+        margin-bottom: 0;
+        font-size: 2.125rem;
+    }
+
+    .lml-hws__level-desc {
+        font-size: 0.9rem; /* ~14px */
+    }
+
+    .lml-hws__level-radio {
+        top: 0.65rem;
+        left: 0.65rem;
+        width: 1.05rem;
+        height: 1.05rem;
+    }
+
+    .lml-hws__specify {
+        margin-top: 1rem;
+    }
+
+    .lml-hws__questions {
+        margin-top: 1.5rem; /* 24px from status panel */
+        margin-bottom: 0;
+        gap: 1.25rem;
+    }
+
+    .lml-hws__question-text {
+        margin-bottom: 0.75rem;
+        font-size: 1.0625rem; /* 17px */
+        font-weight: 500;
+    }
+
+    .lml-hws__choice {
+        font-size: 1.0625rem; /* 17px */
+        font-weight: 500;
+    }
+
+    .lml-hws__question {
+        min-height: 0;
+        padding: 1.2rem 1.2rem 0.95rem;
+    }
+
+    .lml-hws__actions {
+        padding-top: 1.75rem; /* 28px */
+        padding-bottom: 2.5rem; /* 40px */
+    }
+
+    .lml-hws__next {
+        min-height: 3.0625rem; /* 49px */
+        height: 3.0625rem;
+        font-size: 1.2rem;
+    }
+
+    /* Stepper lighter look (presentational only) */
+    .lml-hws__step:not(:last-child)::after {
+        height: 2px; /* thinner connector */
+    }
+
+    .lml-hws__step-marker {
+        border-width: 2px;
+    }
+}
+
+/* ── Mobile dialog stacking ─────────────────────────────────── */
+@media (max-width: 767.98px) {
+    .lml-hws__dialog-actions {
+        flex-direction: column-reverse;
+    }
+
+    .lml-hws__dialog-btn {
+        width: 100%;
+    }
+}
+
+/* ── Step 2: Validation / Random Sampling / Testing ─────────── */
+.lml-hws__test-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 100%;
+    margin: 1.25rem 0 0; /* ~20px below page title */
+    padding: 0;
+}
+
+.lml-hws__test-divider {
+    display: none;
+}
+
+.lml-hws__test-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    min-width: 0;
+    width: 100%;
+}
+
+.lml-hws__test-heading {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    color: var(--hws-green-text);
+    font-size: 1.0625rem;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.lml-hws__test-heading .bi {
+    color: var(--hws-green);
+    font-size: 1.15rem;
+    flex-shrink: 0;
+}
+
+.lml-hws__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+    width: 100%;
+}
+
+.lml-hws__field-label {
+    margin: 0;
+    padding: 0;
+    color: var(--hws-title);
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.lml-hws__result-fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+}
+
+.lml-hws__result-fieldset .lml-hws__field-label {
+    float: none;
+    width: auto;
+    margin-bottom: 0.55rem;
+}
+
+.lml-hws__date-wrap {
+    position: relative;
+    width: 100%;
+}
+
+.lml-hws__date-input {
+    width: 100%;
+    min-height: 2.75rem;
+    padding-right: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: var(--lml-radius-md);
+    color: var(--hws-title);
+    font-size: 0.95rem;
+    background-color: #fff;
+}
+
+.lml-hws__date-input:focus {
+    border-color: var(--hws-green);
+    box-shadow: 0 0 0 0.2rem rgba(var(--lml-primary-rgb), 0.18);
+}
+
+.lml-hws__date-input.is-invalid {
+    border-color: #dc2626;
+}
+
+.lml-hws__radio-col.is-invalid,
+.lml-hws__radio-row.is-invalid {
+    padding: 0.35rem 0.45rem;
+    border: 1px solid #dc2626;
+    border-radius: var(--lml-radius-md);
+    background-color: #fef2f2;
+}
+
+.lml-hws__radio-col.is-invalid .lml-hws__choice input[type='radio'],
+.lml-hws__radio-row.is-invalid .lml-hws__choice input[type='radio'] {
+    outline: 2px solid #dc2626;
+    outline-offset: 2px;
+}
+
+.lml-hws__date-icon {
+    position: absolute;
+    top: 50%;
+    right: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--hws-green);
+    font-size: 1.1rem;
+    pointer-events: none;
+    transform: translateY(-50%);
+}
+
+.lml-hws__prev {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: 480px;
+    min-width: 0;
+    height: 54px;
+    min-height: 54px;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid var(--hws-green);
+    border-radius: 14px;
+    background-color: #fff;
+    color: var(--hws-green);
+    font-family: inherit;
+    font-size: 1.125rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.lml-hws__prev:hover {
+    background-color: var(--hws-green-fill);
+    color: var(--hws-green-deep);
+    border-color: var(--hws-green-deep);
+}
+
+@media (min-width: 768px) {
+    .lml-hws__test-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+        gap: 0 1.5rem;
+        align-items: start;
+        margin-top: 1.5rem; /* ~24px below page title */
+    }
+
+    .lml-hws__test-divider {
+        display: block;
+        width: 1px;
+        align-self: stretch;
+        min-height: 12rem;
+        background-color: #e5e7eb;
+    }
+
+    .lml-hws__test-heading {
+        font-size: 1.125rem;
+    }
+
+    .lml-hws__actions--pair {
+        gap: 1rem;
+        margin-top: 1.5rem; /* ~24px above buttons */
+    }
+
+    .lml-hws__prev {
+        width: 12.5rem;
+        max-width: none;
+        min-width: 12.5rem;
+        height: auto;
+        min-height: 3.5rem;
+        border-radius: 999px;
+        font-size: 1.2rem;
+    }
+}
+
+@media (min-width: 992px) {
+    .lml-hws__test-grid {
+        gap: 0 2rem;
+        padding-inline: 0.5rem;
+    }
+
+    .lml-hws__test-heading {
+        font-size: 1.25rem;
+    }
+
+    .lml-hws__prev {
+        width: 13rem;
+        min-width: 13rem;
+        min-height: 3.6rem;
+        font-size: 1.25rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .lml-hws__test-grid {
+        margin-top: 1.25rem; /* ~20px; page title already has 24px bottom */
+        padding-inline: 1rem;
+    }
+
+    .lml-hws__actions--pair {
+        margin-top: 1.375rem; /* ~22px above buttons */
+        padding-top: 0;
+    }
+
+    .lml-hws__prev {
+        min-height: 3.0625rem;
+        height: 3.0625rem;
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .lml-hws__actions--pair .lml-hws__prev,
+    .lml-hws__actions--pair .lml-hws__next {
+        width: 100%;
+        max-width: none;
+    }
+}
+
+/* ── Part 2: Basic Sanitation Facility ───────────────────────── */
+.lml-hws__toilet-top {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--hws-space-panel);
+    margin-top: 1.25rem;
+    margin-bottom: var(--hws-space-panel);
+    width: 100%;
+    align-items: stretch;
+}
+
+.lml-hws__toilet-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 1.25rem 1.35rem;
+    border: 1px solid var(--hws-green-soft);
+    border-radius: var(--hws-panel-radius);
+    background-color: #fff;
+    box-shadow: 0 1px 5px rgba(var(--lml-dark-green-rgb), 0.05);
+}
+
+.lml-hws__toilet-card--type {
+    justify-content: center;
+}
+
+.lml-hws__toilet-card--type .lml-hws__toilet-field {
+    margin: 0;
+}
+
+.lml-hws__toilet-field .lml-hws__field-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-bottom: 0.75rem;
+    color: var(--hws-green-text);
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.lml-hws__toilet-field .lml-hws__field-label .bi {
+    color: var(--hws-green);
+    font-size: 1.15rem;
+}
+
+.lml-hws__select {
+    min-height: 3rem;
+    border-radius: 12px;
+    border-color: var(--hws-green-soft);
+    color: var(--hws-title);
+    font-weight: 600;
+}
+
+.lml-hws__select:focus {
+    border-color: var(--hws-green);
+    box-shadow: 0 0 0 0.2rem rgba(var(--lml-dark-green-rgb), 0.15);
+}
+
+.lml-hws__select.is-invalid {
+    border-color: #dc2626;
+}
+
+.lml-hws__toilet-status {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.7rem;
+    min-height: 7.25rem;
+    overflow: hidden;
+}
+
+.lml-hws__toilet-status-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.45rem 0.65rem;
+    width: 100%;
+    min-width: 0;
+}
+
+.lml-hws__toilet-status-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0;
+    color: var(--hws-muted);
+    font-size: 0.875rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    min-width: 0;
+}
+
+.lml-hws__toilet-status-label .bi {
+    color: var(--hws-muted);
+    font-size: 0.9rem;
+}
+
+.lml-hws__management-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 1 auto;
+    max-width: 100%;
+    margin: 0;
+    padding: 0.3rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: 0.01em;
+    text-align: center;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.lml-hws__management-badge.is-pending {
+    border: 1px solid #d1d5db;
+    background-color: #f3f4f6;
+    color: #4b5563;
+}
+
+.lml-hws__management-badge.is-safely-managed {
+    border: 1px solid #16a34a;
+    background-color: #16a34a;
+    color: #fff;
+}
+
+.lml-hws__management-badge.is-not-safely-managed {
+    border: 1px solid #dc2626;
+    background-color: #dc2626;
+    color: #fff;
+}
+
+.lml-hws__toilet-status-body {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    min-width: 0;
+}
+
+.lml-hws__toilet-status-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 999px;
+    background-color: #e2e8f0;
+    color: #64748b;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+}
+
+.lml-hws__toilet-status-value {
+    margin: 0;
+    color: var(--hws-title);
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    min-width: 0;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.lml-hws__toilet-status.is-pending {
+    border-color: var(--hws-green-soft);
+    background-color: #fff;
+}
+
+.lml-hws__toilet-status.is-pending .lml-hws__toilet-status-value {
+    font-size: 1.05rem;
+    letter-spacing: 0.01em;
+    font-weight: 700;
+    color: #64748b;
+}
+
+.lml-hws__toilet-status.is-sanitary {
+    border-color: var(--hws-green-border);
+    background-color: var(--hws-green-fill);
+}
+
+.lml-hws__toilet-status.is-sanitary .lml-hws__toilet-status-icon {
+    background-color: #16a34a;
+    color: #fff;
+}
+
+.lml-hws__toilet-status.is-sanitary .lml-hws__toilet-status-value {
+    color: #15803d;
+}
+
+.lml-hws__toilet-status.is-unsanitary {
+    border-color: #fca5a5;
+    background-color: #fef2f2;
+}
+
+.lml-hws__toilet-status.is-unsanitary .lml-hws__toilet-status-icon {
+    background-color: #dc2626;
+    color: #fff;
+}
+
+.lml-hws__toilet-status.is-unsanitary .lml-hws__toilet-status-value {
+    color: #b91c1c;
+}
+
+.lml-hws__questions--sanitation {
+    margin-top: 0;
+}
+
+.lml-hws__facility-block {
+    gap: 1.1rem;
+}
+
+.lml-hws__facility-fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+}
+
+.lml-hws__facility-fieldset + .lml-hws__facility-fieldset {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eef2f7;
+}
+
+.lml-hws__radio-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+
+.lml-hws__na-note {
+    margin: 0.65rem 0 0;
+    color: var(--hws-muted);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.4;
+}
+
+.lml-hws__na-note[hidden] {
+    display: none !important;
+}
+
+.lml-hws__next.is-busy {
+    opacity: 0.85;
+    cursor: wait;
+}
+
+.lml-hws__choice:has(input:disabled) {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+/* ── Part 3: Solid Waste Management ─────────────────────────── */
+.lml-hws__solid-top {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--hws-space-panel);
+    margin-top: 1.25rem;
+    margin-bottom: var(--hws-space-panel);
+    width: 100%;
+    align-items: stretch;
+}
+
+.lml-hws__solid-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 1.25rem 1.35rem;
+    border: 1px solid var(--hws-green-soft);
+    border-radius: var(--hws-panel-radius);
+    background-color: #fff;
+    box-shadow: 0 1px 5px rgba(var(--lml-dark-green-rgb), 0.05);
+}
+
+.lml-hws__solid-card--left {
+    padding: 1.25rem 1.35rem;
+}
+
+.lml-hws__check-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+
+.lml-hws__check-col.is-invalid {
+    padding: 0.35rem 0.45rem;
+    border: 1px solid #dc2626;
+    border-radius: var(--lml-radius-md);
+    background-color: #fef2f2;
+}
+
+.lml-hws__check-col.is-invalid .lml-hws__choice input[type='checkbox'] {
+    outline: 2px solid #dc2626;
+    outline-offset: 2px;
+}
+
+.lml-hws__solid-status {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.7rem;
+    min-height: 7.25rem;
+}
+
+.lml-hws__solid-status.is-pending {
+    border-color: var(--hws-green-soft);
+    background-color: #fff;
+}
+
+.lml-hws__solid-status.is-pending .lml-hws__toilet-status-value {
+    font-size: 1.05rem;
+    letter-spacing: 0.01em;
+    font-weight: 700;
+    color: #64748b;
+}
+
+.lml-hws__solid-status.is-good {
+    border-color: var(--hws-green-border);
+    background-color: var(--hws-green-fill);
+}
+
+.lml-hws__solid-status.is-good .lml-hws__toilet-status-icon {
+    background-color: #16a34a;
+    color: #fff;
+}
+
+.lml-hws__solid-status.is-good .lml-hws__toilet-status-value {
+    color: #15803d;
+}
+
+@media (min-width: 768px) {
+    .lml-hws__solid-top {
+        grid-template-columns: minmax(0, 1.4fr) minmax(15rem, 0.9fr);
+        gap: 1.25rem;
+        align-items: stretch;
+    }
+
+    .lml-hws__solid-card {
+        padding: 1.5rem 1.6rem;
+    }
+
+    .lml-hws__solid-status {
+        min-height: 100%;
+    }
+}
+
+@media (min-width: 992px) {
+    .lml-hws__solid-top {
+        gap: 1.5rem;
+        padding-inline: 0.25rem;
+    }
+
+    .lml-hws__solid-card {
+        padding: 1.6rem 1.75rem;
+    }
+}
+
+@media (min-width: 768px) {
+    .lml-hws__toilet-top {
+        grid-template-columns: minmax(0, 1.4fr) minmax(15rem, 0.9fr);
+        gap: 1.25rem;
+        align-items: stretch;
+    }
+
+    .lml-hws__toilet-card {
+        padding: 1.5rem 1.6rem;
+    }
+
+    .lml-hws__toilet-status {
+        min-height: 100%;
+    }
+
+    .lml-hws__toilet-status-value {
+        font-size: 1.5rem;
+    }
+}
+
+@media (min-width: 992px) {
+    .lml-hws__toilet-top {
+        gap: 1.5rem;
+        padding-inline: 0.25rem;
+    }
+
+    .lml-hws__toilet-card {
+        padding: 1.6rem 1.75rem;
+    }
+}

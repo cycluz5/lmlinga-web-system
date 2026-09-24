@@ -1,0 +1,70 @@
+﻿On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+	modified:   resources/css/pages/dashboard.css
+	modified:   resources/css/pages/health-records-family-planning.css
+	modified:   resources/js/app.js
+	modified:   resources/js/pages/spot-mapping.js
+	modified:   resources/views/pages/dashboard/index.blade.php
+	modified:   resources/views/pages/health-records/child-care-deworming.blade.php
+	modified:   resources/views/pages/health-records/child-care-operation-timbang.blade.php
+	modified:   resources/views/pages/health-records/child-care-vitamin-a.blade.php
+	modified:   resources/views/pages/health-records/child-care.blade.php
+	modified:   resources/views/pages/health-records/family-planning.blade.php
+	modified:   resources/views/pages/health-records/maternal.blade.php
+	modified:   tests/Feature/HealthRecordsChildCareSummaryTest.php
+	modified:   tests/Feature/HealthRecordsDewormingTest.php
+	modified:   tests/Feature/HealthRecordsFamilyPlanningTest.php
+	modified:   tests/Feature/HealthRecordsMaternalTest.php
+	modified:   tests/Feature/HealthRecordsNonResidentChildCareTest.php
+	modified:   tests/Feature/HealthRecordsNonResidentFamilyPlanningTest.php
+	modified:   tests/Feature/HealthRecordsOperationTimbangTest.php
+	modified:   tests/Feature/HealthRecordsVitaminATest.php
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	app/Support/DashboardUiData.php
+	docs/qa/evidence/health-records-child-care-remove-nr-entry/
+	docs/qa/freezes/2026-08-16-dashboard-production-freeze.md
+	docs/qa/freezes/2026-08-16-hr-child-care-remove-nr-entry-production-freeze.md
+	docs/qa/freezes/2026-08-16-hr-family-planning-remove-nr-entry-production-freeze.md
+	docs/qa/review-bundles/
+	docs/qa/review-packages/LMLinga-Health-Records-Child-Care-Remove-Non-Residents-Claude-Review.zip
+	docs/qa/review-packages/LMLinga-Health-Records-Family-Planning-Remove-Non-Residents-Claude-Review.zip
+	docs/qa/review-packages/family-planning-remove-non-residents-claude-review-package/
+	docs/qa/review-packages/health-records-child-care-remove-nr-entry/
+	docs/qa/review-packages/lmlinga-health-records-maternal-remove-non-residents-claude-review-package/
+	docs/qa/screenshots/dashboard-13-indicators/
+	docs/qa/screenshots/dashboard-card-scale-spacing/
+	docs/qa/screenshots/dashboard-css-duplicate-cleanup/
+	docs/qa/screenshots/dashboard-desktop-figma-visual/
+	docs/qa/screenshots/dashboard-desktop-width-fill/
+	docs/qa/screenshots/dashboard-figma-composition/
+	docs/qa/screenshots/dashboard-figma-content-structure/
+	docs/qa/screenshots/dashboard-figma-indicator-icons/
+	docs/qa/screenshots/dashboard-figma-refinement/
+	docs/qa/screenshots/dashboard-figma-structure-correction/
+	docs/qa/screenshots/dashboard-final-map-mobile-refinement/
+	docs/qa/screenshots/dashboard-indicator-icon-styling/
+	docs/qa/screenshots/dashboard-indicator-semantic-icons/
+	docs/qa/screenshots/dashboard-indicators-width-align/
+	docs/qa/screenshots/dashboard-map-caption-overlap-fix/
+	docs/qa/screenshots/dashboard-mobile-2col-indicators/
+	docs/qa/screenshots/dashboard-mobile-alignment-headers/
+	docs/qa/screenshots/dashboard-summary-counts/
+	docs/qa/screenshots/dashboard-visual-polish/
+	docs/qa/screenshots/health-records-family-planning-no-nr-access/
+	docs/qa/screenshots/health-records-maternal-hide-nr-nav/
+	resources/js/maps/
+	resources/js/pages/dashboard-home.js
+	resources/views/components/lml/dashboard/count-card.blade.php
+	resources/views/components/lml/dashboard/indicator-pictogram.blade.php
+	scripts/capture-dashboard-summary-counts.mjs
+	scripts/capture-hr-maternal-hide-nr-nav.mjs
+	tests/Feature/DashboardSummaryUiTest.php
+	tests/Unit/DashboardUiDataTest.php
+
+no changes added to commit (use "git add" and/or "git commit -a")

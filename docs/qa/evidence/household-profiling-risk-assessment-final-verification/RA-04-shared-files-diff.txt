@@ -1,0 +1,335 @@
+﻿diff --git a/lmlingaFinal/package.json b/lmlingaFinal/package.json
+index 97ea358..0082f01 100644
+--- a/lmlingaFinal/package.json
++++ b/lmlingaFinal/package.json
+@@ -3,7 +3,8 @@
+     "type": "module",
+     "scripts": {
+         "build": "vite build",
+-        "dev": "vite"
++        "dev": "vite",
++        "test:js": "node --test tests/js/dashboard-sidebar.test.mjs tests/js/child-nutrition-newborn.test.mjs tests/js/risk-assessment.test.mjs"
+     },
+     "devDependencies": {
+         "@tailwindcss/vite": "^4.0.0",
+diff --git a/lmlingaFinal/resources/css/app.css b/lmlingaFinal/resources/css/app.css
+index 832d149..3561b74 100644
+--- a/lmlingaFinal/resources/css/app.css
++++ b/lmlingaFinal/resources/css/app.css
+@@ -36,6 +36,9 @@
+ @import './pages/household-member-view.css';
+ @import './pages/child-immunization.css';
+ @import './pages/child-immunization-birth-history.css';
++@import './pages/school-based-immunization.css';
++@import './pages/child-nutrition.css';
++@import './pages/risk-assessment.css';
+ @import './pages/user-management.css';
+ @import './pages/user-management-wizard.css';
+ @import './pages/user-management-view.css';
+@@ -43,6 +46,7 @@
+ @import './pages/household-requests.css';
+ @import './pages/household-water-supply.css';
+ @import './pages/environmental-health-dashboard.css';
++@import './pages/health-records-child-care.css';
+ 
+ /*
+  * Tailwind theme colors reference tokens.css (:root variables).
+diff --git a/lmlingaFinal/resources/js/app.js b/lmlingaFinal/resources/js/app.js
+index c007a04..791ad25 100644
+--- a/lmlingaFinal/resources/js/app.js
++++ b/lmlingaFinal/resources/js/app.js
+@@ -1,5 +1,6 @@
+ import './bootstrap';
+ import * as bootstrap from 'bootstrap';
++import './pages/dashboard-sidebar';
+ import './pages/spot-mapping';
+ import './pages/household-profiling';
+ import './pages/household-view';
+@@ -7,6 +8,9 @@ import './pages/household-member-form';
+ import './pages/household-member-view';
+ import './pages/child-immunization';
+ import './pages/child-immunization-birth-history';
++import './pages/school-based-immunization';
++import './pages/child-nutrition';
++import './pages/risk-assessment';
+ import './pages/user-management';
+ import './pages/user-management-edit';
+ import './pages/user-management-residents';
+@@ -17,5 +21,9 @@ import './pages/chatbot-household-sms';
+ import './pages/chatbot-household-information';
+ import './pages/household-water-supply';
+ import './pages/environmental-health-dashboard';
++import './pages/health-records-child-care';
++import './pages/health-records-vitamin-a';
++import './pages/health-records-deworming';
++import './pages/health-records-operation-timbang';
+ 
+ window.bootstrap = bootstrap;
+diff --git a/lmlingaFinal/resources/js/pages/household-member-view.js b/lmlingaFinal/resources/js/pages/household-member-view.js
+index 1fc6dd8..acfb5e8 100644
+--- a/lmlingaFinal/resources/js/pages/household-member-view.js
++++ b/lmlingaFinal/resources/js/pages/household-member-view.js
+@@ -98,7 +98,6 @@ function trapFocus(event, panel) {
+ 
+ function recordToastMessage(recordName) {
+     const map = {
+-        'Risk Assessment': 'Risk Assessment details are not yet implemented in this UI phase.',
+         'Family Planning': 'Family Planning record details are not yet implemented in this UI phase.',
+         Maternal: 'Maternal record details are not yet implemented in this UI phase.',
+         Death: 'Death record details are not yet implemented in this UI phase.',
+@@ -106,8 +105,6 @@ function recordToastMessage(recordName) {
+             'Child Immunization is not yet implemented in this UI phase. Navigation is prepared for a future module page.',
+         'School-Based Immunization':
+             'School-Based Immunization is not yet implemented in this UI phase. Navigation is prepared for a future module page.',
+-        'Child Nutrition':
+-            'Child Nutrition is not yet implemented in this UI phase. Navigation is prepared for a future module page.',
+     };
+ 
+     return map[recordName] || `${recordName} details are not yet implemented in this UI phase.`;
+diff --git a/lmlingaFinal/resources/views/pages/household-profiling/member-view.blade.php b/lmlingaFinal/resources/views/pages/household-profiling/member-view.blade.php
+index 6415581..9ec38e4 100644
+--- a/lmlingaFinal/resources/views/pages/household-profiling/member-view.blade.php
++++ b/lmlingaFinal/resources/views/pages/household-profiling/member-view.blade.php
+@@ -9,11 +9,16 @@
+ @section('content')
+     @php
+         $healthRecords = [
+-            'Risk Assessment',
+             'Family Planning',
+             'Maternal',
+             'Death',
+         ];
++        $riskAssessmentUrl = ($demoHousehold && $demoMember)
++            ? route('household-profiling.members.risk-assessment', [
++                'householdNo' => $demoHousehold['householdNo'],
++                'memberId' => $demoMember['id'],
++            ])
++            : null;
+         $nutrition = data_get($demoMember, 'nutrition', [
+             'weight' => 'ΓÇö',
+             'height' => 'ΓÇö',
+@@ -294,6 +299,20 @@ class="lml-hh-member-view__child-link lml-focus-ring{{ $isActiveChild ? ' is-act
+                                 </div>
+                             </li>
+ 
++                            @if ($riskAssessmentUrl)
++                                <li class="lml-hh-member-view__record">
++                                    <span>Risk Assessment</span>
++                                    <a
++                                        href="{{ $riskAssessmentUrl }}"
++                                        class="lml-hh-member-view__record-view lml-focus-ring"
++                                        data-hh-member-risk-assessment
++                                        aria-label="View Risk Assessment history for {{ $demoMember['name'] }}"
++                                    >
++                                        View
++                                    </a>
++                                </li>
++                            @endif
++
+                             @foreach ($healthRecords as $record)
+                                 <li class="lml-hh-member-view__record">
+                                     <span>{{ $record }}</span>
+diff --git a/lmlingaFinal/routes/web.php b/lmlingaFinal/routes/web.php
+index 96544e7..01de500 100644
+--- a/lmlingaFinal/routes/web.php
++++ b/lmlingaFinal/routes/web.php
+@@ -3,6 +3,7 @@
+ use App\Support\DemoCatalog;
+ use Illuminate\Support\Facades\Route;
+ use App\Http\Controllers\HouseholdProfiling\HouseholdAmenitiesController;
++use App\Support\DemoRiskAssessment;
+ 
+ Route::get('/', function () {
+     return view('welcome');
+@@ -307,21 +308,9 @@
+ 
+     /*
+      | Child Care health-module destinations.
+-     | Child Immunization is a real UI destination. School-Based Immunization and
+-     | Child Nutrition remain intentional redirect stubs until implemented.
++     | Child Immunization, School-Based Immunization, and Child Nutrition
++     | are real UI destinations (preview-safe; no persistence endpoints yet).
+      */
+-    $pendingChildCareRedirect = function (string $householdNo, string $memberId, string $moduleLabel) {
+-        $key = DemoCatalog::normalizeHouseholdNo($householdNo);
+-        $memberKey = DemoCatalog::normalizeMemberId($memberId);
+-
+-        return redirect()
+-            ->route('household-profiling.members.show', [
+-                'householdNo' => $key,
+-                'memberId' => $memberKey,
+-            ])
+-            ->with('lml_pending_health_module', $moduleLabel);
+-    };
+-
+     Route::get('/household-profiling/{householdNo}/members/{memberId}/child-immunization', function (string $householdNo, string $memberId) {
+         $key = DemoCatalog::normalizeHouseholdNo($householdNo);
+         $memberKey = DemoCatalog::normalizeMemberId($memberId);
+@@ -366,20 +355,133 @@
+         'memberId' => 'MB-[0-9]+',
+     ])->name('household-profiling.members.child-immunization.birth-history.edit');
+ 
+-    Route::get('/household-profiling/{householdNo}/members/{memberId}/school-based-immunization', function (string $householdNo, string $memberId) use ($pendingChildCareRedirect) {
+-        return $pendingChildCareRedirect($householdNo, $memberId, 'School-Based Immunization');
++    Route::get('/household-profiling/{householdNo}/members/{memberId}/school-based-immunization', function (string $householdNo, string $memberId) {
++        $key = DemoCatalog::normalizeHouseholdNo($householdNo);
++        $memberKey = DemoCatalog::normalizeMemberId($memberId);
++        $household = DemoCatalog::findHousehold($key);
++        $member = $household ? lml_demo_find_member($household, $memberKey) : null;
++
++        return view('pages.household-profiling.school-based-immunization', [
++            'active' => 'household-profiling',
++            'pageTitle' => 'School-Based Immunization',
++            'pageSubtitle' => $member
++                ? 'Vaccination records for '.$member['name'].' in '.$key.'.'
++                : 'Demo member was not found.',
++            'householdNo' => $key,
++            'memberId' => $memberKey,
++            'demoHousehold' => $household,
++            'demoMember' => $member,
++        ]);
+     })->where([
+         'householdNo' => 'HH-[0-9]+',
+         'memberId' => 'MB-[0-9]+',
+     ])->name('household-profiling.members.school-based-immunization');
+ 
+-    Route::get('/household-profiling/{householdNo}/members/{memberId}/child-nutrition', function (string $householdNo, string $memberId) use ($pendingChildCareRedirect) {
+-        return $pendingChildCareRedirect($householdNo, $memberId, 'Child Nutrition');
++    Route::get('/household-profiling/{householdNo}/members/{memberId}/child-nutrition', function (string $householdNo, string $memberId) {
++        $key = DemoCatalog::normalizeHouseholdNo($householdNo);
++        $memberKey = DemoCatalog::normalizeMemberId($memberId);
++        $household = DemoCatalog::findHousehold($key);
++        $member = $household ? lml_demo_find_member($household, $memberKey) : null;
++
++        return view('pages.household-profiling.child-nutrition', [
++            'active' => 'household-profiling',
++            'pageTitle' => 'Child Nutrition',
++            'pageSubtitle' => $member
++                ? 'Monitor child growth and nutrition for '.$member['name'].' in '.$key.'.'
++                : 'Demo member was not found.',
++            'householdNo' => $key,
++            'memberId' => $memberKey,
++            'demoHousehold' => $household,
++            'demoMember' => $member,
++        ]);
+     })->where([
+         'householdNo' => 'HH-[0-9]+',
+         'memberId' => 'MB-[0-9]+',
+     ])->name('household-profiling.members.child-nutrition');
+ 
++    /*
++     | Resident-specific Risk Assessment (Household Profiling member workflow).
++     | Optional health-worker assessment ΓÇö empty history is valid.
++     | Distinct from barangay-wide Health Records modules.
++     */
++    Route::get('/household-profiling/{householdNo}/members/{memberId}/risk-assessment', function (string $householdNo, string $memberId) {
++        $key = DemoCatalog::normalizeHouseholdNo($householdNo);
++        $memberKey = DemoCatalog::normalizeMemberId($memberId);
++        $household = DemoCatalog::findHousehold($key);
++        $member = $household ? lml_demo_find_member($household, $memberKey) : null;
++
++        return view('pages.household-profiling.risk-assessment-history', [
++            'active' => 'household-profiling',
++            'pageTitle' => 'Risk Assessment',
++            'pageSubtitle' => $member
++                ? 'Risk assessment history for '.$member['name'].' in '.$key.'.'
++                : 'Demo member was not found.',
++            'householdNo' => $key,
++            'memberId' => $memberKey,
++            'demoHousehold' => $household,
++            'demoMember' => $member,
++            'assessments' => $member
++                ? DemoRiskAssessment::forMember($key, $memberKey)
++                : [],
++        ]);
++    })->where([
++        'householdNo' => 'HH-[0-9]+',
++        'memberId' => 'MB-[0-9]+',
++    ])->name('household-profiling.members.risk-assessment');
++
++    Route::get('/household-profiling/{householdNo}/members/{memberId}/risk-assessment/create', function (string $householdNo, string $memberId) {
++        $key = DemoCatalog::normalizeHouseholdNo($householdNo);
++        $memberKey = DemoCatalog::normalizeMemberId($memberId);
++        $household = DemoCatalog::findHousehold($key);
++        $member = $household ? lml_demo_find_member($household, $memberKey) : null;
++
++        return view('pages.household-profiling.risk-assessment-form', [
++            'active' => 'household-profiling',
++            'pageTitle' => 'Risk Assessment',
++            'pageSubtitle' => $member
++                ? 'Add risk assessment for '.$member['name'].' in '.$key.'.'
++                : 'Demo member was not found.',
++            'householdNo' => $key,
++            'memberId' => $memberKey,
++            'demoHousehold' => $household,
++            'demoMember' => $member,
++            'mode' => 'create',
++            'assessment' => [],
++        ]);
++    })->where([
++        'householdNo' => 'HH-[0-9]+',
++        'memberId' => 'MB-[0-9]+',
++    ])->name('household-profiling.members.risk-assessment.create');
++
++    Route::get('/household-profiling/{householdNo}/members/{memberId}/risk-assessment/{assessmentId}', function (string $householdNo, string $memberId, string $assessmentId) {
++        $key = DemoCatalog::normalizeHouseholdNo($householdNo);
++        $memberKey = DemoCatalog::normalizeMemberId($memberId);
++        $household = DemoCatalog::findHousehold($key);
++        $member = $household ? lml_demo_find_member($household, $memberKey) : null;
++        $assessment = $member
++            ? DemoRiskAssessment::find($key, $memberKey, $assessmentId)
++            : null;
++
++        return view('pages.household-profiling.risk-assessment-form', [
++            'active' => 'household-profiling',
++            'pageTitle' => 'Risk Assessment',
++            'pageSubtitle' => $member
++                ? 'View risk assessment for '.$member['name'].' in '.$key.'.'
++                : 'Demo member was not found.',
++            'householdNo' => $key,
++            'memberId' => $memberKey,
++            'assessmentId' => strtoupper(trim($assessmentId)),
++            'demoHousehold' => $household,
++            'demoMember' => $member,
++            'mode' => 'view',
++            'assessment' => $assessment ?? [],
++        ]);
++    })->where([
++        'householdNo' => 'HH-[0-9]+',
++        'memberId' => 'MB-[0-9]+',
++        'assessmentId' => 'RA-[0-9]+',
++    ])->name('household-profiling.members.risk-assessment.show');
++
+     Route::get('/environmental-health', [
+         \App\Http\Controllers\EnvironmentalHealth\EnvironmentalHealthDashboardController::class,
+         'index',
+@@ -429,4 +531,29 @@
+         '/environmental-health/household-water-supply/{householdNo}/step-4',
+         [\App\Http\Controllers\EnvironmentalHealth\HouseholdWaterSupplyController::class, 'storeStep4']
+     )->where('householdNo', '[A-Za-z0-9\-]+')->name('environmental-health.household-water-supply.step4.store');
++
++    /*
++     | Health Records ΓÇö Child Care barangay-wide summary (demo catalog aggregate).
++     | Vitamin A / Deworming / Operation Timbang monitoring summaries reuse
++     | named child-care routes.
++     */
++    Route::get('/health-records/child-care', [
++        \App\Http\Controllers\HealthRecords\ChildCareSummaryController::class,
++        'index',
++    ])->name('health-records.child-care.index');
++
++    Route::get('/health-records/child-care/vitamin-a', [
++        \App\Http\Controllers\HealthRecords\ChildCareSummaryController::class,
++        'vitaminA',
++    ])->name('health-records.child-care.vitamin-a');
++
++    Route::get('/health-records/child-care/deworming', [
++        \App\Http\Controllers\HealthRecords\ChildCareSummaryController::class,
++        'deworming',
++    ])->name('health-records.child-care.deworming');
++
++    Route::get('/health-records/child-care/operation-timbang', [
++        \App\Http\Controllers\HealthRecords\ChildCareSummaryController::class,
++        'operationTimbang',
++    ])->name('health-records.child-care.operation-timbang');
+ });

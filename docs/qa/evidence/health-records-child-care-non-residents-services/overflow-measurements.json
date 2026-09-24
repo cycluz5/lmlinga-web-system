@@ -1,0 +1,110 @@
+[
+  {
+    "page": "view",
+    "file": "01-view-1440.png",
+    "w": 1440,
+    "h": 900,
+    "clientWidth": 1440,
+    "scrollWidth": 1440,
+    "overflow": false
+  },
+  {
+    "page": "view",
+    "file": "02-view-820.png",
+    "w": 820,
+    "h": 1180,
+    "clientWidth": 820,
+    "scrollWidth": 820,
+    "overflow": false
+  },
+  {
+    "page": "view",
+    "file": "03-view-390.png",
+    "w": 390,
+    "h": 844,
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "overflow": false
+  },
+  {
+    "page": "immunization",
+    "file": "04-immunization-1440.png",
+    "w": 1440,
+    "h": 900,
+    "clientWidth": 1440,
+    "scrollWidth": 1440,
+    "overflow": false
+  },
+  {
+    "page": "immunization",
+    "file": "05-immunization-820.png",
+    "w": 820,
+    "h": 1180,
+    "clientWidth": 820,
+    "scrollWidth": 820,
+    "overflow": false
+  },
+  {
+    "page": "immunization",
+    "file": "06-immunization-390.png",
+    "w": 390,
+    "h": 844,
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "overflow": false
+  },
+  {
+    "page": "sbi",
+    "file": "07-sbi-1440.png",
+    "w": 1440,
+    "h": 900,
+    "clientWidth": 1440,
+    "scrollWidth": 1440,
+    "overflow": false
+  },
+  {
+    "page": "sbi",
+    "file": "08-sbi-820.png",
+    "w": 820,
+    "h": 1180,
+    "clientWidth": 820,
+    "scrollWidth": 820,
+    "overflow": false
+  },
+  {
+    "page": "sbi",
+    "file": "09-sbi-390.png",
+    "w": 390,
+    "h": 844,
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "overflow": false
+  },
+  {
+    "page": "child-nutrition",
+    "file": "10-child-nutrition-1440.png",
+    "w": 1440,
+    "h": 900,
+    "clientWidth": 1440,
+    "scrollWidth": 1440,
+    "overflow": false
+  },
+  {
+    "page": "child-nutrition",
+    "file": "11-child-nutrition-820.png",
+    "w": 820,
+    "h": 1180,
+    "clientWidth": 820,
+    "scrollWidth": 820,
+    "overflow": false
+  },
+  {
+    "page": "child-nutrition",
+    "file": "12-child-nutrition-390.png",
+    "w": 390,
+    "h": 844,
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "overflow": false
+  }
+]

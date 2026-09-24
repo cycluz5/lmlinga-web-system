@@ -1,0 +1,146 @@
+{
+  "crisleyDom": [
+    {
+      "title": "0–12 Months Record",
+      "rows": [
+        {
+          "id": "NR-CC-NUT-CRI-003",
+          "date": "July 1, 2026",
+          "age": "11 Months Old",
+          "metrics": [
+            {
+              "label": "Weight",
+              "value": "8.6 kg"
+            },
+            {
+              "label": "Height",
+              "value": "74.0 cm"
+            },
+            {
+              "label": "MUAC",
+              "value": "14.2 cm"
+            },
+            {
+              "label": "Progress",
+              "value": "+0.6 kg"
+            },
+            {
+              "label": "Progress",
+              "value": "+2.5 cm"
+            },
+            {
+              "label": "Status",
+              "value": "Normal"
+            }
+          ]
+        },
+        {
+          "id": "NR-CC-NUT-CRI-002",
+          "date": "February 1, 2026",
+          "age": "6 Months Old",
+          "metrics": [
+            {
+              "label": "Weight",
+              "value": "8.0 kg"
+            },
+            {
+              "label": "Height",
+              "value": "71.5 cm"
+            },
+            {
+              "label": "MUAC",
+              "value": "14.0 cm"
+            },
+            {
+              "label": "Progress",
+              "value": "+0.8 kg"
+            },
+            {
+              "label": "Progress",
+              "value": "+3.5 cm"
+            },
+            {
+              "label": "Status",
+              "value": "Normal"
+            }
+          ]
+        },
+        {
+          "id": "NR-CC-NUT-CRI-001",
+          "date": "November 1, 2025",
+          "age": "3 Months Old",
+          "metrics": [
+            {
+              "label": "Weight",
+              "value": "7.2 kg"
+            },
+            {
+              "label": "Height",
+              "value": "68.0 cm"
+            },
+            {
+              "label": "MUAC",
+              "value": "13.8 cm"
+            },
+            {
+              "label": "Progress",
+              "value": "—"
+            },
+            {
+              "label": "Progress",
+              "value": "—"
+            },
+            {
+              "label": "Status",
+              "value": "Normal"
+            }
+          ]
+        }
+      ],
+      "border": "1px solid rgb(34, 197, 94)"
+    },
+    {
+      "title": "1–5 Years Old Record",
+      "rows": [],
+      "border": "1px solid rgb(34, 197, 94)"
+    }
+  ],
+  "overflow": [
+    {
+      "page": "crisley",
+      "file": "01-nutrition-history-1440.png",
+      "w": 1440,
+      "h": 900,
+      "clientWidth": 1440,
+      "scrollWidth": 1440,
+      "overflow": false
+    },
+    {
+      "page": "crisley",
+      "file": "02-nutrition-history-820.png",
+      "w": 820,
+      "h": 1180,
+      "clientWidth": 820,
+      "scrollWidth": 820,
+      "overflow": false
+    },
+    {
+      "page": "crisley",
+      "file": "03-nutrition-history-390.png",
+      "w": 390,
+      "h": 844,
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "overflow": false
+    },
+    {
+      "page": "gabriel",
+      "file": "04-nutrition-history-gabriel-1440.png",
+      "w": 1440,
+      "h": 900,
+      "clientWidth": 1440,
+      "scrollWidth": 1440,
+      "overflow": false
+    }
+  ]
+}

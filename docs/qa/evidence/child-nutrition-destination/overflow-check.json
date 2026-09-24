@@ -1,0 +1,38 @@
+{
+  "desktop": {
+    "overflowView": {
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflow": false
+    },
+    "overflowAfter": {
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflow": false
+    }
+  },
+  "tablet": {
+    "overflowView": {
+      "scrollWidth": 820,
+      "clientWidth": 820,
+      "overflow": false
+    },
+    "overflowAfter": {
+      "scrollWidth": 820,
+      "clientWidth": 820,
+      "overflow": false
+    }
+  },
+  "mobile": {
+    "overflowView": {
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflow": false
+    },
+    "overflowAfter": {
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflow": false
+    }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "viewport": "1440x900",
+  "bannerBackground": "rgb(81, 194, 105)",
+  "panelPaddingLeft": 40,
+  "panelBorderColor": "rgb(81, 194, 105)",
+  "headingColor": "rgb(81, 194, 105)",
+  "bodyFontSize": "15px",
+  "iconClass": "bi bi-person-vcard",
+  "iconBackground": "rgba(0, 0, 0, 0)",
+  "historyTableWidth": 352,
+  "panelWidth": 1104,
+  "rootPresent": true
+}

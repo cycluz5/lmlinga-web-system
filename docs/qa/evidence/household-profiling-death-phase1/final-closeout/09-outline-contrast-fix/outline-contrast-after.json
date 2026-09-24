@@ -1,0 +1,163 @@
+{
+  "previous": {
+    "border": "#9FDDAD (approx; rgba(81,194,105,0.55) on #FFFFFF)",
+    "borderContrast": 1.56,
+    "result": "FAIL — WCAG 1.4.11"
+  },
+  "computed": {
+    "normal": {
+      "color": "rgb(20, 108, 46)",
+      "background": "rgb(255, 255, 255)",
+      "border": "rgb(20, 108, 46)",
+      "outline": "rgb(20, 108, 46) none 0px",
+      "outlineColor": "rgb(20, 108, 46)",
+      "outlineWidth": "0px",
+      "iconColor": "rgb(20, 108, 46)"
+    },
+    "hover": {
+      "color": "rgb(20, 108, 46)",
+      "background": "rgb(240, 253, 244)",
+      "border": "rgb(21, 115, 71)",
+      "outline": "rgb(20, 108, 46) none 0px",
+      "outlineColor": "rgb(20, 108, 46)",
+      "outlineWidth": "0px",
+      "iconColor": "rgb(20, 108, 46)"
+    },
+    "focus": {
+      "color": "rgb(20, 108, 46)",
+      "background": "rgb(240, 253, 244)",
+      "border": "rgb(20, 108, 46)",
+      "outline": "rgb(20, 108, 46) solid 2px",
+      "outlineColor": "rgb(20, 108, 46)",
+      "outlineWidth": "2px",
+      "iconColor": "rgb(20, 108, 46)"
+    }
+  },
+  "contrast": [
+    {
+      "label": "NORMAL text vs background",
+      "foregroundCss": "rgb(20, 108, 46)",
+      "backgroundCss": "rgb(255, 255, 255)",
+      "foregroundHex": "#146C2E",
+      "backgroundHex": "#FFFFFF",
+      "ratio": 6.53,
+      "threshold": 4.5,
+      "result": "PASS"
+    },
+    {
+      "label": "NORMAL border vs background",
+      "foregroundCss": "rgb(20, 108, 46)",
+      "backgroundCss": "rgb(255, 255, 255)",
+      "foregroundHex": "#146C2E",
+      "backgroundHex": "#FFFFFF",
+      "ratio": 6.53,
+      "threshold": 3,
+      "result": "PASS"
+    },
+    {
+      "label": "NORMAL icon vs background",
+      "foregroundCss": "rgb(20, 108, 46)",
+      "backgroundCss": "rgb(255, 255, 255)",
+      "foregroundHex": "#146C2E",
+      "backgroundHex": "#FFFFFF",
+      "ratio": 6.53,
+      "threshold": 4.5,
+      "result": "PASS"
+    },
+    {
+      "label": "HOVER text vs background",
+      "foregroundCss": "rgb(20, 108, 46)",
+      "backgroundCss": "rgb(240, 253, 244)",
+      "foregroundHex": "#146C2E",
+      "backgroundHex": "#F0FDF4",
+      "ratio": 6.24,
+      "threshold": 4.5,
+      "result": "PASS"
+    },
+    {
+      "label": "HOVER border vs background",
+      "foregroundCss": "rgb(21, 115, 71)",
+      "backgroundCss": "rgb(240, 253, 244)",
+      "foregroundHex": "#157347",
+      "backgroundHex": "#F0FDF4",
+      "ratio": 5.61,
+      "threshold": 3,
+      "result": "PASS"
+    },
+    {
+      "label": "HOVER icon vs background",
+      "foregroundCss": "rgb(20, 108, 46)",
+      "backgroundCss": "rgb(240, 253, 244)",
+      "foregroundHex": "#146C2E",
+      "backgroundHex": "#F0FDF4",
+      "ratio": 6.24,
+      "threshold": 4.5,
+      "result": "PASS"
+    },
+    {
+      "label": "FOCUS text vs background",
+      "foregroundCss": "rgb(20, 108, 46)",
+      "backgroundCss": "rgb(240, 253, 244)",
+      "foregroundHex": "#146C2E",
+      "backgroundHex": "#F0FDF4",
+      "ratio": 6.24,
+      "threshold": 4.5,
+      "result": "PASS"
+    },
+    {
+      "label": "FOCUS border vs background",
+      "foregroundCss": "rgb(20, 108, 46)",
+      "backgroundCss": "rgb(240, 253, 244)",
+      "foregroundHex": "#146C2E",
+      "backgroundHex": "#F0FDF4",
+      "ratio": 6.24,
+      "threshold": 3,
+      "result": "PASS"
+    },
+    {
+      "label": "FOCUS outline vs surrounding white",
+      "foregroundCss": "rgb(20, 108, 46)",
+      "backgroundCss": "rgb(255, 255, 255)",
+      "foregroundHex": "#146C2E",
+      "backgroundHex": "#FFFFFF",
+      "ratio": 6.53,
+      "threshold": 3,
+      "result": "PASS"
+    }
+  ],
+  "screenshots": [
+    {
+      "file": "alive-outline-cta-1440x900.png",
+      "w": 1440,
+      "h": 900,
+      "overflow": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "overflowX": false
+      },
+      "mode": "empty"
+    },
+    {
+      "file": "alive-outline-cta-820x1180.png",
+      "w": 820,
+      "h": 1180,
+      "overflow": {
+        "scrollWidth": 820,
+        "clientWidth": 820,
+        "overflowX": false
+      },
+      "mode": "empty"
+    },
+    {
+      "file": "alive-outline-cta-390x844.png",
+      "w": 390,
+      "h": 844,
+      "overflow": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "overflowX": false
+      },
+      "mode": "empty"
+    }
+  ]
+}

@@ -1,0 +1,567 @@
+/**
+ * LMLinga — School-Based Immunization destination (UI phase)
+ * Namespaced under .lml-sbi
+ * Member/Birth History summary reuses .lml-child-imm__* summary styles.
+ * Content sits directly in the dashboard content region (no outer framed workspace).
+ */
+
+.lml-sbi {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    margin-inline: 0;
+    position: relative;
+    box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+    .lml-sbi {
+        gap: 1rem;
+    }
+}
+
+.lml-sbi__toast {
+    margin: 0;
+    padding: 0.65rem 0.85rem;
+    border: 1px solid rgba(var(--lml-primary-rgb), 0.35);
+    border-radius: var(--lml-radius-md);
+    background-color: #f0fdf4;
+    color: var(--lml-deep-green);
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.lml-sbi__toast[hidden] {
+    display: none !important;
+}
+
+.lml-sbi__back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    margin: 0;
+    color: var(--lml-light-green);
+    text-decoration: none;
+    border-radius: var(--lml-radius-sm);
+    flex: 0 0 auto;
+}
+
+.lml-sbi__back i {
+    font-size: 1.25rem;
+    line-height: 1;
+    color: var(--lml-light-green);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .lml-sbi__back:hover {
+        background-color: rgba(var(--lml-light-green-rgb), 0.18);
+        color: #3da653;
+    }
+
+    .lml-sbi__back:hover i {
+        color: #3da653;
+    }
+}
+
+.lml-sbi__not-found {
+    padding: 1.15rem;
+    background: #fff;
+    border: 1px solid rgba(var(--lml-soft-green-rgb), 0.9);
+    border-radius: var(--lml-radius-md);
+}
+
+.lml-sbi__not-found-title {
+    margin: 0 0 0.45rem;
+    color: var(--lml-deep-green);
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.lml-sbi__not-found-message {
+    margin: 0 0 0.85rem;
+    color: #4b5563;
+    font-size: 0.9rem;
+    line-height: 1.45;
+}
+
+.lml-sbi__not-found-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.5rem;
+    color: var(--lml-text-green);
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: var(--lml-radius-md);
+}
+
+.lml-sbi__not-found-link:hover {
+    color: var(--lml-deep-green);
+    text-decoration: underline;
+}
+
+/* ── School-Based Immunization records ─────────────────────── */
+.lml-sbi__records {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.lml-sbi__records-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.45rem 0.85rem;
+}
+
+.lml-sbi__records-intro {
+    min-width: 0;
+    flex: 1 1 14rem;
+}
+
+.lml-sbi__records-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 0;
+    color: var(--lml-text-green);
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.lml-sbi__records-title i {
+    font-size: 0.95rem;
+    line-height: 1;
+}
+
+.lml-sbi__records-desc {
+    margin: 0.2rem 0 0;
+    max-width: 42rem;
+    color: #6b7280;
+    font-size: 0.78rem;
+    line-height: 1.45;
+}
+
+.lml-sbi__records-actions {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex: 0 0 auto;
+    gap: 0.5rem;
+    min-width: 0;
+    padding-top: 0.05rem;
+}
+
+.lml-sbi__edit {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+    padding: 0.35rem 0.55rem;
+    border: 0;
+    background: transparent;
+    color: var(--lml-text-green);
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.2;
+    border-radius: var(--lml-radius-sm);
+    cursor: pointer;
+}
+
+.lml-sbi__edit[hidden],
+.lml-sbi__save[hidden] {
+    display: none !important;
+}
+
+.lml-sbi__edit:hover {
+    color: var(--lml-deep-green);
+    text-decoration: underline;
+}
+
+.lml-sbi__save {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    min-height: 2.75rem;
+    min-width: 4.75rem;
+    padding: 0.4rem 1.15rem;
+    border: 1px solid var(--lml-light-green);
+    border-radius: 0.5rem;
+    background-color: var(--lml-light-green);
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+    box-shadow: 0 1px 3px rgba(var(--lml-light-green-rgb), 0.35);
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.lml-sbi__save:hover {
+    background-color: #3da653;
+    border-color: #3da653;
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(var(--lml-light-green-rgb), 0.4);
+}
+
+.lml-sbi__save:active {
+    background-color: var(--lml-deep-green);
+    border-color: var(--lml-deep-green);
+    color: #fff;
+}
+
+.lml-sbi__save:focus-visible {
+    outline: 0;
+    box-shadow:
+        0 0 0 0.15rem rgba(var(--lml-primary-rgb), 0.35),
+        0 1px 3px rgba(var(--lml-light-green-rgb), 0.35);
+}
+
+.lml-sbi__records[data-editing='false'] .lml-sbi__date-input:disabled,
+.lml-sbi__records[data-editing='false'] .lml-sbi__date-input[readonly] {
+    background-color: #f9fafb;
+    color: #374151;
+    border-color: #e5e7eb;
+    cursor: default;
+    opacity: 1;
+}
+
+.lml-sbi__records[data-editing='true'] .lml-sbi__date-input {
+    background-color: #fff;
+    border-color: #d1d5db;
+    color: #111827;
+    cursor: text;
+}
+
+.lml-sbi__records[data-editing='true'] .lml-sbi__date-input:hover {
+    border-color: rgba(var(--lml-light-green-rgb), 0.85);
+}
+
+.lml-sbi__records[data-editing='false'] .lml-sbi__type-row {
+    cursor: default;
+}
+
+.lml-sbi__records[data-editing='false'] .lml-sbi__type-row:hover {
+    background-color: transparent;
+}
+
+.lml-sbi__records[data-editing='true'] .lml-sbi__type-row {
+    cursor: pointer;
+}
+
+.lml-sbi__type-checkbox:disabled {
+    cursor: default;
+    opacity: 0.85;
+}
+
+.lml-sbi__records[data-editing='false'] .lml-sbi__type-checkbox:disabled + .lml-sbi__type-label {
+    color: var(--lml-text-green);
+    opacity: 0.9;
+}
+
+.lml-sbi__body {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    align-items: start;
+    min-width: 0;
+}
+
+@media (min-width: 992px) {
+    .lml-sbi__body {
+        grid-template-columns: minmax(0, 1fr) minmax(12.5rem, 18%);
+        gap: 1.15rem;
+    }
+}
+
+.lml-sbi__main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    min-width: 0;
+}
+
+.lml-sbi__grade-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+}
+
+@media (min-width: 768px) {
+    .lml-sbi__grade-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.9rem 1rem;
+        align-items: stretch;
+    }
+}
+
+.lml-sbi__grade-card,
+.lml-sbi__hpv-card,
+.lml-sbi__types-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    min-width: 0;
+    padding: 0.95rem 1.05rem 1rem;
+    background: #fff;
+    border: 1px solid rgba(81, 194, 105, 0.35);
+    border-radius: var(--lml-radius-md);
+}
+
+.lml-sbi__grade-title {
+    margin: 0 0 0.1rem;
+    color: var(--lml-text-green);
+    font-size: 0.925rem;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.lml-sbi__dose-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+
+@media (min-width: 768px) {
+    .lml-sbi__grade-card .lml-sbi__dose-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.65rem 0.9rem;
+        align-items: start;
+    }
+}
+
+.lml-sbi__dose {
+    display: flex;
+    flex-direction: column;
+    gap: 0.18rem;
+    min-width: 0;
+}
+
+.lml-sbi__dose-label-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.4rem;
+    min-height: 1.1rem;
+}
+
+.lml-sbi__dose-label {
+    margin: 0;
+    color: #374151;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.3;
+    word-break: break-word;
+}
+
+.lml-sbi__status {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+    line-height: 1;
+}
+
+.lml-sbi__status--recorded {
+    color: var(--lml-light-green);
+}
+
+.lml-sbi__status i {
+    font-size: 0.8rem;
+}
+
+.lml-sbi__date-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 0.12rem;
+}
+
+.lml-sbi__date-caption {
+    color: #9ca3af;
+    font-size: 0.68rem;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.lml-sbi__date-input {
+    width: 100%;
+    min-width: 0;
+    min-height: 2.25rem;
+    padding: 0.35rem 0.55rem;
+    border: 1px solid #d1d5db;
+    border-radius: var(--lml-radius-sm);
+    background-color: #fff;
+    color: #111827;
+    font-size: 0.8rem;
+    line-height: 1.3;
+}
+
+.lml-sbi__date-input:focus {
+    outline: 0;
+}
+
+.lml-sbi__date-input::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.65;
+}
+
+/* ── HPV card ──────────────────────────────────────────────── */
+.lml-sbi__dose-list--hpv {
+    margin-top: 0.1rem;
+}
+
+/* ── Vaccines Type checklist ───────────────────────────────── */
+.lml-sbi__aside {
+    min-width: 0;
+}
+
+.lml-sbi__types-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 0;
+    color: var(--lml-text-green);
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.lml-sbi__types-title i {
+    font-size: 0.95rem;
+    line-height: 1;
+}
+
+.lml-sbi__types-groups {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 0.35rem;
+}
+
+.lml-sbi__types-fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+}
+
+.lml-sbi__types-legend {
+    display: block;
+    float: none;
+    width: 100%;
+    margin: 0 0 0.35rem;
+    padding: 0;
+    color: #6b7280;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 1.25;
+    text-transform: uppercase;
+}
+
+.lml-sbi__types-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.lml-sbi__type-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.45rem;
+    min-height: 2.25rem;
+    margin: 0;
+    padding: 0.2rem 0.25rem;
+    border-radius: var(--lml-radius-sm);
+    cursor: pointer;
+}
+
+.lml-sbi__type-row:hover {
+    background-color: rgba(var(--lml-light-green-rgb), 0.08);
+}
+
+.lml-sbi__type-checkbox {
+    flex: 0 0 auto;
+    width: 1rem;
+    height: 1rem;
+    margin-top: 0.2rem;
+    accent-color: var(--lml-light-green);
+}
+
+.lml-sbi__type-label {
+    color: var(--lml-text-green);
+    font-size: 0.78rem;
+    font-weight: 600;
+    line-height: 1.35;
+    word-break: break-word;
+}
+
+/* ── Responsive: tablet / mobile ───────────────────────────── */
+@media (max-width: 991.98px) {
+    .lml-sbi__body {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .lml-sbi {
+        gap: 0.85rem;
+    }
+
+    .lml-sbi__grade-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .lml-sbi__grade-card .lml-sbi__dose-list {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .lml-sbi__date-input {
+        min-height: 2.5rem;
+        font-size: 0.875rem;
+    }
+
+    .lml-sbi__type-row {
+        min-height: 2.5rem;
+    }
+
+    .lml-sbi__records-actions {
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .lml-sbi__edit,
+    .lml-sbi__save {
+        min-height: 2.75rem;
+        min-width: 2.75rem;
+    }
+
+    .lml-sbi__save {
+        min-width: 4.75rem;
+        padding-inline: 1.15rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .lml-sbi__save {
+        transition: none;
+    }
+}

@@ -1,0 +1,52 @@
+# Family Planning route excerpt
+# Source: lmlingaFinal/routes/web.php (approx. lines 907–946)
+# Copied for review evidence. Routes were NOT modified by the packaging task.
+#
+# A. Resident Family Planning (user-facing Health Records destination)
+#    GET /health-records/family-planning
+#    name: health-records.family-planning.index
+#
+# B. Legacy Non-Resident Family Planning (intentionally preserved; still URL-reachable)
+#    Prefix: health-records/family-planning/non-residents
+#    These routes still exist. The resident summary UI no longer links to them.
+
+    /*
+     | Health Records — Family Planning barangay-wide summary (UI-phase fixture).
+     | Independent of Household Profiling → member Family Planning.
+     */
+    Route::get('/health-records/family-planning', [
+        \App\Http\Controllers\HealthRecords\FamilyPlanningSummaryController::class,
+        'index',
+    ])->name('health-records.family-planning.index');
+
+    /*
+     | Health Records → Family Planning → Non-Resident / unregistered clients (UI-phase).
+     | Distinct from Household Profiling → member Family Planning.
+     */
+    Route::prefix('health-records/family-planning/non-residents')->group(function () {
+        Route::get('/', [
+            \App\Http\Controllers\HealthRecords\NonResidentFamilyPlanningController::class,
+            'index',
+        ])->name('health-records.family-planning.non-residents.index');
+
+        Route::get('/create', [
+            \App\Http\Controllers\HealthRecords\NonResidentFamilyPlanningController::class,
+            'create',
+        ])->name('health-records.family-planning.non-residents.create');
+
+        Route::get('/{clientKey}', [
+            \App\Http\Controllers\HealthRecords\NonResidentFamilyPlanningController::class,
+            'show',
+        ])->where('clientKey', '[a-z0-9\-]+')->name('health-records.family-planning.non-residents.show');
+
+        Route::get('/{clientKey}/visits/create', [
+            \App\Http\Controllers\HealthRecords\NonResidentFamilyPlanningController::class,
+            'createVisit',
+        ])->where('clientKey', '[a-z0-9\-]+')->name('health-records.family-planning.non-residents.visits.create');
+
+        Route::get('/{clientKey}/visits/{visitId}/edit', [
+            \App\Http\Controllers\HealthRecords\NonResidentFamilyPlanningController::class,
+            'editVisit',
+        ])->where(['clientKey' => '[a-z0-9\-]+', 'visitId' => '[A-Za-z0-9\-]+'])
+            ->name('health-records.family-planning.non-residents.visits.edit');
+    });

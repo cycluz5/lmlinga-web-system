@@ -1,0 +1,44 @@
+[
+  {
+    "page": "resident",
+    "viewport": "1440x900",
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "overflow": false
+  },
+  {
+    "page": "resident",
+    "viewport": "820x1180",
+    "scrollWidth": 820,
+    "clientWidth": 820,
+    "overflow": false
+  },
+  {
+    "page": "resident",
+    "viewport": "390x844",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "overflow": false
+  },
+  {
+    "page": "non-resident",
+    "viewport": "1440x900",
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "overflow": false
+  },
+  {
+    "page": "non-resident",
+    "viewport": "820x1180",
+    "scrollWidth": 820,
+    "clientWidth": 820,
+    "overflow": false
+  },
+  {
+    "page": "non-resident",
+    "viewport": "390x844",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "overflow": false
+  }
+]

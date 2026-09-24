@@ -1,0 +1,23 @@
+Dashboard Post-Refinement Test Evidence
+
+Test files:
+tests/Unit/DashboardUiDataTest.php
+tests/Feature/DashboardSummaryUiTest.php
+
+Command:
+php vendor/bin/phpunit tests/Unit/DashboardUiDataTest.php tests/Feature/DashboardSummaryUiTest.php
+
+Exit code:
+0
+
+Tests passed:
+5
+
+Assertions:
+76
+
+Build command:
+npm run build
+
+Build exit code:
+0

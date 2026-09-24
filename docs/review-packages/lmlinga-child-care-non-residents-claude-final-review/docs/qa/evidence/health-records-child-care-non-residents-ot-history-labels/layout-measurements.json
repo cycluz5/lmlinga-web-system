@@ -1,0 +1,276 @@
+{
+  "crisleyDom": [
+    {
+      "key": "infant",
+      "title": "0–12 Months Record",
+      "headerEdit": false,
+      "rows": [
+        {
+          "id": "NR-CC-NUT-CRI-003",
+          "date": "July 1, 2026",
+          "hasRowEdit": true,
+          "metrics": [
+            {
+              "label": "Weight",
+              "value": "8.6 kg"
+            },
+            {
+              "label": "Height",
+              "value": "74.0 cm"
+            },
+            {
+              "label": "MUAC",
+              "value": "14.2 cm"
+            },
+            {
+              "label": "Weight Progress",
+              "value": "+0.6 kg"
+            },
+            {
+              "label": "Height Progress",
+              "value": "+2.5 cm"
+            },
+            {
+              "label": "Status",
+              "value": "Normal"
+            }
+          ]
+        },
+        {
+          "id": "NR-CC-NUT-CRI-002",
+          "date": "February 1, 2026",
+          "hasRowEdit": true,
+          "metrics": [
+            {
+              "label": "Weight",
+              "value": "8.0 kg"
+            },
+            {
+              "label": "Height",
+              "value": "71.5 cm"
+            },
+            {
+              "label": "MUAC",
+              "value": "14.0 cm"
+            },
+            {
+              "label": "Weight Progress",
+              "value": "+0.8 kg"
+            },
+            {
+              "label": "Height Progress",
+              "value": "+3.5 cm"
+            },
+            {
+              "label": "Status",
+              "value": "Normal"
+            }
+          ]
+        },
+        {
+          "id": "NR-CC-NUT-CRI-001",
+          "date": "November 1, 2025",
+          "hasRowEdit": true,
+          "metrics": [
+            {
+              "label": "Weight",
+              "value": "7.2 kg"
+            },
+            {
+              "label": "Height",
+              "value": "68.0 cm"
+            },
+            {
+              "label": "MUAC",
+              "value": "13.8 cm"
+            },
+            {
+              "label": "Weight Progress",
+              "value": "—"
+            },
+            {
+              "label": "Height Progress",
+              "value": "—"
+            },
+            {
+              "label": "Status",
+              "value": "Normal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "child",
+      "title": "1–5 Years Old Record",
+      "headerEdit": false,
+      "rows": []
+    }
+  ],
+  "gabrielDom": [
+    {
+      "key": "infant",
+      "title": "0–12 Months Record",
+      "headerEdit": false,
+      "rows": [
+        {
+          "id": "NR-CC-NUT-GAB-001",
+          "date": "January 15, 2025",
+          "hasRowEdit": true,
+          "metrics": [
+            {
+              "label": "Weight",
+              "value": "7.4 kg"
+            },
+            {
+              "label": "Height",
+              "value": "67.0 cm"
+            },
+            {
+              "label": "MUAC",
+              "value": "13.5 cm"
+            },
+            {
+              "label": "Weight Progress",
+              "value": "—"
+            },
+            {
+              "label": "Height Progress",
+              "value": "—"
+            },
+            {
+              "label": "Status",
+              "value": "Normal"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "child",
+      "title": "1–5 Years Old Record",
+      "headerEdit": false,
+      "rows": [
+        {
+          "id": "NR-CC-NUT-GAB-003",
+          "date": "June 15, 2026",
+          "hasRowEdit": true,
+          "metrics": [
+            {
+              "label": "Weight",
+              "value": "11.4 kg"
+            },
+            {
+              "label": "Height",
+              "value": "84.0 cm"
+            },
+            {
+              "label": "MUAC",
+              "value": "14.8 cm"
+            },
+            {
+              "label": "Weight Progress",
+              "value": "+2.3 kg"
+            },
+            {
+              "label": "Height Progress",
+              "value": "+10.0 cm"
+            },
+            {
+              "label": "Status",
+              "value": "Normal"
+            }
+          ]
+        },
+        {
+          "id": "NR-CC-NUT-GAB-002",
+          "date": "August 15, 2025",
+          "hasRowEdit": true,
+          "metrics": [
+            {
+              "label": "Weight",
+              "value": "9.1 kg"
+            },
+            {
+              "label": "Height",
+              "value": "74.0 cm"
+            },
+            {
+              "label": "MUAC",
+              "value": "14.1 cm"
+            },
+            {
+              "label": "Weight Progress",
+              "value": "+1.7 kg"
+            },
+            {
+              "label": "Height Progress",
+              "value": "+7.0 cm"
+            },
+            {
+              "label": "Status",
+              "value": "Normal"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "overflow": [
+    {
+      "page": "crisley",
+      "file": "01-crisley-1440.png",
+      "w": 1440,
+      "h": 900,
+      "clientWidth": 1440,
+      "scrollWidth": 1440,
+      "overflow": false
+    },
+    {
+      "page": "crisley",
+      "file": "02-crisley-820.png",
+      "w": 820,
+      "h": 1180,
+      "clientWidth": 820,
+      "scrollWidth": 820,
+      "overflow": false
+    },
+    {
+      "page": "crisley",
+      "file": "03-crisley-390.png",
+      "w": 390,
+      "h": 844,
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "overflow": false
+    },
+    {
+      "page": "gabriel",
+      "file": "04-gabriel-1440.png",
+      "w": 1440,
+      "h": 900,
+      "clientWidth": 1440,
+      "scrollWidth": 1440,
+      "overflow": false
+    },
+    {
+      "page": "gabriel",
+      "file": "05-gabriel-820.png",
+      "w": 820,
+      "h": 1180,
+      "clientWidth": 820,
+      "scrollWidth": 820,
+      "overflow": false
+    },
+    {
+      "page": "gabriel",
+      "file": "06-gabriel-390.png",
+      "w": 390,
+      "h": 844,
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "overflow": false
+    }
+  ],
+  "overflowing": []
+}

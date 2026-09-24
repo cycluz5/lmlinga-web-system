@@ -1,0 +1,75 @@
+LMLinga Dashboard — Responsive / Width Evidence
+Source: docs/qa/screenshots/dashboard-indicators-width-align/overflow-report.json
+Capture script: scripts/capture-dashboard-summary-counts.mjs
+
+Width equality of map, household table, and Health Indicators is expected
+ONLY in stacked tablet/mobile layouts.
+
+On desktop/laptop, Health Indicators occupies the assigned right-side column
+and is intentionally NOT the same width as the map/table column.
+
+==================================================
+1440 x 900 (desktop)
+==================================================
+viewport: 1440x900
+workspace: grid (side-by-side)
+map width: 731
+household table width: 731
+Health Indicators width: 375
+map left/right: 300 / 1031
+table left/right: 300 / 1031
+Health Indicators left/right: 1045 / 1420
+scrollWidth: 1440
+clientWidth: 1440
+pageOverflow: false
+
+==================================================
+1366 x 768 (laptop)
+==================================================
+viewport: 1366x768
+workspace: grid (side-by-side)
+map width: 682
+household table width: 682
+Health Indicators width: 350
+map left/right: 300 / 982
+table left/right: 300 / 982
+Health Indicators left/right: 996 / 1346
+scrollWidth: 1366
+clientWidth: 1366
+pageOverflow: false
+
+==================================================
+820 x 1180 (tablet, stacked)
+==================================================
+viewport: 820x1180
+workspace: flex (stacked)
+map width: 772
+household table width: 772
+Health Indicators width: 772
+map left/right: 24 / 796
+table left/right: 24 / 796
+Health Indicators left/right: 24 / 796
+scrollWidth: 820
+clientWidth: 820
+pageOverflow: false
+
+Note: stacked sections share the same left/right boundaries.
+
+==================================================
+390 x 844 (mobile, stacked)
+==================================================
+viewport: 390x844
+workspace: flex (stacked)
+map width: 358
+household table width: 358
+Health Indicators width: 358
+map left/right: 16 / 374
+table left/right: 16 / 374
+Health Indicators left/right: 16 / 374
+scrollWidth: 390
+clientWidth: 390
+pageOverflow: false
+
+Note: stacked sections share the same left/right boundaries.
+document.documentElement.scrollWidth === document.documentElement.clientWidth
+Internal household table wrap may still scroll; the page itself does not.

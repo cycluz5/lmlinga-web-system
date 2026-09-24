@@ -1,0 +1,188 @@
+[
+  {
+    "viewport": "1440x900",
+    "file": "risk-assessment-1440x900-ui-refinement.png",
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "overflow": false,
+    "hasRoot": true,
+    "hasAdd": false,
+    "hasExport": true,
+    "headers": [
+      "Full Name",
+      "BMI Status",
+      "BP Status",
+      "Smoking Status",
+      "Alcohol Status",
+      "Physical Activity Risk",
+      "Family History Risk",
+      "Chronic Disease"
+    ],
+    "search": {
+      "x": 325,
+      "y": 292,
+      "w": 457,
+      "h": 36
+    },
+    "zone": {
+      "x": 794,
+      "y": 292,
+      "w": 295,
+      "h": 36
+    },
+    "year": {
+      "x": 1100,
+      "y": 292,
+      "w": 295,
+      "h": 36
+    },
+    "exportBtn": {
+      "x": 1254,
+      "y": 141,
+      "w": 141,
+      "h": 40
+    },
+    "nameTh": {
+      "x": 326,
+      "y": 343,
+      "w": 160,
+      "h": 101
+    },
+    "bmiTh": {
+      "x": 486,
+      "y": 343,
+      "w": 133,
+      "h": 101
+    },
+    "bpTh": {
+      "x": 620,
+      "y": 343,
+      "w": 133,
+      "h": 101
+    }
+  },
+  {
+    "viewport": "820x1180",
+    "file": "risk-assessment-820x1180-ui-refinement.png",
+    "scrollWidth": 820,
+    "clientWidth": 820,
+    "overflow": false,
+    "hasRoot": true,
+    "hasAdd": false,
+    "hasExport": true,
+    "headers": [
+      "Full Name",
+      "BMI Status",
+      "BP Status",
+      "Smoking Status",
+      "Alcohol Status",
+      "Physical Activity Risk",
+      "Family History Risk",
+      "Chronic Disease"
+    ],
+    "search": {
+      "x": 39,
+      "y": 420,
+      "w": 743,
+      "h": 36
+    },
+    "zone": {
+      "x": 39,
+      "y": 468,
+      "w": 365,
+      "h": 36
+    },
+    "year": {
+      "x": 416,
+      "y": 468,
+      "w": 365,
+      "h": 36
+    },
+    "exportBtn": {
+      "x": 641,
+      "y": 134,
+      "w": 141,
+      "h": 40
+    },
+    "nameTh": {
+      "x": 40,
+      "y": 518,
+      "w": 139,
+      "h": 103
+    },
+    "bmiTh": {
+      "x": 179,
+      "y": 518,
+      "w": 116,
+      "h": 103
+    },
+    "bpTh": {
+      "x": 295,
+      "y": 518,
+      "w": 116,
+      "h": 103
+    }
+  },
+  {
+    "viewport": "390x844",
+    "file": "risk-assessment-390x844-ui-refinement.png",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "overflow": false,
+    "hasRoot": true,
+    "hasAdd": false,
+    "hasExport": true,
+    "headers": [
+      "Full Name",
+      "BMI Status",
+      "BP Status",
+      "Smoking Status",
+      "Alcohol Status",
+      "Physical Activity Risk",
+      "Family History Risk",
+      "Chronic Disease"
+    ],
+    "search": {
+      "x": 31,
+      "y": 593,
+      "w": 329,
+      "h": 40
+    },
+    "zone": {
+      "x": 31,
+      "y": 645,
+      "w": 329,
+      "h": 40
+    },
+    "year": {
+      "x": 31,
+      "y": 697,
+      "w": 329,
+      "h": 40
+    },
+    "exportBtn": {
+      "x": 219,
+      "y": 265,
+      "w": 141,
+      "h": 40
+    },
+    "nameTh": {
+      "x": 32,
+      "y": 751,
+      "w": 125,
+      "h": 103
+    },
+    "bmiTh": {
+      "x": 156,
+      "y": 751,
+      "w": 104,
+      "h": 103
+    },
+    "bpTh": {
+      "x": 260,
+      "y": 751,
+      "w": 104,
+      "h": 103
+    }
+  }
+]

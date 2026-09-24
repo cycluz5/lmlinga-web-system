@@ -1,0 +1,20 @@
+{
+  "method": "CDP Emulation.setDeviceMetricsOverride + Runtime.evaluate",
+  "custom_range_visible": true,
+  "viewports": [
+    {
+      "size": "390x844",
+      "pageOverflowX": false,
+      "selectClipped": false,
+      "docScrollWidth": 390,
+      "rows_visible_unfiltered_custom_ui": 3
+    },
+    {
+      "size": "360x800",
+      "pageOverflowX": false,
+      "selectClipped": false,
+      "docScrollWidth": 360
+    }
+  ],
+  "notes": "Existing RA responsive stacking used; custom-range fields stack at max-width 767.98px. Full matrix sizes also covered by prior RA-02 evidence; this patch only re-checked mobile extremes with custom-range open."
+}

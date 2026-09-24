@@ -1,0 +1,21 @@
+LMLinga Dashboard Figma Reference
+
+File/Project:
+WebSystems3
+
+Relevant Dashboard frame:
+node-id=262-1608
+
+Reference URL:
+https://www.figma.com/design/OIvGn1RMmLN2nt9Mlr5WJI/WebSystems3?node-id=262-1608
+
+Review intent:
+Use the Figma reference primarily for visual hierarchy, spacing, Dashboard composition, map/table/Health Indicators relationship, card styling, and overall proportions.
+
+Important approved deviations from obsolete Figma content:
+- Current role-aware sidebar is retained.
+- No Dashboard Search field is implemented.
+- Complementary Food Health Indicator is intentionally removed.
+- Dashboard currently contains 13 approved Health Indicators.
+- Main five Overview cards have no icons.
+- Current Dashboard values are UI fixtures, not live database aggregates.

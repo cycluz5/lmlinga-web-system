@@ -1,0 +1,70 @@
+{
+  "view": {
+    "mode": "view",
+    "readonly": [
+      {
+        "tag": "p",
+        "className": "lml-death__readonly",
+        "tabindex": null,
+        "contentEditable": null,
+        "isInput": false
+      },
+      {
+        "tag": "p",
+        "className": "lml-death__readonly",
+        "tabindex": null,
+        "contentEditable": null,
+        "isInput": false
+      }
+    ],
+    "headings": [
+      {
+        "tag": "h1",
+        "id": null,
+        "text": "Death Information"
+      },
+      {
+        "tag": "h2",
+        "id": "lml-death-member-name",
+        "text": "Kristine Reyes"
+      },
+      {
+        "tag": "h2",
+        "id": "lml-death-section-title",
+        "text": "DEATH INFORMATION"
+      },
+      {
+        "tag": "h3",
+        "id": null,
+        "text": "Death Certificate"
+      }
+    ],
+    "decorativeAriaHiddenCount": 4
+  },
+  "form": {
+    "mode": "edit",
+    "fileInputPresent": true,
+    "fileAccept": ".png,.jpg,.jpeg,.pdf,image/png,image/jpeg,application/pdf",
+    "labelForFile": true,
+    "labelText": "Choose File",
+    "causeDescribedBy": null
+  },
+  "validationMaxLengthSubmit": {
+    "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-002/death/edit?v=death-validation-dom",
+    "mode": "edit",
+    "cause": {
+      "ariaInvalid": "true",
+      "ariaDescribedBy": "lml-death-cause-error",
+      "errorEl": true,
+      "errorText": "The cause of death field must not be greater than 500 characters.",
+      "valueLength": 501
+    },
+    "date": {
+      "ariaInvalid": "false",
+      "ariaDescribedBy": null,
+      "errorEl": false,
+      "errorText": null
+    }
+  },
+  "validationNote": "Triggered by removing maxlength and submitting 501-char cause_of_death against server max:500 rule."
+}

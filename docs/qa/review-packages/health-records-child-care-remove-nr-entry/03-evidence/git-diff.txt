@@ -1,0 +1,310 @@
+﻿SCOPED DIFF
+Repository root: C:/Users/Kathlyn Cris/Desktop/LMLinga_Dev
+Paths below are relative to that root (prefixed lmlingaFinal/).
+
+Included paths:
+- lmlingaFinal/resources/views/pages/health-records/child-care.blade.php
+- lmlingaFinal/resources/views/pages/health-records/child-care-vitamin-a.blade.php
+- lmlingaFinal/resources/views/pages/health-records/child-care-deworming.blade.php
+- lmlingaFinal/resources/views/pages/health-records/child-care-operation-timbang.blade.php
+- lmlingaFinal/tests/Feature/HealthRecordsChildCareSummaryTest.php
+- lmlingaFinal/tests/Feature/HealthRecordsVitaminATest.php
+- lmlingaFinal/tests/Feature/HealthRecordsDewormingTest.php
+- lmlingaFinal/tests/Feature/HealthRecordsOperationTimbangTest.php
+- lmlingaFinal/tests/Feature/HealthRecordsNonResidentChildCareTest.php
+
+Unrelated working-tree diffs (dashboard, maternal, family planning, etc.) were excluded.
+
+----- BEGIN DIFF -----
+diff --git a/lmlingaFinal/resources/views/pages/health-records/child-care-deworming.blade.php b/lmlingaFinal/resources/views/pages/health-records/child-care-deworming.blade.php
+index 5bc0798..5445f2e 100644
+--- a/lmlingaFinal/resources/views/pages/health-records/child-care-deworming.blade.php
++++ b/lmlingaFinal/resources/views/pages/health-records/child-care-deworming.blade.php
+@@ -24,7 +24,6 @@
+         $vitaminAUrl = route('health-records.child-care.vitamin-a');
+         $dewormingUrl = route('health-records.child-care.deworming');
+         $operationTimbangUrl = route('health-records.child-care.operation-timbang');
+-        $nonResidentsUrl = route('health-records.child-care.non-residents.index');
+         $pageDescription = 'Record and management of deworming details for monitoring and tracking treatment status.';
+         $totalRows = count($rows);
+     @endphp
+@@ -38,17 +37,7 @@ class="lml-hr-child-care lml-hr-child-care--deworming"
+         <div class="lml-hr-child-care__panel">
+             <header class="lml-hr-child-care__top">
+                 <div class="lml-hr-child-care__title-row">
+-                    <div class="lml-hr-child-care__title-cluster">
+-                        <h2 class="lml-hr-child-care__title" id="lml-hr-deworming-heading">Child Care</h2>
+-                        <a
+-                            href="{{ $nonResidentsUrl }}"
+-                            class="lml-hr-child-care__scope-pill lml-focus-ring"
+-                            data-hr-cc-non-residents
+-                        >
+-                            <i class="bi bi-people" aria-hidden="true"></i>
+-                            <span>Non-Residents</span>
+-                        </a>
+-                    </div>
++                    <h2 class="lml-hr-child-care__title" id="lml-hr-deworming-heading">Child Care</h2>
+                     <nav class="lml-hr-child-care__nav-pills" aria-label="Child Care related summaries">
+                         <a
+                             href="{{ $vitaminAUrl }}"
+diff --git a/lmlingaFinal/resources/views/pages/health-records/child-care-operation-timbang.blade.php b/lmlingaFinal/resources/views/pages/health-records/child-care-operation-timbang.blade.php
+index d290eff..ebc0b50 100644
+--- a/lmlingaFinal/resources/views/pages/health-records/child-care-operation-timbang.blade.php
++++ b/lmlingaFinal/resources/views/pages/health-records/child-care-operation-timbang.blade.php
+@@ -35,7 +35,6 @@
+         $vitaminAUrl = route('health-records.child-care.vitamin-a');
+         $dewormingUrl = route('health-records.child-care.deworming');
+         $operationTimbangUrl = route('health-records.child-care.operation-timbang');
+-        $nonResidentsUrl = route('health-records.child-care.non-residents.index');
+         $pageDescription = 'Record and management of Operation Timbang weigh-in details for monitoring and tracking nutritional status.';
+         $totalRows = count($rows);
+     @endphp
+@@ -51,17 +50,7 @@ class="lml-hr-child-care lml-hr-child-care--operation-timbang"
+         <div class="lml-hr-child-care__panel">
+             <header class="lml-hr-child-care__top">
+                 <div class="lml-hr-child-care__title-row">
+-                    <div class="lml-hr-child-care__title-cluster">
+-                        <h2 class="lml-hr-child-care__title" id="lml-hr-ot-heading">Child Care</h2>
+-                        <a
+-                            href="{{ $nonResidentsUrl }}"
+-                            class="lml-hr-child-care__scope-pill lml-focus-ring"
+-                            data-hr-cc-non-residents
+-                        >
+-                            <i class="bi bi-people" aria-hidden="true"></i>
+-                            <span>Non-Residents</span>
+-                        </a>
+-                    </div>
++                    <h2 class="lml-hr-child-care__title" id="lml-hr-ot-heading">Child Care</h2>
+                     <nav class="lml-hr-child-care__nav-pills" aria-label="Child Care related summaries">
+                         <a
+                             href="{{ $vitaminAUrl }}"
+diff --git a/lmlingaFinal/resources/views/pages/health-records/child-care-vitamin-a.blade.php b/lmlingaFinal/resources/views/pages/health-records/child-care-vitamin-a.blade.php
+index a788804..7d421e4 100644
+--- a/lmlingaFinal/resources/views/pages/health-records/child-care-vitamin-a.blade.php
++++ b/lmlingaFinal/resources/views/pages/health-records/child-care-vitamin-a.blade.php
+@@ -16,7 +16,6 @@
+         $vitaminAUrl = route('health-records.child-care.vitamin-a');
+         $dewormingUrl = route('health-records.child-care.deworming');
+         $operationTimbangUrl = route('health-records.child-care.operation-timbang');
+-        $nonResidentsUrl = route('health-records.child-care.non-residents.index');
+         $pageDescription = 'Record and management of Vitamin A supplementation details for monitoring and tracking nutritional status.';
+     @endphp
+ 
+@@ -28,17 +27,7 @@ class="lml-hr-child-care lml-hr-child-care--vitamin-a"
+         <div class="lml-hr-child-care__panel">
+             <header class="lml-hr-child-care__top">
+                 <div class="lml-hr-child-care__title-row">
+-                    <div class="lml-hr-child-care__title-cluster">
+-                        <h2 class="lml-hr-child-care__title" id="lml-hr-vitamin-a-heading">Child Care</h2>
+-                        <a
+-                            href="{{ $nonResidentsUrl }}"
+-                            class="lml-hr-child-care__scope-pill lml-focus-ring"
+-                            data-hr-cc-non-residents
+-                        >
+-                            <i class="bi bi-people" aria-hidden="true"></i>
+-                            <span>Non-Residents</span>
+-                        </a>
+-                    </div>
++                    <h2 class="lml-hr-child-care__title" id="lml-hr-vitamin-a-heading">Child Care</h2>
+                     <nav class="lml-hr-child-care__nav-pills" aria-label="Child Care related summaries">
+                         <a
+                             href="{{ $vitaminAUrl }}"
+diff --git a/lmlingaFinal/resources/views/pages/health-records/child-care.blade.php b/lmlingaFinal/resources/views/pages/health-records/child-care.blade.php
+index 10907cb..63b9fd8 100644
+--- a/lmlingaFinal/resources/views/pages/health-records/child-care.blade.php
++++ b/lmlingaFinal/resources/views/pages/health-records/child-care.blade.php
+@@ -18,7 +18,6 @@
+         $vitaminAUrl = route('health-records.child-care.vitamin-a');
+         $dewormingUrl = route('health-records.child-care.deworming');
+         $operationTimbangUrl = route('health-records.child-care.operation-timbang');
+-        $nonResidentsUrl = route('health-records.child-care.non-residents.index');
+     @endphp
+ 
+     <div
+@@ -29,17 +28,7 @@ class="lml-hr-child-care"
+         <div class="lml-hr-child-care__panel">
+             <header class="lml-hr-child-care__top">
+                 <div class="lml-hr-child-care__title-row">
+-                    <div class="lml-hr-child-care__title-cluster">
+-                        <h2 class="lml-hr-child-care__title" id="lml-hr-child-care-heading">Child Care</h2>
+-                        <a
+-                            href="{{ $nonResidentsUrl }}"
+-                            class="lml-hr-child-care__scope-pill lml-focus-ring"
+-                            data-hr-cc-non-residents
+-                        >
+-                            <i class="bi bi-people" aria-hidden="true"></i>
+-                            <span>Non-Residents</span>
+-                        </a>
+-                    </div>
++                    <h2 class="lml-hr-child-care__title" id="lml-hr-child-care-heading">Child Care</h2>
+                     <nav class="lml-hr-child-care__nav-pills" aria-label="Child Care service summaries">
+                         <a
+                             href="{{ $vitaminAUrl }}"
+diff --git a/lmlingaFinal/tests/Feature/HealthRecordsChildCareSummaryTest.php b/lmlingaFinal/tests/Feature/HealthRecordsChildCareSummaryTest.php
+index 4274777..5d7cc8a 100644
+--- a/lmlingaFinal/tests/Feature/HealthRecordsChildCareSummaryTest.php
++++ b/lmlingaFinal/tests/Feature/HealthRecordsChildCareSummaryTest.php
+@@ -120,7 +120,7 @@ public function test_vitamin_a_and_deworming_routes_exist_and_link_from_summary(
+         $this->get(route('health-records.child-care.operation-timbang'))->assertOk();
+     }
+ 
+-    public function test_non_residents_entry_point_links_to_named_route(): void
++    public function test_non_residents_entry_point_is_absent_from_child_care_ui(): void
+     {
+         $this->assertTrue(Route::has('health-records.child-care.non-residents.index'));
+ 
+@@ -132,12 +132,9 @@ public function test_non_residents_entry_point_links_to_named_route(): void
+         $response->assertOk();
+         $html = $response->getContent();
+ 
+-        $this->assertSame(1, preg_match_all('/>\s*Non-Residents\s*<\/span>/u', $html));
+-        $this->assertMatchesRegularExpression(
+-            '/<a[^>]*href="'.preg_quote(e($nonResidentsUrl), '/').'"[^>]*data-hr-cc-non-residents/u',
+-            $html
+-        );
+-        $this->assertSame(1, substr_count($html, 'data-hr-cc-non-residents'));
++        $this->assertSame(0, preg_match_all('/>\s*Non-Residents\s*<\/span>/u', $html));
++        $this->assertSame(0, substr_count($html, 'data-hr-cc-non-residents'));
++        $this->assertStringNotContainsString('href="'.e($nonResidentsUrl).'"', $html);
+ 
+         $this->assertSame(1, preg_match_all('/>\s*Vitamin A\s*<\/a>/u', $html));
+         $this->assertSame(1, preg_match_all('/>\s*Deworming\s*<\/a>/u', $html));
+@@ -150,14 +147,9 @@ public function test_non_residents_entry_point_links_to_named_route(): void
+             '/lml-sidebar__sublink[^>]*aria-current="page"[^>]*>[\s\S]*>Child Care</u',
+             $html
+         );
+-
+-        $destination = $this->get($nonResidentsUrl);
+-        $destination->assertOk();
+-        $this->assertSame('child-care', UiRole::sidebarActiveKey());
+-        $destination->assertSee('Non-Residents', false);
+         $this->assertDoesNotMatchRegularExpression(
+             '/lml-sidebar__sublink[^>]*>\s*(?:<[^>]+>\s*)*Non-Residents\s*</u',
+-            $destination->getContent()
++            $html
+         );
+     }
+ 
+diff --git a/lmlingaFinal/tests/Feature/HealthRecordsDewormingTest.php b/lmlingaFinal/tests/Feature/HealthRecordsDewormingTest.php
+index 2d7a67d..f5dc614 100644
+--- a/lmlingaFinal/tests/Feature/HealthRecordsDewormingTest.php
++++ b/lmlingaFinal/tests/Feature/HealthRecordsDewormingTest.php
+@@ -232,24 +232,17 @@ public function test_frozen_vitamin_a_route_remains_reachable(): void
+         );
+     }
+ 
+-    public function test_non_residents_scope_pill_links_to_listing(): void
++    public function test_non_residents_scope_pill_is_absent(): void
+     {
+-        $nrUrl = route('health-records.child-care.non-residents.index');
+-        $this->assertSame('health-records/child-care/non-residents', Route::getRoutes()->getByName('health-records.child-care.non-residents.index')?->uri());
+-
+         $html = $this->withSession([UiRole::SESSION_KEY => 'bhw'])
+             ->get(route('health-records.child-care.deworming'))
+             ->assertOk()
+             ->getContent();
+ 
+-        $this->assertSame(1, preg_match_all('/>\s*Non-Residents\s*<\/span>/u', $html));
+-        $this->assertSame(1, substr_count($html, 'data-hr-cc-non-residents'));
+-        $this->assertMatchesRegularExpression(
+-            '/<a[^>]*href="'.preg_quote(e($nrUrl), '/').'"[^>]*data-hr-cc-non-residents/u',
+-            $html
+-        );
+-        $this->assertDoesNotMatchRegularExpression(
+-            '/lml-hr-child-care__scope-pill[^>]*(?:aria-current|pill--active)/u',
++        $this->assertSame(0, preg_match_all('/>\s*Non-Residents\s*<\/span>/u', $html));
++        $this->assertSame(0, substr_count($html, 'data-hr-cc-non-residents'));
++        $this->assertStringNotContainsString(
++            'href="'.e(route('health-records.child-care.non-residents.index')).'"',
+             $html
+         );
+         $this->assertMatchesRegularExpression(
+diff --git a/lmlingaFinal/tests/Feature/HealthRecordsNonResidentChildCareTest.php b/lmlingaFinal/tests/Feature/HealthRecordsNonResidentChildCareTest.php
+index b0ecd73..e8ade4f 100644
+--- a/lmlingaFinal/tests/Feature/HealthRecordsNonResidentChildCareTest.php
++++ b/lmlingaFinal/tests/Feature/HealthRecordsNonResidentChildCareTest.php
+@@ -116,11 +116,12 @@ public function test_summary_pill_and_service_tabs_remain_unchanged(): void
+         $response->assertOk();
+         $html = $response->getContent();
+ 
+-        $this->assertSame(1, substr_count($html, 'data-hr-cc-non-residents'));
+-        $this->assertStringContainsString(
++        $this->assertSame(0, substr_count($html, 'data-hr-cc-non-residents'));
++        $this->assertStringNotContainsString(
+             'href="'.e(route('health-records.child-care.non-residents.index')).'"',
+             $html
+         );
++        $this->assertSame(0, preg_match_all('/>\s*Non-Residents\s*<\/span>/u', $html));
+         $this->assertSame(1, preg_match_all('/>\s*Vitamin A\s*<\/a>/u', $html));
+         $this->assertSame(1, preg_match_all('/>\s*Deworming\s*<\/a>/u', $html));
+         $this->assertSame(1, preg_match_all('/>\s*Operation Timbang\s*<\/a>/u', $html));
+diff --git a/lmlingaFinal/tests/Feature/HealthRecordsOperationTimbangTest.php b/lmlingaFinal/tests/Feature/HealthRecordsOperationTimbangTest.php
+index 3c061aa..f4b6b65 100644
+--- a/lmlingaFinal/tests/Feature/HealthRecordsOperationTimbangTest.php
++++ b/lmlingaFinal/tests/Feature/HealthRecordsOperationTimbangTest.php
+@@ -288,24 +288,17 @@ public function test_frozen_adjacent_routes_remain_reachable(): void
+         $this->assertStringContainsString('data-lml-hr-child-care', $summary->getContent());
+     }
+ 
+-    public function test_non_residents_scope_pill_links_to_listing(): void
++    public function test_non_residents_scope_pill_is_absent(): void
+     {
+-        $nrUrl = route('health-records.child-care.non-residents.index');
+-        $this->assertSame('health-records/child-care/non-residents', Route::getRoutes()->getByName('health-records.child-care.non-residents.index')?->uri());
+-
+         $html = $this->withSession([UiRole::SESSION_KEY => 'bhw'])
+             ->get(route('health-records.child-care.operation-timbang'))
+             ->assertOk()
+             ->getContent();
+ 
+-        $this->assertSame(1, preg_match_all('/>\s*Non-Residents\s*<\/span>/u', $html));
+-        $this->assertSame(1, substr_count($html, 'data-hr-cc-non-residents'));
+-        $this->assertMatchesRegularExpression(
+-            '/<a[^>]*href="'.preg_quote(e($nrUrl), '/').'"[^>]*data-hr-cc-non-residents/u',
+-            $html
+-        );
+-        $this->assertDoesNotMatchRegularExpression(
+-            '/lml-hr-child-care__scope-pill[^>]*(?:aria-current|pill--active)/u',
++        $this->assertSame(0, preg_match_all('/>\s*Non-Residents\s*<\/span>/u', $html));
++        $this->assertSame(0, substr_count($html, 'data-hr-cc-non-residents'));
++        $this->assertStringNotContainsString(
++            'href="'.e(route('health-records.child-care.non-residents.index')).'"',
+             $html
+         );
+         $this->assertMatchesRegularExpression(
+diff --git a/lmlingaFinal/tests/Feature/HealthRecordsVitaminATest.php b/lmlingaFinal/tests/Feature/HealthRecordsVitaminATest.php
+index 17be725..55d6b75 100644
+--- a/lmlingaFinal/tests/Feature/HealthRecordsVitaminATest.php
++++ b/lmlingaFinal/tests/Feature/HealthRecordsVitaminATest.php
+@@ -205,24 +205,17 @@ public function test_intentionally_empty_figma_cells_are_not_zero_filled(): void
+         $this->assertStringNotContainsString('>0</', $row611);
+     }
+ 
+-    public function test_non_residents_scope_pill_links_to_listing(): void
++    public function test_non_residents_scope_pill_is_absent(): void
+     {
+-        $nrUrl = route('health-records.child-care.non-residents.index');
+-        $this->assertSame('health-records/child-care/non-residents', Route::getRoutes()->getByName('health-records.child-care.non-residents.index')?->uri());
+-
+         $html = $this->withSession([UiRole::SESSION_KEY => 'bhw'])
+             ->get(route('health-records.child-care.vitamin-a'))
+             ->assertOk()
+             ->getContent();
+ 
+-        $this->assertSame(1, preg_match_all('/>\s*Non-Residents\s*<\/span>/u', $html));
+-        $this->assertSame(1, substr_count($html, 'data-hr-cc-non-residents'));
+-        $this->assertMatchesRegularExpression(
+-            '/<a[^>]*href="'.preg_quote(e($nrUrl), '/').'"[^>]*data-hr-cc-non-residents/u',
+-            $html
+-        );
+-        $this->assertDoesNotMatchRegularExpression(
+-            '/lml-hr-child-care__scope-pill[^>]*(?:aria-current|pill--active)/u',
++        $this->assertSame(0, preg_match_all('/>\s*Non-Residents\s*<\/span>/u', $html));
++        $this->assertSame(0, substr_count($html, 'data-hr-cc-non-residents'));
++        $this->assertStringNotContainsString(
++            'href="'.e(route('health-records.child-care.non-residents.index')).'"',
+             $html
+         );
+         $this->assertMatchesRegularExpression(
+
+

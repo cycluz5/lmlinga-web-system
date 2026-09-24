@@ -1,0 +1,74 @@
+{
+  "module": "Household Profiling → Risk Assessment",
+  "pass": "RA-01–RA-04 evidence closure",
+  "mode": "VERIFICATION / EVIDENCE ONLY",
+  "productionSourceCodeModifiedThisPass": false,
+  "defectsDiscovered": [],
+  "finalAssessment": "B. READY FOR CLAUDE FINAL PRODUCTION-FREEZE VERIFICATION",
+  "ra01": {
+    "result": "PASS",
+    "classification": "DIRECTLY VERIFIED",
+    "scope": "client-side wizard DOM state preservation (not DB persistence)",
+    "evidence": [
+      "RA-01-E1-step1-before-next.png",
+      "RA-01-E2-step2-selected.png",
+      "RA-01-E3-step1-after-back.png",
+      "RA-01-E4-step4-preserved.png",
+      "RA-01-E5-step5-height-preserved.png"
+    ]
+  },
+  "ra02": {
+    "result": "PASS",
+    "classification": "DIRECTLY VERIFIED",
+    "viewports": ["1440x900", "1366x768", "820x1180", "768x1024", "390x844", "360x800"],
+    "screens": ["History", "Step1", "Step4", "Step5"],
+    "overflowMatrix": "RA-02-overflow-matrix.json",
+    "pageLevelOverflowX": false
+  },
+  "ra03": {
+    "result": "PASS",
+    "classification": "DIRECTLY VERIFIED",
+    "method": "Playwright real keyboard events (ra03-keyboard-evidence.mjs)",
+    "log": "RA-03-keyboard-log.json",
+    "evidence": [
+      "RA-03-E1-history-date-filter-focused.png",
+      "RA-03-E2-step1-checkbox-focused.png",
+      "RA-03-E3-step4-radio-focused.png",
+      "RA-03-E4-next-focused.png",
+      "RA-03-E5-save-focused.png"
+    ]
+  },
+  "ra04": {
+    "result": "PASS",
+    "classification": "DIRECTLY VERIFIED",
+    "phpTest": {
+      "file": "tests/Feature/HouseholdProfilingRiskAssessmentTest.php",
+      "command": "php artisan test --filter=HouseholdProfilingRiskAssessmentTest",
+      "exitCode": 0,
+      "passed": 13,
+      "assertions": 111
+    },
+    "memberViewRegression": {
+      "file": "tests/Feature/HouseholdProfilingHouseholdMemberViewTest.php",
+      "command": "php artisan test --filter=HouseholdProfilingHouseholdMemberViewTest",
+      "exitCode": 0,
+      "passed": 8,
+      "assertions": 43
+    },
+    "jsTests": {
+      "command": "npm run test:js",
+      "files": [
+        "tests/js/dashboard-sidebar.test.mjs",
+        "tests/js/child-nutrition-newborn.test.mjs",
+        "tests/js/risk-assessment.test.mjs"
+      ],
+      "exitCode": 0,
+      "passed": 22,
+      "failed": 0
+    },
+    "build": {
+      "command": "npm run build",
+      "exitCode": 0
+    }
+  }
+}

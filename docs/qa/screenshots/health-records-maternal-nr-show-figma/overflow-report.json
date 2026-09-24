@@ -1,0 +1,96 @@
+[
+  {
+    "page": "listing",
+    "viewport": "1440x900",
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "overflow": false,
+    "metrics": null
+  },
+  {
+    "page": "listing",
+    "viewport": "820x1180",
+    "scrollWidth": 820,
+    "clientWidth": 820,
+    "overflow": false,
+    "metrics": null
+  },
+  {
+    "page": "listing",
+    "viewport": "390x844",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "overflow": false,
+    "metrics": null
+  },
+  {
+    "page": "show-ana",
+    "viewport": "1440x900",
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "overflow": false,
+    "metrics": {
+      "workspace": {
+        "x": 308,
+        "y": 126,
+        "w": 1104,
+        "h": 440
+      },
+      "client": {
+        "x": 308,
+        "y": 126,
+        "w": 1104,
+        "h": 221
+      },
+      "avatar": {
+        "x": 357,
+        "y": 161,
+        "w": 156,
+        "h": 156
+      },
+      "care": {
+        "x": 308,
+        "y": 361,
+        "w": 1104,
+        "h": 204
+      },
+      "pregnancy": {
+        "x": 328,
+        "y": 491,
+        "w": 1064,
+        "h": 54
+      },
+      "title": {
+        "x": 308,
+        "y": 20,
+        "w": 608,
+        "h": 33
+      },
+      "subtitle": {
+        "x": 308,
+        "y": 58,
+        "w": 608,
+        "h": 41
+      },
+      "titleText": "Maternal Care | Non Residents",
+      "subtitleText": "Record and management of maternal care details for monitoring and tracking maternal health status.",
+      "titleHidden": false
+    }
+  },
+  {
+    "page": "show-ana",
+    "viewport": "820x1180",
+    "scrollWidth": 820,
+    "clientWidth": 820,
+    "overflow": false,
+    "metrics": null
+  },
+  {
+    "page": "show-ana",
+    "viewport": "390x844",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "overflow": false,
+    "metrics": null
+  }
+]

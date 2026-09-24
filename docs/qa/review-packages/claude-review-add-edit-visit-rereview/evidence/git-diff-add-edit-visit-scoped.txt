@@ -1,0 +1,2476 @@
+﻿===== lmlingaFinal/resources/views/pages/health-records/non-resident-family-planning/visit-form.blade.php =====
+STATUS: MODIFIED
+git status --short: M lmlingaFinal/resources/views/pages/health-records/non-resident-family-planning/visit-form.blade.php
+--- git diff (unstaged) ---
+diff --git a/lmlingaFinal/resources/views/pages/health-records/non-resident-family-planning/visit-form.blade.php b/lmlingaFinal/resources/views/pages/health-records/non-resident-family-planning/visit-form.blade.php
+index 8343f3a..b09ba46 100644
+--- a/lmlingaFinal/resources/views/pages/health-records/non-resident-family-planning/visit-form.blade.php
++++ b/lmlingaFinal/resources/views/pages/health-records/non-resident-family-planning/visit-form.blade.php
+@@ -4,7 +4,7 @@
+ --}}
+ @extends('layouts.dashboard')
+ 
+-@section('title', ($mode ?? 'create') === 'edit' ? 'Edit Visit - LMLinga' : 'Add Record - LMLinga')
++@section('title', ($mode ?? 'create') === 'edit' ? 'Edit Visit - LMLinga' : 'Add Visit - LMLinga')
+ 
+ @section('content')
+     @php
+@@ -16,6 +16,7 @@
+         $showUrl = $client !== null
+             ? route('health-records.family-planning.non-residents.show', ['clientKey' => $client['key']])
+             : $listingUrl;
++        $methodOptions = $methodOptions ?? [];
+         $commodityOptions = $commodityOptions ?? [];
+         $visitCommodities = is_array($visit['commodities'] ?? null) && count($visit['commodities']) > 0
+             ? $visit['commodities']
+@@ -45,7 +46,7 @@ class="lml-hr-fp-nr__toast"
+                 <h2 id="lml-hr-fp-nr-nf-title">Client not found</h2>
+                 <p>No demo non-resident client matches this record.</p>
+                 <a href="{{ $listingUrl }}" class="lml-hr-fp-nr__not-found-link lml-focus-ring">
+-                    Back to Non-Residents Client listing
++                    Back to Non Residents listing
+                 </a>
+             </section>
+         @elseif ($isEdit && empty($visit))
+@@ -58,7 +59,8 @@ class="lml-hr-fp-nr__toast"
+             </section>
+         @else
+             @include('pages.health-records.non-resident-family-planning.partials.workflow-nav', [
+-                'backUrl' => $listingUrl,
++                'backUrl' => $showUrl,
++                'backLabel' => 'Back to client record for '.($client['full_name'] ?? 'client'),
+             ])
+ 
+             @include('pages.health-records.non-resident-family-planning.partials.client-identity-banner', [
+@@ -68,19 +70,18 @@ class="lml-hr-fp-nr__toast"
+                 'backLabel' => 'Back to client record for '.($client['full_name'] ?? 'client'),
+                 'hideBannerBack' => true,
+                 'showAddVisit' => false,
++                'clientIconClass' => 'bi-person-vcard',
+             ])
+ 
+             <section class="lml-hr-fp-nr__form-panel lml-hr-fp-nr__form-panel--visit" aria-labelledby="lml-hr-fp-nr-visit-form-title">
+-                <header class="lml-hr-fp-nr__form-head">
+-                    <h3 id="lml-hr-fp-nr-visit-form-title" class="lml-hr-fp-nr__form-head-title">
+-                        @if ($isEdit)
+-                            <i class="bi bi-pencil-square" aria-hidden="true"></i>
+-                        @else
+-                            <i class="bi bi-plus-circle" aria-hidden="true"></i>
+-                        @endif
+-                        <span>{{ $heading }}</span>
+-                    </h3>
+-                </header>
++                <h3 id="lml-hr-fp-nr-visit-form-title" class="lml-hr-fp-nr__visit-form-heading">
++                    @if ($isEdit)
++                        <i class="bi bi-pencil-square" aria-hidden="true"></i>
++                    @else
++                        <i class="bi bi-plus-circle" aria-hidden="true"></i>
++                    @endif
++                    <span>{{ $heading }}</span>
++                </h3>
+ 
+                 <form
+                     id="lml-hr-fp-nr-visit-form"
+@@ -92,13 +93,18 @@ class="lml-hr-fp-nr__form"
+                 >
+                     @csrf
+ 
+-                    <div class="lml-hr-fp-nr__section-box lml-hr-fp-nr__section-box--service">
+-                    <div class="lml-hr-fp-nr__form-split">
+-                        <fieldset class="lml-hr-fp-nr__fieldset lml-hr-fp-nr__form-split-col">
+-                            <legend class="lml-hr-fp-nr__subheading">Visit Information</legend>
++                    <div class="lml-hr-fp-nr__form-split lml-hr-fp-nr__form-split--visit">
++                        <div
++                            class="lml-hr-fp-nr__form-split-col lml-hr-fp-nr__section-box"
++                            role="group"
++                            aria-labelledby="{{ $idPrefix }}-visit-info-heading"
++                        >
++                            <h4 id="{{ $idPrefix }}-visit-info-heading" class="lml-hr-fp-nr__subheading">
++                                Visit Information
++                            </h4>
+ 
+                             <div class="lml-hr-fp-nr__field">
+-                                <label for="{{ $idPrefix }}-visit-date">Visit Date</label>
++                                <label for="{{ $idPrefix }}-visit-date">Date</label>
+                                 <div class="lml-hr-fp-nr__input-with-icon">
+                                     <i class="bi bi-calendar3" aria-hidden="true"></i>
+                                     <input
+@@ -116,34 +122,29 @@ class="lml-hr-fp-nr__input lml-focus-ring"
+                                     id="{{ $idPrefix }}-remarks"
+                                     name="remarks"
+                                     class="lml-hr-fp-nr__textarea lml-focus-ring"
+-                                    rows="3"
++                                    rows="2"
++                                    placeholder="Enter remarks"
+                                 >{{ $remarksValue }}</textarea>
+                             </div>
+-                        </fieldset>
++                        </div>
+ 
+-                        <fieldset class="lml-hr-fp-nr__fieldset lml-hr-fp-nr__form-split-col" data-hr-fp-nr-commodities>
+-                            <legend class="lml-hr-fp-nr__subheading">Commodities Given</legend>
++                        <div
++                            class="lml-hr-fp-nr__form-split-col lml-hr-fp-nr__section-box lml-hr-fp-nr__section-box--service"
++                            role="group"
++                            aria-labelledby="{{ $idPrefix }}-commodities-heading"
++                            data-hr-fp-nr-commodities
++                        >
++                            <h4 id="{{ $idPrefix }}-commodities-heading" class="lml-hr-fp-nr__subheading">
++                                Commodities Given
++                            </h4>
+                             @include('pages.health-records.non-resident-family-planning.partials.commodity-rows', [
+                                 'commodityOptions' => $commodityOptions,
+                                 'commodities' => $visitCommodities,
+                                 'idPrefix' => $idPrefix,
+                             ])
+-                        </fieldset>
+-                    </div>
+-                    </div>
++                        </div>
+ 
+-                    <div class="lml-hr-fp-nr__form-actions lml-hr-fp-nr__form-actions--visit">
+-                        @if ($isEdit)
+-                            <button
+-                                type="button"
+-                                class="lml-hr-fp-nr__btn lml-hr-fp-nr__btn--delete lml-focus-ring"
+-                                data-hr-fp-nr-delete-visit
+-                            >
+-                                <i class="bi bi-trash" aria-hidden="true"></i>
+-                                <span>Delete Visit</span>
+-                            </button>
+-                        @endif
+-                        <div class="lml-hr-fp-nr__form-actions-end">
++                        <div class="lml-hr-fp-nr__form-actions lml-hr-fp-nr__form-actions--centered lml-hr-fp-nr__form-actions--visit-span">
+                             <a
+                                 href="{{ $showUrl }}"
+                                 class="lml-hr-fp-nr__btn lml-hr-fp-nr__btn--cancel lml-focus-ring"
+
+--- git diff --cached (staged) ---
+(empty)
+
+===== lmlingaFinal/resources/views/pages/health-records/non-resident-family-planning/show.blade.php =====
+STATUS: MODIFIED
+git status --short: M lmlingaFinal/resources/views/pages/health-records/non-resident-family-planning/show.blade.php
+--- git diff (unstaged) ---
+diff --git a/lmlingaFinal/resources/views/pages/health-records/non-resident-family-planning/show.blade.php b/lmlingaFinal/resources/views/pages/health-records/non-resident-family-planning/show.blade.php
+index 7366c24..cad493c 100644
+--- a/lmlingaFinal/resources/views/pages/health-records/non-resident-family-planning/show.blade.php
++++ b/lmlingaFinal/resources/views/pages/health-records/non-resident-family-planning/show.blade.php
+@@ -46,103 +46,100 @@ class="lml-hr-fp-nr"
+                 'hideBannerBack' => true,
+                 'showAddVisit' => true,
+                 'addVisitUrl' => $addVisitUrl,
++                'clientIconClass' => 'bi-person-vcard',
+             ])
+ 
+             <section class="lml-hr-fp-nr__detail-panel" aria-labelledby="lml-hr-fp-nr-detail-title">
+                 <h3 id="lml-hr-fp-nr-detail-title" class="visually-hidden">Client record details</h3>
+ 
+-                <div class="lml-hr-fp-nr__detail-section">
++                <div class="lml-hr-fp-nr__detail-block">
+                     <h4 class="lml-hr-fp-nr__detail-heading">Client Information</h4>
+-                    <dl class="lml-hr-fp-nr__info-list">
+-                        <div class="lml-hr-fp-nr__info-item">
++                    <dl class="lml-hr-fp-nr__info-list lml-hr-fp-nr__info-list--compact">
++                        <div class="lml-hr-fp-nr__info-row">
+                             <dt>Birthday</dt>
+                             <dd>{{ HealthRecordsNonResidentFamilyPlanning::formatBirthdayLong($client['birthday']) }}</dd>
+                         </div>
+-                        <div class="lml-hr-fp-nr__info-item">
++                        <div class="lml-hr-fp-nr__info-row">
+                             <dt>Civil Status</dt>
+                             <dd>{{ $client['civil_status'] !== '' ? $client['civil_status'] : 'ΓÇö' }}</dd>
+                         </div>
+-                        <div class="lml-hr-fp-nr__info-item lml-hr-fp-nr__info-item--full">
++                        <div class="lml-hr-fp-nr__info-row lml-hr-fp-nr__info-row--address">
+                             <dt>Address</dt>
+                             <dd>{{ HealthRecordsNonResidentFamilyPlanning::formatAddressLine($client) }}</dd>
+                         </div>
+                     </dl>
+                 </div>
+ 
+-                <div class="lml-hr-fp-nr__detail-section">
++                <div class="lml-hr-fp-nr__detail-block lml-hr-fp-nr__detail-block--table">
+                     <h4 class="lml-hr-fp-nr__detail-heading">Visit History</h4>
+-                    <div class="lml-hr-fp-nr__detail-table-wrap">
+-                        <table class="lml-hr-fp-nr__detail-table">
+-                            <caption class="visually-hidden">Recorded family planning visits for this client</caption>
+-                            <thead>
++                    <table class="lml-hr-fp-nr__detail-table lml-hr-fp-nr__detail-table--history">
++                        <caption class="visually-hidden">Recorded family planning visits for this client</caption>
++                        <thead>
++                            <tr>
++                                <th scope="col">Visit Date</th>
++                                <th scope="col">Remarks</th>
++                                <th scope="col" class="lml-hr-fp-nr__detail-th-action"><span class="visually-hidden">Edit</span></th>
++                            </tr>
++                        </thead>
++                        <tbody>
++                            @forelse ($visits as $visit)
++                                @php
++                                    $editUrl = route('health-records.family-planning.non-residents.visits.edit', [
++                                        'clientKey' => $client['key'],
++                                        'visitId' => $visit['id'],
++                                    ]);
++                                @endphp
+                                 <tr>
+-                                    <th scope="col">Visit Date</th>
+-                                    <th scope="col">Remarks</th>
+-                                    <th scope="col"><span class="visually-hidden">Actions</span></th>
++                                    <td class="lml-hr-fp-nr__detail-cell-date">
++                                        <time datetime="{{ $visit['visited_at'] }}">
++                                            {{ HealthRecordsNonResidentFamilyPlanning::formatVisitDateShort($visit['visited_at']) }}
++                                        </time>
++                                    </td>
++                                    <td>{{ $visit['remarks'] !== '' ? $visit['remarks'] : 'ΓÇö' }}</td>
++                                    <td class="lml-hr-fp-nr__cell-action">
++                                        <a
++                                            href="{{ $editUrl }}"
++                                            class="lml-hr-fp-nr__edit-link lml-focus-ring"
++                                            aria-label="Edit visit on {{ HealthRecordsNonResidentFamilyPlanning::formatVisitDateShort($visit['visited_at']) }}"
++                                        >
++                                            <i class="bi bi-pencil" aria-hidden="true"></i>
++                                        </a>
++                                    </td>
+                                 </tr>
+-                            </thead>
+-                            <tbody>
+-                                @forelse ($visits as $visit)
+-                                    @php
+-                                        $editUrl = route('health-records.family-planning.non-residents.visits.edit', [
+-                                            'clientKey' => $client['key'],
+-                                            'visitId' => $visit['id'],
+-                                        ]);
+-                                    @endphp
+-                                    <tr>
+-                                        <td>
+-                                            <time datetime="{{ $visit['visited_at'] }}">
+-                                                {{ HealthRecordsNonResidentFamilyPlanning::formatVisitDateShort($visit['visited_at']) }}
+-                                            </time>
+-                                        </td>
+-                                        <td>{{ $visit['remarks'] !== '' ? $visit['remarks'] : 'ΓÇö' }}</td>
+-                                        <td class="lml-hr-fp-nr__cell-action">
+-                                            <a
+-                                                href="{{ $editUrl }}"
+-                                                class="lml-hr-fp-nr__edit-link lml-focus-ring"
+-                                                aria-label="Edit visit on {{ HealthRecordsNonResidentFamilyPlanning::formatVisitDateShort($visit['visited_at']) }}"
+-                                            >
+-                                                <i class="bi bi-pencil" aria-hidden="true"></i>
+-                                            </a>
+-                                        </td>
+-                                    </tr>
+-                                @empty
+-                                    <tr>
+-                                        <td colspan="3">No visits recorded yet.</td>
+-                                    </tr>
+-                                @endforelse
+-                            </tbody>
+-                        </table>
+-                    </div>
++                            @empty
++                                <tr>
++                                    <td colspan="3">No visits recorded yet.</td>
++                                </tr>
++                            @endforelse
++                        </tbody>
++                    </table>
+                 </div>
+ 
+-                <div class="lml-hr-fp-nr__detail-section">
++                <div class="lml-hr-fp-nr__detail-block lml-hr-fp-nr__detail-block--table">
+                     <h4 class="lml-hr-fp-nr__detail-heading">Commodities Given</h4>
+-                    <div class="lml-hr-fp-nr__detail-table-wrap">
+-                        <table class="lml-hr-fp-nr__detail-table">
+-                            <caption class="visually-hidden">Commodities dispensed across visits</caption>
+-                            <thead>
++                    <table class="lml-hr-fp-nr__detail-table lml-hr-fp-nr__detail-table--commodities">
++                        <caption class="visually-hidden">Commodities dispensed across visits</caption>
++                        <thead>
++                            <tr>
++                                <th scope="col">Commodity</th>
++                                <th scope="col">Quantity</th>
++                                <th scope="col">Date Given</th>
++                            </tr>
++                        </thead>
++                        <tbody>
++                            @forelse ($commoditiesLedger as $row)
++                                <tr>
++                                    <td>{{ $row['commodity'] }}</td>
++                                    <td class="lml-hr-fp-nr__detail-cell-qty">{{ $row['quantity'] }}</td>
++                                    <td class="lml-hr-fp-nr__detail-cell-date">{{ $row['date_given'] }}</td>
++                                </tr>
++                            @empty
+                                 <tr>
+-                                    <th scope="col">Commodity</th>
+-                                    <th scope="col">Quantity</th>
+-                                    <th scope="col">Date Given</th>
++                                    <td colspan="3">No commodities recorded yet.</td>
+                                 </tr>
+-                            </thead>
+-                            <tbody>
+-                                @forelse ($commoditiesLedger as $row)
+-                                    <tr>
+-                                        <td>{{ $row['commodity'] }}</td>
+-                                        <td>{{ $row['quantity'] }}</td>
+-                                        <td>{{ $row['date_given'] }}</td>
+-                                    </tr>
+-                                @empty
+-                                    <tr>
+-                                        <td colspan="3">No commodities recorded yet.</td>
+-                                    </tr>
+-                                @endforelse
+-                            </tbody>
+-                        </table>
+-                    </div>
++                            @endforelse
++                        </tbody>
++                    </table>
+                 </div>
+             </section>
+         @endif
+
+--- git diff --cached (staged) ---
+(empty)
+
+===== lmlingaFinal/resources/views/pages/health-records/non-resident-family-planning/partials/client-identity-banner.blade.php =====
+STATUS: MODIFIED
+git status --short: M lmlingaFinal/resources/views/pages/health-records/non-resident-family-planning/partials/client-identity-banner.blade.php
+--- git diff (unstaged) ---
+diff --git a/lmlingaFinal/resources/views/pages/health-records/non-resident-family-planning/partials/client-identity-banner.blade.php b/lmlingaFinal/resources/views/pages/health-records/non-resident-family-planning/partials/client-identity-banner.blade.php
+index ad2bd0a..fd2703f 100644
+--- a/lmlingaFinal/resources/views/pages/health-records/non-resident-family-planning/partials/client-identity-banner.blade.php
++++ b/lmlingaFinal/resources/views/pages/health-records/non-resident-family-planning/partials/client-identity-banner.blade.php
+@@ -9,6 +9,7 @@
+     $showAddVisit = $showAddVisit ?? false;
+     $addVisitUrl = $addVisitUrl ?? null;
+     $hideBannerBack = $hideBannerBack ?? false;
++    $clientIconClass = $clientIconClass ?? 'bi-person-fill';
+ 
+     if ($client !== null) {
+         $displayName = HealthRecordsNonResidentFamilyPlanning::displayName($client);
+@@ -37,7 +38,7 @@ class="lml-hr-fp-nr__client-back lml-focus-ring"
+ 
+     <div class="lml-hr-fp-nr__client-banner-body">
+         <span class="lml-hr-fp-nr__client-icon" aria-hidden="true">
+-            <i class="bi bi-person-fill"></i>
++            <i class="bi {{ $clientIconClass }}"></i>
+         </span>
+         <div class="lml-hr-fp-nr__client-banner-text">
+             <h2 id="lml-hr-fp-nr-client-name" class="lml-hr-fp-nr__client-name">
+
+--- git diff --cached (staged) ---
+(empty)
+
+===== lmlingaFinal/resources/views/pages/health-records/non-resident-family-planning/partials/commodity-rows.blade.php =====
+STATUS: UNCHANGED
+git status --short: 
+UNCHANGED / NO GIT DIFF
+
+===== lmlingaFinal/resources/css/pages/health-records-non-resident-family-planning.css =====
+STATUS: MODIFIED
+git status --short: M lmlingaFinal/resources/css/pages/health-records-non-resident-family-planning.css
+--- git diff (unstaged) ---
+diff --git a/lmlingaFinal/resources/css/pages/health-records-non-resident-family-planning.css b/lmlingaFinal/resources/css/pages/health-records-non-resident-family-planning.css
+index 0d0f054..f663edf 100644
+--- a/lmlingaFinal/resources/css/pages/health-records-non-resident-family-planning.css
++++ b/lmlingaFinal/resources/css/pages/health-records-non-resident-family-planning.css
+@@ -28,9 +28,9 @@ .lml-hr-fp-nr {
+ .lml-hr-fp-nr__panel {
+     display: flex;
+     flex-direction: column;
+-    gap: var(--nr-gap);
++    gap: 0;
+     min-width: 0;
+-    padding: 0.65rem 0.85rem 0.75rem;
++    padding: 1.125rem 1rem 1rem; /* ~18px top, 16px sides */
+     border: 1px solid rgba(var(--lml-primary-rgb), 0.42);
+     border-radius: 0.625rem;
+     background-color: #fff;
+@@ -41,49 +41,44 @@ .lml-hr-fp-nr__top {
+     flex-wrap: wrap;
+     align-items: center;
+     justify-content: space-between;
+-    gap: var(--nr-gap) 0.75rem;
++    gap: var(--nr-gap) 0.85rem;
+     min-width: 0;
++    margin-bottom: 0;
++}
++
++.lml-hr-fp-nr__top--actions-only {
++    align-items: center;
++    width: 100%;
++    padding: 0 0 1rem; /* ~16px before filters */
+ }
+ 
+ .lml-hr-fp-nr__title-block {
+     display: flex;
+     flex-direction: column;
+-    gap: 0.12rem;
++    align-items: flex-start;
++    gap: 0.35rem;
+     min-width: 0;
+     flex: 1 1 16rem;
+ }
+ 
+-.lml-hr-fp-nr__title-row {
+-    display: flex;
+-    flex-wrap: wrap;
+-    align-items: baseline;
+-    gap: 0.35rem 0.5rem;
+-    min-width: 0;
+-}
+-
+ .lml-hr-fp-nr__title {
+     margin: 0;
+-    color: #166534;
+-    font-size: var(--nr-fs-title);
++    color: #212529;
++    font-size: 1.3125rem; /* ~21px */
+     font-weight: 700;
+-    line-height: 1.2;
++    line-height: 1.25;
+     letter-spacing: -0.01em;
+ }
+ 
+-.lml-hr-fp-nr__badge {
+-    display: inline-flex;
+-    align-items: center;
+-    justify-content: center;
+-    min-height: 1.5rem;
+-    padding: 0.12rem 0.6rem;
+-    border: 1.5px solid #22c55e;
+-    border-radius: 999px;
+-    background-color: #ecfdf5;
+-    color: #15803d;
+-    font-size: var(--nr-fs-badge);
++.lml-hr-fp-nr__title-sep {
++    margin: 0 0.3rem;
+     font-weight: 600;
+-    line-height: 1.2;
+-    white-space: nowrap;
++    color: #6c757d;
++}
++
++.lml-hr-fp-nr__title-context {
++    font-weight: 700;
++    color: #212529;
+ }
+ 
+ .lml-hr-fp-nr__description {
+@@ -91,30 +86,29 @@ .lml-hr-fp-nr__description {
+     max-width: 38rem;
+     color: #8b939e;
+     font-size: var(--nr-fs-muted);
+-    line-height: 1.35;
++    line-height: 1.4;
+ }
+ 
+-.lml-hr-fp-nr__breadcrumb {
+-    margin: -0.05rem 0 0;
+-    font-size: var(--nr-fs-muted);
+-    color: #9ca3af;
+-    line-height: 1.3;
+-    display: flex;
+-    flex-wrap: wrap;
++.lml-hr-fp-nr__back-btn {
++    display: inline-flex;
+     align-items: center;
+-    gap: 0.25rem;
+-}
+-
+-.lml-hr-fp-nr__breadcrumb-link {
+-    color: #15803d;
++    justify-content: center;
++    gap: 0.3rem;
++    flex: 0 0 auto;
++    align-self: center;
++    min-height: var(--nr-control-h);
++    margin: 0;
++    padding: 0.35rem 0.85rem;
++    border-radius: var(--nr-radius);
++    font-size: var(--nr-fs-body);
+     font-weight: 600;
++    line-height: 1.2;
+     text-decoration: none;
+-}
+-
+-@media (hover: hover) and (pointer: fine) {
+-    .lml-hr-fp-nr__breadcrumb-link:hover {
+-        text-decoration: underline;
+-    }
++    cursor: pointer;
++    border: 1.5px solid #22c55e;
++    white-space: nowrap;
++    background: #fff;
++    color: #15803d;
+ }
+ 
+ .lml-hr-fp-nr__actions {
+@@ -122,7 +116,9 @@ .lml-hr-fp-nr__actions {
+     flex-wrap: wrap;
+     align-items: center;
+     justify-content: flex-end;
+-    gap: 0.35rem;
++    gap: 0.4rem;
++    flex: 0 1 auto;
++    margin-left: auto;
+ }
+ 
+ .lml-hr-fp-nr__add-btn,
+@@ -155,7 +151,7 @@ .lml-hr-fp-nr__export-btn {
+ }
+ 
+ .lml-hr-fp-nr__toast {
+-    margin: 0;
++    margin: 0 0 0.75rem;
+     padding: 0.55rem 0.75rem;
+     border: 1px solid rgba(34, 197, 94, 0.35);
+     border-radius: var(--nr-radius);
+@@ -170,16 +166,17 @@ .lml-hr-fp-nr__toast[hidden] {
+ }
+ 
+ .lml-hr-fp-nr__filters {
+-    display: flex;
+-    flex-wrap: nowrap;
++    display: grid;
++    grid-template-columns: 4fr 3fr 3fr;
+     align-items: center;
+-    gap: 0.35rem;
++    gap: 0.875rem; /* 14px */
+     min-width: 0;
++    padding: 0;
++    margin: 0 0 1.25rem; /* ~20px before table */
+ }
+ 
+ .lml-hr-fp-nr__search {
+     position: relative;
+-    flex: 1 1 auto;
+     min-width: 0;
+ }
+ 
+@@ -205,13 +202,11 @@ .lml-hr-fp-nr__search-input {
+ 
+ .lml-hr-fp-nr__select-wrap {
+     position: relative;
+-    flex: 0 0 auto;
+-    width: 7.25rem;
+     min-width: 0;
+ }
+ 
+ .lml-hr-fp-nr__select-wrap--year {
+-    width: 5.15rem;
++    min-width: 0;
+ }
+ 
+ .lml-hr-fp-nr__select {
+@@ -242,6 +237,7 @@ .lml-hr-fp-nr__table-card {
+     border: 1px solid #e5e7eb;
+     border-radius: 0.375rem;
+     overflow: hidden;
++    margin-bottom: 0;
+ }
+ 
+ .lml-hr-fp-nr__table-scroll {
+@@ -252,13 +248,13 @@ .lml-hr-fp-nr__table-scroll {
+ 
+ .lml-hr-fp-nr__table {
+     width: 100%;
+-    min-width: 32rem;
++    min-width: 42rem;
+     border-collapse: collapse;
+-    font-size: var(--nr-fs-body);
++    font-size: 0.9375rem; /* 15px listing body */
+ }
+ 
+ .lml-hr-fp-nr__col--name {
+-    width: 34%;
++    width: 28%;
+ }
+ 
+ .lml-hr-fp-nr__col--age {
+@@ -270,14 +266,19 @@ .lml-hr-fp-nr__col--method {
+ }
+ 
+ .lml-hr-fp-nr__col--date {
+-    width: 16%;
++    width: 13%;
++}
++
++.lml-hr-fp-nr__col--actions {
++    width: 24%;
++    min-width: 11.5rem;
+ }
+ 
+ .lml-hr-fp-nr__table thead th {
+-    padding: 0.62rem 0.75rem;
++    padding: 0.9375rem 1rem; /* 15px / 16px */
+     background-color: var(--nr-green-header);
+     color: var(--nr-green-header-text);
+-    font-size: var(--nr-fs-body-lg);
++    font-size: 0.9375rem; /* 15px */
+     font-weight: 700;
+     text-align: left;
+     vertical-align: middle;
+@@ -289,7 +290,8 @@ .lml-hr-fp-nr__table thead th {
+ .lml-hr-fp-nr__table thead th:nth-child(2),
+ .lml-hr-fp-nr__table thead th:nth-child(3),
+ .lml-hr-fp-nr__table thead th:nth-child(4),
+-.lml-hr-fp-nr__table thead th:nth-child(5) {
++.lml-hr-fp-nr__table thead th:nth-child(5),
++.lml-hr-fp-nr__table thead th:nth-child(6) {
+     text-align: center;
+ }
+ 
+@@ -299,11 +301,12 @@ .lml-hr-fp-nr__table thead th:last-child {
+ 
+ .lml-hr-fp-nr__table tbody th,
+ .lml-hr-fp-nr__table tbody td {
+-    padding: 0.62rem 0.75rem;
++    padding: 0.9375rem 1rem; /* ~15px vertical, 16px horizontal */
+     border-bottom: 1px solid #eef1f4;
+     color: #1f2937;
+-    font-size: var(--nr-fs-body);
+-    font-weight: 600;
++    font-size: 0.9375rem; /* 15px */
++    font-weight: 500;
++    line-height: 1.4;
+     vertical-align: middle;
+     text-align: left;
+ }
+@@ -320,10 +323,218 @@ .lml-hr-fp-nr__cell--name {
+ 
+ .lml-hr-fp-nr__table tbody td.lml-hr-fp-nr__cell--age,
+ .lml-hr-fp-nr__table tbody td.lml-hr-fp-nr__cell--method,
+-.lml-hr-fp-nr__table tbody td.lml-hr-fp-nr__cell--date {
++.lml-hr-fp-nr__table tbody td.lml-hr-fp-nr__cell--date,
++.lml-hr-fp-nr__table tbody td.lml-hr-fp-nr__cell--actions {
+     text-align: center;
+ }
+ 
++.lml-hr-fp-nr__row-actions {
++    display: inline-flex;
++    flex-wrap: wrap;
++    align-items: center;
++    justify-content: center;
++    gap: 0.4375rem; /* ~7px */
++}
++
++.lml-hr-fp-nr__action-btn {
++    display: inline-flex;
++    align-items: center;
++    justify-content: center;
++    gap: 0.25rem;
++    min-height: 2rem;
++    padding: 0.2rem 0.45rem;
++    border: 1px solid transparent;
++    border-radius: var(--nr-radius);
++    background: #fff;
++    font-size: 0.75rem;
++    font-weight: 600;
++    line-height: 1.2;
++    text-decoration: none;
++    white-space: nowrap;
++    cursor: pointer;
++}
++
++.lml-hr-fp-nr__action-btn .bi {
++    font-size: 0.8125rem;
++}
++
++.lml-hr-fp-nr__action-btn--view,
++.lml-hr-fp-nr__action-btn--edit {
++    color: #15803d;
++    border-color: #86efac;
++}
++
++.lml-hr-fp-nr__action-btn--delete {
++    color: #dc2626;
++    border-color: #fca5a5;
++}
++
++@media (hover: hover) and (pointer: fine) {
++    .lml-hr-fp-nr__action-btn--view:hover,
++    .lml-hr-fp-nr__action-btn--edit:hover {
++        background: #ecfdf5;
++        border-color: #4ade80;
++    }
++
++    .lml-hr-fp-nr__action-btn--delete:hover {
++        background: #fef2f2;
++        border-color: #f87171;
++    }
++}
++
++.lml-hr-fp-nr__dialog-backdrop {
++    position: fixed;
++    inset: 0;
++    z-index: 1050;
++    display: flex;
++    align-items: center;
++    justify-content: center;
++    padding: 1rem;
++    background: rgba(15, 23, 42, 0.45);
++}
++
++.lml-hr-fp-nr__dialog-backdrop[hidden] {
++    display: none;
++}
++
++.lml-hr-fp-nr__dialog {
++    width: min(100%, 28rem);
++    padding: 1.25rem 1.35rem 1.1rem;
++    border: 1px solid var(--nr-green-border);
++    border-radius: 0.625rem;
++    background: #fff;
++    box-shadow: 0 12px 32px rgba(15, 23, 42, 0.18);
++}
++
++.lml-hr-fp-nr__dialog-title {
++    margin: 0 0 0.65rem;
++    color: #14532d;
++    font-size: 1.0625rem;
++    font-weight: 700;
++}
++
++.lml-hr-fp-nr__dialog-message {
++    margin: 0 0 1rem;
++    color: #374151;
++    font-size: 0.875rem;
++    line-height: 1.45;
++}
++
++.lml-hr-fp-nr__dialog-actions {
++    display: flex;
++    justify-content: flex-end;
++    gap: 0.5rem;
++}
++
++.lml-hr-fp-nr__dialog-btn {
++    min-height: 2.375rem;
++    padding: 0.35rem 0.95rem;
++    border: 1px solid transparent;
++    border-radius: var(--nr-radius);
++    font-size: 0.875rem;
++    font-weight: 600;
++    cursor: pointer;
++}
++
++.lml-hr-fp-nr__dialog-btn--cancel {
++    color: #15803d;
++    border-color: #86efac;
++    background: #fff;
++}
++
++.lml-hr-fp-nr__dialog-btn--confirm {
++    color: #fff;
++    border-color: #dc2626;
++    background: #dc2626;
++}
++
++.lml-hr-fp-nr__row-action {
++    display: inline-flex;
++    align-items: center;
++    justify-content: center;
++    width: 2rem;
++    height: 2rem;
++    color: #15803d;
++    text-decoration: none;
++    border-radius: var(--nr-radius);
++}
++
++@media (hover: hover) and (pointer: fine) {
++    .lml-hr-fp-nr__row-action:hover {
++        background-color: #ecfdf5;
++        color: #14532d;
++    }
++}
++
++.lml-hr-fp-nr__table-foot {
++    display: grid;
++    grid-template-columns: 1fr auto 1fr;
++    align-items: center;
++    column-gap: 0.75rem;
++    row-gap: 0.65rem;
++    padding: 1.125rem 1rem; /* ~18px from table and card edge */
++    border-top: 1px solid #eef1f4;
++    background: #fff;
++}
++
++.lml-hr-fp-nr__results {
++    margin: 0;
++    justify-self: start;
++    color: #6b7280;
++    font-size: var(--nr-fs-body);
++}
++
++.lml-hr-fp-nr__pager {
++    display: inline-flex;
++    align-items: center;
++    justify-self: center;
++    gap: 0.3rem;
++}
++
++.lml-hr-fp-nr__pager-btn,
++.lml-hr-fp-nr__pager-page {
++    display: inline-flex;
++    align-items: center;
++    justify-content: center;
++    box-sizing: border-box;
++    min-width: 1.85rem;
++    min-height: 1.85rem;
++    padding: 0.15rem 0.4rem;
++    border: 1px solid #bbf7d0;
++    border-radius: var(--nr-radius);
++    background: #fff;
++    color: #166534;
++    font-size: var(--nr-fs-body);
++    font-weight: 600;
++    line-height: 1;
++}
++
++.lml-hr-fp-nr__pager-btn {
++    cursor: pointer;
++}
++
++@media (hover: hover) and (pointer: fine) {
++    .lml-hr-fp-nr__pager-btn:hover:not(:disabled) {
++        background: #ecfdf5;
++        border-color: #86efac;
++    }
++}
++
++.lml-hr-fp-nr__pager-page[aria-current='page'] {
++    background: #ecfdf5;
++    border-color: #22c55e;
++    color: #166534;
++}
++
++.lml-hr-fp-nr__pager-btn:disabled,
++.lml-hr-fp-nr__pager-btn[aria-disabled='true'] {
++    opacity: 0.4;
++    cursor: not-allowed;
++    background: #f8fafc;
++    color: #94a3b8;
++    border-color: #e2e8f0;
++}
++
+ .lml-hr-fp-nr__row-link {
+     color: #111827;
+     font-weight: 600;
+@@ -617,20 +828,18 @@ .lml-hr-fp-nr__form-panel {
+     min-width: 0;
+ }
+ 
+-.lml-hr-fp-nr__form-panel--visit .lml-hr-fp-nr__form {
+-    padding-top: 0.35rem;
+-}
+-
+ .lml-hr-fp-nr__form-banner {
+     display: flex;
+     align-items: center;
++    justify-content: center;
+     gap: 0.4rem;
+-    padding: 0.45rem 0.75rem;
+-    background: #ecfdf5;
++    padding: 0.55rem 0.75rem;
++    background: #dcfce7;
+     color: #166534;
+     border-bottom: 1px solid #bbf7d0;
+     font-size: var(--nr-fs-body-lg);
+     font-weight: 700;
++    text-align: center;
+ }
+ 
+ .lml-hr-fp-nr__form-banner-icon {
+@@ -707,7 +916,7 @@ .lml-hr-fp-nr__field select {
+     height: var(--nr-control-h);
+     min-height: var(--nr-control-h);
+     padding: 0.35rem 0.55rem;
+-    border: 1px solid #dee2e6;
++    border: 1.5px solid #94a3b8;
+     border-radius: var(--nr-radius);
+     font-size: var(--nr-fs-body);
+     box-sizing: border-box;
+@@ -780,6 +989,15 @@ .lml-hr-fp-nr__field-grid--3 {
+     grid-template-columns: repeat(3, minmax(0, 1fr));
+ }
+ 
++.lml-hr-fp-nr__field-grid--4 {
++    grid-template-columns: repeat(4, minmax(0, 1fr));
++}
++
++.lml-hr-fp-nr__field--remarks {
++    margin-top: 0.55rem;
++    width: 100%;
++}
++
+ .lml-hr-fp-nr__fieldset {
+     margin: 0;
+     padding: 0;
+@@ -830,6 +1048,10 @@ .lml-hr-fp-nr__form-actions {
+     gap: 0.35rem;
+ }
+ 
++.lml-hr-fp-nr__form-actions--centered {
++    justify-content: center;
++}
++
+ .lml-hr-fp-nr__form-actions--visit {
+     justify-content: space-between;
+ }
+@@ -911,16 +1133,16 @@ .lml-hr-fp-nr__not-found-link {
+ 
+ @media (max-width: 900px) {
+     .lml-hr-fp-nr__filters {
+-        flex-wrap: wrap;
++        grid-template-columns: 1fr 1fr;
++        gap: 0.75rem;
+     }
+ 
+-    .lml-hr-fp-nr__select-wrap,
+-    .lml-hr-fp-nr__select-wrap--year {
+-        flex: 1 1 calc(50% - 0.35rem);
+-        width: auto;
++    .lml-hr-fp-nr__search {
++        grid-column: 1 / -1;
+     }
+ 
+-    .lml-hr-fp-nr__field-grid--3 {
++    .lml-hr-fp-nr__field-grid--3,
++    .lml-hr-fp-nr__field-grid--4 {
+         grid-template-columns: 1fr;
+     }
+ 
+@@ -944,7 +1166,11 @@ @media (max-width: 900px) {
+     .lml-hr-fp-nr__form-actions-end {
+         width: 100%;
+         margin-left: 0;
+-        justify-content: flex-end;
++        justify-content: center;
++    }
++
++    .lml-hr-fp-nr__form-actions--centered {
++        justify-content: center;
+     }
+ }
+ 
+@@ -963,12 +1189,931 @@ @media (max-width: 480px) {
+         justify-content: center;
+     }
+ 
++    .lml-hr-fp-nr__top--actions-only {
++        align-items: stretch;
++    }
++
+     .lml-hr-fp-nr__actions {
+-        width: 100%;
++        margin-left: auto;
++        justify-content: flex-end;
++        flex: 1 1 auto;
++    }
++
++    .lml-hr-fp-nr__back-btn {
++        flex: 0 0 auto;
++        width: auto;
++        margin: 0;
+     }
+ 
+     .lml-hr-fp-nr__add-btn,
+     .lml-hr-fp-nr__export-btn {
++        flex: 0 1 auto;
++    }
++
++    .lml-hr-fp-nr__filters {
++        grid-template-columns: 1fr;
++        gap: 0.65rem;
++    }
++
++    .lml-hr-fp-nr__search {
++        grid-column: auto;
++    }
++
++    .lml-hr-fp-nr__table-foot {
++        grid-template-columns: 1fr;
++        justify-items: start;
++    }
++
++    .lml-hr-fp-nr__pager {
++        justify-self: center;
++    }
++}
++
++/* Create-client form ΓÇö Figma spacing. Scoped so listing + visit forms stay unchanged. */
++[data-lml-hr-fp-nr-mode="create-client"] {
++    --nr-control-h: 2.5rem; /* 40px desktop */
++    --nr-fs-body: 0.875rem;
++    --nr-create-placeholder: #9ca3af;
++    --nr-create-value: #1f2937;
++    width: 100%;
++    max-width: none;
++    margin-inline: 0;
++    gap: 0.65rem;
++}
++
++[data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__page-head {
++    margin-bottom: 0.25rem;
++}
++
++[data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__page-back {
++    display: inline-flex;
++    align-items: center;
++    gap: 0.35rem;
++    width: auto;
++    height: auto;
++    min-height: 1.75rem;
++    padding: 0.1rem 0.15rem;
++    color: #15803d;
++    font-size: 0.875rem;
++    font-weight: 600;
++    text-decoration: none;
++}
++
++[data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__form-panel {
++    width: 100%;
++    border: 1px solid var(--nr-green-border);
++}
++
++[data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__form-banner {
++    padding: 0.875rem 0.75rem;
++    font-size: 0.875rem;
++}
++
++[data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__form {
++    padding: 0.85rem 1.25rem 1rem;
++    gap: 1.125rem; /* ~18px between Personal Info and Service Record */
++}
++
++[data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__section-box {
++    padding: 1.125rem 1.5rem 1.25rem; /* ~18px / 24px */
++    border: 1px solid var(--nr-green-border);
++}
++
++[data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__section-box:not(.lml-hr-fp-nr__section-box--service) .lml-hr-fp-nr__section-title {
++    border-bottom: none;
++    padding-bottom: 0;
++    margin-bottom: 1rem; /* ~16px heading-to-fields gap */
++}
++
++[data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__section-title--service {
++    margin-bottom: 0.65rem;
++    padding-bottom: 0.4rem;
++}
++
++[data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__field {
++    gap: 0.25rem;
++}
++
++[data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__field label {
++    font-size: 0.8125rem;
++}
++
++[data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__input,
++[data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__textarea,
++[data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__field select {
++    font-size: 0.875rem;
++    color: var(--nr-create-value);
++}
++
++[data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__input::placeholder,
++[data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__textarea::placeholder {
++    color: var(--nr-create-placeholder);
++    opacity: 1;
++}
++
++[data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__field select:has(option[value=""]:checked) {
++    color: var(--nr-create-placeholder);
++}
++
++[data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__field select option {
++    color: var(--nr-create-value);
++}
++
++[data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__field select option[value=""] {
++    color: var(--nr-create-placeholder);
++}
++
++[data-lml-hr-fp-nr-mode="create-client"] input[type="date"] {
++    color: var(--nr-create-placeholder);
++}
++
++[data-lml-hr-fp-nr-mode="create-client"] input[type="date"]:focus,
++[data-lml-hr-fp-nr-mode="create-client"] input[type="date"][value]:not([value=""]) {
++    color: var(--nr-create-value);
++}
++
++[data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__textarea {
++    min-height: 3.5rem;
++}
++
++[data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__field-grid {
++    gap: 1rem 1.75rem; /* ~16px row / 28px column */
++    margin-bottom: 0.65rem;
++}
++
++[data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__field-grid:last-child {
++    margin-bottom: 0;
++}
++
++[data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__field-grid--address {
++    grid-template-columns: minmax(0, 1fr);
++}
++
++/*
++ * Add / Edit Visit ΓÇö Figma density (simple heading + two cards, no outer banner card).
++ * Do not couple to show-page anchors or create-client layout.
++ */
++[data-lml-hr-fp-nr-mode="add-visit"],
++[data-lml-hr-fp-nr-mode="edit-visit"] {
++    --nr-control-h: 2.125rem; /* ~34px compact controls */
++    --nr-visit-form-max: none; /* match client banner content width */
++    --nr-visit-split-gap: 1.5rem;
++    --nr-visit-left-fr: 0.42fr;
++    --nr-visit-right-fr: 0.58fr;
++    --nr-visit-qty-track: minmax(4rem, 22%);
++    gap: 0.45rem;
++}
++
++[data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__workflow-nav,
++[data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__workflow-nav {
++    margin: 0;
++}
++
++[data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__client-banner,
++[data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__client-banner {
++    background-color: #51c269; /* match Non Residents Info (show) banner */
++    padding: 0.75rem 1rem;
++    gap: 0.45rem 0.75rem;
++    color: #fff;
++}
++
++[data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__client-icon,
++[data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__client-icon {
++    width: auto;
++    height: auto;
++    border-radius: 0;
++    background: transparent;
++    font-size: 2.125rem;
++    line-height: 1;
++    color: #145214;
++}
++
++[data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__client-name,
++[data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__client-name {
++    font-size: 1rem;
++    font-weight: 700;
++    color: #fff;
++}
++
++[data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__client-meta,
++[data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__client-meta {
++    margin-top: 0.1rem;
++    font-size: 0.875rem;
++    color: #fff;
++    opacity: 1;
++}
++
++[data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__form-panel--visit,
++[data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__form-panel--visit {
++    width: 100%;
++    max-width: none;
++    margin-inline: 0;
++    border: none;
++    border-radius: 0;
++    background: transparent;
++    overflow: visible;
++}
++
++[data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__visit-form-heading,
++[data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__visit-form-heading {
++    display: inline-flex;
++    align-items: center;
++    gap: 0.4rem;
++    margin: 0.35rem 0 0.55rem;
++    padding: 0;
++    color: #166534;
++    font-size: 0.9375rem;
++    font-weight: 700;
++    letter-spacing: 0.02em;
++    line-height: 1.2;
++    background: none;
++    border: none;
++}
++
++[data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__visit-form-heading i,
++[data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__visit-form-heading i {
++    font-size: 0.95rem;
++    line-height: 1;
++}
++
++[data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__form,
++[data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__form {
++    padding: 0;
++    gap: 0.65rem;
++}
++
++[data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__form-split--visit,
++[data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__form-split--visit {
++    display: grid;
++    grid-template-columns: minmax(0, var(--nr-visit-left-fr)) minmax(0, var(--nr-visit-right-fr));
++    gap: var(--nr-visit-split-gap);
++    align-items: start;
++    min-width: 0;
++}
++
++[data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__form-actions--visit-span,
++[data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__form-actions--visit-span {
++    grid-column: 1 / -1;
++    display: flex;
++    flex-wrap: wrap;
++    align-items: center;
++    justify-content: center;
++    gap: 0.5rem;
++    width: 100%;
++    margin: 0.35rem 0 0;
++    padding: 0;
++}
++
++[data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__form-split-col,
++[data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__form-split-col {
++    display: flex;
++    flex-direction: column;
++    gap: 1rem;
++    min-width: 0;
++    min-height: 17.5rem; /* Figma panel breathing room ΓÇö desktop */
++    padding: 1.25rem 1.15rem 1.4rem;
++    border: 1px solid var(--nr-green-border);
++    border-radius: 0.375rem;
++    background: #fff;
++}
++
++[data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__section-box--service,
++[data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__section-box--service {
++    background: #fff;
++}
++
++[data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__subheading,
++[data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__subheading {
++    display: block;
++    margin: 0 0 0.35rem;
++    padding: 0;
++    float: none;
++    width: auto;
++    max-width: 100%;
++    font-size: 0.875rem;
++    font-weight: 700;
++    color: #374151;
++    line-height: 1.3;
++}
++
++[data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__field,
++[data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__field {
++    gap: 0.3rem;
++}
++
++[data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__field label,
++[data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__field label {
++    font-size: 0.75rem;
++}
++
++[data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__input,
++[data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__input,
++[data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__textarea,
++[data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__textarea,
++[data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__field select,
++[data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__field select {
++    height: var(--nr-control-h);
++    min-height: var(--nr-control-h);
++    padding: 0.25rem 0.5rem;
++    font-size: 0.8125rem;
++    border-width: 1px;
++}
++
++[data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__textarea,
++[data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__textarea {
++    height: auto;
++    min-height: 6rem; /* ~3├ù control height ΓÇö Figma remarks proportion */
++    padding: 0.4rem 0.55rem;
++    resize: vertical;
++}
++
++[data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__input-with-icon i,
++[data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__input-with-icon i {
++    left: 0.45rem;
++    font-size: 0.75rem;
++}
++
++[data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__input-with-icon .lml-hr-fp-nr__input,
++[data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__input-with-icon .lml-hr-fp-nr__input {
++    padding-left: 1.55rem;
++}
++
++[data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__commodity-list,
++[data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__commodity-list {
++    gap: 0.65rem;
++}
++
++[data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__commodity-row,
++[data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__commodity-row {
++    grid-template-columns: minmax(0, 1fr) var(--nr-visit-qty-track) auto;
++    gap: 0.5rem;
++    align-items: end;
++}
++
++[data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__commodity-remove,
++[data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__commodity-remove {
++    width: var(--nr-control-h);
++    height: var(--nr-control-h);
++    font-size: 0.75rem;
++}
++
++[data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__add-commodity,
++[data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__add-commodity {
++    margin-top: auto; /* sit lower in taller panel ΓÇö Figma rhythm */
++    margin-bottom: 0.15rem;
++    min-height: var(--nr-control-h);
++    font-size: 0.8125rem;
++}
++
++[data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__form-actions--centered,
++[data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__form-actions--centered {
++    justify-content: center;
++    gap: 0.5rem;
++    width: 100%;
++}
++
++[data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__btn,
++[data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__btn {
++    min-width: 0;
++    width: auto;
++    flex: 0 0 auto;
++    min-height: var(--nr-control-h);
++    padding: 0.25rem 0.9rem;
++    font-size: 0.8125rem;
++}
++
++[data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__form-split {
++    grid-template-columns: minmax(0, 0.46fr) minmax(0, 0.54fr);
++    gap: 3rem; /* ~48px between Visit Information and Commodities Given */
++    align-items: start;
++}
++
++[data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__form-split-col {
++    display: flex;
++    flex-direction: column;
++    gap: 0.875rem; /* ~14px between Visit Date, Method, Remarks */
++    min-width: 0;
++}
++
++[data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__subheading {
++    margin-bottom: 0.15rem;
++}
++
++[data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__commodity-row {
++    grid-template-columns: minmax(0, 1fr) minmax(4.5rem, 22%) auto;
++    gap: 0.875rem; /* ~14px between Commodity and Quantity */
++}
++
++[data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__add-commodity {
++    margin-top: 0.625rem; /* ~10px above Add Another Commodity */
++}
++
++[data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__form-actions--centered {
++    margin-top: 0.35rem;
++    gap: 0.625rem; /* ~10px between Cancel and Save */
++}
++
++[data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__btn {
++    min-height: 2.5rem;
++    padding: 0.35rem 1.15rem;
++}
++
++@media (max-width: 900px) {
++    [data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__form {
++        padding: 0.75rem 1rem 0.9rem;
++        gap: 1rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__section-box {
++        padding: 1rem 1.15rem 1.1rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__field-grid--3 {
++        grid-template-columns: repeat(2, minmax(0, 1fr));
++        gap: 0.875rem 1.25rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__form-split {
++        grid-template-columns: 1fr;
++        gap: 1.25rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__commodity-row {
++        grid-template-columns: minmax(0, 1fr) minmax(4.5rem, 22%) auto;
++    }
++}
++
++@media (max-width: 480px) {
++    [data-lml-hr-fp-nr-mode="create-client"] {
++        --nr-control-h: 2.75rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__form {
++        padding: 0.65rem 0.75rem 0.85rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__section-box {
++        padding: 0.85rem 0.9rem 1rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__field-grid--3 {
++        grid-template-columns: 1fr;
++        gap: 0.75rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__commodity-row {
++        grid-template-columns: 1fr;
++    }
++
++    [data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__form-actions--centered {
++        width: 100%;
++    }
++
++    [data-lml-hr-fp-nr-mode="create-client"] .lml-hr-fp-nr__btn {
++        flex: 1 1 auto;
++    }
++}
++
++/* View client ΓÇö Figma accuracy (#51C269, density, inset) */
++[data-lml-hr-fp-nr-mode="show"] {
++    --nr-show-green: #51c269;
++    --nr-show-green-dark: #145214;
++    /*
++     * Shared desktop column anchors (content-left relative):
++     * --nr-show-value-anchor  ΓåÆ Client values / Remarks / Quantity
++     * --nr-show-right-anchor  ΓåÆ Date Given / Edit icon region
++     */
++    --nr-show-value-anchor: 25rem; /* ~400px ΓÇö main value column */
++    --nr-show-main-col-width: 9rem; /* breathing room before right column */
++    --nr-show-right-anchor: calc(var(--nr-show-value-anchor) + var(--nr-show-main-col-width));
++    --nr-show-right-col-width: 7.5rem;
++}
++
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__workflow-back {
++    color: var(--nr-show-green);
++}
++
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__client-banner {
++    background-color: var(--nr-show-green);
++    padding: 0.75rem 1rem;
++}
++
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__client-icon {
++    width: auto;
++    height: auto;
++    border-radius: 0;
++    background: transparent;
++    font-size: 2.125rem;
++    line-height: 1;
++    color: var(--nr-show-green-dark);
++}
++
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__client-name {
++    font-size: 1rem;
++    color: #fff;
++}
++
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__client-meta {
++    font-size: 0.875rem;
++    color: #fff;
++}
++
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__add-visit-btn {
++    color: var(--nr-show-green);
++    border-color: #fff;
++}
++
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-panel {
++    padding: 1rem 2.5rem 1.25rem;
++    gap: 0;
++    border: 1px solid var(--nr-show-green);
++}
++
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-block {
++    padding: 0.65rem 0 1.35rem; /* whitespace separation ΓÇö no full-width rules */
++}
++
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-block:last-child {
++    padding-bottom: 0.85rem;
++}
++
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-block + .lml-hr-fp-nr__detail-block {
++    border-top: none; /* Figma separates groups with whitespace, not card-wide dividers */
++    padding-top: 0.35rem;
++}
++
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-heading {
++    margin: 0 0 0.65rem;
++    color: var(--nr-show-green);
++    font-size: 1rem;
++    font-weight: 700;
++}
++
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__info-list--compact {
++    display: flex;
++    flex-direction: column;
++    gap: 0.625rem; /* ~10px between Birthday / Civil Status / Address */
++    margin: 0;
++    max-width: 42rem;
++}
++
++/*
++ * Client Information ΓÇö values share --nr-show-value-anchor; labels stay left.
++ */
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__info-row {
++    display: grid;
++    grid-template-columns: 7.5rem minmax(0, 1fr);
++    column-gap: 0;
++    align-items: baseline;
++    min-width: 0;
++}
++
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__info-row dt {
++    margin: 0;
++    color: #4b5563;
++    font-size: 0.9375rem;
++    font-weight: 600;
++}
++
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__info-row dd {
++    margin: 0;
++    padding-left: calc(var(--nr-show-value-anchor) - 7.5rem);
++    color: #111827;
++    font-size: 0.9375rem;
++    line-height: 1.4;
++}
++
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table {
++    width: auto;
++    max-width: 100%;
++    border-collapse: collapse;
++    font-size: 0.9375rem;
++}
++
++/*
++ * Visit History ΓÇö Remarks @ main value column; Edit @ right column (Date Given region).
++ */
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--history {
++    table-layout: fixed;
++    width: calc(var(--nr-show-right-anchor) + 1.75rem);
++    max-width: 100%;
++}
++
++/*
++ * Commodities ΓÇö Quantity @ main value column; Date Given @ right column.
++ */
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--commodities {
++    table-layout: fixed;
++    width: calc(var(--nr-show-right-anchor) + var(--nr-show-right-col-width));
++    max-width: 100%;
++}
++
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table thead th {
++    padding: 0.35rem 0.5rem 0.4rem 0;
++    background: transparent;
++    color: #374151;
++    font-size: 0.9375rem;
++    font-weight: 700;
++    border-bottom: 1px solid #e5e7eb;
++    text-align: left;
++}
++
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table tbody td {
++    padding: 0.45rem 0.5rem 0.45rem 0;
++    border-bottom: none;
++    font-size: 0.9375rem;
++    font-weight: 500;
++    vertical-align: middle;
++}
++
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table tbody tr:last-child td {
++    border-bottom: none;
++}
++
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--history th:nth-child(1),
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--history .lml-hr-fp-nr__detail-cell-date {
++    width: var(--nr-show-value-anchor);
++    padding-right: 0;
++    white-space: nowrap;
++}
++
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--history th:nth-child(2),
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--history tbody td:nth-child(2) {
++    width: var(--nr-show-main-col-width);
++    padding-left: 0;
++    padding-right: 0;
++    white-space: nowrap;
++}
++
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--history th:nth-child(3),
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--history .lml-hr-fp-nr__cell-action {
++    width: 1.75rem;
++    padding-left: 0;
++    padding-right: 0;
++}
++
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--commodities th:nth-child(1),
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--commodities td:first-child {
++    width: var(--nr-show-value-anchor);
++    padding-right: 0;
++}
++
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--commodities th:nth-child(2),
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--commodities tbody .lml-hr-fp-nr__detail-cell-qty {
++    width: var(--nr-show-main-col-width);
++    padding-left: 0;
++    padding-right: 0;
++    text-align: left;
++}
++
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--commodities th:nth-child(3),
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--commodities tbody .lml-hr-fp-nr__detail-cell-date {
++    white-space: nowrap;
++    width: var(--nr-show-right-col-width);
++    padding-left: 0;
++    padding-right: 0;
++}
++
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-th-action,
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__cell-action {
++    text-align: left;
++}
++
++[data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__edit-link {
++    width: 1.75rem;
++    height: 1.75rem;
++    color: var(--nr-show-green);
++}
++
++@media (max-width: 900px) {
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-panel {
++        padding: 0.85rem 1.5rem 1rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-block {
++        padding-bottom: 1.1rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-block + .lml-hr-fp-nr__detail-block {
++        padding-top: 0.25rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__info-list--compact {
++        gap: 0.5rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="show"] {
++        --nr-show-value-anchor: 14.5rem;
++        --nr-show-main-col-width: 6.5rem;
++        --nr-show-right-col-width: 5.5rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__info-row {
++        grid-template-columns: 6.5rem minmax(0, 1fr);
++        column-gap: 0;
++    }
++
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__info-row dd {
++        padding-left: calc(var(--nr-show-value-anchor) - 6.5rem);
++    }
++
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--history {
++        width: calc(var(--nr-show-right-anchor) + 1.75rem);
++    }
++
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--commodities {
++        width: calc(var(--nr-show-right-anchor) + var(--nr-show-right-col-width));
++    }
++
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--history th:nth-child(1),
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--history .lml-hr-fp-nr__detail-cell-date {
++        width: var(--nr-show-value-anchor);
++        padding-right: 0;
++    }
++
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--history th:nth-child(2),
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--history tbody td:nth-child(2) {
++        width: var(--nr-show-main-col-width);
++        padding-left: 0;
++        padding-right: 0;
++    }
++
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--commodities th:nth-child(1),
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--commodities td:first-child {
++        width: var(--nr-show-value-anchor);
++        padding-right: 0;
++    }
++
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--commodities th:nth-child(2),
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--commodities tbody .lml-hr-fp-nr__detail-cell-qty {
++        width: var(--nr-show-main-col-width);
++        padding-left: 0;
++        padding-right: 0;
++    }
++
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--commodities th:nth-child(3),
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--commodities tbody .lml-hr-fp-nr__detail-cell-date {
++        width: var(--nr-show-right-col-width);
++        padding-left: 0;
++    }
++
++    [data-lml-hr-fp-nr-mode="add-visit"],
++    [data-lml-hr-fp-nr-mode="edit-visit"] {
++        --nr-visit-form-max: 100%;
++        --nr-visit-split-gap: 0.85rem;
++        --nr-visit-qty-track: minmax(3.75rem, 26%);
++        --nr-control-h: 2.25rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__form-panel--visit,
++    [data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__form-panel--visit {
++        max-width: 100%;
++    }
++
++    [data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__visit-form-heading,
++    [data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__visit-form-heading {
++        margin: 0.25rem 0 0.45rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__form,
++    [data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__form {
++        padding: 0;
++        gap: 0.55rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__form-split--visit,
++    [data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__form-split--visit {
++        grid-template-columns: 1fr;
++        gap: var(--nr-visit-split-gap);
++    }
++
++    [data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__form-split-col,
++    [data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__form-split-col {
++        min-height: 0;
++        padding: 0.85rem 0.9rem 1rem;
++        gap: 0.75rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__textarea,
++    [data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__textarea {
++        min-height: 4.5rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__add-commodity,
++    [data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__add-commodity {
++        margin-top: 0.75rem;
++    }
++}
++
++@media (max-width: 480px) {
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-panel {
++        padding: 0.75rem 1rem 0.85rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-block {
++        padding-bottom: 0.875rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-block + .lml-hr-fp-nr__detail-block {
++        padding-top: 0.875rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__info-list--compact {
++        gap: 0.5rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__client-icon {
++        font-size: 1.75rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__info-row {
++        grid-template-columns: 1fr;
++        column-gap: 0;
++    }
++
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__info-row dd {
++        padding-left: 0;
++    }
++
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--history th:nth-child(1),
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--history .lml-hr-fp-nr__detail-cell-date,
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--history th:nth-child(2),
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--history td:nth-child(2),
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--commodities th:nth-child(1),
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--commodities td:first-child,
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--commodities th:nth-child(2),
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--commodities .lml-hr-fp-nr__detail-cell-qty {
++        padding-right: 0.75rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--history th:nth-child(1),
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--history .lml-hr-fp-nr__detail-cell-date {
++        width: 6.5rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--history th:nth-child(3),
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--history .lml-hr-fp-nr__cell-action {
++        width: 2.5rem;
++        padding-left: 0.25rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--commodities th:nth-child(1),
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--commodities td:first-child {
++        width: 35%;
++    }
++
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--commodities th:nth-child(2),
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--commodities .lml-hr-fp-nr__detail-cell-qty {
++        width: 25%;
++    }
++
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--commodities th:nth-child(3),
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--commodities .lml-hr-fp-nr__detail-cell-date {
++        width: 40%;
++    }
++
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--history,
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-table--commodities {
++        width: 100%;
++        max-width: 100%;
++    }
++
++    [data-lml-hr-fp-nr-mode="show"] .lml-hr-fp-nr__detail-block--table {
++        overflow-x: auto;
++        max-width: 100%;
++    }
++
++    [data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__form,
++    [data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__form {
++        padding: 0;
++        gap: 0.5rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__form-split-col,
++    [data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__form-split-col {
++        min-height: 0;
++        padding: 0.7rem 0.75rem 0.8rem;
++        gap: 0.55rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__textarea,
++    [data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__textarea {
++        min-height: 3.75rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__add-commodity,
++    [data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__add-commodity {
++        margin-top: 0.5rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__commodity-row,
++    [data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__commodity-row {
++        grid-template-columns: minmax(0, 1fr) minmax(3.5rem, 28%) auto;
++        gap: 0.4rem;
++    }
++
++    [data-lml-hr-fp-nr-mode="add-visit"] .lml-hr-fp-nr__form-actions--centered .lml-hr-fp-nr__btn,
++    [data-lml-hr-fp-nr-mode="edit-visit"] .lml-hr-fp-nr__form-actions--centered .lml-hr-fp-nr__btn {
+         flex: 1 1 auto;
+     }
+ }
+
+--- git diff --cached (staged) ---
+(empty)
+
+===== lmlingaFinal/resources/js/pages/health-records-non-resident-family-planning.js =====
+STATUS: MODIFIED
+git status --short: M lmlingaFinal/resources/js/pages/health-records-non-resident-family-planning.js
+--- git diff (unstaged) ---
+diff --git a/lmlingaFinal/resources/js/pages/health-records-non-resident-family-planning.js b/lmlingaFinal/resources/js/pages/health-records-non-resident-family-planning.js
+index 7e6e744..023df99 100644
+--- a/lmlingaFinal/resources/js/pages/health-records-non-resident-family-planning.js
++++ b/lmlingaFinal/resources/js/pages/health-records-non-resident-family-planning.js
+@@ -5,6 +5,9 @@
+ const PREVIEW_SAVE_MESSAGE =
+     'Preview only: Non-resident family planning data was not permanently saved. Backend persistence is not yet implemented.';
+ 
++const PREVIEW_DELETE_CLIENT_MESSAGE =
++    'Preview only: Delete Non-Resident Record is not available until backend support is implemented. No client was removed.';
++
+ const PREVIEW_DELETE_MESSAGE =
+     'Preview only: Delete Visit is not available until backend support is implemented. No visit was removed.';
+ 
+@@ -65,7 +68,11 @@ function applyNrListingFilters(root) {
+     });
+ 
+     if (results) {
+-        results.textContent = `Showing ${visible} of ${total} non-resident clients`;
++        if (visible === 0) {
++            results.textContent = `Showing 0 of ${total} entries`;
++        } else {
++            results.textContent = `Showing 1 to ${visible} of ${total} entries`;
++        }
+     }
+ 
+     if (empty) {
+@@ -160,6 +167,120 @@ function initNrCommodities(root) {
+     reindexNrCommodityRows(list, idPrefix);
+ }
+ 
++function getNrFocusable(container) {
++    return Array.from(
++        container.querySelectorAll(
++            'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
++        )
++    ).filter((el) => el instanceof HTMLElement && !el.hidden);
++}
++
++function trapNrDialogFocus(event, panel) {
++    const focusables = getNrFocusable(panel);
++    if (!focusables.length) {
++        event.preventDefault();
++        panel.focus();
++        return;
++    }
++
++    const first = focusables[0];
++    const last = focusables[focusables.length - 1];
++
++    if (event.shiftKey && document.activeElement === first) {
++        event.preventDefault();
++        last.focus();
++        return;
++    }
++
++    if (!event.shiftKey && document.activeElement === last) {
++        event.preventDefault();
++        first.focus();
++    }
++}
++
++function openNrDeleteDialog(root, clientName) {
++    const backdrop = root.querySelector('[data-hr-fp-nr-delete-dialog]');
++    const panel = root.querySelector('[data-hr-fp-nr-delete-dialog-panel]');
++    const nameEl = root.querySelector('[data-hr-fp-nr-delete-name]');
++    const cancelBtn = root.querySelector('[data-hr-fp-nr-delete-cancel]');
++
++    if (!(backdrop instanceof HTMLElement) || !(panel instanceof HTMLElement)) {
++        return;
++    }
++
++    if (nameEl instanceof HTMLElement) {
++        nameEl.textContent = clientName;
++    }
++
++    root._nrDeleteReturnFocus = document.activeElement;
++    backdrop.hidden = false;
++    cancelBtn?.focus();
++}
++
++function closeNrDeleteDialog(root) {
++    const backdrop = root.querySelector('[data-hr-fp-nr-delete-dialog]');
++    if (!(backdrop instanceof HTMLElement)) {
++        return;
++    }
++
++    backdrop.hidden = true;
++
++    if (root._nrDeleteReturnFocus instanceof HTMLElement) {
++        root._nrDeleteReturnFocus.focus();
++        root._nrDeleteReturnFocus = null;
++    }
++}
++
++function initNrListingDeleteDialog(root) {
++    const backdrop = root.querySelector('[data-hr-fp-nr-delete-dialog]');
++    const panel = root.querySelector('[data-hr-fp-nr-delete-dialog-panel]');
++    const cancelBtn = root.querySelector('[data-hr-fp-nr-delete-cancel]');
++    const confirmBtn = root.querySelector('[data-hr-fp-nr-delete-confirm]');
++    let pendingClientKey = '';
++
++    root.querySelectorAll('[data-hr-fp-nr-delete-client]').forEach((trigger) => {
++        trigger.addEventListener('click', () => {
++            pendingClientKey = trigger.dataset.clientKey || '';
++            openNrDeleteDialog(root, trigger.dataset.clientName || 'this client');
++        });
++    });
++
++    cancelBtn?.addEventListener('click', () => {
++        pendingClientKey = '';
++        closeNrDeleteDialog(root);
++    });
++
++    confirmBtn?.addEventListener('click', () => {
++        pendingClientKey = '';
++        closeNrDeleteDialog(root);
++        showNrToast(root, PREVIEW_DELETE_CLIENT_MESSAGE);
++    });
++
++    backdrop?.addEventListener('click', (event) => {
++        if (event.target === backdrop) {
++            pendingClientKey = '';
++            closeNrDeleteDialog(root);
++        }
++    });
++
++    root.addEventListener('keydown', (event) => {
++        if (event.key === 'Escape' && backdrop instanceof HTMLElement && !backdrop.hidden) {
++            event.preventDefault();
++            pendingClientKey = '';
++            closeNrDeleteDialog(root);
++            return;
++        }
++
++        if (backdrop instanceof HTMLElement && !backdrop.hidden && panel instanceof HTMLElement) {
++            if (event.key === 'Tab') {
++                trapNrDialogFocus(event, panel);
++            }
++        }
++    });
++
++    void pendingClientKey;
++}
++
+ function initNrListing(root) {
+     const exportBtn = root.querySelector('[data-hr-fp-nr-export]');
+     const searchInput = root.querySelector('[data-hr-fp-nr-search]');
+@@ -176,9 +297,39 @@ function initNrListing(root) {
+     barangaySelect?.addEventListener('change', refresh);
+     yearSelect?.addEventListener('change', refresh);
+ 
++    initNrListingDeleteDialog(root);
+     refresh();
+ }
+ 
++function initNrAgeFromBirthday(root) {
++    const birthday = root.querySelector('[data-hr-fp-nr-birthday]');
++    const age = root.querySelector('[data-hr-fp-nr-age]');
++    if (!(birthday instanceof HTMLInputElement) || !(age instanceof HTMLInputElement)) {
++        return;
++    }
++
++    const fillAge = () => {
++        if (!birthday.value) {
++            return;
++        }
++        const birthDate = new Date(`${birthday.value}T00:00:00`);
++        if (Number.isNaN(birthDate.getTime())) {
++            return;
++        }
++        const today = new Date();
++        let years = today.getFullYear() - birthDate.getFullYear();
++        const monthDelta = today.getMonth() - birthDate.getMonth();
++        if (monthDelta < 0 || (monthDelta === 0 && today.getDate() < birthDate.getDate())) {
++            years -= 1;
++        }
++        if (years >= 0) {
++            age.value = String(years);
++        }
++    };
++
++    birthday.addEventListener('change', fillAge);
++}
++
+ function initNrForms(root) {
+     const createForm = root.querySelector('[data-hr-fp-nr-create-form]');
+     const visitForm = root.querySelector('[data-hr-fp-nr-visit-form]');
+@@ -199,6 +350,7 @@ function initNrForms(root) {
+     });
+ 
+     initNrCommodities(root);
++    initNrAgeFromBirthday(root);
+ }
+ 
+ function initNonResidentFamilyPlanning(root) {
+@@ -225,6 +377,7 @@ if (typeof document !== 'undefined') {
+ export {
+     applyNrListingFilters,
+     initNonResidentFamilyPlanning,
++    PREVIEW_DELETE_CLIENT_MESSAGE,
+     PREVIEW_DELETE_MESSAGE,
+     PREVIEW_EXPORT_MESSAGE,
+     PREVIEW_SAVE_MESSAGE,
+
+--- git diff --cached (staged) ---
+(empty)
+
+===== lmlingaFinal/tests/Feature/HealthRecordsNonResidentFamilyPlanningTest.php =====
+STATUS: MODIFIED
+git status --short: M lmlingaFinal/tests/Feature/HealthRecordsNonResidentFamilyPlanningTest.php
+--- git diff (unstaged) ---
+diff --git a/lmlingaFinal/tests/Feature/HealthRecordsNonResidentFamilyPlanningTest.php b/lmlingaFinal/tests/Feature/HealthRecordsNonResidentFamilyPlanningTest.php
+index 5ad2601..516e2e6 100644
+--- a/lmlingaFinal/tests/Feature/HealthRecordsNonResidentFamilyPlanningTest.php
++++ b/lmlingaFinal/tests/Feature/HealthRecordsNonResidentFamilyPlanningTest.php
+@@ -40,9 +40,23 @@ public function test_listing_renders_with_filters_and_table(): void
+         $html = $response->getContent();
+ 
+         $this->assertStringContainsString('data-lml-hr-fp-nr', $html);
+-        $this->assertStringContainsString('Non - Residents Client', $html);
++        $this->assertStringContainsString('data-hr-fp-nr-listing-header', $html);
++        $this->assertStringContainsString('data-hr-fp-nr-action-group', $html);
++        $this->assertMatchesRegularExpression(
++            '/<h1 class="lml-topbar__title">\s*Family Planning \| Non Residents\s*<\/h1>/u',
++            $html
++        );
++        $this->assertStringNotContainsString(
++            'HEALTH RECORDS - FAMILY PLANNING - NON-RESIDENTS CLIENTS',
++            $html
++        );
++        $this->assertStringNotContainsString('Family Planning | Non-Residents', $html);
++        $this->assertDoesNotMatchRegularExpression(
++            '/class="lml-hr-fp-nr__title"[^>]*>/u',
++            $html
++        );
+         $this->assertStringContainsString(
+-            'Family planning clients from outside the barangay.',
++            'List of all non-resident clients who received family planning services in this barangay.',
+             $html
+         );
+         $this->assertStringContainsString('data-hr-fp-nr-search', $html);
+@@ -50,15 +64,80 @@ public function test_listing_renders_with_filters_and_table(): void
+         $this->assertStringContainsString('data-hr-fp-nr-year', $html);
+         $this->assertStringContainsString('for="lml-hr-fp-nr-search"', $html);
+ 
+-        foreach (['Full Name', 'Age', 'Method', 'Start Date', 'Last Visit'] as $header) {
+-            $this->assertStringContainsString($header, $html);
+-        }
++        $this->assertMatchesRegularExpression(
++            '/<thead>[\s\S]*<th scope="col">Full Name<\/th>\s*<th scope="col">Age<\/th>\s*<th scope="col">Method<\/th>\s*<th scope="col">Start Date<\/th>\s*<th scope="col">Last Visit<\/th>\s*<th scope="col">Actions<\/th>\s*<\/tr>/u',
++            $html
++        );
++        $this->assertStringContainsString('data-hr-fp-nr-delete-dialog', $html);
++        $this->assertStringContainsString('Delete Non-Resident Record?', $html);
++        $this->assertStringNotContainsString('bi-three-dots-vertical', $html);
++        $this->assertStringContainsString('Showing 1 to 7 of 7 entries', $html);
+ 
+         foreach (HealthRecordsNonResidentFamilyPlanning::clients() as $client) {
+             $this->assertStringContainsString($client['full_name'], $html);
+         }
+     }
+ 
++    public function test_listing_header_actions_include_back_add_export(): void
++    {
++        $fpIndexUrl = route('health-records.family-planning.index');
++
++        $response = $this->withSession([UiRole::SESSION_KEY => 'bhw'])
++            ->get(route('health-records.family-planning.non-residents.index'));
++
++        $response->assertOk();
++        $html = $response->getContent();
++
++        $this->assertStringContainsString('data-hr-fp-nr-back', $html);
++        $this->assertStringContainsString('href="'.e($fpIndexUrl).'"', $html);
++        $this->assertStringNotContainsString('javascript:history.back()', $html);
++        $this->assertMatchesRegularExpression(
++            '/data-hr-fp-nr-back[^>]*>[\s\S]*?>\s*Back\s*</u',
++            $html
++        );
++        $this->assertStringContainsString('data-hr-fp-nr-add', $html);
++        $this->assertMatchesRegularExpression('/>\s*Add Visit\s*<\/span>/u', $html);
++        $this->assertStringContainsString('data-hr-fp-nr-export', $html);
++        $this->assertMatchesRegularExpression('/>\s*Export Data\s*<\/span>/u', $html);
++
++        $this->assertMatchesRegularExpression(
++            '/data-hr-fp-nr-listing-header[\s\S]*data-hr-fp-nr-back[\s\S]*data-hr-fp-nr-action-group/u',
++            $html
++        );
++        $actionGroupPos = strpos($html, 'data-hr-fp-nr-action-group');
++        $this->assertNotFalse($actionGroupPos);
++        $actionChunk = substr($html, $actionGroupPos, 900);
++        $this->assertStringNotContainsString('data-hr-fp-nr-back', $actionChunk);
++        $this->assertStringContainsString('data-hr-fp-nr-add', $actionChunk);
++        $this->assertStringContainsString('data-hr-fp-nr-export', $actionChunk);
++        $addPos = strpos($actionChunk, 'data-hr-fp-nr-add');
++        $exportPos = strpos($actionChunk, 'data-hr-fp-nr-export');
++        $this->assertNotFalse($addPos);
++        $this->assertNotFalse($exportPos);
++        $this->assertTrue($addPos < $exportPos);
++        $this->assertStringContainsString(
++            'href="'.e(route('health-records.family-planning.non-residents.create')).'"',
++            $html
++        );
++        $this->assertStringNotContainsString('bi-three-dots-vertical', $html);
++        $this->assertStringContainsString('Showing 1 to 7 of 7 entries', $html);
++        $this->assertStringContainsString('entries', $html);
++        $this->assertMatchesRegularExpression(
++            '/aria-current="page"[^>]*>\s*1\s*</u',
++            $html
++        );
++        $this->assertStringContainsString('data-hr-fp-nr-page-prev', $html);
++        $this->assertStringContainsString('data-hr-fp-nr-page-next', $html);
++        $this->assertStringContainsString('aria-label="Previous page"', $html);
++        $this->assertStringContainsString('aria-label="Next page"', $html);
++        $this->assertStringNotContainsString('data-hr-fp-nr-page-size', $html);
++        $this->assertStringNotContainsString('per page', $html);
++        $this->assertStringNotContainsString('Rows per page', $html);
++        $this->assertStringNotContainsString('for="lml-hr-fp-nr-page-size"', $html);
++        $this->assertStringContainsString('for="lml-hr-fp-nr-barangay"', $html);
++        $this->assertStringContainsString('for="lml-hr-fp-nr-year"', $html);
++    }
++
+     public function test_sidebar_family_planning_active_on_listing(): void
+     {
+         $response = $this->withSession([UiRole::SESSION_KEY => 'bns'])
+@@ -86,11 +165,30 @@ public function test_add_new_client_screen_renders(): void
+         $response->assertOk();
+         $html = $response->getContent();
+ 
+-        $this->assertStringContainsString('Add New Client', $html);
++        $this->assertStringContainsString('Add New Non Resident', $html);
++        $this->assertStringNotContainsString('Add New Client', $html);
+         $this->assertStringContainsString('PERSONAL INFORMATION', $html);
+         $this->assertStringContainsString('Family Planning Service Record', $html);
+         $this->assertStringContainsString('for="lml-hr-fp-nr-first-name"', $html);
++        $this->assertStringContainsString('placeholder="First Name"', $html);
++        $this->assertStringContainsString('placeholder="Middle Name"', $html);
++        $this->assertStringContainsString('placeholder="Last Name"', $html);
++        $this->assertStringContainsString('for="lml-hr-fp-nr-birthday"', $html);
++        $this->assertStringContainsString('for="lml-hr-fp-nr-sex"', $html);
++        $this->assertStringContainsString('for="lml-hr-fp-nr-civil-status"', $html);
++        $this->assertStringNotContainsString('for="lml-hr-fp-nr-age"', $html);
++        $this->assertStringContainsString('for="lml-hr-fp-nr-address">Address</label>', $html);
++        $this->assertStringNotContainsString('Address / Zone', $html);
++        $this->assertStringContainsString('placeholder="Complete Address"', $html);
++        $this->assertStringNotContainsString('placeholder="Zone"', $html);
++        $this->assertStringNotContainsString('for="lml-hr-fp-nr-barangay"', $html);
++        $this->assertStringNotContainsString('for="lml-hr-fp-nr-municipality"', $html);
++        $this->assertStringNotContainsString('id="lml-hr-fp-nr-barangay"', $html);
++        $this->assertStringNotContainsString('id="lml-hr-fp-nr-municipality"', $html);
+         $this->assertStringContainsString('for="lml-hr-fp-nr-visit-date"', $html);
++        $this->assertStringContainsString('for="lml-hr-fp-nr-method"', $html);
++        $this->assertStringContainsString('placeholder="Enter remarks"', $html);
++        $this->assertStringContainsString('lml-hr-fp-nr__form-actions--centered', $html);
+         $this->assertStringContainsString('data-hr-fp-nr-commodity-add', $html);
+         $this->assertStringContainsString('Add Another Commodity', $html);
+         $this->assertStringContainsString('data-hr-fp-nr-create-form', $html);
+@@ -112,10 +210,31 @@ public function test_client_record_renders(): void
+         $this->assertStringContainsString('Non Residents Client', $html);
+         $this->assertStringContainsString('ROSELYN A. MENDOZA', $html);
+         $this->assertStringContainsString('Client Information', $html);
++        $this->assertStringContainsString('Birthday', $html);
++        $this->assertStringContainsString('January 8, 1991', $html);
++        $this->assertStringContainsString('Civil Status', $html);
++        $this->assertStringContainsString('Married', $html);
++        $this->assertStringContainsString('Address', $html);
++        $this->assertStringContainsString('Zone 2, Brgy. San Jose, Sagnay, Cam Sur', $html);
+         $this->assertStringContainsString('Visit History', $html);
++        $this->assertStringContainsString('Visit Date', $html);
++        $this->assertStringContainsString('Remarks', $html);
++        $this->assertStringContainsString('02/09/2024', $html);
++        $this->assertStringContainsString('No Complaints', $html);
+         $this->assertStringContainsString('Commodities Given', $html);
++        $this->assertStringContainsString('Commodity', $html);
++        $this->assertStringContainsString('Quantity', $html);
++        $this->assertStringContainsString('Date Given', $html);
++        $this->assertStringContainsString('Pills', $html);
++        $this->assertStringContainsString('>30<', $html);
++        $this->assertStringContainsString('02/10/2024', $html);
+         $this->assertStringContainsString('Add Visit', $html);
+-        $this->assertStringContainsString('No Complaints', $html);
++        $this->assertStringContainsString(
++            'href="'.e(route('health-records.family-planning.non-residents.visits.create', [
++                'clientKey' => 'roselyn-a-mendoza',
++            ])).'"',
++            $html
++        );
+         $this->assertStringContainsString(
+             'href="'.e(route('health-records.family-planning.non-residents.visits.edit', [
+                 'clientKey' => 'roselyn-a-mendoza',
+@@ -123,6 +242,9 @@ public function test_client_record_renders(): void
+             ])).'"',
+             $html
+         );
++        $this->assertStringContainsString('lml-hr-fp-nr__info-list--compact', $html);
++        $this->assertStringContainsString('bi-person-vcard', $html);
++        $this->assertStringNotContainsString('lml-hr-fp-nr__detail-table-wrap', $html);
+     }
+ 
+     public function test_add_visit_screen_renders(): void
+@@ -136,8 +258,20 @@ public function test_add_visit_screen_renders(): void
+         $html = $response->getContent();
+ 
+         $this->assertStringContainsString('ADD RECORD', $html);
++        $this->assertStringNotContainsString('lml-hr-fp-nr__form-banner', $html);
+         $this->assertStringContainsString('Visit Information', $html);
+         $this->assertStringContainsString('Commodities Given', $html);
++        $this->assertStringNotContainsString('for="lml-hr-fp-nr-add-method"', $html);
++        $this->assertStringContainsString('for="lml-hr-fp-nr-add-remarks"', $html);
++        $this->assertStringContainsString('>Date</label>', $html);
++        $this->assertStringContainsString('placeholder="Enter remarks"', $html);
++        $this->assertStringContainsString(
++            'href="'.e(route('health-records.family-planning.non-residents.show', [
++                'clientKey' => 'roselyn-a-mendoza',
++            ])).'"',
++            $html
++        );
++        $this->assertStringContainsString('lml-hr-fp-nr__form-actions--centered', $html);
+         $this->assertStringContainsString('data-hr-fp-nr-visit-form', $html);
+         $this->assertStringContainsString('data-hr-fp-nr-commodity-remove', $html);
+     }
+@@ -153,11 +287,28 @@ public function test_edit_visit_screen_renders(): void
+         $response->assertOk();
+         $html = $response->getContent();
+ 
++        $this->assertStringContainsString('ROSELYN A. MENDOZA', $html);
+         $this->assertStringContainsString('EDIT VISIT', $html);
+-        $this->assertStringContainsString('data-hr-fp-nr-delete-visit', $html);
+-        $this->assertStringContainsString('Delete Visit', $html);
++        $this->assertStringNotContainsString('lml-hr-fp-nr__form-banner', $html);
++        $this->assertStringContainsString('for="lml-hr-fp-nr-edit-visit-date"', $html);
++        $this->assertStringContainsString('>Date</label>', $html);
++        $this->assertStringContainsString('for="lml-hr-fp-nr-edit-remarks"', $html);
++        $this->assertStringContainsString('data-hr-fp-nr-commodity-name', $html);
++        $this->assertStringContainsString('data-hr-fp-nr-commodity-qty', $html);
++        $this->assertStringContainsString('data-hr-fp-nr-commodity-add', $html);
++        $this->assertStringContainsString('Add Another Commodity', $html);
++        $this->assertStringNotContainsString('for="lml-hr-fp-nr-edit-method"', $html);
++        $this->assertStringNotContainsString('Select method', $html);
++        $this->assertStringNotContainsString('data-hr-fp-nr-delete-visit', $html);
++        $this->assertStringNotContainsString('Delete Visit', $html);
++        $this->assertMatchesRegularExpression('/>\s*Cancel\s*<\/a>/u', $html);
++        $this->assertMatchesRegularExpression('/>\s*Save\s*<\/button>/u', $html);
++        $this->assertStringContainsString('lml-hr-fp-nr__form-actions--centered', $html);
++        $this->assertStringContainsString('lml-hr-fp-nr__form-actions--visit-span', $html);
++        $this->assertStringNotContainsString('lml-hr-fp-nr__form-actions--visit"', $html);
+         $this->assertStringContainsString('value="2024-02-09"', $html);
+         $this->assertStringContainsString('No Complaints', $html);
++        $this->assertStringContainsString('data-visit-id="NR-FP-001"', $html);
+     }
+ 
+     public function test_frozen_summary_links_to_non_resident_listing(): void
+@@ -188,4 +339,115 @@ public function test_household_profiling_family_planning_remains_separate(): voi
+         $this->assertNotNull($nr);
+         $this->assertNotSame($hh->uri(), $nr->uri());
+     }
++
++    public function test_listing_actions_column_links_per_client(): void
++    {
++        $response = $this->withSession([UiRole::SESSION_KEY => 'bhw'])
++            ->get(route('health-records.family-planning.non-residents.index'));
++
++        $response->assertOk();
++        $html = $response->getContent();
++
++        foreach (HealthRecordsNonResidentFamilyPlanning::clients() as $client) {
++            $showUrl = route('health-records.family-planning.non-residents.show', [
++                'clientKey' => $client['key'],
++            ]);
++            $latestVisit = HealthRecordsNonResidentFamilyPlanning::latestVisit($client);
++            $editUrl = $latestVisit !== null
++                ? route('health-records.family-planning.non-residents.visits.edit', [
++                    'clientKey' => $client['key'],
++                    'visitId' => $latestVisit['id'],
++                ])
++                : route('health-records.family-planning.non-residents.visits.create', [
++                    'clientKey' => $client['key'],
++                ]);
++
++            $this->assertStringContainsString('aria-label="View '.$client['full_name'].'"', $html);
++            $this->assertStringContainsString('href="'.e($showUrl).'"', $html);
++            $this->assertStringContainsString('aria-label="Delete '.$client['full_name'].'"', $html);
++            $this->assertStringContainsString('data-client-key="'.$client['key'].'"', $html);
++            $this->assertStringContainsString('href="'.e($editUrl).'"', $html);
++        }
++
++        $this->assertGreaterThanOrEqual(7, substr_count($html, 'data-hr-fp-nr-delete-client'));
++        $this->assertGreaterThanOrEqual(7, substr_count($html, '>View</span>'));
++        $this->assertGreaterThanOrEqual(7, substr_count($html, '>Edit</span>'));
++        $this->assertGreaterThanOrEqual(7, substr_count($html, '>Delete</span>'));
++    }
++
++    public function test_listing_edit_targets_latest_visit_for_client_with_visits(): void
++    {
++        $client = HealthRecordsNonResidentFamilyPlanning::findClient('jacob-a-magistrado');
++        $this->assertNotNull($client);
++        $latestVisit = HealthRecordsNonResidentFamilyPlanning::latestVisit($client);
++        $this->assertNotNull($latestVisit);
++
++        $response = $this->withSession([UiRole::SESSION_KEY => 'bhw'])
++            ->get(route('health-records.family-planning.non-residents.index'));
++
++        $response->assertOk();
++        $html = $response->getContent();
++
++        $editUrl = route('health-records.family-planning.non-residents.visits.edit', [
++            'clientKey' => 'jacob-a-magistrado',
++            'visitId' => $latestVisit['id'],
++        ]);
++
++        $this->assertStringContainsString('href="'.e($editUrl).'"', $html);
++        $this->assertStringContainsString('aria-label="Edit latest visit for Jacob A. Magistrado"', $html);
++    }
++
++    public function test_client_details_add_visit_link_uses_selected_client(): void
++    {
++        $response = $this->withSession([UiRole::SESSION_KEY => 'bhw'])
++            ->get(route('health-records.family-planning.non-residents.show', [
++                'clientKey' => 'jacob-a-magistrado',
++            ]));
++
++        $response->assertOk();
++        $html = $response->getContent();
++
++        $this->assertStringContainsString('JACOB A. MAGISTRADO', $html);
++        $this->assertStringContainsString(
++            'href="'.e(route('health-records.family-planning.non-residents.visits.create', [
++                'clientKey' => 'jacob-a-magistrado',
++            ])).'"',
++            $html
++        );
++    }
++
++    public function test_edit_visit_renders_selected_client_context(): void
++    {
++        $response = $this->withSession([UiRole::SESSION_KEY => 'bhw'])
++            ->get(route('health-records.family-planning.non-residents.visits.edit', [
++                'clientKey' => 'jacob-a-magistrado',
++                'visitId' => 'NR-FP-003',
++            ]));
++
++        $response->assertOk();
++        $html = $response->getContent();
++
++        $this->assertStringContainsString('JACOB A. MAGISTRADO', $html);
++        $this->assertStringContainsString('EDIT VISIT', $html);
++        $this->assertStringContainsString('for="lml-hr-fp-nr-edit-remarks"', $html);
++        $this->assertStringNotContainsString('for="lml-hr-fp-nr-edit-method"', $html);
++        $this->assertStringContainsString('data-visit-id="NR-FP-003"', $html);
++    }
++
++    public function test_client_details_sidebar_family_planning_active(): void
++    {
++        $response = $this->withSession([UiRole::SESSION_KEY => 'bns'])
++            ->get(route('health-records.family-planning.non-residents.show', [
++                'clientKey' => 'roselyn-a-mendoza',
++            ]));
++
++        $response->assertOk();
++        $html = $response->getContent();
++
++        $this->assertSame('family-planning', UiRole::sidebarActiveKey());
++        $this->assertMatchesRegularExpression(
++            '/lml-sidebar__sublink--active[^>]*aria-current="page"[^>]*>[\s\S]*>Family Planning</u',
++            $html
++        );
++    }
+ }
+
+--- git diff --cached (staged) ---
+(empty)
+
+===== lmlingaFinal/scripts/capture-hr-non-resident-family-planning-add-edit-visit-alignment.mjs =====
+STATUS: UNTRACKED
+git status --short: ?? lmlingaFinal/scripts/capture-hr-non-resident-family-planning-add-edit-visit-alignment.mjs
+UNTRACKED / NO GIT DIFF (file not in index)
+
+

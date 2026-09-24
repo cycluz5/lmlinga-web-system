@@ -1,0 +1,85 @@
+﻿diff --git a/lmlingaFinal/resources/views/pages/health-records/maternal.blade.php b/lmlingaFinal/resources/views/pages/health-records/maternal.blade.php
+index ceee324..7f6fa06 100644
+--- a/lmlingaFinal/resources/views/pages/health-records/maternal.blade.php
++++ b/lmlingaFinal/resources/views/pages/health-records/maternal.blade.php
+@@ -23,7 +23,6 @@
+         ];
+         $totalUnfiltered = $totalUnfiltered ?? count($rows);
+         $pageDescription = 'Record and management of maternal care details for monitoring and tracking maternal health status.';
+-        $nonResidentsUrl = route('health-records.maternal.non-residents.index');
+     @endphp
+ 
+     <div
+@@ -39,16 +38,6 @@ class="lml-hr-mc"
+             </p>
+ 
+             <div class="lml-hr-mc__action-row" data-hr-mc-action-row>
+-                <div class="lml-hr-mc__action-left">
+-                    <a
+-                        href="{{ $nonResidentsUrl }}"
+-                        class="lml-hr-mc__scope-pill lml-focus-ring"
+-                        data-hr-mc-non-residents
+-                        aria-label="Open Maternal Care Non Residents listing"
+-                    >
+-                        Non Residents
+-                    </a>
+-                </div>
+                 <div class="lml-hr-mc__action-right" role="group" aria-label="Maternal Care actions">
+                     <button
+                         type="button"
+diff --git a/lmlingaFinal/tests/Feature/HealthRecordsMaternalTest.php b/lmlingaFinal/tests/Feature/HealthRecordsMaternalTest.php
+index 242da35..c52ae4c 100644
+--- a/lmlingaFinal/tests/Feature/HealthRecordsMaternalTest.php
++++ b/lmlingaFinal/tests/Feature/HealthRecordsMaternalTest.php
+@@ -64,6 +64,8 @@ public function test_resident_maternal_page_renders(): void
+         $this->assertStringContainsString('Age Group', $html);
+         $this->assertStringContainsString('Gravida / Parity', $html);
+         $this->assertStringContainsString('Prenatal Visits', $html);
++        $this->assertStringNotContainsString('data-hr-mc-non-residents', $html);
++        $this->assertStringNotContainsString('Open Maternal Care Non Residents listing', $html);
+     }
+ 
+     public function test_non_resident_maternal_page_renders(): void
+@@ -199,7 +201,7 @@ public function test_resident_and_non_resident_populations_remain_separated(): v
+         $this->assertStringNotContainsString('Rosa Lim', $nonResidentHtml);
+     }
+ 
+-    public function test_non_residents_navigation_control_exists_and_destination_is_correct(): void
++    public function test_resident_listing_does_not_expose_non_residents_navigation(): void
+     {
+         $response = $this->withSession([UiRole::SESSION_KEY => 'bhw'])
+             ->get(route('health-records.maternal.index'));
+@@ -208,26 +210,17 @@ public function test_non_residents_navigation_control_exists_and_destination_is_
+         $html = $response->getContent();
+         $destination = route('health-records.maternal.non-residents.index');
+ 
+-        $this->assertStringContainsString('data-hr-mc-non-residents', $html);
+-        $this->assertStringContainsString('href="'.e($destination).'"', $html);
+-        $this->assertMatchesRegularExpression(
+-            '/<a\b[^>]*data-hr-mc-non-residents[^>]*>/u',
+-            $html
+-        );
+-        $this->assertMatchesRegularExpression(
+-            '/<a\b[^>]*href="'.preg_quote(e($destination), '/').'"[^>]*>/u',
+-            $html
+-        );
+-        $this->assertStringContainsString('aria-label="Open Maternal Care Non Residents listing"', $html);
++        $this->assertStringNotContainsString('data-hr-mc-non-residents', $html);
++        $this->assertStringNotContainsString('Open Maternal Care Non Residents listing', $html);
+         $this->assertDoesNotMatchRegularExpression(
+-            '/lml-hr-mc__action-right[\s\S]*data-hr-mc-non-residents/u',
++            '/>\s*Non Residents\s*</u',
+             $html
+         );
++        $this->assertStringNotContainsString('href="'.e($destination).'"', $html);
+         $this->assertStringContainsString('data-hr-mc-action-row', $html);
+-        $this->assertDoesNotMatchRegularExpression(
+-            '/class="lml-hr-mc__title"/u',
+-            $html
+-        );
++        $this->assertStringContainsString('data-hr-mc-add', $html);
++        $this->assertStringContainsString('data-hr-mc-export', $html);
++        $this->assertTrue(Route::has('health-records.maternal.non-residents.index'));
+     }
+ 
+     public function test_resident_listing_rows_have_complete_clinical_values(): void

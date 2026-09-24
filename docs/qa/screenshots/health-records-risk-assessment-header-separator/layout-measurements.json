@@ -1,0 +1,203 @@
+[
+  {
+    "viewport": "1440x900",
+    "file": "risk-assessment-1440x900-header-separator.png",
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "overflow": false,
+    "hasAdd": false,
+    "hasExport": true,
+    "headers": [
+      {
+        "title": "Full Name",
+        "hasSub": false,
+        "borderTop": null,
+        "paddingTop": null,
+        "marginTop": null
+      },
+      {
+        "title": "BMI Status",
+        "hasSub": true,
+        "borderTop": "1px solid rgb(111, 190, 138)",
+        "paddingTop": "5.12px",
+        "marginTop": "5.12px"
+      },
+      {
+        "title": "BP Status",
+        "hasSub": true,
+        "borderTop": "1px solid rgb(111, 190, 138)",
+        "paddingTop": "5.12px",
+        "marginTop": "5.12px"
+      },
+      {
+        "title": "Smoking Status",
+        "hasSub": true,
+        "borderTop": "1px solid rgb(111, 190, 138)",
+        "paddingTop": "5.12px",
+        "marginTop": "5.12px"
+      },
+      {
+        "title": "Alcohol Status",
+        "hasSub": true,
+        "borderTop": "1px solid rgb(111, 190, 138)",
+        "paddingTop": "5.12px",
+        "marginTop": "5.12px"
+      },
+      {
+        "title": "Physical Activity Risk",
+        "hasSub": true,
+        "borderTop": "1px solid rgb(111, 190, 138)",
+        "paddingTop": "5.12px",
+        "marginTop": "5.12px"
+      },
+      {
+        "title": "Family History Risk",
+        "hasSub": true,
+        "borderTop": "1px solid rgb(111, 190, 138)",
+        "paddingTop": "5.12px",
+        "marginTop": "5.12px"
+      },
+      {
+        "title": "Chronic Disease",
+        "hasSub": true,
+        "borderTop": "1px solid rgb(111, 190, 138)",
+        "paddingTop": "5.12px",
+        "marginTop": "5.12px"
+      }
+    ]
+  },
+  {
+    "viewport": "820x1180",
+    "file": "risk-assessment-820x1180-header-separator.png",
+    "scrollWidth": 820,
+    "clientWidth": 820,
+    "overflow": false,
+    "hasAdd": false,
+    "hasExport": true,
+    "headers": [
+      {
+        "title": "Full Name",
+        "hasSub": false,
+        "borderTop": null,
+        "paddingTop": null,
+        "marginTop": null
+      },
+      {
+        "title": "BMI Status",
+        "hasSub": true,
+        "borderTop": "1px solid rgb(111, 190, 138)",
+        "paddingTop": "5.12px",
+        "marginTop": "5.12px"
+      },
+      {
+        "title": "BP Status",
+        "hasSub": true,
+        "borderTop": "1px solid rgb(111, 190, 138)",
+        "paddingTop": "5.12px",
+        "marginTop": "5.12px"
+      },
+      {
+        "title": "Smoking Status",
+        "hasSub": true,
+        "borderTop": "1px solid rgb(111, 190, 138)",
+        "paddingTop": "5.12px",
+        "marginTop": "5.12px"
+      },
+      {
+        "title": "Alcohol Status",
+        "hasSub": true,
+        "borderTop": "1px solid rgb(111, 190, 138)",
+        "paddingTop": "5.12px",
+        "marginTop": "5.12px"
+      },
+      {
+        "title": "Physical Activity Risk",
+        "hasSub": true,
+        "borderTop": "1px solid rgb(111, 190, 138)",
+        "paddingTop": "5.12px",
+        "marginTop": "5.12px"
+      },
+      {
+        "title": "Family History Risk",
+        "hasSub": true,
+        "borderTop": "1px solid rgb(111, 190, 138)",
+        "paddingTop": "5.12px",
+        "marginTop": "5.12px"
+      },
+      {
+        "title": "Chronic Disease",
+        "hasSub": true,
+        "borderTop": "1px solid rgb(111, 190, 138)",
+        "paddingTop": "5.12px",
+        "marginTop": "5.12px"
+      }
+    ]
+  },
+  {
+    "viewport": "390x844",
+    "file": "risk-assessment-390x844-header-separator.png",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "overflow": false,
+    "hasAdd": false,
+    "hasExport": true,
+    "headers": [
+      {
+        "title": "Full Name",
+        "hasSub": false,
+        "borderTop": null,
+        "paddingTop": null,
+        "marginTop": null
+      },
+      {
+        "title": "BMI Status",
+        "hasSub": true,
+        "borderTop": "1px solid rgb(111, 190, 138)",
+        "paddingTop": "5.12px",
+        "marginTop": "5.12px"
+      },
+      {
+        "title": "BP Status",
+        "hasSub": true,
+        "borderTop": "1px solid rgb(111, 190, 138)",
+        "paddingTop": "5.12px",
+        "marginTop": "5.12px"
+      },
+      {
+        "title": "Smoking Status",
+        "hasSub": true,
+        "borderTop": "1px solid rgb(111, 190, 138)",
+        "paddingTop": "5.12px",
+        "marginTop": "5.12px"
+      },
+      {
+        "title": "Alcohol Status",
+        "hasSub": true,
+        "borderTop": "1px solid rgb(111, 190, 138)",
+        "paddingTop": "5.12px",
+        "marginTop": "5.12px"
+      },
+      {
+        "title": "Physical Activity Risk",
+        "hasSub": true,
+        "borderTop": "1px solid rgb(111, 190, 138)",
+        "paddingTop": "5.12px",
+        "marginTop": "5.12px"
+      },
+      {
+        "title": "Family History Risk",
+        "hasSub": true,
+        "borderTop": "1px solid rgb(111, 190, 138)",
+        "paddingTop": "5.12px",
+        "marginTop": "5.12px"
+      },
+      {
+        "title": "Chronic Disease",
+        "hasSub": true,
+        "borderTop": "1px solid rgb(111, 190, 138)",
+        "paddingTop": "5.12px",
+        "marginTop": "5.12px"
+      }
+    ]
+  }
+]

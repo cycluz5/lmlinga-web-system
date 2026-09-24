@@ -1,0 +1,183 @@
+{
+  "dew": {
+    "tableLeft": 331,
+    "tableRight": 1389,
+    "panelRight": 1412,
+    "unusedAfterTable": 23,
+    "unusedAfterRemarks": 0,
+    "cols": [
+      {
+        "header": "Year",
+        "headerAlign": "left",
+        "cellAlign": "left",
+        "startX": 331,
+        "width": 233,
+        "headerCenter": 448,
+        "cellCenter": 448
+      },
+      {
+        "header": "Round",
+        "headerAlign": "center",
+        "cellAlign": "center",
+        "startX": 564,
+        "width": 169,
+        "headerCenter": 649,
+        "cellCenter": 649
+      },
+      {
+        "header": "SE Status",
+        "headerAlign": "center",
+        "cellAlign": "center",
+        "startX": 733,
+        "width": 211,
+        "headerCenter": 839,
+        "cellCenter": 839
+      },
+      {
+        "header": "Date Given",
+        "headerAlign": "center",
+        "cellAlign": "center",
+        "startX": 945,
+        "width": 233,
+        "headerCenter": 1061,
+        "cellCenter": 1061
+      },
+      {
+        "header": "Remarks",
+        "headerAlign": "left",
+        "cellAlign": "left",
+        "startX": 1177,
+        "width": 211,
+        "headerCenter": 1283,
+        "cellCenter": 1283,
+        "remarksStart": 1177
+      }
+    ]
+  },
+  "editColors": {
+    "default": "rgb(255, 255, 255)",
+    "visited": "rgb(255, 255, 255)",
+    "hover": "rgb(255, 255, 255)",
+    "focus": "rgb(255, 255, 255)",
+    "active": "rgb(255, 255, 255)"
+  },
+  "overflow": [
+    {
+      "page": "deworming",
+      "file": "A-deworming-1440.png",
+      "w": 1440,
+      "h": 900,
+      "clientWidth": 1440,
+      "scrollWidth": 1440,
+      "overflow": false
+    },
+    {
+      "page": "deworming-overflow",
+      "file": "deworming-overflow-1366x768.png",
+      "w": 1366,
+      "h": 768,
+      "clientWidth": 1366,
+      "scrollWidth": 1366,
+      "overflow": false
+    },
+    {
+      "page": "deworming-overflow",
+      "file": "deworming-overflow-820x1180.png",
+      "w": 820,
+      "h": 1180,
+      "clientWidth": 820,
+      "scrollWidth": 820,
+      "overflow": false
+    },
+    {
+      "page": "deworming-overflow",
+      "file": "deworming-overflow-768x1024.png",
+      "w": 768,
+      "h": 1024,
+      "clientWidth": 768,
+      "scrollWidth": 768,
+      "overflow": false
+    },
+    {
+      "page": "deworming-overflow",
+      "file": "deworming-overflow-390x844.png",
+      "w": 390,
+      "h": 844,
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "overflow": false
+    },
+    {
+      "page": "deworming-overflow",
+      "file": "deworming-overflow-360x800.png",
+      "w": 360,
+      "h": 800,
+      "clientWidth": 360,
+      "scrollWidth": 360,
+      "overflow": false
+    },
+    {
+      "page": "view",
+      "file": "B-view-edit-1440.png",
+      "w": 1440,
+      "h": 900,
+      "clientWidth": 1440,
+      "scrollWidth": 1440,
+      "overflow": false
+    },
+    {
+      "page": "edit",
+      "file": "C-edit-personal-1440.png",
+      "w": 1440,
+      "h": 900,
+      "clientWidth": 1440,
+      "scrollWidth": 1440,
+      "overflow": false
+    },
+    {
+      "page": "edit",
+      "file": "D-edit-personal-820.png",
+      "w": 820,
+      "h": 1180,
+      "clientWidth": 820,
+      "scrollWidth": 820,
+      "overflow": false
+    },
+    {
+      "page": "edit",
+      "file": "E-edit-personal-390.png",
+      "w": 390,
+      "h": 844,
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "overflow": false
+    },
+    {
+      "page": "edit-overflow",
+      "file": "edit-overflow-1366x768.png",
+      "w": 1366,
+      "h": 768,
+      "clientWidth": 1366,
+      "scrollWidth": 1366,
+      "overflow": false
+    },
+    {
+      "page": "edit-overflow",
+      "file": "edit-overflow-768x1024.png",
+      "w": 768,
+      "h": 1024,
+      "clientWidth": 768,
+      "scrollWidth": 768,
+      "overflow": false
+    },
+    {
+      "page": "edit-overflow",
+      "file": "edit-overflow-360x800.png",
+      "w": 360,
+      "h": 800,
+      "clientWidth": 360,
+      "scrollWidth": 360,
+      "overflow": false
+    }
+  ]
+}

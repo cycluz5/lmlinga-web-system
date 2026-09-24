@@ -1,0 +1,13 @@
+{
+  "capturedAt": "2026-08-12T14:14:06.113Z",
+  "listingColumns": [
+    "Full Name",
+    "Age",
+    "Method",
+    "Start Date",
+    "Last Visit",
+    "Actions"
+  ],
+  "editRule": "Edit targets latest visit by visited_at; falls back to Add Visit when no visits exist",
+  "deletePersistence": "UI preview only — confirmation modal + toast, no backend delete route"
+}

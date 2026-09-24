@@ -1,0 +1,416 @@
+/**
+ * LMLinga — Child Immunization Birth History dedicated edit page
+ * Reuses accepted Birth History form visual language (.lml-child-imm__birth-*).
+ */
+
+.lml-bh-edit {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+    margin-inline: 0;
+    position: relative;
+    box-sizing: border-box;
+}
+
+@media (min-width: 768px) {
+    .lml-bh-edit {
+        gap: 1rem;
+    }
+}
+
+.lml-bh-edit__back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    margin: 0;
+    color: var(--lml-light-green);
+    text-decoration: none;
+    border-radius: var(--lml-radius-sm);
+    flex: 0 0 auto;
+}
+
+.lml-bh-edit__back i {
+    font-size: 1.25rem;
+    line-height: 1;
+    color: var(--lml-light-green);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .lml-bh-edit__back:hover {
+        background-color: rgba(var(--lml-light-green-rgb), 0.18);
+        color: #3da653;
+    }
+
+    .lml-bh-edit__back:hover i {
+        color: #3da653;
+    }
+}
+
+.lml-bh-edit__not-found {
+    padding: 1.15rem;
+    background: #fff;
+    border: 1px solid rgba(var(--lml-soft-green-rgb), 0.9);
+    border-radius: var(--lml-radius-md);
+}
+
+.lml-bh-edit__not-found-title {
+    margin: 0 0 0.45rem;
+    color: var(--lml-deep-green);
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.lml-bh-edit__not-found-message {
+    margin: 0 0 0.85rem;
+    color: #4b5563;
+    font-size: 0.9rem;
+    line-height: 1.45;
+}
+
+.lml-bh-edit__not-found-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.5rem;
+    color: var(--lml-text-green);
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: var(--lml-radius-md);
+}
+
+.lml-bh-edit__not-found-link:hover {
+    color: var(--lml-deep-green);
+    text-decoration: underline;
+}
+
+/*
+ | Member summary card reuses .lml-child-imm__summary styles from
+ | child-immunization.css. Keep a clear gap before the edit form.
+ */
+.lml-bh-edit__summary {
+    margin: 0;
+}
+
+.lml-bh-edit__summary .lml-child-imm__birth-head {
+    /* No Edit link on this dedicated page — title alone. */
+    justify-content: flex-start;
+}
+
+/* ── Birth History form card (accepted visual baseline) ──────── */
+.lml-child-imm__birth-editor {
+    min-width: 0;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: #fff;
+    border: 1px solid rgba(81, 194, 105, 0.35);
+    border-radius: var(--lml-radius-md);
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+.lml-child-imm__birth-editor-form {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    min-width: 0;
+}
+
+.lml-child-imm__birth-editor-head {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0;
+    padding: 0.7rem 1.05rem;
+    background-color: var(--lml-light-green);
+    color: #fff;
+}
+
+.lml-child-imm__birth-editor-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.lml-child-imm__birth-editor-title:focus {
+    outline: none;
+}
+
+.lml-child-imm__birth-editor-title:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 3px;
+    border-radius: 0.25rem;
+}
+
+.lml-child-imm__birth-editor-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 1.65rem;
+    height: 1.65rem;
+    border-radius: 999px;
+    border: 1.5px solid rgba(255, 255, 255, 0.95);
+    color: #fff;
+    font-size: 0.85rem;
+    line-height: 1;
+}
+
+.lml-child-imm__birth-editor-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+    min-width: 0;
+    padding: 1.15rem 1.1rem 1.2rem;
+    box-sizing: border-box;
+}
+
+.lml-child-imm__birth-editor-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.95rem 1.1rem;
+    min-width: 0;
+}
+
+@media (min-width: 576px) {
+    .lml-child-imm__birth-editor-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .lml-child-imm__birth-field--third {
+        grid-column: span 1;
+    }
+}
+
+@media (min-width: 992px) {
+    .lml-child-imm__birth-editor-grid {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 1rem 1.25rem;
+    }
+
+    .lml-child-imm__birth-field--third {
+        grid-column: span 2;
+    }
+
+    .lml-child-imm__birth-field--half {
+        grid-column: span 3;
+    }
+}
+
+.lml-child-imm__birth-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+    min-width: 0;
+}
+
+.lml-child-imm__birth-label {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.8rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.lml-child-imm__birth-input,
+.lml-child-imm__birth-select {
+    width: 100%;
+    min-width: 0;
+    min-height: 2.75rem;
+    height: 2.75rem;
+    padding: 0.4rem 0.7rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.45rem;
+    background: #fff;
+    color: #111827;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.3;
+    box-sizing: border-box;
+}
+
+.lml-child-imm__birth-input::placeholder {
+    color: #9ca3af;
+    font-weight: 400;
+}
+
+.lml-child-imm__birth-input--readonly,
+.lml-child-imm__birth-input[readonly] {
+    background-color: #f9fafb;
+    color: #374151;
+    cursor: default;
+}
+
+.lml-child-imm__birth-select {
+    appearance: none;
+    -webkit-appearance: none;
+    padding-right: 2.25rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2351c269'%3E%3Cpath d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.7rem center;
+    background-size: 0.85rem;
+    cursor: pointer;
+}
+
+.lml-child-imm__birth-input:not([readonly]):hover,
+.lml-child-imm__birth-select:hover {
+    border-color: rgba(var(--lml-light-green-rgb), 0.85);
+}
+
+.lml-child-imm__birth-input:focus-visible,
+.lml-child-imm__birth-select:focus-visible {
+    border-color: var(--lml-light-green);
+    box-shadow: 0 0 0 0.15rem rgba(var(--lml-primary-rgb), 0.2);
+    outline: none;
+}
+
+.lml-child-imm__birth-input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+    opacity: 0.7;
+}
+
+.lml-child-imm__birth-editor-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.65rem;
+    min-width: 0;
+}
+
+.lml-child-imm__birth-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;
+    min-width: 5.5rem;
+    padding: 0.45rem 1.35rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    text-decoration: none;
+    box-sizing: border-box;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.lml-child-imm__birth-btn--close {
+    border: 1.5px solid var(--lml-light-green);
+    background: #fff;
+    color: var(--lml-text-green);
+}
+
+.lml-child-imm__birth-btn--close:hover {
+    background: #f0fdf4;
+    color: var(--lml-deep-green);
+}
+
+.lml-child-imm__birth-btn--save {
+    border: 1px solid var(--lml-light-green);
+    background-color: var(--lml-light-green);
+    color: #fff;
+    box-shadow: 0 1px 3px rgba(var(--lml-light-green-rgb), 0.35);
+}
+
+.lml-child-imm__birth-btn--save:hover {
+    background-color: #3da653;
+    border-color: #3da653;
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(var(--lml-light-green-rgb), 0.4);
+}
+
+.lml-child-imm__birth-btn--save:active {
+    background-color: var(--lml-deep-green);
+    border-color: var(--lml-deep-green);
+}
+
+.lml-child-imm__birth-btn:focus-visible {
+    outline: 0;
+    box-shadow: 0 0 0 0.15rem rgba(var(--lml-primary-rgb), 0.35);
+}
+
+@media (max-width: 767.98px) {
+    .lml-bh-edit {
+        gap: 0.75rem;
+    }
+
+    .lml-child-imm__birth-editor-head {
+        padding: 0.65rem 0.85rem;
+    }
+
+    .lml-child-imm__birth-editor-body {
+        padding: 0.95rem 0.85rem 1.05rem;
+        gap: 1rem;
+    }
+
+    .lml-child-imm__birth-editor-grid {
+        grid-template-columns: 1fr;
+        gap: 0.85rem;
+    }
+
+    .lml-child-imm__birth-field--third,
+    .lml-child-imm__birth-field--half {
+        grid-column: auto;
+    }
+
+    .lml-child-imm__birth-input,
+    .lml-child-imm__birth-select {
+        min-height: 2.75rem;
+        height: 2.75rem;
+    }
+
+    .lml-child-imm__birth-select {
+        white-space: normal;
+    }
+
+    .lml-child-imm__birth-editor-actions {
+        width: 100%;
+        justify-content: stretch;
+        gap: 0.55rem;
+    }
+
+    .lml-child-imm__birth-btn {
+        flex: 1 1 calc(50% - 0.3rem);
+        min-width: 0;
+        min-height: 2.75rem;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .lml-child-imm__birth-editor-body {
+        padding: 1.05rem 1rem 1.15rem;
+    }
+
+    .lml-child-imm__birth-editor-grid {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: 0.95rem 1rem;
+    }
+
+    .lml-child-imm__birth-field--third {
+        grid-column: span 2;
+    }
+
+    .lml-child-imm__birth-field--half {
+        grid-column: span 3;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .lml-bh-edit__back,
+    .lml-child-imm__birth-btn,
+    .lml-child-imm__birth-input,
+    .lml-child-imm__birth-select {
+        transition: none;
+    }
+}

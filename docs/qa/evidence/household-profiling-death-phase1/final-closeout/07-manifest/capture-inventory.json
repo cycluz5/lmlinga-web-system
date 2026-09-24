@@ -1,0 +1,725 @@
+{
+  "screenshots": [
+    "01-responsive/01-alive-1440x900.png",
+    "01-responsive/01-alive-1366x768.png",
+    "01-responsive/01-alive-820x1180.png",
+    "01-responsive/01-alive-768x1024.png",
+    "01-responsive/01-alive-390x844.png",
+    "01-responsive/01-alive-360x800.png",
+    "01-responsive/02-create-1440x900.png",
+    "01-responsive/02-create-1366x768.png",
+    "01-responsive/02-create-820x1180.png",
+    "01-responsive/02-create-768x1024.png",
+    "01-responsive/02-create-390x844.png",
+    "01-responsive/02-create-360x800.png",
+    "01-responsive/03-view-1440x900.png",
+    "01-responsive/03-view-1366x768.png",
+    "01-responsive/03-view-820x1180.png",
+    "01-responsive/03-view-768x1024.png",
+    "01-responsive/03-view-390x844.png",
+    "01-responsive/03-view-360x800.png",
+    "01-responsive/04-edit-1440x900.png",
+    "01-responsive/04-edit-1366x768.png",
+    "01-responsive/04-edit-820x1180.png",
+    "01-responsive/04-edit-768x1024.png",
+    "01-responsive/04-edit-390x844.png",
+    "01-responsive/04-edit-360x800.png",
+    "03-accessibility/focus-save-1440x900.png",
+    "03-accessibility/focus-edit-1440x900.png",
+    "03-accessibility/focus-record-cta-1440x900.png",
+    "02-navigation/01-member-death-view-link-1440x900.png",
+    "02-navigation/02-death-index-after-view-1440x900.png",
+    "02-navigation/03-after-record-cta-create-1440x900.png",
+    "02-navigation/04-existing-record-view-1440x900.png",
+    "02-navigation/05-after-edit-click-1440x900.png"
+  ],
+  "navigation": [
+    {
+      "step": "1-member-death-view-link",
+      "href": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-001/death",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-001?v=death-final-closeout"
+    },
+    {
+      "step": "2-after-view-click",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-001/death",
+      "mode": "empty"
+    },
+    {
+      "step": "3-record-cta-href",
+      "href": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-001/death/create"
+    },
+    {
+      "step": "4-create-page",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-001/death/create"
+    },
+    {
+      "step": "5-existing-record-view",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-002/death?v=death-final-closeout",
+      "mode": "view"
+    },
+    {
+      "step": "6-edit-href",
+      "href": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-002/death/edit"
+    },
+    {
+      "step": "7-edit-page",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-002/death/edit",
+      "mode": "edit"
+    }
+  ],
+  "responsiveChecks": {
+    "alive-1440x900": {
+      "mode": "empty",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-001/death?v=death-final-closeout",
+      "overflow": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "overflowX": false
+      },
+      "memberMeta": {
+        "flexDirection": "column",
+        "stacked": true,
+        "tops": [
+          156,
+          180,
+          204
+        ]
+      }
+    },
+    "alive-1366x768": {
+      "mode": "empty",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-001/death?v=death-final-closeout",
+      "overflow": {
+        "scrollWidth": 1366,
+        "clientWidth": 1366,
+        "overflowX": false
+      },
+      "memberMeta": {
+        "flexDirection": "column",
+        "stacked": true,
+        "tops": [
+          154,
+          178,
+          202
+        ]
+      }
+    },
+    "alive-820x1180": {
+      "mode": "empty",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-001/death?v=death-final-closeout",
+      "overflow": {
+        "scrollWidth": 820,
+        "clientWidth": 820,
+        "overflowX": false
+      },
+      "memberMeta": {
+        "flexDirection": "column",
+        "stacked": true,
+        "tops": [
+          146,
+          170,
+          194
+        ]
+      }
+    },
+    "alive-768x1024": {
+      "mode": "empty",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-001/death?v=death-final-closeout",
+      "overflow": {
+        "scrollWidth": 768,
+        "clientWidth": 768,
+        "overflowX": false
+      },
+      "memberMeta": {
+        "flexDirection": "column",
+        "stacked": true,
+        "tops": [
+          146,
+          170,
+          194
+        ]
+      }
+    },
+    "alive-390x844": {
+      "mode": "empty",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-001/death?v=death-final-closeout",
+      "overflow": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "overflowX": false
+      },
+      "memberMeta": {
+        "flexDirection": "column",
+        "stacked": true,
+        "tops": [
+          209,
+          233,
+          256
+        ]
+      }
+    },
+    "alive-360x800": {
+      "mode": "empty",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-001/death?v=death-final-closeout",
+      "overflow": {
+        "scrollWidth": 360,
+        "clientWidth": 360,
+        "overflowX": false
+      },
+      "memberMeta": {
+        "flexDirection": "column",
+        "stacked": true,
+        "tops": [
+          209,
+          233,
+          256
+        ]
+      }
+    },
+    "create-1440x900": {
+      "mode": "create",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-001/death/create?v=death-final-closeout",
+      "overflow": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "overflowX": false
+      },
+      "memberMeta": {
+        "flexDirection": "column",
+        "stacked": true,
+        "tops": [
+          156,
+          180,
+          204
+        ]
+      }
+    },
+    "create-1366x768": {
+      "mode": "create",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-001/death/create?v=death-final-closeout",
+      "overflow": {
+        "scrollWidth": 1366,
+        "clientWidth": 1366,
+        "overflowX": false
+      },
+      "memberMeta": {
+        "flexDirection": "column",
+        "stacked": true,
+        "tops": [
+          154,
+          178,
+          202
+        ]
+      }
+    },
+    "create-820x1180": {
+      "mode": "create",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-001/death/create?v=death-final-closeout",
+      "overflow": {
+        "scrollWidth": 820,
+        "clientWidth": 820,
+        "overflowX": false
+      },
+      "memberMeta": {
+        "flexDirection": "column",
+        "stacked": true,
+        "tops": [
+          146,
+          170,
+          194
+        ]
+      }
+    },
+    "create-768x1024": {
+      "mode": "create",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-001/death/create?v=death-final-closeout",
+      "overflow": {
+        "scrollWidth": 768,
+        "clientWidth": 768,
+        "overflowX": false
+      },
+      "memberMeta": {
+        "flexDirection": "column",
+        "stacked": true,
+        "tops": [
+          146,
+          170,
+          194
+        ]
+      }
+    },
+    "create-390x844": {
+      "mode": "create",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-001/death/create?v=death-final-closeout",
+      "overflow": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "overflowX": false
+      },
+      "memberMeta": {
+        "flexDirection": "column",
+        "stacked": true,
+        "tops": [
+          209,
+          233,
+          256
+        ]
+      }
+    },
+    "create-360x800": {
+      "mode": "create",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-001/death/create?v=death-final-closeout",
+      "overflow": {
+        "scrollWidth": 360,
+        "clientWidth": 360,
+        "overflowX": false
+      },
+      "memberMeta": {
+        "flexDirection": "column",
+        "stacked": true,
+        "tops": [
+          209,
+          233,
+          256
+        ]
+      }
+    },
+    "view-1440x900": {
+      "mode": "view",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-002/death?v=death-final-closeout",
+      "overflow": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "overflowX": false
+      },
+      "memberMeta": {
+        "flexDirection": "column",
+        "stacked": true,
+        "tops": [
+          156,
+          180,
+          204
+        ]
+      }
+    },
+    "view-1366x768": {
+      "mode": "view",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-002/death?v=death-final-closeout",
+      "overflow": {
+        "scrollWidth": 1366,
+        "clientWidth": 1366,
+        "overflowX": false
+      },
+      "memberMeta": {
+        "flexDirection": "column",
+        "stacked": true,
+        "tops": [
+          154,
+          178,
+          202
+        ]
+      }
+    },
+    "view-820x1180": {
+      "mode": "view",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-002/death?v=death-final-closeout",
+      "overflow": {
+        "scrollWidth": 820,
+        "clientWidth": 820,
+        "overflowX": false
+      },
+      "memberMeta": {
+        "flexDirection": "column",
+        "stacked": true,
+        "tops": [
+          146,
+          170,
+          194
+        ]
+      }
+    },
+    "view-768x1024": {
+      "mode": "view",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-002/death?v=death-final-closeout",
+      "overflow": {
+        "scrollWidth": 768,
+        "clientWidth": 768,
+        "overflowX": false
+      },
+      "memberMeta": {
+        "flexDirection": "column",
+        "stacked": true,
+        "tops": [
+          146,
+          170,
+          194
+        ]
+      }
+    },
+    "view-390x844": {
+      "mode": "view",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-002/death?v=death-final-closeout",
+      "overflow": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "overflowX": false
+      },
+      "memberMeta": {
+        "flexDirection": "column",
+        "stacked": true,
+        "tops": [
+          209,
+          233,
+          256
+        ]
+      }
+    },
+    "view-360x800": {
+      "mode": "view",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-002/death?v=death-final-closeout",
+      "overflow": {
+        "scrollWidth": 360,
+        "clientWidth": 360,
+        "overflowX": false
+      },
+      "memberMeta": {
+        "flexDirection": "column",
+        "stacked": true,
+        "tops": [
+          209,
+          233,
+          256
+        ]
+      }
+    },
+    "edit-1440x900": {
+      "mode": "edit",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-002/death/edit?v=death-final-closeout",
+      "overflow": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "overflowX": false
+      },
+      "memberMeta": {
+        "flexDirection": "column",
+        "stacked": true,
+        "tops": [
+          156,
+          180,
+          204
+        ]
+      }
+    },
+    "edit-1366x768": {
+      "mode": "edit",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-002/death/edit?v=death-final-closeout",
+      "overflow": {
+        "scrollWidth": 1366,
+        "clientWidth": 1366,
+        "overflowX": false
+      },
+      "memberMeta": {
+        "flexDirection": "column",
+        "stacked": true,
+        "tops": [
+          154,
+          178,
+          202
+        ]
+      }
+    },
+    "edit-820x1180": {
+      "mode": "edit",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-002/death/edit?v=death-final-closeout",
+      "overflow": {
+        "scrollWidth": 820,
+        "clientWidth": 820,
+        "overflowX": false
+      },
+      "memberMeta": {
+        "flexDirection": "column",
+        "stacked": true,
+        "tops": [
+          146,
+          170,
+          194
+        ]
+      }
+    },
+    "edit-768x1024": {
+      "mode": "edit",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-002/death/edit?v=death-final-closeout",
+      "overflow": {
+        "scrollWidth": 768,
+        "clientWidth": 768,
+        "overflowX": false
+      },
+      "memberMeta": {
+        "flexDirection": "column",
+        "stacked": true,
+        "tops": [
+          146,
+          170,
+          194
+        ]
+      }
+    },
+    "edit-390x844": {
+      "mode": "edit",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-002/death/edit?v=death-final-closeout",
+      "overflow": {
+        "scrollWidth": 390,
+        "clientWidth": 390,
+        "overflowX": false
+      },
+      "memberMeta": {
+        "flexDirection": "column",
+        "stacked": true,
+        "tops": [
+          209,
+          233,
+          256
+        ]
+      }
+    },
+    "edit-360x800": {
+      "mode": "edit",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-002/death/edit?v=death-final-closeout",
+      "overflow": {
+        "scrollWidth": 360,
+        "clientWidth": 360,
+        "overflowX": false
+      },
+      "memberMeta": {
+        "flexDirection": "column",
+        "stacked": true,
+        "tops": [
+          209,
+          233,
+          256
+        ]
+      }
+    }
+  },
+  "contrast": [
+    {
+      "label": "Record death information — text vs background",
+      "foregroundCss": "rgb(20, 108, 46)",
+      "backgroundCss": "rgb(255, 255, 255)",
+      "foregroundHex": "#146C2E",
+      "backgroundHex": "#FFFFFF",
+      "ratio": 6.53,
+      "threshold": 4.5,
+      "result": "PASS"
+    },
+    {
+      "label": "Record death information — icon vs background",
+      "foregroundCss": "rgb(20, 108, 46)",
+      "backgroundCss": "rgb(255, 255, 255)",
+      "foregroundHex": "#146C2E",
+      "backgroundHex": "#FFFFFF",
+      "ratio": 6.53,
+      "threshold": 4.5,
+      "result": "PASS"
+    },
+    {
+      "label": "Record death information — border vs background",
+      "foregroundCss": "rgba(81, 194, 105, 0.55)",
+      "backgroundCss": "rgb(255, 255, 255)",
+      "foregroundHex": "#9FDDAD",
+      "backgroundHex": "#FFFFFF",
+      "ratio": 1.56,
+      "threshold": 3,
+      "result": "FAIL"
+    },
+    {
+      "label": "DEATH INFORMATION heading vs panel/page background",
+      "foregroundCss": "rgb(20, 108, 46)",
+      "backgroundCss": "rgb(255, 255, 255)",
+      "foregroundHex": "#146C2E",
+      "backgroundHex": "#FFFFFF",
+      "ratio": 6.53,
+      "threshold": 4.5,
+      "result": "PASS"
+    },
+    {
+      "label": "Save button — normal",
+      "foregroundCss": "rgb(255, 255, 255)",
+      "backgroundCss": "rgb(21, 115, 71)",
+      "foregroundHex": "#FFFFFF",
+      "backgroundHex": "#157347",
+      "ratio": 5.87,
+      "threshold": 4.5,
+      "result": "PASS"
+    },
+    {
+      "label": "Save button — hover",
+      "foregroundCss": "rgb(255, 255, 255)",
+      "backgroundCss": "rgb(15, 81, 50)",
+      "foregroundHex": "#FFFFFF",
+      "backgroundHex": "#0F5132",
+      "ratio": 9.36,
+      "threshold": 4.5,
+      "result": "PASS"
+    },
+    {
+      "label": "Save button — focus-visible colors",
+      "foregroundCss": "rgb(255, 255, 255)",
+      "backgroundCss": "rgb(15, 81, 50)",
+      "foregroundHex": "#FFFFFF",
+      "backgroundHex": "#0F5132",
+      "ratio": 9.36,
+      "threshold": 4.5,
+      "result": "PASS"
+    },
+    {
+      "label": "Edit button — normal",
+      "foregroundCss": "rgb(255, 255, 255)",
+      "backgroundCss": "rgb(15, 81, 50)",
+      "foregroundHex": "#FFFFFF",
+      "backgroundHex": "#0F5132",
+      "ratio": 9.36,
+      "threshold": 4.5,
+      "result": "PASS"
+    },
+    {
+      "label": "Edit button — hover",
+      "foregroundCss": "rgb(255, 255, 255)",
+      "backgroundCss": "rgb(15, 81, 50)",
+      "foregroundHex": "#FFFFFF",
+      "backgroundHex": "#0F5132",
+      "ratio": 9.36,
+      "threshold": 4.5,
+      "result": "PASS"
+    }
+  ],
+  "keyboard": {
+    "saveFocusStyles": {
+      "color": "rgb(255, 255, 255)",
+      "background": "rgb(15, 81, 50)",
+      "outline": "rgb(34, 197, 94) solid 2px",
+      "outlineWidth": "2px",
+      "boxShadow": "none"
+    },
+    "editFocusStyles": {
+      "color": "rgb(255, 255, 255)",
+      "background": "rgb(15, 81, 50)",
+      "outline": "rgb(34, 197, 94) solid 2px",
+      "outlineWidth": "2px",
+      "boxShadow": "none"
+    },
+    "noRecord": {
+      "steps": [
+        {
+          "phase": "back-focused",
+          "tag": "a",
+          "className": "lml-death__back lml-focus-ring",
+          "outlineWidth": "2px",
+          "outline": "rgb(34, 197, 94) solid 2px"
+        },
+        {
+          "tag": "a",
+          "id": null,
+          "className": "lml-death__btn lml-death__btn--outline lml-focus-ring",
+          "dataAttrs": "data-death-record-cta",
+          "text": "Record death information",
+          "outline": "rgb(20, 108, 46) solid 2px",
+          "outlineWidth": "2px",
+          "boxShadow": "none"
+        }
+      ],
+      "mode": "empty",
+      "backReached": true,
+      "backFocusVisible": true,
+      "recordCtaReached": true,
+      "recordCtaFocusVisible": true
+    },
+    "create": {
+      "fields": {
+        "save": true,
+        "cause": true,
+        "date": true,
+        "chooseFile": true
+      }
+    },
+    "view": {
+      "readonlyCount": 2,
+      "readonlyTags": [
+        "p",
+        "p"
+      ],
+      "readonlyTabindex": [
+        null,
+        null
+      ],
+      "readonlyContentEditable": [
+        null,
+        null
+      ],
+      "editPresent": true,
+      "editReached": true,
+      "readonlyFocused": false
+    },
+    "edit": {
+      "fields": {
+        "save": true,
+        "cause": true,
+        "date": true,
+        "chooseFile": true
+      }
+    }
+  },
+  "dom": {
+    "view": {
+      "mode": "view",
+      "readonly": [
+        {
+          "tag": "p",
+          "className": "lml-death__readonly",
+          "tabindex": null,
+          "contentEditable": null,
+          "isInput": false
+        },
+        {
+          "tag": "p",
+          "className": "lml-death__readonly",
+          "tabindex": null,
+          "contentEditable": null,
+          "isInput": false
+        }
+      ],
+      "headings": [
+        {
+          "tag": "h1",
+          "id": null,
+          "text": "Death Information"
+        },
+        {
+          "tag": "h2",
+          "id": "lml-death-member-name",
+          "text": "Kristine Reyes"
+        },
+        {
+          "tag": "h2",
+          "id": "lml-death-section-title",
+          "text": "DEATH INFORMATION"
+        },
+        {
+          "tag": "h3",
+          "id": null,
+          "text": "Death Certificate"
+        }
+      ],
+      "decorativeAriaHiddenCount": 4
+    },
+    "form": {
+      "mode": "edit",
+      "fileInputPresent": true,
+      "fileAccept": ".png,.jpg,.jpeg,.pdf,image/png,image/jpeg,application/pdf",
+      "labelForFile": true,
+      "labelText": "Choose File",
+      "causeDescribedBy": null
+    }
+  },
+  "errors": []
+}

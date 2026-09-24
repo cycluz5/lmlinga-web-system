@@ -1,0 +1,17 @@
+{
+  "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-002/death/edit?v=death-validation-dom",
+  "mode": "edit",
+  "cause": {
+    "ariaInvalid": "true",
+    "ariaDescribedBy": "lml-death-cause-error",
+    "errorEl": true,
+    "errorText": "The cause of death field must not be greater than 500 characters.",
+    "valueLength": 501
+  },
+  "date": {
+    "ariaInvalid": "false",
+    "ariaDescribedBy": null,
+    "errorEl": false,
+    "errorText": null
+  }
+}

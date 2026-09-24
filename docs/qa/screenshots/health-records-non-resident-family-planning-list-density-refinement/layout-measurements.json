@@ -1,0 +1,53 @@
+[
+  {
+    "viewport": "1440x900",
+    "ok": true,
+    "pageOverflow": false,
+    "tableBodyFontSize": "15px",
+    "tableHeaderFontSize": "15px",
+    "firstRowHeight": 52,
+    "firstRowPaddingTop": 15,
+    "firstRowPaddingBottom": 15,
+    "filterTableGap": 20,
+    "footerTableGap": 18,
+    "paginationVisible": true,
+    "perPageControlPresent": false,
+    "currentPage": "1",
+    "previousDisabled": true,
+    "nextDisabled": true
+  },
+  {
+    "viewport": "820x1180",
+    "ok": true,
+    "pageOverflow": false,
+    "tableBodyFontSize": "15px",
+    "tableHeaderFontSize": "15px",
+    "firstRowHeight": 52,
+    "firstRowPaddingTop": 15,
+    "firstRowPaddingBottom": 15,
+    "filterTableGap": 20,
+    "footerTableGap": 18,
+    "paginationVisible": true,
+    "perPageControlPresent": false,
+    "currentPage": "1",
+    "previousDisabled": true,
+    "nextDisabled": true
+  },
+  {
+    "viewport": "390x844",
+    "ok": true,
+    "pageOverflow": false,
+    "tableBodyFontSize": "15px",
+    "tableHeaderFontSize": "15px",
+    "firstRowHeight": 73,
+    "firstRowPaddingTop": 15,
+    "firstRowPaddingBottom": 15,
+    "filterTableGap": 20,
+    "footerTableGap": 18,
+    "paginationVisible": true,
+    "perPageControlPresent": false,
+    "currentPage": "1",
+    "previousDisabled": true,
+    "nextDisabled": true
+  }
+]

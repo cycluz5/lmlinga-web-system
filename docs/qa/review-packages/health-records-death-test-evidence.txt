@@ -1,0 +1,33 @@
+﻿===== HealthRecordsDeathTest.php =====
+Command:
+php vendor/phpunit/phpunit/phpunit tests/Feature/HealthRecordsDeathTest.php
+
+PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.2.12
+Configuration: C:\Users\Kathlyn Cris\Desktop\LMLinga_Dev\lmlingaFinal\phpunit.xml
+
+..........                                                        10 / 10 (100%)
+
+Time: 00:00.686, Memory: 34.00 MB
+
+OK (10 tests, 113 assertions)
+
+Exit code: 0
+
+===== HouseholdProfilingDeathTest.php =====
+Command:
+php vendor/phpunit/phpunit/phpunit tests/Feature/HouseholdProfilingDeathTest.php
+
+PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.2.12
+Configuration: C:\Users\Kathlyn Cris\Desktop\LMLinga_Dev\lmlingaFinal\phpunit.xml
+
+..............                                                    14 / 14 (100%)
+
+Time: 00:00.745, Memory: 36.00 MB
+
+OK (14 tests, 131 assertions)
+
+Exit code: 0

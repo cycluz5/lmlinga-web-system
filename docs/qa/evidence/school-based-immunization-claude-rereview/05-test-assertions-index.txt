@@ -1,0 +1,155 @@
+﻿
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:12: * HPV dose labels use "1st Dose" / "2nd Dose" when Figma 
+layer text appears
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:28:    public function 
+test_named_school_based_immunization_route_resolves(): void
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:36:    public function 
+test_route_preserves_household_no_and_member_id(): void
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:49:    public function 
+test_route_is_protected_by_ui_role_middleware(): void
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:59:    public function 
+test_redirect_stub_is_replaced_with_real_destination(): void
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:77:    public function 
+test_child_nutrition_remains_redirect_stub(): void
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:91:    public function 
+test_child_immunization_destination_remains_unchanged(): void
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:116:    public function 
+test_child_care_accordion_still_links_to_all_three_named_routes(): void
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:137:    public function 
+test_page_renders_correct_demo_member(): void
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:160:    public function 
+test_household_profiling_is_active_and_health_records_collapsed(): void
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:193:    public function 
+test_page_contains_one_h1_with_school_based_immunization_title(): void
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:214:    public function 
+test_member_and_birth_history_summary_fields_render(): void
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:237:    public function 
+test_grade_1_and_grade_7_groups_render(): void
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:257:    public function 
+test_hpv_first_and_second_dose_render(): void
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:267:        
+$this->assertStringContainsString('id="lml-sbi-hpv-1"', $html);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:268:        
+$this->assertStringContainsString('id="lml-sbi-hpv-2"', $html);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:272:            '/id="lml-sbi-hpv-heading"[^>]*>\s*Human 
+Papillomavirus \(HPV\)\s*<\/h3>/u',
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:275:        // Decision: Vaccines Type HPV items use short 
+"1st Dose" / "2nd Dose" labels.
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:277:            '/lml-sbi__types-legend[^>]*>\s*Human 
+Papillomavirus\s*<\/legend>[\s\S]*?id="lml-sbi-type-hpv-1"[\s\S]*?1st Dose/u',
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:281:            '/id="lml-sbi-type-hpv-2"[\s\S]*?2nd Dose/u',
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:286:    public function 
+test_hpv_section_uses_neutral_heading_without_member_contradiction(): void
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:296:        $this->assertStringContainsString('Human 
+Papillomavirus (HPV)', $html);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:297:        $this->assertStringNotContainsString('For 9 Years 
+Old Female', $html);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:298:        $this->assertStringNotContainsString('9 Years 
+Old', $html);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:306:    public function 
+test_empty_demo_record_does_not_show_false_completion_presentation(): void
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:318:        
+$this->assertStringNotContainsString('lml-sbi__hpv-badge', $html);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:321:            
+'/lml-sbi__hpv-card[\s\S]*?>\s*Completed\s*</u',
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:325:        
+preg_match_all('/<input\b[^>]*type="checkbox"[^>]*>/i', $html, $checkboxes);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:326:        $this->assertCount(6, $checkboxes[0]);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:327:        foreach ($checkboxes[0] as $input) {
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:332:    public function 
+test_six_vaccine_type_checkboxes_render_once_with_unique_ids(): void
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:347:            'lml-sbi-type-hpv-1',
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:348:            'lml-sbi-type-hpv-2',
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:359:        
+preg_match_all('/<input\b[^>]*type="checkbox"[^>]*>/i', $html, $checkboxes);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:360:        $this->assertCount(6, $checkboxes[0]);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:371:    public function 
+test_all_date_and_checkbox_inputs_are_optional(): void
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:382:        $this->assertCount(6, $dateInputs[0]);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:385:            
+$this->assertDoesNotMatchRegularExpression('/\brequired\b/i', $input);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:386:            
+$this->assertDoesNotMatchRegularExpression('/aria-required\s*=\s*["\']true["\']/i', $input);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:390:        
+preg_match_all('/<input\b[^>]*type="checkbox"[^>]*>/i', $html, $checkboxes);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:391:        $this->assertCount(6, $checkboxes[0]);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:393:        foreach ($checkboxes[0] as $input) {
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:394:            
+$this->assertDoesNotMatchRegularExpression('/\brequired\b/i', $input);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:395:            
+$this->assertDoesNotMatchRegularExpression('/aria-required\s*=\s*["\']true["\']/i', $input);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:400:        
+$this->assertStringNotContainsString('aria-required="true"', $html);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:404:    public function 
+test_page_has_no_pagination_stepper_or_previous_next_controls(): void
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:421:    public function 
+test_default_view_mode_shows_edit_and_hides_save(): void
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:449:    public function 
+test_view_mode_locks_school_based_controls_and_birth_history_stays_separate(): void
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:464:        $this->assertCount(6, $dateInputs[0]);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:468:            
+$this->assertDoesNotMatchRegularExpression('/\brequired\b/i', $input);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:471:        
+preg_match_all('/<input\b[^>]*type="checkbox"[^>]*>/i', $html, $checkboxes);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:472:        $this->assertCount(6, $checkboxes[0]);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:474:        foreach ($checkboxes[0] as $input) {
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:491:    public function 
+test_preview_safe_save_markup_allows_blank_and_has_no_persistence_endpoint(): void
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:502:        $this->assertStringContainsString('novalidate', 
+$html);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:517:    public function 
+test_date_and_checkbox_controls_are_independent_markup(): void
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:527:        // Dates and checkboxes share no coupling 
+attributes or shared state keys.
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:528:        
+$this->assertStringNotContainsString('data-sync-checkbox', $html);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:529:        
+$this->assertStringNotContainsString('data-sync-date', $html);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:532:        
+$this->assertStringNotContainsString('data-linked-checkbox', $html);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:536:        
+preg_match_all('/<input\b[^>]*type="checkbox"[^>]*>/i', $html, $boxes);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:537:        $this->assertCount(6, $dates[0]);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:538:        $this->assertCount(6, $boxes[0]);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:540:        // Dates and checkboxes both use data-sbi-field 
+but have no shared value coupling.
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:543:            
+$this->assertStringNotContainsString('type="checkbox"', $input);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:551:    public function 
+test_vaccine_type_checkboxes_are_manual_optional_and_unlocked_only_via_edit_fields(): void
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:566:            'lml-sbi-type-hpv-1',
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:567:            'lml-sbi-type-hpv-2',
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:578:        
+preg_match_all('/<input\b[^>]*type="checkbox"[^>]*>/i', $html, $checkboxes);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:579:        $this->assertCount(6, $checkboxes[0]);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:581:        foreach ($checkboxes[0] as $input) {
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:585:            
+$this->assertDoesNotMatchRegularExpression('/\brequired\b/i', $input);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:586:            
+$this->assertDoesNotMatchRegularExpression('/aria-required\s*=\s*["\']true["\']/i', $input);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:590:        // Preview save accepts blank dates with any 
+checkbox combination — no server validation.
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:591:        $this->assertStringContainsString('novalidate', 
+$html);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:600:     * Source-level guard: page script must not implement 
+date↔checkbox sync.
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:601:     * Preview Save therefore accepts checked+blank-date 
+and date+unchecked independently.
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:603:    public function 
+test_page_script_does_not_implement_date_checkbox_synchronization(): void
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:611:            'Does not sync Vaccines Type checkboxes with 
+date inputs.',
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:614:        
+$this->assertStringNotContainsString('data-sync-checkbox', $js);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:615:        
+$this->assertStringNotContainsString('data-sync-date', $js);
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:621:            
+'/addEventListener\(\s*[\'"](?:change|input)[\'"].{0,200}(?:checkbox|type="date"|type=\'date\')/is',
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:626:    public function 
+test_back_link_points_to_member_view_route(): void
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:644:    public function 
+test_malformed_identifiers_are_not_routable(): void
+tests\Feature\SchoolBasedImmunizationDestinationTest.php:652:    public function 
+test_unknown_member_shows_not_found_state(): void
+
+

@@ -1,0 +1,278 @@
+[
+  {
+    "viewport": "1440x900",
+    "pageOverflow": false,
+    "panelWidth": 1104,
+    "panelPaddingLeft": 40,
+    "contentWidth": 1024,
+    "headingStart": {
+      "x": 1,
+      "ratio": 0.001
+    },
+    "clientInfoLabelStart": {
+      "x": 1,
+      "ratio": 0.001
+    },
+    "clientInfoValueStart": {
+      "x": 401,
+      "ratio": 0.3916
+    },
+    "clientInfoValueAnchorPx": 401,
+    "clientInfoAllValueStarts": [
+      401,
+      401,
+      401
+    ],
+    "visitDateStart": {
+      "x": 1,
+      "ratio": 0.001
+    },
+    "remarksHeaderStart": {
+      "x": 401,
+      "ratio": 0.3916
+    },
+    "remarksValueStart": {
+      "x": 401,
+      "ratio": 0.3916
+    },
+    "remarksStart": {
+      "x": 401,
+      "ratio": 0.3916
+    },
+    "editActionStart": {
+      "x": 552,
+      "ratio": 0.5391
+    },
+    "historyTableWidth": 572,
+    "historyTableRightEdge": 573,
+    "commodityStart": {
+      "x": 1,
+      "ratio": 0.001
+    },
+    "quantityHeaderStart": {
+      "x": 401,
+      "ratio": 0.3916
+    },
+    "quantityValueStart": {
+      "x": 401,
+      "ratio": 0.3916
+    },
+    "quantityStart": {
+      "x": 401,
+      "ratio": 0.3916
+    },
+    "dateGivenHeaderStart": {
+      "x": 545,
+      "ratio": 0.5322
+    },
+    "dateGivenValueStart": {
+      "x": 545,
+      "ratio": 0.5322
+    },
+    "dateGivenStart": {
+      "x": 545,
+      "ratio": 0.5322
+    },
+    "commoditiesTableWidth": 664,
+    "commoditiesTableRightEdge": 665,
+    "sectionBorderTopWidths": [
+      "0px",
+      "0px"
+    ],
+    "historyHeaderBackground": "rgba(0, 0, 0, 0)",
+    "passMainValueColumn": true,
+    "passDateGivenColumn": true,
+    "beforeSnapshot": {
+      "clientInfoValueStartPx": 401,
+      "remarks": 401,
+      "quantity": 201,
+      "dateGiven": 401,
+      "edit": 533,
+      "note": "prior date-anchor pass (Quantity mid-track; Date Given on main)"
+    }
+  },
+  {
+    "viewport": "820x1180",
+    "pageOverflow": false,
+    "panelWidth": 772,
+    "panelPaddingLeft": 24,
+    "contentWidth": 724,
+    "headingStart": {
+      "x": 1,
+      "ratio": 0.0014
+    },
+    "clientInfoLabelStart": {
+      "x": 1,
+      "ratio": 0.0014
+    },
+    "clientInfoValueStart": {
+      "x": 233,
+      "ratio": 0.3218
+    },
+    "clientInfoValueAnchorPx": 233,
+    "clientInfoAllValueStarts": [
+      233,
+      233,
+      233
+    ],
+    "visitDateStart": {
+      "x": 1,
+      "ratio": 0.0014
+    },
+    "remarksHeaderStart": {
+      "x": 233,
+      "ratio": 0.3218
+    },
+    "remarksValueStart": {
+      "x": 233,
+      "ratio": 0.3218
+    },
+    "remarksStart": {
+      "x": 233,
+      "ratio": 0.3218
+    },
+    "editActionStart": {
+      "x": 344,
+      "ratio": 0.4751
+    },
+    "historyTableWidth": 364,
+    "historyTableRightEdge": 365,
+    "commodityStart": {
+      "x": 1,
+      "ratio": 0.0014
+    },
+    "quantityHeaderStart": {
+      "x": 233,
+      "ratio": 0.3218
+    },
+    "quantityValueStart": {
+      "x": 233,
+      "ratio": 0.3218
+    },
+    "quantityStart": {
+      "x": 233,
+      "ratio": 0.3218
+    },
+    "dateGivenHeaderStart": {
+      "x": 337,
+      "ratio": 0.4655
+    },
+    "dateGivenValueStart": {
+      "x": 337,
+      "ratio": 0.4655
+    },
+    "dateGivenStart": {
+      "x": 337,
+      "ratio": 0.4655
+    },
+    "commoditiesTableWidth": 424,
+    "commoditiesTableRightEdge": 425,
+    "sectionBorderTopWidths": [
+      "0px",
+      "0px"
+    ],
+    "historyHeaderBackground": "rgba(0, 0, 0, 0)",
+    "passMainValueColumn": true,
+    "passDateGivenColumn": true,
+    "beforeSnapshot": {
+      "clientInfoValueStartPx": 401,
+      "remarks": 401,
+      "quantity": 201,
+      "dateGiven": 401,
+      "edit": 533,
+      "note": "prior date-anchor pass (Quantity mid-track; Date Given on main)"
+    }
+  },
+  {
+    "viewport": "390x844",
+    "pageOverflow": false,
+    "panelWidth": 358,
+    "panelPaddingLeft": 16,
+    "contentWidth": 326,
+    "headingStart": {
+      "x": 1,
+      "ratio": 0.0031
+    },
+    "clientInfoLabelStart": {
+      "x": 1,
+      "ratio": 0.0031
+    },
+    "clientInfoValueStart": {
+      "x": 1,
+      "ratio": 0.0031
+    },
+    "clientInfoValueAnchorPx": 1,
+    "clientInfoAllValueStarts": [
+      1,
+      1,
+      1
+    ],
+    "visitDateStart": {
+      "x": 1,
+      "ratio": 0.0031
+    },
+    "remarksHeaderStart": {
+      "x": 137,
+      "ratio": 0.4202
+    },
+    "remarksValueStart": {
+      "x": 137,
+      "ratio": 0.4202
+    },
+    "remarksStart": {
+      "x": 137,
+      "ratio": 0.4202
+    },
+    "editActionStart": {
+      "x": 283,
+      "ratio": 0.8681
+    },
+    "historyTableWidth": 324,
+    "historyTableRightEdge": 325,
+    "commodityStart": {
+      "x": 1,
+      "ratio": 0.0031
+    },
+    "quantityHeaderStart": {
+      "x": 114,
+      "ratio": 0.3497
+    },
+    "quantityValueStart": {
+      "x": 114,
+      "ratio": 0.3497
+    },
+    "quantityStart": {
+      "x": 114,
+      "ratio": 0.3497
+    },
+    "dateGivenHeaderStart": {
+      "x": 195,
+      "ratio": 0.5982
+    },
+    "dateGivenValueStart": {
+      "x": 195,
+      "ratio": 0.5982
+    },
+    "dateGivenStart": {
+      "x": 195,
+      "ratio": 0.5982
+    },
+    "commoditiesTableWidth": 324,
+    "commoditiesTableRightEdge": 325,
+    "sectionBorderTopWidths": [
+      "0px",
+      "0px"
+    ],
+    "historyHeaderBackground": "rgba(0, 0, 0, 0)",
+    "passMainValueColumn": false,
+    "passDateGivenColumn": true,
+    "beforeSnapshot": {
+      "clientInfoValueStartPx": 401,
+      "remarks": 401,
+      "quantity": 201,
+      "dateGiven": 401,
+      "edit": 533,
+      "note": "prior date-anchor pass (Quantity mid-track; Date Given on main)"
+    }
+  }
+]

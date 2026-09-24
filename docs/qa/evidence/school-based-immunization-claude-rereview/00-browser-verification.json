@@ -1,0 +1,67 @@
+{
+  "captures": [
+    {
+      "name": "desktop-1440-view.png",
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "clientWidth": 1440
+    },
+    {
+      "name": "desktop-1440-edit.png",
+      "overflowX": false,
+      "scrollWidth": 1440,
+      "clientWidth": 1440
+    },
+    {
+      "name": "tablet-820-top.png",
+      "overflowX": false,
+      "scrollWidth": 820,
+      "clientWidth": 820
+    },
+    {
+      "name": "tablet-820-edit.png",
+      "overflowX": false,
+      "scrollWidth": 820,
+      "clientWidth": 820
+    },
+    {
+      "name": "mobile-390-summary.png",
+      "overflowX": false,
+      "scrollWidth": 390,
+      "clientWidth": 390
+    }
+  ],
+  "tapTarget": {
+    "labelMinHeightCss": "40px",
+    "labelWidth": 322,
+    "labelHeight": 40,
+    "checkboxVisualWidth": 16,
+    "checkboxVisualHeight": 16,
+    "labelClickToggles": true,
+    "labelClickDidToggle": true,
+    "toggledFrom": false,
+    "toggledTo": true,
+    "restored": true,
+    "meetsApprox44": true,
+    "labelTextToggle": {
+      "start": false,
+      "mid": true,
+      "end": false,
+      "labelTextToggles": true
+    }
+  },
+  "independence": {
+    "checkedBlank": {
+      "g1tdChecked": true,
+      "g1tdDate": "",
+      "g7mrChecked": true,
+      "hpv1Checked": true,
+      "allDatesBlank": true
+    },
+    "dateUnchecked": {
+      "date": "2024-06-15",
+      "checkbox": false,
+      "editing": "false"
+    }
+  }
+}

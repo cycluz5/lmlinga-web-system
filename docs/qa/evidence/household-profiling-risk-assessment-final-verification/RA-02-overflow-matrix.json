@@ -1,0 +1,20 @@
+{
+  "measured": [
+    {"screen":"S1","viewport":"820x1180","overflowX":false},
+    {"screen":"S4","viewport":"820x1180","overflowX":false},
+    {"screen":"S5","viewport":"820x1180","overflowX":false},
+    {"screen":"S1","viewport":"1366x768","overflowX":false},
+    {"screen":"S4","viewport":"1366x768","overflowX":false},
+    {"screen":"S5","viewport":"1366x768","overflowX":false},
+    {"screen":"S1","viewport":"768x1024","overflowX":false},
+    {"screen":"S4","viewport":"768x1024","overflowX":false},
+    {"screen":"S5","viewport":"768x1024","overflowX":false},
+    {"screen":"S1","viewport":"390x844","overflowX":false},
+    {"screen":"S4","viewport":"390x844","overflowX":false},
+    {"screen":"S5","viewport":"390x844","overflowX":false},
+    {"screen":"S1","viewport":"360x800","overflowX":false},
+    {"screen":"S4","viewport":"360x800","overflowX":false},
+    {"screen":"S5","viewport":"360x800","overflowX":false}
+  ],
+  "historyNote": "History screenshots captured earlier this pass at all six viewports; page overflowX false; table uses local .lml-risk-assess__table-scroll"
+}

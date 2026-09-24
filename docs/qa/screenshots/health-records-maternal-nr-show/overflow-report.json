@@ -1,0 +1,44 @@
+[
+  {
+    "page": "listing",
+    "viewport": "1440x900",
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "overflow": false
+  },
+  {
+    "page": "listing",
+    "viewport": "820x1180",
+    "scrollWidth": 820,
+    "clientWidth": 820,
+    "overflow": false
+  },
+  {
+    "page": "listing",
+    "viewport": "390x844",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "overflow": false
+  },
+  {
+    "page": "show-ana",
+    "viewport": "1440x900",
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "overflow": false
+  },
+  {
+    "page": "show-ana",
+    "viewport": "820x1180",
+    "scrollWidth": 820,
+    "clientWidth": 820,
+    "overflow": false
+  },
+  {
+    "page": "show-ana",
+    "viewport": "390x844",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "overflow": false
+  }
+]

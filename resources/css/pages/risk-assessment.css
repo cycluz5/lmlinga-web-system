@@ -1,0 +1,1302 @@
+/**
+ * LMLinga — Household Profiling Risk Assessment (UI phase)
+ * Namespaced under .lml-risk-assess
+ *
+ * Soft Capstone-Figma greens are SCOPED here only — do not change global tokens.
+ */
+
+.lml-risk-assess {
+    /* Capstone Risk Assessment accents (softer than shared deep/text greens) */
+    --ra-accent: #51c269;
+    --ra-accent-mid: #3da653;
+    --ra-accent-text: #2f9e44;
+    --ra-accent-rgb: 81, 194, 105;
+    --ra-row-bg: #ecfdf3;
+    --ra-row-border: #bbf7d0;
+    --ra-input-bg: #f0fdf4;
+    --ra-table-header: #3da653;
+
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    width: 100%;
+    min-width: 0;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.lml-risk-assess__toast {
+    margin: 0;
+    padding: 0.65rem 0.85rem;
+    border: 1px solid rgba(var(--ra-accent-rgb), 0.35);
+    border-radius: var(--lml-radius-md);
+    background-color: var(--ra-input-bg);
+    color: var(--ra-accent-text);
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.lml-risk-assess__toast[hidden] {
+    display: none !important;
+}
+
+.lml-risk-assess__not-found {
+    padding: 1.15rem;
+    background: #fff;
+    border: 1px solid rgba(var(--ra-accent-rgb), 0.35);
+    border-radius: var(--lml-radius-md);
+}
+
+.lml-risk-assess__not-found-title {
+    margin: 0 0 0.45rem;
+    color: var(--ra-accent-text);
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.lml-risk-assess__not-found-message {
+    margin: 0 0 0.85rem;
+    color: #4b5563;
+    font-size: 0.9rem;
+    line-height: 1.45;
+}
+
+.lml-risk-assess__not-found-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.5rem;
+    color: var(--ra-accent-text);
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: var(--lml-radius-md);
+}
+
+.lml-risk-assess__not-found-link:hover {
+    color: var(--ra-accent-mid);
+    text-decoration: underline;
+}
+
+.lml-risk-assess__ineligible {
+    padding: 1.15rem;
+    background: #fff;
+    border: 1px solid rgba(var(--ra-accent-rgb), 0.35);
+    border-radius: var(--lml-radius-md);
+}
+
+.lml-risk-assess__ineligible-title {
+    margin: 0 0 0.45rem;
+    color: var(--ra-accent-text);
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.lml-risk-assess__ineligible-message {
+    margin: 0;
+    color: #4b5563;
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.45;
+}
+
+/* ── Member identity card ─────────────────────────────────── */
+.lml-risk-assess__member-card {
+    position: relative;
+    padding: 0.95rem 1.1rem 0.95rem 2.75rem;
+    background: #fff;
+    border: 1px solid rgba(var(--ra-accent-rgb), 0.35);
+    border-radius: var(--lml-radius-md);
+}
+
+.lml-risk-assess__conducted {
+    position: absolute;
+    top: 0.75rem;
+    right: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 0;
+    max-width: min(100%, 16rem);
+    color: var(--ra-accent-text);
+    font-size: 0.78rem;
+    font-weight: 600;
+    line-height: 1.3;
+    text-align: right;
+}
+
+.lml-risk-assess__conducted i {
+    flex: 0 0 auto;
+    font-size: 0.9rem;
+}
+
+.lml-risk-assess__back {
+    position: absolute;
+    top: 0.75rem;
+    left: 0.65rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    color: var(--ra-accent);
+    text-decoration: none;
+    border-radius: var(--lml-radius-sm);
+}
+
+.lml-risk-assess__back i {
+    font-size: 1.2rem;
+    line-height: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .lml-risk-assess__back:hover {
+        background-color: rgba(var(--ra-accent-rgb), 0.16);
+        color: var(--ra-accent-mid);
+    }
+}
+
+.lml-risk-assess__member-profile {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    min-width: 0;
+}
+
+.lml-risk-assess__avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 3.75rem;
+    height: 3.75rem;
+    border-radius: 999px;
+    background-color: var(--ra-accent);
+    color: #fff;
+    font-size: 1.85rem;
+    line-height: 1;
+}
+
+.lml-risk-assess__member-identity {
+    min-width: 0;
+}
+
+.lml-risk-assess__name-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.45rem 0.65rem;
+    margin-bottom: 0.35rem;
+}
+
+.lml-risk-assess__member-name {
+    margin: 0;
+    color: #111827;
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.25;
+    word-break: break-word;
+}
+
+.lml-risk-assess__sex-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.12rem 0.55rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.lml-risk-assess__sex-badge--female {
+    background-color: #fce7f3;
+    color: #be185d;
+}
+
+.lml-risk-assess__sex-badge--male {
+    background-color: #dbeafe;
+    color: #1d4ed8;
+}
+
+.lml-risk-assess__member-dl {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    margin: 0;
+}
+
+.lml-risk-assess__member-item {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 0.4rem;
+    margin: 0;
+    font-size: 0.8rem;
+    line-height: 1.35;
+}
+
+.lml-risk-assess__member-item dt {
+    margin: 0;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.lml-risk-assess__member-item dd {
+    margin: 0;
+    color: #111827;
+    font-weight: 600;
+}
+
+/* ── Main panel ───────────────────────────────────────────── */
+.lml-risk-assess__panel {
+    padding: 1.05rem 1.2rem 1.2rem;
+    background: #fff;
+    border: 1px solid rgba(var(--ra-accent-rgb), 0.28);
+    border-radius: var(--lml-radius-lg);
+    box-sizing: border-box;
+}
+
+.lml-risk-assess__panel-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.85rem 1.25rem;
+    margin-bottom: 0.9rem;
+}
+
+.lml-risk-assess__panel-titles {
+    min-width: 0;
+    flex: 1 1 14rem;
+}
+
+.lml-risk-assess__panel-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin: 0 0 0.25rem;
+    color: var(--ra-accent-text);
+    font-size: 1.05rem;
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    line-height: 1.25;
+    text-align: center;
+}
+
+.lml-risk-assess__panel-title-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    color: var(--ra-accent);
+    font-size: 1.05rem;
+    line-height: 1;
+}
+
+.lml-risk-assess__panel-subtitle {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.82rem;
+    line-height: 1.4;
+    text-align: center;
+}
+
+.lml-risk-assess__form-head .lml-risk-assess__panel-title,
+.lml-risk-assess__form-head .lml-risk-assess__panel-subtitle {
+    text-align: center;
+}
+
+.lml-risk-assess__form-head .lml-risk-assess__panel-title {
+    justify-content: center;
+    width: 100%;
+}
+
+.lml-risk-assess__panel-head .lml-risk-assess__panel-title,
+.lml-risk-assess__panel-head .lml-risk-assess__panel-subtitle {
+    text-align: left;
+}
+
+.lml-risk-assess__panel-head .lml-risk-assess__panel-title {
+    justify-content: flex-start;
+}
+
+.lml-risk-assess__view-banner {
+    margin: 0.55rem 0 0;
+    padding: 0.4rem 0.65rem;
+    border-radius: var(--lml-radius-sm);
+    background: #f3f4f6;
+    color: #374151;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+.lml-risk-assess__panel-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.55rem 0.65rem;
+    flex: 0 1 auto;
+}
+
+/* Compact Date filter: funnel + select + chevron as one control */
+.lml-risk-assess__date-filter {
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
+}
+
+.lml-risk-assess__date-control {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-width: 9.5rem;
+    max-width: 14rem;
+}
+
+.lml-risk-assess__date-control-icon {
+    position: absolute;
+    left: 0.55rem;
+    z-index: 1;
+    pointer-events: none;
+    color: var(--ra-accent-text);
+    font-size: 0.85rem;
+    line-height: 1;
+}
+
+.lml-risk-assess__date-control-chevron {
+    position: absolute;
+    right: 0.5rem;
+    z-index: 1;
+    pointer-events: none;
+    color: var(--ra-accent-text);
+    font-size: 0.75rem;
+    line-height: 1;
+}
+
+.lml-risk-assess__date-select {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 100%;
+    min-height: 2.35rem;
+    padding: 0.35rem 1.7rem 0.35rem 1.85rem;
+    border: 1px solid rgba(var(--ra-accent-rgb), 0.55);
+    border-radius: var(--lml-radius-md);
+    background: var(--ra-input-bg);
+    color: var(--ra-accent-text);
+    font-size: 0.82rem;
+    font-weight: 600;
+    line-height: 1.25;
+    cursor: pointer;
+}
+
+.lml-risk-assess__date-select:focus {
+    outline: none;
+    border-color: var(--ra-accent);
+    box-shadow: 0 0 0 2px rgba(var(--ra-accent-rgb), 0.2);
+}
+
+/* Custom range: From / To under history header (native date inputs) */
+.lml-risk-assess__custom-range {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 0.65rem 1rem;
+    margin: 0 0 0.85rem;
+    min-width: 0;
+}
+
+.lml-risk-assess__custom-range[hidden] {
+    display: none !important;
+}
+
+.lml-risk-assess__custom-range-fields {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 0.65rem 0.85rem;
+    min-width: 0;
+    width: 100%;
+}
+
+.lml-risk-assess__custom-range-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    min-width: 0;
+    flex: 1 1 9.5rem;
+    max-width: 14rem;
+}
+
+.lml-risk-assess__custom-range-label {
+    margin: 0;
+    color: var(--ra-accent-text);
+    font-size: 0.78rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.lml-risk-assess__custom-range-input {
+    width: 100%;
+    min-width: 0;
+    min-height: 2.35rem;
+    padding: 0.35rem 0.55rem;
+    border: 1px solid rgba(var(--ra-accent-rgb), 0.55);
+    border-radius: var(--lml-radius-md);
+    background: var(--ra-input-bg);
+    color: #374151;
+    font-size: 0.82rem;
+    font-weight: 500;
+    line-height: 1.25;
+}
+
+.lml-risk-assess__custom-range-input:focus {
+    outline: none;
+    border-color: var(--ra-accent);
+    box-shadow: 0 0 0 2px rgba(var(--ra-accent-rgb), 0.2);
+}
+
+.lml-risk-assess__add-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    min-height: 2.35rem;
+    padding: 0.35rem 0.9rem;
+    border-radius: var(--lml-radius-md);
+    border: 1px solid var(--ra-accent-mid);
+    background: var(--ra-accent-mid);
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .lml-risk-assess__add-btn:hover {
+        background: var(--ra-accent-text);
+        border-color: var(--ra-accent-text);
+        color: #fff;
+    }
+}
+
+.lml-risk-assess__empty {
+    padding: 1.35rem 1rem;
+    text-align: center;
+    border: 1px dashed rgba(var(--ra-accent-rgb), 0.45);
+    border-radius: var(--lml-radius-md);
+    background: #f9fafb;
+}
+
+.lml-risk-assess__empty-title {
+    margin: 0 0 0.35rem;
+    color: #374151;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.lml-risk-assess__empty-hint {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.82rem;
+    line-height: 1.45;
+}
+
+.lml-risk-assess__table-scroll {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: var(--lml-radius-md);
+}
+
+.lml-risk-assess__table {
+    width: 100%;
+    min-width: 32rem;
+    border-collapse: collapse;
+}
+
+.lml-risk-assess__table thead th {
+    padding: 0.7rem 0.85rem;
+    background: var(--ra-table-header);
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.lml-risk-assess__table thead th:first-child {
+    border-radius: var(--lml-radius-md) 0 0 0;
+}
+
+.lml-risk-assess__table thead th:last-child {
+    border-radius: 0 var(--lml-radius-md) 0 0;
+}
+
+.lml-risk-assess__table tbody td {
+    padding: 0.7rem 0.85rem;
+    border-bottom: 1px solid #e5e7eb;
+    color: #111827;
+    font-size: 0.85rem;
+    vertical-align: middle;
+}
+
+.lml-risk-assess__date-cell {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.lml-risk-assess__date-cell i {
+    color: var(--ra-accent);
+}
+
+.lml-risk-assess__view-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    color: var(--ra-accent-text);
+    font-weight: 700;
+    text-decoration: none;
+    border-radius: var(--lml-radius-sm);
+}
+
+.lml-risk-assess__view-link:hover {
+    color: var(--ra-accent-mid);
+    text-decoration: underline;
+}
+
+/* History assessment: section navigation cards */
+.lml-risk-assess__panel-head--stack {
+    align-items: flex-start;
+}
+
+.lml-risk-assess__section-nav {
+    margin-top: 0.35rem;
+}
+
+.lml-risk-assess__section-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.lml-risk-assess__section-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    min-height: 4.75rem; /* ~76px — Figma-proportioned row, grows if label wraps */
+    padding: 1.15rem 1.25rem;
+    border: 1px solid rgba(var(--ra-accent-rgb), 0.35);
+    border-radius: var(--lml-radius-md);
+    background: #fff;
+    color: var(--ra-accent-text);
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+.lml-risk-assess__section-card-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 2.25rem;
+    height: 2.25rem;
+    color: var(--ra-accent-mid);
+    font-size: 1.4rem;
+    line-height: 1;
+}
+
+.lml-risk-assess__section-card-label {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: 0.98rem;
+    font-weight: 600;
+    line-height: 1.35;
+    color: #166534;
+}
+
+.lml-risk-assess__section-card-chevron {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    color: var(--ra-accent);
+    opacity: 0.75;
+    font-size: 1.15rem;
+    line-height: 1;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .lml-risk-assess__section-card:hover {
+        background: var(--ra-input-bg);
+        border-color: var(--ra-accent);
+    }
+}
+
+.lml-risk-assess__btn--edit {
+    gap: 0.35rem;
+    border: 1.5px solid var(--ra-accent-mid);
+    background: var(--ra-accent-mid);
+    color: #fff;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .lml-risk-assess__btn--edit:hover {
+        background: var(--ra-accent-text);
+        border-color: var(--ra-accent-text);
+        color: #fff;
+    }
+}
+
+.lml-risk-assess__form-errors {
+    margin: 0 0 0.75rem;
+    padding: 0.65rem 0.85rem;
+    border: 1px solid #fca5a5;
+    border-radius: var(--lml-radius-md);
+    background: #fef2f2;
+    color: #991b1b;
+    font-size: 0.875rem;
+}
+
+.lml-risk-assess__form-errors p {
+    margin: 0;
+}
+
+.lml-risk-assess__info-notice {
+    margin: 0 0 1rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--lml-border, #d8dee8);
+    border-radius: 0.5rem;
+    background: var(--lml-surface-muted, #f6f8fb);
+    color: var(--lml-text-muted, #5f6b7a);
+    font-size: 0.875rem;
+    line-height: 1.45;
+}
+
+.lml-risk-assess__info-notice p {
+    margin: 0;
+}
+
+/* History section view/edit: reuse pale-green checkbox rows */
+[data-lml-risk-assess-mode='history-section'] .lml-risk-assess__check-row {
+    background: var(--ra-row-bg);
+    border: 1px solid var(--ra-row-border);
+    border-radius: var(--lml-radius-md);
+    padding: 0.55rem 0.75rem;
+    min-height: 2.55rem;
+}
+
+[data-lml-risk-assess-mode='history-section'] .lml-risk-assess__check-row--none {
+    grid-column: 1 / -1;
+    max-width: 100%;
+}
+
+[data-lml-risk-assess-mode='history-section'][data-history-editing='false'] .lml-risk-assess__check-row,
+[data-lml-risk-assess-mode='history-section'][data-history-editing='false'] .lml-risk-assess__input {
+    opacity: 0.92;
+}
+
+[data-lml-risk-assess-mode='history-section'] .lml-risk-assess__step--history {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+}
+
+/* ── Stepper ──────────────────────────────────────────────── */
+.lml-risk-assess__stepper {
+    margin: 0.85rem 0 1rem;
+}
+
+.lml-risk-assess__stepper-list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.lml-risk-assess__stepper-item {
+    display: flex;
+    align-items: center;
+}
+
+.lml-risk-assess__stepper-item:not(:last-child)::after {
+    content: '';
+    display: block;
+    width: clamp(1.5rem, 6vw, 3.25rem);
+    height: 2px;
+    margin: 0 0.2rem;
+    background: #d1d5db;
+}
+
+.lml-risk-assess__stepper-item.is-complete:not(:last-child)::after,
+.lml-risk-assess__stepper-item.is-current:not(:last-child)::after {
+    background: var(--ra-accent);
+}
+
+.lml-risk-assess__stepper-circle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.85rem;
+    height: 1.85rem;
+    border-radius: 999px;
+    border: 2px solid #d1d5db;
+    background: #fff;
+    color: #6b7280;
+    font-size: 0.8rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.lml-risk-assess__stepper-item.is-complete .lml-risk-assess__stepper-circle,
+.lml-risk-assess__stepper-item.is-current .lml-risk-assess__stepper-circle {
+    border-color: var(--ra-accent);
+    background: var(--ra-accent);
+    color: #fff;
+}
+
+.lml-risk-assess__stepper-item.is-current .lml-risk-assess__stepper-circle {
+    box-shadow: 0 0 0 3px rgba(var(--ra-accent-rgb), 0.22);
+}
+
+/* ── Form steps ───────────────────────────────────────────── */
+.lml-risk-assess__step {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+}
+
+.lml-risk-assess__step[hidden] {
+    display: none !important;
+}
+
+.lml-risk-assess__step-legend {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.3rem;
+    float: none;
+    width: 100%;
+    color: var(--ra-accent-text);
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.lml-risk-assess__step-legend i {
+    color: var(--ra-accent);
+}
+
+.lml-risk-assess__step-hint {
+    margin: 0 0 0.7rem;
+    color: #9ca3af;
+    font-size: 0.78rem;
+}
+
+.lml-risk-assess__check-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    /* Steps 1–3: Figma between-box rhythm (not only a numeric 12px) */
+    row-gap: 1.125rem;
+    column-gap: 1.25rem;
+}
+
+@media (min-width: 768px) {
+    .lml-risk-assess__check-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    /* Step 2 special None row: centered, narrower than the two-column grid */
+    [data-risk-assess-step='2'] .lml-risk-assess__check-row--none {
+        grid-column: 1 / -1;
+        justify-self: center;
+        width: fit-content;
+        max-width: min(36rem, 85%);
+        min-width: min(20rem, 100%);
+    }
+}
+
+.lml-risk-assess__check-col {
+    display: flex;
+    flex-direction: column;
+    /* Steps 1–3 column lists: gap BETWEEN bordered option rows */
+    gap: 1.125rem;
+    min-width: 0;
+}
+
+.lml-risk-assess__check-row {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin: 0;
+    padding: 0.78rem 0.85rem;
+    border-radius: var(--lml-radius-md);
+    background: var(--ra-row-bg);
+    border: 1px solid var(--ra-row-border);
+    color: #166534;
+    font-size: 0.82rem;
+    line-height: 1.35;
+    cursor: pointer;
+}
+
+/*
+ * Steps 1–4 only: Figma option-row vertical rhythm
+ * (internal padding + between-box gap). Step 5 visual rows keep base styles.
+ */
+[data-risk-assess-step='1'] .lml-risk-assess__check-row,
+[data-risk-assess-step='2'] .lml-risk-assess__check-row,
+[data-risk-assess-step='3'] .lml-risk-assess__check-row,
+[data-risk-assess-step='4'] .lml-risk-assess__check-row {
+    min-height: 2.9rem;
+    padding: 0.95rem 1rem;
+    line-height: 1.4;
+    box-sizing: border-box;
+}
+
+.lml-risk-assess__check-row input[type='checkbox'],
+.lml-risk-assess__check-row input[type='radio'] {
+    flex: 0 0 auto;
+    margin: 0;
+    width: 1.05rem;
+    height: 1.05rem;
+    accent-color: var(--ra-accent);
+}
+
+.lml-risk-assess__check-row--none {
+    /* Separation from rows above comes from parent grid/column gap */
+    margin-top: 0;
+}
+
+.lml-risk-assess__check-row--blurred {
+    flex-wrap: wrap;
+}
+
+.lml-risk-assess__lifestyle-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.85rem 1.15rem;
+}
+
+@media (min-width: 768px) {
+    .lml-risk-assess__lifestyle-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* Step 4: pale-green semantic GROUP panels (Figma) */
+.lml-risk-assess__option-group {
+    margin: 0;
+    padding: 0.75rem 0.85rem 0.85rem;
+    border: 1px solid var(--ra-row-border);
+    border-radius: var(--lml-radius-md);
+    background: var(--ra-row-bg);
+    min-width: 0;
+}
+
+.lml-risk-assess__option-legend {
+    float: none;
+    width: auto;
+    padding: 0 0.15rem;
+    margin-bottom: 0.55rem;
+    color: var(--ra-accent-text);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+/* Pinned to match .lml-risk-assess__option-group .lml-risk-assess__check-row
+   below — both set explicitly so the description text can't drift larger
+   than the Yes/No choice text it explains. */
+.lml-risk-assess__option-question {
+    margin: 0 0 0.6rem;
+    padding: 0 0.15rem;
+    font-size: 0.9rem;
+}
+
+.lml-risk-assess__option-group .lml-risk-assess__check-row {
+    font-size: 0.9rem;
+}
+
+.lml-risk-assess__option-list {
+    display: flex;
+    flex-direction: column;
+    /* Inner option rows sit inside the group panel */
+    gap: 0.55rem;
+}
+
+/* Step 4 inner choice rows: lighter than the outer group panel */
+[data-risk-assess-step='4'] .lml-risk-assess__check-row {
+    background: #ffffff;
+    border-color: #d1d5db;
+    min-height: 2.55rem;
+    padding: 0.7rem 0.85rem;
+}
+
+/* Step 5: pale-green grouped panels (Body / BP / Visual) */
+.lml-risk-assess__measure-block {
+    margin-bottom: 0.7rem;
+    padding: 0.75rem 0.85rem 0.85rem;
+    border: 1px solid var(--ra-row-border);
+    border-radius: var(--lml-radius-md);
+    background: var(--ra-row-bg);
+}
+
+.lml-risk-assess__measure-block:last-of-type {
+    margin-bottom: 0;
+}
+
+.lml-risk-assess__measure-title {
+    margin: 0 0 0.55rem;
+    color: var(--ra-accent-text);
+    font-size: 0.88rem;
+    font-weight: 700;
+}
+
+.lml-risk-assess__measure-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.45rem 0.65rem;
+}
+
+.lml-risk-assess__measure-grid--bp {
+    grid-template-columns: 1fr 1fr;
+}
+
+@media (min-width: 768px) {
+    /* Figma: Body Measurement = 4 fields in one row */
+    .lml-risk-assess__measure-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    /* Figma: Blood Pressure = 3 fields in one row */
+    .lml-risk-assess__measure-grid--bp {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .lml-risk-assess__measure-grid--bp .lml-risk-assess__field--wide {
+        grid-column: auto;
+    }
+}
+
+.lml-risk-assess__field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+}
+
+.lml-risk-assess__field--wide {
+    grid-column: 1 / -1;
+}
+
+.lml-risk-assess__field label {
+    color: #374151;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.lml-risk-assess__input {
+    width: 100%;
+    min-height: 2.2rem;
+    padding: 0.3rem 0.6rem;
+    border: 1px solid #d1d5db;
+    border-radius: var(--lml-radius-md);
+    background: #ffffff;
+    color: #111827;
+    font-size: 0.85rem;
+    box-sizing: border-box;
+}
+
+.lml-risk-assess__input--inline {
+    flex: 1 1 8rem;
+    min-width: 6rem;
+    margin-left: 0.25rem;
+}
+
+/* BMI value + status shown as one field: "20 (Normal)" */
+.lml-risk-assess__bmi-display {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.lml-risk-assess__bmi-status-inline {
+    font-weight: 600;
+}
+
+.lml-risk-assess__bmi-status-inline[data-bmi-status='normal'] {
+    color: #166534;
+}
+
+.lml-risk-assess__bmi-status-inline[data-bmi-status='underweight'],
+.lml-risk-assess__bmi-status-inline[data-bmi-status='overweight'] {
+    color: #92400e;
+}
+
+.lml-risk-assess__bmi-status-inline[data-bmi-status='obesity'] {
+    color: #991b1b;
+}
+
+.lml-risk-assess__visual-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+}
+
+/* Step 5 Visual Screening: white rows inside pale-green panel */
+[data-risk-assess-step='5'] .lml-risk-assess__check-row {
+    background: #ffffff;
+    border-color: #d1d5db;
+    padding: 0.65rem 0.8rem;
+    min-height: 2.45rem;
+}
+
+.lml-risk-assess__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 0.95rem;
+}
+
+/*
+ * Create-mode Steps 1–5: centered action group.
+ * Step 1: [ Next ]
+ * Steps 2–4: [ Back ] [ Next ] (grouped, not edge-split)
+ * Step 5: [ Back ] [ Save ]
+ */
+[data-lml-risk-assess]:not([data-lml-risk-assess-mode='view'])[data-current-step='1'] .lml-risk-assess__actions,
+[data-lml-risk-assess]:not([data-lml-risk-assess-mode='view'])[data-current-step='2'] .lml-risk-assess__actions,
+[data-lml-risk-assess]:not([data-lml-risk-assess-mode='view'])[data-current-step='3'] .lml-risk-assess__actions,
+[data-lml-risk-assess]:not([data-lml-risk-assess-mode='view'])[data-current-step='4'] .lml-risk-assess__actions,
+[data-lml-risk-assess]:not([data-lml-risk-assess-mode='view'])[data-current-step='5'] .lml-risk-assess__actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.65rem;
+    margin-top: 1.25rem;
+}
+
+.lml-risk-assess__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.45rem;
+    min-width: 5.5rem;
+    padding: 0.4rem 1.1rem;
+    border-radius: var(--lml-radius-md);
+    font-size: 0.88rem;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.lml-risk-assess__btn[hidden] {
+    display: none !important;
+}
+
+.lml-risk-assess__btn--back {
+    border: 1.5px solid var(--ra-accent);
+    background: #fff;
+    color: var(--ra-accent-text);
+}
+
+.lml-risk-assess__btn--next,
+.lml-risk-assess__btn--save {
+    border: 1.5px solid var(--ra-accent-mid);
+    background: var(--ra-accent-mid);
+    color: #fff;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .lml-risk-assess__btn--back:hover {
+        background: var(--ra-input-bg);
+    }
+
+    .lml-risk-assess__btn--next:hover,
+    .lml-risk-assess__btn--save:hover {
+        background: var(--ra-accent-text);
+        border-color: var(--ra-accent-text);
+        color: #fff;
+    }
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+@media (max-width: 767.98px) {
+    .lml-risk-assess__member-card {
+        padding: 2.5rem 0.9rem 0.95rem;
+    }
+
+    .lml-risk-assess__conducted {
+        position: static;
+        justify-content: flex-start;
+        max-width: none;
+        margin: 0 0 0.65rem;
+        text-align: left;
+    }
+
+    /* History section cards: keep touch targets; allow natural wrap height */
+    .lml-risk-assess__section-list {
+        gap: 0.7rem;
+    }
+
+    .lml-risk-assess__section-card {
+        min-height: 4.25rem;
+        padding: 1rem 1.05rem;
+        gap: 0.85rem;
+    }
+
+    .lml-risk-assess__section-card-icon {
+        width: 2rem;
+        height: 2rem;
+        font-size: 1.3rem;
+    }
+
+    .lml-risk-assess__panel {
+        padding: 0.95rem 0.85rem 1.05rem;
+    }
+
+    .lml-risk-assess__panel-controls {
+        width: 100%;
+        justify-content: stretch;
+    }
+
+    .lml-risk-assess__date-filter,
+    .lml-risk-assess__date-control,
+    .lml-risk-assess__add-btn {
+        flex: 1 1 auto;
+        max-width: none;
+        width: 100%;
+    }
+
+    .lml-risk-assess__custom-range-field {
+        flex: 1 1 100%;
+        max-width: none;
+    }
+
+    .lml-risk-assess__measure-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .lml-risk-assess__measure-grid--bp {
+        grid-template-columns: 1fr;
+    }
+
+    .lml-risk-assess__measure-grid--bp .lml-risk-assess__field--wide {
+        grid-column: 1 / -1;
+    }
+
+    /* Step 2 None: full-width under stacked columns on narrow screens */
+    [data-risk-assess-step='2'] .lml-risk-assess__check-row--none {
+        width: 100%;
+        max-width: 100%;
+        min-width: 0;
+        justify-self: stretch;
+    }
+
+    /* History/view default: stack. Create wizard: keep centered grouped pair. */
+    .lml-risk-assess__actions {
+        flex-direction: column-reverse;
+    }
+
+    [data-lml-risk-assess]:not([data-lml-risk-assess-mode='view'])[data-current-step='1'] .lml-risk-assess__actions,
+    [data-lml-risk-assess]:not([data-lml-risk-assess-mode='view'])[data-current-step='2'] .lml-risk-assess__actions,
+    [data-lml-risk-assess]:not([data-lml-risk-assess-mode='view'])[data-current-step='3'] .lml-risk-assess__actions,
+    [data-lml-risk-assess]:not([data-lml-risk-assess-mode='view'])[data-current-step='4'] .lml-risk-assess__actions,
+    [data-lml-risk-assess]:not([data-lml-risk-assess-mode='view'])[data-current-step='5'] .lml-risk-assess__actions {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 0.55rem;
+    }
+
+    [data-lml-risk-assess]:not([data-lml-risk-assess-mode='view'])[data-current-step='1'] .lml-risk-assess__btn,
+    [data-lml-risk-assess]:not([data-lml-risk-assess-mode='view'])[data-current-step='2'] .lml-risk-assess__btn,
+    [data-lml-risk-assess]:not([data-lml-risk-assess-mode='view'])[data-current-step='3'] .lml-risk-assess__btn,
+    [data-lml-risk-assess]:not([data-lml-risk-assess-mode='view'])[data-current-step='4'] .lml-risk-assess__btn,
+    [data-lml-risk-assess]:not([data-lml-risk-assess-mode='view'])[data-current-step='5'] .lml-risk-assess__btn {
+        width: auto;
+        min-width: 5.5rem;
+        max-width: none;
+        margin-inline: 0;
+        flex: 0 1 auto;
+    }
+
+    .lml-risk-assess__btn {
+        width: 100%;
+    }
+
+    .lml-risk-assess__avatar {
+        width: 3.15rem;
+        height: 3.15rem;
+        font-size: 1.5rem;
+    }
+
+    .lml-risk-assess__member-name {
+        font-size: 1.05rem;
+    }
+}
+
+/* Extremely narrow: stack wizard buttons, keep the action group centered */
+@media (max-width: 359.98px) {
+    [data-lml-risk-assess]:not([data-lml-risk-assess-mode='view'])[data-current-step='1'] .lml-risk-assess__actions,
+    [data-lml-risk-assess]:not([data-lml-risk-assess-mode='view'])[data-current-step='2'] .lml-risk-assess__actions,
+    [data-lml-risk-assess]:not([data-lml-risk-assess-mode='view'])[data-current-step='3'] .lml-risk-assess__actions,
+    [data-lml-risk-assess]:not([data-lml-risk-assess-mode='view'])[data-current-step='4'] .lml-risk-assess__actions,
+    [data-lml-risk-assess]:not([data-lml-risk-assess-mode='view'])[data-current-step='5'] .lml-risk-assess__actions {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    [data-lml-risk-assess]:not([data-lml-risk-assess-mode='view'])[data-current-step='1'] .lml-risk-assess__btn,
+    [data-lml-risk-assess]:not([data-lml-risk-assess-mode='view'])[data-current-step='2'] .lml-risk-assess__btn,
+    [data-lml-risk-assess]:not([data-lml-risk-assess-mode='view'])[data-current-step='3'] .lml-risk-assess__btn,
+    [data-lml-risk-assess]:not([data-lml-risk-assess-mode='view'])[data-current-step='4'] .lml-risk-assess__btn,
+    [data-lml-risk-assess]:not([data-lml-risk-assess-mode='view'])[data-current-step='5'] .lml-risk-assess__btn {
+        width: min(100%, 12rem);
+    }
+}
+
+@media (max-width: 389.98px) {
+    .lml-risk-assess__stepper-circle {
+        width: 1.65rem;
+        height: 1.65rem;
+        font-size: 0.72rem;
+    }
+
+    .lml-risk-assess__check-row {
+        font-size: 0.78rem;
+        padding: 0.7rem 0.7rem;
+    }
+
+    [data-risk-assess-step='1'] .lml-risk-assess__check-row,
+    [data-risk-assess-step='2'] .lml-risk-assess__check-row,
+    [data-risk-assess-step='3'] .lml-risk-assess__check-row,
+    [data-risk-assess-step='4'] .lml-risk-assess__check-row {
+        min-height: 2.75rem;
+        padding: 0.85rem 0.85rem;
+    }
+}
+
+/* View mode: show all steps stacked */
+[data-lml-risk-assess-mode='view'] .lml-risk-assess__step {
+    margin-bottom: 1.15rem;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+[data-lml-risk-assess-mode='view'] .lml-risk-assess__step:last-of-type {
+    border-bottom: 0;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}

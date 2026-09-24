@@ -1,0 +1,6 @@
+﻿?? app/Support/DemoRiskAssessment.php
+?? docs/qa/evidence/household-profiling-risk-assessment-final-verification/
+?? resources/css/pages/risk-assessment.css
+?? resources/js/pages/risk-assessment.js
+?? resources/views/pages/household-profiling/risk-assessment-form.blade.php
+?? resources/views/pages/household-profiling/risk-assessment-history.blade.php

@@ -1,0 +1,54 @@
+FAMILY PLANNING PHASE 1 — PRE-INDEPENDENT-REVIEW EVIDENCE INVENTORY
+Directory: docs/qa/evidence/household-profiling-family-planning-phase1/
+
+RESPONSIVE MAIN (device toolbar overlay + viewport badge)
+- fp-main-1440x900.png
+- fp-main-1366x768.png
+- fp-main-820x1180.png
+- fp-main-768x1024.png
+- fp-main-390x844.png
+- fp-main-360x800.png
+
+WORKFLOW
+- fp-main-all-dates.png
+- fp-main-last-3-months.png
+- fp-main-custom-range.png
+- fp-add-record.png
+- fp-view-record.png
+- fp-edit-record.png
+- fp-edit-multiple-commodities.png
+- fp-preview-save-status.png
+- fp-member-view-family-planning-link.png
+
+MOBILE FORM
+- fp-edit-390x844.png
+- fp-edit-360x800.png
+
+A11Y FOCUS
+- fp-a11y-date-filter-focused.png
+- fp-a11y-add-focused.png
+- fp-a11y-view-link-focused.png
+- fp-a11y-edit-save-focused.png
+- fp-keyboard-log.json
+- fp-keyboard-summary.txt
+
+MEASUREMENTS / NOTES
+- fp-overflow-matrix.json
+- fp-workflow-notes.json
+- fp-capture-stdout.txt
+- capture-fp-phase1-evidence.mjs (evidence-only script)
+
+TESTS / BUILD
+- fp-phpunit-family-planning.txt (+ exit)
+- fp-phpunit-member-view.txt (+ exit)
+- fp-phpunit-risk-assessment.txt (+ exit)
+- fp-phpunit-ra-history-view-edit.txt (+ exit)
+- fp-phpunit-health-records-sidebar.txt (+ exit)
+- fp-js-test.txt (+ exit)
+- fp-build-output.txt (+ exit)
+
+GIT / SCOPE
+- fp-git-status.txt
+- fp-git-diff-name-only.txt
+- fp-git-diff-stat.txt
+- fp-scope-classification.txt

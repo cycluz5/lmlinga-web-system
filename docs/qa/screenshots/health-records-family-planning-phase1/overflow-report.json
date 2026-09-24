@@ -1,0 +1,38 @@
+[
+  {
+    "viewport": "1440x900",
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "overflow": false
+  },
+  {
+    "viewport": "1366x768",
+    "scrollWidth": 1366,
+    "clientWidth": 1366,
+    "overflow": false
+  },
+  {
+    "viewport": "820x1180",
+    "scrollWidth": 820,
+    "clientWidth": 820,
+    "overflow": false
+  },
+  {
+    "viewport": "768x1024",
+    "scrollWidth": 768,
+    "clientWidth": 768,
+    "overflow": false
+  },
+  {
+    "viewport": "390x844",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "overflow": false
+  },
+  {
+    "viewport": "360x800",
+    "scrollWidth": 360,
+    "clientWidth": 360,
+    "overflow": false
+  }
+]

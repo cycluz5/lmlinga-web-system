@@ -1,0 +1,19 @@
+{
+  "viewport": "1440x900",
+  "tableWrapPresent": false,
+  "historyScroll": {
+    "overflowY": "visible",
+    "maxHeight": "none",
+    "scrollHeight": 74,
+    "clientHeight": 73,
+    "hasInternalVerticalScroll": false
+  },
+  "commoditiesScroll": {
+    "overflowY": "visible",
+    "maxHeight": "none",
+    "scrollHeight": 99,
+    "clientHeight": 98,
+    "hasInternalVerticalScroll": false
+  },
+  "infoRowGap": 12
+}

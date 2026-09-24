@@ -1,0 +1,30 @@
+SCREENSHOT PROVENANCE
+
+Captured during packaging: 2026-08-16T12:16:46.486Z (UTC)
+Tool: scripts/capture-hr-maternal-hide-nr-nav.mjs
+Browser: Playwright chromium.launch({ headless: true, channel: 'chrome' })
+Base: http://127.0.0.1:8765
+Path: /health-records/maternal?role=bns
+Wait: networkidle + [data-lml-hr-mc]
+
+Files (04-screenshots/):
+  maternal-resident-1440x900.png
+  maternal-resident-1366x768.png
+  maternal-resident-820x1180.png
+  maternal-resident-390x844.png
+  layout-measurements.json
+  measure-report.json (same payload as layout-measurements.json)
+
+Viewport table:
+  1440 × 900 — page overflow false; table internal scroll false (1063/1063)
+  1366 × 768 — page overflow false; table internal scroll false (989/989)
+  820 × 1180 — page overflow false; table internal scroll true (843 > 741)
+  390 × 844  — page overflow false; table internal scroll true (843 > 327)
+
+Internal table scrolling is .lml-hr-mc__table-scroll (tabindex=0), not document overflow.
+
+DOM flags at capture (all four widths):
+  nonResidentsControlPresent: false
+  actionLeftPresent: false
+  maternalSidebarHref: /health-records/maternal
+  headingText: Maternal Care

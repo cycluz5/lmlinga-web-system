@@ -1,0 +1,100 @@
+{
+  "capturedAt": "2026-08-16T12:16:46.486Z",
+  "url": "http://127.0.0.1:8765/health-records/maternal?role=bns",
+  "overflow": [
+    {
+      "viewport": "1440x900",
+      "viewportWidth": 1440,
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "pageLevelHorizontalOverflow": false,
+      "tableScrollWidth": 1063,
+      "tableClientWidth": 1063,
+      "intentionalInternalTableScrolling": false
+    },
+    {
+      "viewport": "1366x768",
+      "viewportWidth": 1366,
+      "scrollWidth": 1366,
+      "clientWidth": 1366,
+      "pageLevelHorizontalOverflow": false,
+      "tableScrollWidth": 989,
+      "tableClientWidth": 989,
+      "intentionalInternalTableScrolling": false
+    },
+    {
+      "viewport": "820x1180",
+      "viewportWidth": 820,
+      "scrollWidth": 820,
+      "clientWidth": 820,
+      "pageLevelHorizontalOverflow": false,
+      "tableScrollWidth": 843,
+      "tableClientWidth": 741,
+      "intentionalInternalTableScrolling": true
+    },
+    {
+      "viewport": "390x844",
+      "viewportWidth": 390,
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "pageLevelHorizontalOverflow": false,
+      "tableScrollWidth": 843,
+      "tableClientWidth": 327,
+      "intentionalInternalTableScrolling": true
+    }
+  ],
+  "nav": {
+    "1440x900": {
+      "nonResidentsControlPresent": false,
+      "nonResidentsVisibleLabelPresent": false,
+      "tablistPresent": false,
+      "emptyActionLeft": false,
+      "actionLeftPresent": false,
+      "maternalSidebarText": "Maternal",
+      "maternalSidebarHref": "http://127.0.0.1:8765/health-records/maternal",
+      "headingText": "Maternal Care",
+      "actionGroupAriaLabel": "Maternal Care actions",
+      "addAriaLabel": "Add maternal care record",
+      "exportAriaLabel": "Export Maternal Care data"
+    },
+    "1366x768": {
+      "nonResidentsControlPresent": false,
+      "nonResidentsVisibleLabelPresent": false,
+      "tablistPresent": false,
+      "emptyActionLeft": false,
+      "actionLeftPresent": false,
+      "maternalSidebarText": "Maternal",
+      "maternalSidebarHref": "http://127.0.0.1:8765/health-records/maternal",
+      "headingText": "Maternal Care",
+      "actionGroupAriaLabel": "Maternal Care actions",
+      "addAriaLabel": "Add maternal care record",
+      "exportAriaLabel": "Export Maternal Care data"
+    },
+    "820x1180": {
+      "nonResidentsControlPresent": false,
+      "nonResidentsVisibleLabelPresent": false,
+      "tablistPresent": false,
+      "emptyActionLeft": false,
+      "actionLeftPresent": false,
+      "maternalSidebarText": "Maternal",
+      "maternalSidebarHref": "http://127.0.0.1:8765/health-records/maternal",
+      "headingText": "Maternal Care",
+      "actionGroupAriaLabel": "Maternal Care actions",
+      "addAriaLabel": "Add maternal care record",
+      "exportAriaLabel": "Export Maternal Care data"
+    },
+    "390x844": {
+      "nonResidentsControlPresent": false,
+      "nonResidentsVisibleLabelPresent": false,
+      "tablistPresent": false,
+      "emptyActionLeft": false,
+      "actionLeftPresent": false,
+      "maternalSidebarText": "Maternal",
+      "maternalSidebarHref": "http://127.0.0.1:8765/health-records/maternal",
+      "headingText": "Maternal Care",
+      "actionGroupAriaLabel": "Maternal Care actions",
+      "addAriaLabel": "Add maternal care record",
+      "exportAriaLabel": "Export Maternal Care data"
+    }
+  }
+}

@@ -1,0 +1,230 @@
+{
+  "screenshots": [
+    "01-desktop/maternal-overview-1440x900.png",
+    "01-desktop/prenatal-1440x900.png",
+    "01-desktop/prenatal-1440x900-full.png",
+    "01-desktop/supplementations-1440x900.png",
+    "01-desktop/supplementations-1440x900-full.png",
+    "01-desktop/laboratory-1440x900.png",
+    "01-desktop/delivery-outcome-1440x900.png",
+    "01-desktop/delivery-outcome-1440x900-full.png",
+    "01-desktop/postnatal-1440x900.png",
+    "01-desktop/maternal-overview-1366x768.png",
+    "01-desktop/prenatal-1366x768.png",
+    "01-desktop/prenatal-1366x768-full.png",
+    "01-desktop/supplementations-1366x768.png",
+    "01-desktop/supplementations-1366x768-full.png",
+    "01-desktop/laboratory-1366x768.png",
+    "01-desktop/delivery-outcome-1366x768.png",
+    "01-desktop/delivery-outcome-1366x768-full.png",
+    "01-desktop/postnatal-1366x768.png",
+    "02-tablet/maternal-overview-820x1180.png",
+    "02-tablet/prenatal-820x1180.png",
+    "02-tablet/prenatal-820x1180-full.png",
+    "02-tablet/supplementations-820x1180.png",
+    "02-tablet/supplementations-820x1180-full.png",
+    "02-tablet/laboratory-820x1180.png",
+    "02-tablet/delivery-outcome-820x1180.png",
+    "02-tablet/delivery-outcome-820x1180-full.png",
+    "02-tablet/postnatal-820x1180.png",
+    "02-tablet/maternal-overview-768x1024.png",
+    "02-tablet/prenatal-768x1024.png",
+    "02-tablet/prenatal-768x1024-full.png",
+    "02-tablet/supplementations-768x1024.png",
+    "02-tablet/supplementations-768x1024-full.png",
+    "02-tablet/laboratory-768x1024.png",
+    "02-tablet/delivery-outcome-768x1024.png",
+    "02-tablet/delivery-outcome-768x1024-full.png",
+    "02-tablet/postnatal-768x1024.png",
+    "03-mobile/maternal-overview-390x844.png",
+    "03-mobile/prenatal-390x844.png",
+    "03-mobile/prenatal-390x844-full.png",
+    "03-mobile/supplementations-390x844.png",
+    "03-mobile/supplementations-390x844-full.png",
+    "03-mobile/laboratory-390x844.png",
+    "03-mobile/delivery-outcome-390x844.png",
+    "03-mobile/delivery-outcome-390x844-full.png",
+    "03-mobile/postnatal-390x844.png",
+    "03-mobile/maternal-overview-360x800.png",
+    "03-mobile/prenatal-360x800.png",
+    "03-mobile/prenatal-360x800-full.png",
+    "03-mobile/supplementations-360x800.png",
+    "03-mobile/supplementations-360x800-full.png",
+    "03-mobile/laboratory-360x800.png",
+    "03-mobile/delivery-outcome-360x800.png",
+    "03-mobile/delivery-outcome-360x800-full.png",
+    "03-mobile/postnatal-360x800.png",
+    "04-interactions/00-immunizations-icon-fixed.png",
+    "04-interactions/01-prenatal-edit.png",
+    "04-interactions/02-prenatal-save-view.png",
+    "04-interactions/03-immunizations-edit.png",
+    "04-interactions/04-immunizations-save-view.png",
+    "04-interactions/05-supplementations-edit.png",
+    "04-interactions/06-supplementations-expanded-deworming.png",
+    "04-interactions/07-supplementations-expanded-iron-folic.png",
+    "04-interactions/08-supplementations-expanded-micronutrient.png",
+    "04-interactions/09-supplementations-expanded-calcium.png",
+    "04-interactions/10-supplementations-save-view.png",
+    "04-interactions/11-laboratory-edit.png",
+    "04-interactions/12-laboratory-hepatitis-options.png",
+    "04-interactions/13-laboratory-cbc-options.png",
+    "04-interactions/14-laboratory-gdm-options.png",
+    "04-interactions/15-laboratory-save-view.png",
+    "04-interactions/16-delivery-edit.png",
+    "04-interactions/17-delivery-type-options.png",
+    "04-interactions/18-birth-attendant-options.png",
+    "04-interactions/19-birth-attendant-others-state.png",
+    "04-interactions/20-fetal-death-state.png",
+    "04-interactions/21-abortion-state.png",
+    "04-interactions/22-delivery-save-view.png",
+    "04-interactions/23-postnatal-edit.png",
+    "04-interactions/24-postnatal-save-view.png",
+    "05-navigation-regression/01-household-member-maternal-care-link.png",
+    "05-navigation-regression/02-maternal-household-profiling-active.png",
+    "05-navigation-regression/03-maternal-return-navigation.png",
+    "05-navigation-regression/04-family-planning-regression.png",
+    "05-navigation-regression/05-risk-assessment-regression.png",
+    "05-navigation-regression/06-child-care-regression.png",
+    "05-navigation-regression/07-health-records-sidebar-regression.png"
+  ],
+  "viewports": {
+    "1440x900": {
+      "status": "PASS",
+      "files": [
+        "01-desktop/maternal-overview-1440x900.png",
+        "01-desktop/prenatal-1440x900.png",
+        "01-desktop/prenatal-1440x900-full.png",
+        "01-desktop/supplementations-1440x900.png",
+        "01-desktop/supplementations-1440x900-full.png",
+        "01-desktop/laboratory-1440x900.png",
+        "01-desktop/delivery-outcome-1440x900.png",
+        "01-desktop/delivery-outcome-1440x900-full.png",
+        "01-desktop/postnatal-1440x900.png"
+      ]
+    },
+    "1366x768": {
+      "status": "PASS",
+      "files": [
+        "01-desktop/maternal-overview-1366x768.png",
+        "01-desktop/prenatal-1366x768.png",
+        "01-desktop/prenatal-1366x768-full.png",
+        "01-desktop/supplementations-1366x768.png",
+        "01-desktop/supplementations-1366x768-full.png",
+        "01-desktop/laboratory-1366x768.png",
+        "01-desktop/delivery-outcome-1366x768.png",
+        "01-desktop/delivery-outcome-1366x768-full.png",
+        "01-desktop/postnatal-1366x768.png"
+      ]
+    },
+    "820x1180": {
+      "status": "PASS",
+      "files": [
+        "02-tablet/maternal-overview-820x1180.png",
+        "02-tablet/prenatal-820x1180.png",
+        "02-tablet/prenatal-820x1180-full.png",
+        "02-tablet/supplementations-820x1180.png",
+        "02-tablet/supplementations-820x1180-full.png",
+        "02-tablet/laboratory-820x1180.png",
+        "02-tablet/delivery-outcome-820x1180.png",
+        "02-tablet/delivery-outcome-820x1180-full.png",
+        "02-tablet/postnatal-820x1180.png"
+      ]
+    },
+    "768x1024": {
+      "status": "PASS",
+      "files": [
+        "02-tablet/maternal-overview-768x1024.png",
+        "02-tablet/prenatal-768x1024.png",
+        "02-tablet/prenatal-768x1024-full.png",
+        "02-tablet/supplementations-768x1024.png",
+        "02-tablet/supplementations-768x1024-full.png",
+        "02-tablet/laboratory-768x1024.png",
+        "02-tablet/delivery-outcome-768x1024.png",
+        "02-tablet/delivery-outcome-768x1024-full.png",
+        "02-tablet/postnatal-768x1024.png"
+      ]
+    },
+    "390x844": {
+      "status": "PASS",
+      "files": [
+        "03-mobile/maternal-overview-390x844.png",
+        "03-mobile/prenatal-390x844.png",
+        "03-mobile/prenatal-390x844-full.png",
+        "03-mobile/supplementations-390x844.png",
+        "03-mobile/supplementations-390x844-full.png",
+        "03-mobile/laboratory-390x844.png",
+        "03-mobile/delivery-outcome-390x844.png",
+        "03-mobile/delivery-outcome-390x844-full.png",
+        "03-mobile/postnatal-390x844.png"
+      ]
+    },
+    "360x800": {
+      "status": "PASS",
+      "files": [
+        "03-mobile/maternal-overview-360x800.png",
+        "03-mobile/prenatal-360x800.png",
+        "03-mobile/prenatal-360x800-full.png",
+        "03-mobile/supplementations-360x800.png",
+        "03-mobile/supplementations-360x800-full.png",
+        "03-mobile/laboratory-360x800.png",
+        "03-mobile/delivery-outcome-360x800.png",
+        "03-mobile/delivery-outcome-360x800-full.png",
+        "03-mobile/postnatal-360x800.png"
+      ]
+    }
+  },
+  "interactions": [
+    "01-prenatal-edit.png",
+    "02-prenatal-save-view.png",
+    "03-immunizations-edit.png",
+    "04-immunizations-save-view.png",
+    "05-supplementations-edit.png",
+    "06-supplementations-expanded-deworming.png",
+    "07-supplementations-expanded-iron-folic.png",
+    "08-supplementations-expanded-micronutrient.png",
+    "09-supplementations-expanded-calcium.png",
+    "10-supplementations-save-view.png",
+    "11-laboratory-edit.png",
+    "12-laboratory-hepatitis-options.png",
+    "13-laboratory-cbc-options.png",
+    "14-laboratory-gdm-options.png",
+    "15-laboratory-save-view.png",
+    "16-delivery-edit.png",
+    "17-delivery-type-options.png",
+    "18-birth-attendant-options.png",
+    "19-birth-attendant-others-state.png",
+    "20-fetal-death-state.png",
+    "21-abortion-state.png",
+    "22-delivery-save-view.png",
+    "23-postnatal-edit.png",
+    "24-postnatal-save-view.png"
+  ],
+  "navigation": [
+    "01-household-member-maternal-care-link.png",
+    "02-maternal-household-profiling-active.png",
+    "03-maternal-return-navigation.png",
+    "04-family-planning-regression.png",
+    "05-risk-assessment-regression.png",
+    "06-child-care-regression.png",
+    "07-health-records-sidebar-regression.png"
+  ],
+  "notes": [
+    {
+      "step": "active-pregnancy",
+      "status": "registered-via-session"
+    },
+    {
+      "step": "immunizations-icon-class",
+      "iconClass": "bi bi-shield-plus"
+    },
+    {
+      "step": "sidebar-active",
+      "sidebarActive": "Household Profiling"
+    },
+    {
+      "step": "return-navigation",
+      "backUrl": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-001"
+    }
+  ],
+  "errors": []
+}

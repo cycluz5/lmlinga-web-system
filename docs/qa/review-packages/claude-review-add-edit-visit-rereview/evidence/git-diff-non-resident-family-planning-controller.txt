@@ -1,0 +1,66 @@
+﻿===== git diff (unstaged) -- lmlingaFinal/app/Http/Controllers/HealthRecords/NonResidentFamilyPlanningController.php =====
+diff --git a/lmlingaFinal/app/Http/Controllers/HealthRecords/NonResidentFamilyPlanningController.php b/lmlingaFinal/app/Http/Controllers/HealthRecords/NonResidentFamilyPlanningController.php
+index 38c91da..64d9844 100644
+--- a/lmlingaFinal/app/Http/Controllers/HealthRecords/NonResidentFamilyPlanningController.php
++++ b/lmlingaFinal/app/Http/Controllers/HealthRecords/NonResidentFamilyPlanningController.php
+@@ -14,8 +14,8 @@ public function index(): View
+ 
+         return view('pages.health-records.non-resident-family-planning.index', [
+             'active' => 'family-planning',
+-            'pageTitle' => 'Family Planning',
+-            'pageSubtitle' => 'Family planning clients from outside the barangay.',
++            'pageTitle' => 'Family Planning | Non Residents',
++            'pageSubtitle' => 'List of all non-resident clients who received family planning services in this barangay.',
+             'clients' => $clients,
+             'barangays' => HealthRecordsNonResidentFamilyPlanning::barangays($clients),
+             'years' => HealthRecordsNonResidentFamilyPlanning::years($clients),
+@@ -27,11 +27,11 @@ public function create(): View
+     {
+         return view('pages.health-records.non-resident-family-planning.create-client', [
+             'active' => 'family-planning',
+-            'pageTitle' => 'Family Planning',
++            'pageTitle' => 'Family Planning | Non Residents',
+             'pageSubtitle' => 'Add a non-resident family planning client.',
+-            'barangays' => HealthRecordsNonResidentFamilyPlanning::barangays(),
+             'civilStatusOptions' => HealthRecordsNonResidentFamilyPlanning::civilStatusOptions(),
+             'sexOptions' => HealthRecordsNonResidentFamilyPlanning::sexOptions(),
++            'methodOptions' => HealthRecordsNonResidentFamilyPlanning::methodOptions(),
+             'commodityOptions' => HealthRecordsNonResidentFamilyPlanning::commodityOptions(),
+         ]);
+     }
+@@ -58,13 +58,14 @@ public function createVisit(string $clientKey): View
+ 
+         return view('pages.health-records.non-resident-family-planning.visit-form', [
+             'active' => 'family-planning',
+-            'pageTitle' => 'Non Residents Client',
++            'pageTitle' => 'Family Planning | Non Residents',
+             'pageSubtitle' => 'Add family planning visit record.',
+             'client' => $client,
+             'clientKey' => $clientKey,
+             'mode' => 'create',
+             'visit' => [],
+             'visitId' => null,
++            'methodOptions' => HealthRecordsNonResidentFamilyPlanning::methodOptions(),
+             'commodityOptions' => HealthRecordsNonResidentFamilyPlanning::commodityOptions(),
+         ]);
+     }
+@@ -78,13 +79,14 @@ public function editVisit(string $clientKey, string $visitId): View
+ 
+         return view('pages.health-records.non-resident-family-planning.visit-form', [
+             'active' => 'family-planning',
+-            'pageTitle' => 'Non Residents Client',
++            'pageTitle' => 'Family Planning | Non Residents',
+             'pageSubtitle' => 'Edit family planning visit record.',
+             'client' => $client,
+             'clientKey' => $clientKey,
+             'mode' => 'edit',
+             'visit' => $visit ?? [],
+             'visitId' => $visitId,
++            'methodOptions' => HealthRecordsNonResidentFamilyPlanning::methodOptions(),
+             'commodityOptions' => HealthRecordsNonResidentFamilyPlanning::commodityOptions(),
+         ]);
+     }
+
+===== git diff --cached (staged) -- lmlingaFinal/app/Http/Controllers/HealthRecords/NonResidentFamilyPlanningController.php =====
+
+

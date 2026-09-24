@@ -1,0 +1,126 @@
+{
+  "capturedAt": "2026-08-08T01:16:18.306Z",
+  "url": "http://127.0.0.1:8000/health-records/child-care/deworming?role=bhw",
+  "note": "Claude findings F-1/F-2 closure. DevTools Device Toolbar shows exact CSS viewport W×H.",
+  "figmaSampledTargets": {
+    "secondRoundBg": "#eca6e4",
+    "tableHeaderBg": "#a8e0b3",
+    "tableHeaderText": "#317647"
+  },
+  "measurements": [
+    {
+      "id": "DW-F1",
+      "file": "DW-F1-desktop-1440x900.png",
+      "requested": {
+        "width": 1440,
+        "height": 900
+      },
+      "measured": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "clientWidth": 1440,
+        "scrollWidth": 1440,
+        "pageOverflow": false,
+        "tableLocalScroll": false,
+        "secondCardBg": "rgb(236, 166, 228)",
+        "tableHeaderBg": "rgb(168, 224, 179)",
+        "tableHeaderColor": "rgb(49, 118, 71)"
+      }
+    },
+    {
+      "id": "DW-F2",
+      "file": "DW-F2-desktop-1366x768.png",
+      "requested": {
+        "width": 1366,
+        "height": 768
+      },
+      "measured": {
+        "innerWidth": 1366,
+        "innerHeight": 768,
+        "clientWidth": 1366,
+        "scrollWidth": 1366,
+        "pageOverflow": false,
+        "tableLocalScroll": false,
+        "secondCardBg": "rgb(236, 166, 228)",
+        "tableHeaderBg": "rgb(168, 224, 179)",
+        "tableHeaderColor": "rgb(49, 118, 71)"
+      }
+    },
+    {
+      "id": "DW-F3",
+      "file": "DW-F3-tablet-820x1180.png",
+      "requested": {
+        "width": 820,
+        "height": 1180
+      },
+      "measured": {
+        "innerWidth": 820,
+        "innerHeight": 1180,
+        "clientWidth": 820,
+        "scrollWidth": 820,
+        "pageOverflow": false,
+        "tableLocalScroll": false,
+        "secondCardBg": "rgb(236, 166, 228)",
+        "tableHeaderBg": "rgb(168, 224, 179)",
+        "tableHeaderColor": "rgb(49, 118, 71)"
+      }
+    },
+    {
+      "id": "DW-F4",
+      "file": "DW-F4-tablet-768x1024.png",
+      "requested": {
+        "width": 768,
+        "height": 1024
+      },
+      "measured": {
+        "innerWidth": 768,
+        "innerHeight": 1024,
+        "clientWidth": 768,
+        "scrollWidth": 768,
+        "pageOverflow": false,
+        "tableLocalScroll": false,
+        "secondCardBg": "rgb(236, 166, 228)",
+        "tableHeaderBg": "rgb(168, 224, 179)",
+        "tableHeaderColor": "rgb(49, 118, 71)"
+      }
+    },
+    {
+      "id": "DW-F5",
+      "file": "DW-F5-mobile-390x844.png",
+      "requested": {
+        "width": 390,
+        "height": 844
+      },
+      "measured": {
+        "innerWidth": 390,
+        "innerHeight": 844,
+        "clientWidth": 390,
+        "scrollWidth": 390,
+        "pageOverflow": false,
+        "tableLocalScroll": true,
+        "secondCardBg": "rgb(236, 166, 228)",
+        "tableHeaderBg": "rgb(168, 224, 179)",
+        "tableHeaderColor": "rgb(49, 118, 71)"
+      }
+    },
+    {
+      "id": "DW-F6",
+      "file": "DW-F6-mobile-360x800.png",
+      "requested": {
+        "width": 360,
+        "height": 800
+      },
+      "measured": {
+        "innerWidth": 360,
+        "innerHeight": 800,
+        "clientWidth": 360,
+        "scrollWidth": 360,
+        "pageOverflow": false,
+        "tableLocalScroll": true,
+        "secondCardBg": "rgb(236, 166, 228)",
+        "tableHeaderBg": "rgb(168, 224, 179)",
+        "tableHeaderColor": "rgb(49, 118, 71)"
+      }
+    }
+  ]
+}

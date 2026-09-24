@@ -1,0 +1,45 @@
+F-1 — RESOLVED
+
+Previous defect:
+At 390px, the two-line Spot Mapping caption overlapped the
+Leaflet/OpenStreetMap attribution.
+
+Correction:
+The mobile caption positioning was adjusted while preserving the full
+caption and attribution.
+
+Post-fix verification:
+- viewport: 390px
+- caption fully readable
+- attribution fully readable
+- overlap: false
+- measured gap: 24px
+- caption bottom: 688
+- attribution top: 712
+- map width unchanged (358px)
+- no page-level horizontal overflow
+
+Primary visual evidence:
+evidence/screenshots/mobile-390-map-caption-fixed.png
+
+F-2 — RESOLVED
+
+Previous:
+#9ca3af on #ffffff
+approximately 2.3:1
+
+Current:
+#4b5563 on #ffffff
+7.56:1
+
+WCAG AA:
+PASS
+
+F-3 — RESOLVED FOR PACKAGING
+
+Repository paths:
+
+tests/Unit/DashboardUiDataTest.php
+tests/Feature/DashboardSummaryUiTest.php
+
+The new ZIP preserves those directories.

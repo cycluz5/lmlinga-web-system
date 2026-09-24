@@ -1,0 +1,488 @@
+/**
+ * Offline status + local-save feedback — dashboard shell chrome.
+ * Uses the existing green/white surface language. Do not restyle page cards.
+ */
+
+.lml-offline-status {
+    position: relative;
+}
+
+.lml-offline-banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    margin: 0 1rem 0.35rem;
+    padding: 0.7rem 0.85rem;
+    border: 1px solid var(--lml-soft-green);
+    border-radius: var(--lml-radius-lg);
+    background-color: #fff;
+    box-shadow: var(--lml-shadow-sm);
+    color: var(--lml-dark-green);
+    font-family: var(--lml-font-sans);
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.45;
+}
+
+.lml-offline-banner[hidden] {
+    display: none;
+}
+
+.lml-offline-banner__icon {
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+    color: var(--lml-text-green);
+    font-size: 1.05rem;
+}
+
+.lml-offline-banner--attention .lml-offline-banner__icon,
+.lml-offline-banner--retry .lml-offline-banner__icon {
+    color: var(--lml-deep-green);
+}
+
+.lml-offline-banner__text {
+    flex: 1 1 auto;
+    min-width: 0;
+    color: var(--lml-dark-green);
+}
+
+.lml-offline-banner__review {
+    flex-shrink: 0;
+    margin-left: auto;
+    padding: 0.28rem 0.7rem;
+    border: 1px solid rgba(var(--lml-accent-rgb), 0.45);
+    border-radius: 999px;
+    background-color: #fff;
+    color: var(--lml-text-green);
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.lml-offline-banner__review:hover,
+.lml-offline-banner__review:focus-visible {
+    background-color: rgba(var(--lml-soft-green-rgb), 0.45);
+    color: var(--lml-deep-green);
+}
+
+.lml-offline-banner__review[hidden] {
+    display: none;
+}
+
+.lml-offline-toast {
+    position: fixed;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    z-index: 1085;
+    max-width: min(24rem, calc(100vw - 2rem));
+    padding: 0.8rem 1rem;
+    border: 1px solid var(--lml-soft-green);
+    border-radius: var(--lml-radius-lg);
+    background-color: #fff;
+    color: var(--lml-dark-green);
+    font-family: var(--lml-font-sans);
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.4;
+    box-shadow: var(--lml-shadow-md);
+}
+
+.lml-offline-toast[hidden] {
+    display: none;
+}
+
+.lml-offline-dialog {
+    position: fixed;
+    inset: 0;
+    z-index: 1090;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.lml-offline-dialog[hidden] {
+    display: none;
+}
+
+.lml-offline-dialog__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(var(--lml-dark-green-rgb), 0.28);
+    pointer-events: none;
+}
+
+.lml-offline-dialog__card {
+    position: relative;
+    z-index: 1;
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: min(24rem, 100%);
+    padding: 1.15rem 1.2rem 1.05rem;
+    background-color: #fff;
+    border: 1px solid var(--lml-soft-green);
+    border-radius: var(--lml-radius-lg);
+    box-shadow: var(--lml-shadow-lg);
+}
+
+.lml-offline-dialog__title {
+    margin: 0;
+    color: var(--lml-deep-green);
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.lml-offline-dialog__body {
+    color: var(--lml-dark-green);
+    font-size: 0.9rem;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.lml-offline-dialog__actions {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.lml-offline-dialog__card .btn {
+    align-self: flex-end;
+}
+
+.lml-offline-dialog__actions .btn {
+    align-self: auto;
+}
+
+.lml-offline-changes__card {
+    width: min(36rem, 100%);
+    max-height: min(88vh, 44rem);
+    padding: 1rem 1.1rem 1rem;
+    gap: 0.65rem;
+}
+
+.lml-offline-changes__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.lml-offline-changes__close {
+    flex-shrink: 0;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid rgba(var(--lml-dark-green-rgb), 0.16);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--lml-dark-green);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lml-offline-changes__summary {
+    color: var(--lml-text-green);
+    font-size: 0.875rem;
+}
+
+.lml-offline-changes__tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+
+.lml-offline-changes__tab {
+    border: 1px solid rgba(var(--lml-accent-rgb), 0.35);
+    border-radius: 999px;
+    background: #fff;
+    color: var(--lml-text-green);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.3rem 0.7rem;
+}
+
+.lml-offline-changes__tab.is-active {
+    background: rgba(var(--lml-soft-green-rgb), 0.55);
+    color: var(--lml-deep-green);
+    border-color: rgba(var(--lml-accent-rgb), 0.55);
+}
+
+.lml-offline-changes__list {
+    overflow: auto;
+    max-height: min(52vh, 26rem);
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    padding-right: 0.15rem;
+}
+
+.lml-offline-changes__section-title {
+    margin: 0 0 0.45rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--lml-deep-green);
+}
+
+.lml-offline-changes__items {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+
+.lml-offline-changes__item {
+    border: 1px solid var(--lml-soft-green);
+    border-radius: var(--lml-radius-lg);
+    background: #fff;
+    padding: 0.75rem 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+}
+
+.lml-offline-changes__item-head {
+    display: flex;
+    gap: 0.55rem;
+    align-items: flex-start;
+}
+
+.lml-offline-changes__icon {
+    margin-top: 0.15rem;
+    color: var(--lml-deep-green);
+}
+
+.lml-offline-changes__title {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--lml-deep-green);
+}
+
+.lml-offline-changes__module,
+.lml-offline-changes__action,
+.lml-offline-changes__status {
+    margin: 0.1rem 0 0;
+    font-size: 0.8rem;
+    color: var(--lml-text-green);
+}
+
+.lml-offline-changes__status[data-status="attention"],
+.lml-offline-changes__status[data-status="retry"] {
+    color: var(--lml-deep-green);
+    font-weight: 600;
+}
+
+.lml-offline-changes__problem-block {
+    border-top: 1px solid rgba(var(--lml-dark-green-rgb), 0.1);
+    padding-top: 0.45rem;
+}
+
+.lml-offline-changes__problem-label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--lml-deep-green);
+    margin-bottom: 0.2rem;
+}
+
+.lml-offline-changes__problem,
+.lml-offline-changes__problems {
+    margin: 0;
+    padding: 0;
+    font-size: 0.85rem;
+    color: var(--lml-dark-green);
+}
+
+.lml-offline-changes__problems {
+    padding-left: 1.1rem;
+}
+
+.lml-offline-changes__cta {
+    align-self: flex-start;
+}
+
+.lml-offline-changes__actions-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.35rem;
+}
+
+.lml-offline-changes__discard {
+    border-color: #b42318;
+    color: #b42318;
+}
+
+.lml-offline-changes__discard:hover,
+.lml-offline-changes__discard:focus-visible {
+    background: #b42318;
+    border-color: #b42318;
+    color: #fff;
+}
+
+.lml-offline-discard {
+    /* Must sit above Offline Changes (.lml-offline-dialog z-index: 1090). */
+    z-index: 1110;
+}
+
+.lml-offline-discard .lml-offline-dialog__backdrop {
+    /* Capture outside clicks so they do not fall through to Offline Changes. */
+    pointer-events: auto;
+}
+
+.lml-offline-discard__body {
+    white-space: pre-line;
+}
+
+.lml-offline-discard__actions {
+    justify-content: flex-end;
+    gap: 0.5rem;
+}
+
+.lml-offline-changes__empty {
+    margin: 0;
+    padding: 0.75rem 0.25rem;
+    color: var(--lml-text-green);
+    font-size: 0.875rem;
+}
+
+.lml-offline-changes__actions {
+    margin-top: 0.15rem;
+}
+
+.lml-topbar__pending {
+    cursor: pointer;
+}
+
+.lml-topbar__status--offline {
+    color: var(--lml-deep-green);
+    border-color: rgba(var(--lml-dark-green-rgb), 0.22);
+}
+
+.lml-topbar__status--offline i {
+    color: var(--lml-deep-green);
+}
+
+.lml-topbar__status--checking {
+    color: var(--lml-text-green);
+    border-color: rgba(var(--lml-dark-green-rgb), 0.16);
+}
+
+.lml-topbar__status--checking i {
+    color: var(--lml-text-green);
+}
+
+.lml-topbar__pending {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    order: 4;
+    padding: 0.35rem 0.65rem;
+    border: 1px solid rgba(var(--lml-accent-rgb), 0.35);
+    border-radius: 999px;
+    background-color: #fff;
+    color: var(--lml-text-green);
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.lml-topbar__pending[hidden] {
+    display: none;
+}
+
+.lml-offline-form-pending {
+    margin: 0 0 0.75rem;
+    padding: 0.45rem 0.7rem;
+    border: 1px solid rgba(var(--lml-accent-rgb), 0.35);
+    border-radius: 999px;
+    background-color: #fff;
+    color: var(--lml-text-green);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    width: fit-content;
+}
+
+.lml-offline-form-pending[hidden] {
+    display: none;
+}
+
+.lml-offline-unavailable {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: min(28rem, 70vh);
+    padding: 1.5rem 1rem;
+}
+
+.lml-offline-unavailable__card {
+    width: min(28rem, 100%);
+    padding: 1.5rem 1.35rem 1.35rem;
+    border: 1px solid var(--lml-soft-green);
+    border-radius: var(--lml-radius-lg);
+    background: #fff;
+    box-shadow: var(--lml-shadow-sm);
+    text-align: center;
+}
+
+.lml-offline-unavailable__icon {
+    display: inline-flex;
+    margin-bottom: 0.75rem;
+    color: var(--lml-text-green);
+    font-size: 1.75rem;
+}
+
+.lml-offline-unavailable__title {
+    margin: 0 0 0.65rem;
+    color: var(--lml-deep-green);
+    font-family: var(--lml-font-sans);
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.35;
+}
+
+.lml-offline-unavailable__body {
+    margin: 0 0 1.15rem;
+    color: var(--lml-dark-green);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+}
+
+.lml-offline-unavailable__retry {
+    min-width: 8.5rem;
+}
+
+@media (min-width: 768px) {
+    .lml-offline-banner {
+        margin: 0 1.5rem 0.4rem;
+    }
+}
+
+@media (min-width: 992px) {
+    .lml-offline-banner {
+        margin: 0 1.75rem 0.45rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .lml-offline-banner,
+    .lml-offline-toast,
+    .lml-offline-dialog__card {
+        transition: none;
+    }
+}

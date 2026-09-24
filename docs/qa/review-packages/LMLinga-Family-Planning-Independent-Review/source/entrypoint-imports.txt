@@ -1,0 +1,11 @@
+﻿# Entrypoint imports relevant to Health Records → Family Planning
+
+## resources/css/app.css
+@import './pages/health-records-family-planning.css';
+
+## resources/js/app.js
+import './pages/health-records-family-planning';
+
+# Note: resources/css/app.css and resources/js/app.js also import
+# Household Profiling Family Planning page assets (family-planning.css / family-planning.js).
+# Those belong to the SEPARATE member-level module and are not the review target.

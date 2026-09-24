@@ -1,0 +1,46 @@
+{
+  "overflow": {
+    "scrollWidth": 820,
+    "clientWidth": 820,
+    "overflow": false
+  },
+  "layout": {
+    "sameElement": false,
+    "nutritionInsidePregnancy": true,
+    "nutritionInsidePersonal": false,
+    "banner": {
+      "x": 24,
+      "y": 151,
+      "width": 772,
+      "height": 55,
+      "bottom": 206,
+      "border": "0px"
+    },
+    "personal": {
+      "x": 24,
+      "y": 218,
+      "width": 772,
+      "height": 362,
+      "bottom": 580,
+      "border": "1px"
+    },
+    "pregnancy": {
+      "x": 24,
+      "y": 593,
+      "width": 772,
+      "height": 399,
+      "bottom": 992,
+      "border": "1px"
+    },
+    "actions": {
+      "x": 24,
+      "y": 1006,
+      "width": 772,
+      "height": 52,
+      "bottom": 1058,
+      "border": "0px"
+    },
+    "widthsAligned": true,
+    "verticalGap": 14
+  }
+}

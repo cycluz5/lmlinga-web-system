@@ -1,0 +1,55 @@
+{
+  "source": "Playwright capture after Non-Residents UI removal (same patched resident Family Planning page).",
+  "url": "http://127.0.0.1:8765/health-records/family-planning?role=bns",
+  "note": "Page-level overflow is document.documentElement.scrollWidth vs clientWidth. An internal table may still scroll horizontally inside its container; that is not page overflow.",
+  "sourceInspection": {
+    "hasTitleRowClass": false,
+    "hasBadgeClass": false,
+    "hasNonResidentsClientText": false,
+    "hasOpenNonResidentsAriaLabel": false,
+    "hasRoleTabOnResidentFpPage": false,
+    "hasAriaControlsForNr": false
+  },
+  "viewports": [
+    {
+      "viewportWidth": 1440,
+      "viewportHeight": 900,
+      "document.documentElement.clientWidth": 1440,
+      "document.documentElement.scrollWidth": 1440,
+      "pageLevelHorizontalOverflow": false,
+      "nonResidentsUiTextOrControlPresent": false,
+      "obsoleteTitleRowWrapperPresent": false,
+      "screenshot": "family-planning-1440x900.png"
+    },
+    {
+      "viewportWidth": 1366,
+      "viewportHeight": 768,
+      "document.documentElement.clientWidth": 1366,
+      "document.documentElement.scrollWidth": 1366,
+      "pageLevelHorizontalOverflow": false,
+      "nonResidentsUiTextOrControlPresent": false,
+      "obsoleteTitleRowWrapperPresent": false,
+      "screenshot": "family-planning-1366x768.png"
+    },
+    {
+      "viewportWidth": 820,
+      "viewportHeight": 1180,
+      "document.documentElement.clientWidth": 820,
+      "document.documentElement.scrollWidth": 820,
+      "pageLevelHorizontalOverflow": false,
+      "nonResidentsUiTextOrControlPresent": false,
+      "obsoleteTitleRowWrapperPresent": false,
+      "screenshot": "family-planning-820x1180.png"
+    },
+    {
+      "viewportWidth": 390,
+      "viewportHeight": 844,
+      "document.documentElement.clientWidth": 390,
+      "document.documentElement.scrollWidth": 390,
+      "pageLevelHorizontalOverflow": false,
+      "nonResidentsUiTextOrControlPresent": false,
+      "obsoleteTitleRowWrapperPresent": false,
+      "screenshot": "family-planning-390x844.png"
+    }
+  ]
+}

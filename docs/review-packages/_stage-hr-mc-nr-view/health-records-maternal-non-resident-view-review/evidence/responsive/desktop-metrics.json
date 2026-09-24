@@ -1,0 +1,96 @@
+{
+  "content": {
+    "x": 280,
+    "y": 112,
+    "w": 1160,
+    "h": 788,
+    "right": 1440
+  },
+  "show": {
+    "x": 308,
+    "y": 126,
+    "w": 1104,
+    "h": 440,
+    "right": 1412
+  },
+  "workspace": null,
+  "client": {
+    "x": 308,
+    "y": 126,
+    "w": 1104,
+    "h": 221,
+    "right": 1412
+  },
+  "avatar": {
+    "x": 357,
+    "y": 161,
+    "w": 156,
+    "h": 156,
+    "right": 513
+  },
+  "identity": {
+    "x": 536,
+    "y": 151,
+    "w": 352,
+    "h": 176,
+    "right": 888
+  },
+  "care": {
+    "x": 308,
+    "y": 361,
+    "w": 1104,
+    "h": 204,
+    "right": 1412
+  },
+  "history": {
+    "x": 328,
+    "y": 452,
+    "w": 1064,
+    "h": 30,
+    "right": 1392
+  },
+  "pregnancy": {
+    "x": 328,
+    "y": 491,
+    "w": 1064,
+    "h": 54,
+    "right": 1392
+  },
+  "aside": {
+    "x": 1204,
+    "y": 510,
+    "w": 149,
+    "h": 16,
+    "right": 1352
+  },
+  "add": {
+    "x": 1283,
+    "y": 452,
+    "w": 109,
+    "h": 30,
+    "right": 1392
+  },
+  "back": {
+    "x": 320,
+    "y": 137,
+    "w": 27,
+    "h": 27,
+    "right": 347
+  },
+  "title": {
+    "x": 308,
+    "y": 20,
+    "w": 608,
+    "h": 33,
+    "right": 916
+  },
+  "subtitle": {
+    "x": 308,
+    "y": 58,
+    "w": 608,
+    "h": 41,
+    "right": 916
+  },
+  "titleText": "Maternal Care | Non Residents",
+  "subtitleText": "Record and management of maternal care details for monitoring and tracking maternal health status."
+}

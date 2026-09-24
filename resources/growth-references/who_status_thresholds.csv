@@ -1,0 +1,10 @@
+Indicator,Classification_Method,Applicable_Age_Months,Min_Value,Max_Value,Status
+Weight-for-age,Z-score,0-60,-99,-3,Severely underweight
+Weight-for-age,Z-score,0-60,-3,-2,Underweight
+Weight-for-age,Z-score,0-60,-2,99,Normal
+MUAC,Z-score,3-60,-99,-3,Severe Acute Malnutrition (SAM)
+MUAC,Z-score,3-60,-3,-2,Moderate Acute Malnutrition (MAM)
+MUAC,Z-score,3-60,-2,99,Normal
+MUAC,Absolute_cm,6-59,0,11.5,Severe Acute Malnutrition (SAM)
+MUAC,Absolute_cm,6-59,11.5,12.5,Moderate Acute Malnutrition (MAM)
+MUAC,Absolute_cm,6-59,12.5,999,Normal

@@ -1,0 +1,260 @@
+[
+  {
+    "viewport": "1440x900",
+    "file": "risk-assessment-1440x900-final-alignment.png",
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "overflow": false,
+    "hasAdd": false,
+    "hasExport": true,
+    "search": {
+      "x": 325,
+      "y": 292,
+      "w": 418,
+      "h": 36
+    },
+    "zone": {
+      "x": 755,
+      "y": 292,
+      "w": 314,
+      "h": 36
+    },
+    "year": {
+      "x": 1081,
+      "y": 292,
+      "w": 314,
+      "h": 36
+    },
+    "filterPct": {
+      "search": 40,
+      "zone": 30,
+      "year": 30
+    },
+    "headers": [
+      {
+        "title": "Full Name",
+        "hasSub": false,
+        "borderTop": null,
+        "width": 214
+      },
+      {
+        "title": "BMI Status",
+        "hasSub": true,
+        "borderTop": "1px solid",
+        "width": 122
+      },
+      {
+        "title": "BP Status",
+        "hasSub": true,
+        "borderTop": "1px solid",
+        "width": 122
+      },
+      {
+        "title": "Smoking Status",
+        "hasSub": true,
+        "borderTop": "1px solid",
+        "width": 122
+      },
+      {
+        "title": "Alcohol Status",
+        "hasSub": true,
+        "borderTop": "1px solid",
+        "width": 122
+      },
+      {
+        "title": "Physical Activity Risk",
+        "hasSub": true,
+        "borderTop": "1px solid",
+        "width": 122
+      },
+      {
+        "title": "Family History Risk",
+        "hasSub": true,
+        "borderTop": "1px solid",
+        "width": 122
+      },
+      {
+        "title": "Chronic Disease",
+        "hasSub": true,
+        "borderTop": "1px solid",
+        "width": 122
+      }
+    ],
+    "namePct": 20,
+    "statusPctAvg": 11.4,
+    "verticalBorder": "1px",
+    "bodyVerticalBorder": "1px"
+  },
+  {
+    "viewport": "820x1180",
+    "file": "risk-assessment-820x1180-final-alignment.png",
+    "scrollWidth": 820,
+    "clientWidth": 820,
+    "overflow": false,
+    "hasAdd": false,
+    "hasExport": true,
+    "search": {
+      "x": 39,
+      "y": 420,
+      "w": 743,
+      "h": 36
+    },
+    "zone": {
+      "x": 39,
+      "y": 468,
+      "w": 365,
+      "h": 36
+    },
+    "year": {
+      "x": 416,
+      "y": 468,
+      "w": 365,
+      "h": 36
+    },
+    "filterPct": {
+      "search": 103.3,
+      "zone": 50.8,
+      "year": 50.8
+    },
+    "headers": [
+      {
+        "title": "Full Name",
+        "hasSub": false,
+        "borderTop": null,
+        "width": 173
+      },
+      {
+        "title": "BMI Status",
+        "hasSub": true,
+        "borderTop": "1px solid",
+        "width": 99
+      },
+      {
+        "title": "BP Status",
+        "hasSub": true,
+        "borderTop": "1px solid",
+        "width": 99
+      },
+      {
+        "title": "Smoking Status",
+        "hasSub": true,
+        "borderTop": "1px solid",
+        "width": 99
+      },
+      {
+        "title": "Alcohol Status",
+        "hasSub": true,
+        "borderTop": "1px solid",
+        "width": 99
+      },
+      {
+        "title": "Physical Activity Risk",
+        "hasSub": true,
+        "borderTop": "1px solid",
+        "width": 99
+      },
+      {
+        "title": "Family History Risk",
+        "hasSub": true,
+        "borderTop": "1px solid",
+        "width": 99
+      },
+      {
+        "title": "Chronic Disease",
+        "hasSub": true,
+        "borderTop": "1px solid",
+        "width": 99
+      }
+    ],
+    "namePct": 20,
+    "statusPctAvg": 11.5,
+    "verticalBorder": "1px",
+    "bodyVerticalBorder": "1px"
+  },
+  {
+    "viewport": "390x844",
+    "file": "risk-assessment-390x844-final-alignment.png",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "overflow": false,
+    "hasAdd": false,
+    "hasExport": true,
+    "search": {
+      "x": 31,
+      "y": 593,
+      "w": 329,
+      "h": 40
+    },
+    "zone": {
+      "x": 31,
+      "y": 645,
+      "w": 329,
+      "h": 40
+    },
+    "year": {
+      "x": 31,
+      "y": 697,
+      "w": 329,
+      "h": 40
+    },
+    "filterPct": {
+      "search": 107.9,
+      "zone": 107.9,
+      "year": 107.9
+    },
+    "headers": [
+      {
+        "title": "Full Name",
+        "hasSub": false,
+        "borderTop": null,
+        "width": 160
+      },
+      {
+        "title": "BMI Status",
+        "hasSub": true,
+        "borderTop": "1px solid",
+        "width": 91
+      },
+      {
+        "title": "BP Status",
+        "hasSub": true,
+        "borderTop": "1px solid",
+        "width": 91
+      },
+      {
+        "title": "Smoking Status",
+        "hasSub": true,
+        "borderTop": "1px solid",
+        "width": 91
+      },
+      {
+        "title": "Alcohol Status",
+        "hasSub": true,
+        "borderTop": "1px solid",
+        "width": 91
+      },
+      {
+        "title": "Physical Activity Risk",
+        "hasSub": true,
+        "borderTop": "1px solid",
+        "width": 91
+      },
+      {
+        "title": "Family History Risk",
+        "hasSub": true,
+        "borderTop": "1px solid",
+        "width": 91
+      },
+      {
+        "title": "Chronic Disease",
+        "hasSub": true,
+        "borderTop": "1px solid",
+        "width": 91
+      }
+    ],
+    "namePct": 20,
+    "statusPctAvg": 11.4,
+    "verticalBorder": "1px",
+    "bodyVerticalBorder": "1px"
+  }
+]

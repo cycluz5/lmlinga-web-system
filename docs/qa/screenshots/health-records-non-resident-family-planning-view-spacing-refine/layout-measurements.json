@@ -1,0 +1,230 @@
+[
+  {
+    "viewport": "1440x900",
+    "pageOverflow": false,
+    "panelWidth": 1104,
+    "panelPaddingLeft": 40,
+    "contentWidth": 1024,
+    "headingStart": {
+      "x": 1,
+      "ratio": 0.001
+    },
+    "clientInfoLabelStart": {
+      "x": 1,
+      "ratio": 0.001
+    },
+    "clientInfoValueStart": {
+      "x": 321,
+      "ratio": 0.3135
+    },
+    "clientInfoValueAnchorPx": 321,
+    "clientInfoAllValueStarts": [
+      321,
+      321,
+      321
+    ],
+    "visitDateStart": {
+      "x": 1,
+      "ratio": 0.001
+    },
+    "remarksStart": {
+      "x": 157,
+      "ratio": 0.1533
+    },
+    "editActionStart": {
+      "x": 318,
+      "ratio": 0.3105
+    },
+    "historyTableWidth": 344,
+    "historyTableRightEdge": 345,
+    "commodityStart": {
+      "x": 1,
+      "ratio": 0.001
+    },
+    "quantityStart": {
+      "x": 165,
+      "ratio": 0.1611
+    },
+    "dateGivenStart": {
+      "x": 291,
+      "ratio": 0.2842
+    },
+    "commoditiesTableWidth": 408,
+    "commoditiesTableRightEdge": 409,
+    "sectionBorderTopWidths": [
+      "0px",
+      "0px"
+    ],
+    "historyHeaderBackground": "rgba(0, 0, 0, 0)",
+    "beforeSnapshot": {
+      "clientInfoValueStartPx": 273,
+      "visitDate": 1,
+      "remarks": 121,
+      "edit": 317,
+      "historyWidth": 344,
+      "commodity": 1,
+      "quantity": 142,
+      "dateGiven": 250,
+      "commoditiesWidth": 360
+    },
+    "figmaTargets": {
+      "clientInfoValueStartPx": "~320",
+      "remarksFurtherRight": true,
+      "editPositionPreserved": true,
+      "commoditiesColumnsSpread": true,
+      "compactTables": true
+    }
+  },
+  {
+    "viewport": "820x1180",
+    "pageOverflow": false,
+    "panelWidth": 772,
+    "panelPaddingLeft": 24,
+    "contentWidth": 724,
+    "headingStart": {
+      "x": 1,
+      "ratio": 0.0014
+    },
+    "clientInfoLabelStart": {
+      "x": 1,
+      "ratio": 0.0014
+    },
+    "clientInfoValueStart": {
+      "x": 217,
+      "ratio": 0.2997
+    },
+    "clientInfoValueAnchorPx": 217,
+    "clientInfoAllValueStarts": [
+      217,
+      217,
+      217
+    ],
+    "visitDateStart": {
+      "x": 1,
+      "ratio": 0.0014
+    },
+    "remarksStart": {
+      "x": 134,
+      "ratio": 0.1851
+    },
+    "editActionStart": {
+      "x": 292,
+      "ratio": 0.4033
+    },
+    "historyTableWidth": 320,
+    "historyTableRightEdge": 321,
+    "commodityStart": {
+      "x": 1,
+      "ratio": 0.0014
+    },
+    "quantityStart": {
+      "x": 157,
+      "ratio": 0.2169
+    },
+    "dateGivenStart": {
+      "x": 277,
+      "ratio": 0.3826
+    },
+    "commoditiesTableWidth": 388,
+    "commoditiesTableRightEdge": 389,
+    "sectionBorderTopWidths": [
+      "0px",
+      "0px"
+    ],
+    "historyHeaderBackground": "rgba(0, 0, 0, 0)",
+    "beforeSnapshot": {
+      "clientInfoValueStartPx": 273,
+      "visitDate": 1,
+      "remarks": 121,
+      "edit": 317,
+      "historyWidth": 344,
+      "commodity": 1,
+      "quantity": 142,
+      "dateGiven": 250,
+      "commoditiesWidth": 360
+    },
+    "figmaTargets": {
+      "clientInfoValueStartPx": "~320",
+      "remarksFurtherRight": true,
+      "editPositionPreserved": true,
+      "commoditiesColumnsSpread": true,
+      "compactTables": true
+    }
+  },
+  {
+    "viewport": "390x844",
+    "pageOverflow": false,
+    "panelWidth": 358,
+    "panelPaddingLeft": 16,
+    "contentWidth": 326,
+    "headingStart": {
+      "x": 1,
+      "ratio": 0.0031
+    },
+    "clientInfoLabelStart": {
+      "x": 1,
+      "ratio": 0.0031
+    },
+    "clientInfoValueStart": {
+      "x": 1,
+      "ratio": 0.0031
+    },
+    "clientInfoValueAnchorPx": 1,
+    "clientInfoAllValueStarts": [
+      1,
+      1,
+      1
+    ],
+    "visitDateStart": {
+      "x": 1,
+      "ratio": 0.0031
+    },
+    "remarksStart": {
+      "x": 118,
+      "ratio": 0.362
+    },
+    "editActionStart": {
+      "x": 291,
+      "ratio": 0.8926
+    },
+    "historyTableWidth": 324,
+    "historyTableRightEdge": 325,
+    "commodityStart": {
+      "x": 1,
+      "ratio": 0.0031
+    },
+    "quantityStart": {
+      "x": 114,
+      "ratio": 0.3497
+    },
+    "dateGivenStart": {
+      "x": 195,
+      "ratio": 0.5982
+    },
+    "commoditiesTableWidth": 324,
+    "commoditiesTableRightEdge": 325,
+    "sectionBorderTopWidths": [
+      "0px",
+      "0px"
+    ],
+    "historyHeaderBackground": "rgba(0, 0, 0, 0)",
+    "beforeSnapshot": {
+      "clientInfoValueStartPx": 273,
+      "visitDate": 1,
+      "remarks": 121,
+      "edit": 317,
+      "historyWidth": 344,
+      "commodity": 1,
+      "quantity": 142,
+      "dateGiven": 250,
+      "commoditiesWidth": 360
+    },
+    "figmaTargets": {
+      "clientInfoValueStartPx": "~320",
+      "remarksFurtherRight": true,
+      "editPositionPreserved": true,
+      "commoditiesColumnsSpread": true,
+      "compactTables": true
+    }
+  }
+]

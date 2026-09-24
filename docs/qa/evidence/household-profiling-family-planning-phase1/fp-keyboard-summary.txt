@@ -1,0 +1,16 @@
+﻿KEYBOARD EVIDENCE SUMMARY
+See fp-keyboard-log.json for full trail.
+
+Capture confirmed (failed=[] in fp-capture-stdout.txt):
+- tab-to-date-filter
+- tab-to-add
+- tab-to-view-link
+- edit-tab-to-date
+- edit-tab-to-remarks
+- edit-tab-to-commodity
+- edit-tab-to-qty
+- edit-tab-to-remove
+- edit-tab-to-add-commodity
+- edit-tab-to-cancel
+- edit-tab-to-save
+- semantics-main/edit/view pages

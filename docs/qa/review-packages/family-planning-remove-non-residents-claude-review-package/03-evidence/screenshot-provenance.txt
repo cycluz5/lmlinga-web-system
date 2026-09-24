@@ -1,0 +1,23 @@
+# Screenshot provenance
+
+Required package screenshots:
+- 04-screenshots/family-planning-1440x900.png
+- 04-screenshots/family-planning-1366x768.png
+- 04-screenshots/family-planning-820x1180.png
+- 04-screenshots/family-planning-390x844.png
+
+These PNGs were captured AFTER the Non-Residents badge/link removal, from:
+  GET http://127.0.0.1:8765/health-records/family-planning?role=bns
+using Playwright (scripts/capture-hr-family-planning-phase1.mjs) on 2026-08-16,
+with overflow checks recorded in:
+  docs/qa/screenshots/health-records-family-planning-no-nr-access/overflow-report.json
+
+The resident Family Planning Blade/CSS/tests were not modified after that capture.
+A packaging-time recapture via 03-evidence/capture-family-planning.mjs was prepared
+but could not be re-executed in this packaging session after the local artisan
+server had stopped (connection refused), then a subsequent recapture was blocked
+by the environment. Files were copied byte-for-byte from the post-patch capture
+directory into 04-screenshots/.
+
+layout-measurements.json combines that overflow report with source inspection of
+the current Blade (no badge, no title-row, no Non-Residents text/aria-label).

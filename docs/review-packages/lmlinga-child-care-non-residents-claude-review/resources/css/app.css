@@ -1,0 +1,79 @@
+/* ── Bootstrap 5 (layout, grid, forms, components) ─────────── */
+@import 'bootstrap/dist/css/bootstrap.min.css';
+@import 'bootstrap-icons/font/bootstrap-icons.css';
+
+/* ── Tailwind CSS v4 — utilities only (no preflight to avoid Bootstrap conflicts) ── */
+@import 'tailwindcss/theme' layer(theme);
+@import 'tailwindcss/utilities' layer(utilities);
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+/* ── LMLinga Design System ─────────────────────────────────── */
+@import './base/tokens.css';
+@import './base/typography.css';
+@import './base/bootstrap-overrides.css';
+@import './base/components.css';
+@import './pages/landing.css';
+@import './pages/chatbot-landing.css';
+@import './pages/chatbot-register.css';
+@import './pages/chatbot-login.css';
+@import './pages/chatbot-forgot-password.css';
+@import './pages/chatbot-reset-password.css';
+@import './pages/chatbot-main.css';
+@import './pages/chatbot-household-request.css';
+@import './pages/chatbot-household-sms.css';
+@import './pages/chatbot-household-information.css';
+@import './pages/auth.css';
+@import './pages/dashboard.css';
+@import './pages/spot-mapping.css';
+@import './pages/household-profiling.css';
+@import './pages/household-view.css';
+@import './pages/household-amenities.css';
+@import './pages/household-member-form.css';
+@import './pages/household-member-view.css';
+@import './pages/child-immunization.css';
+@import './pages/child-immunization-birth-history.css';
+@import './pages/school-based-immunization.css';
+@import './pages/child-nutrition.css';
+@import './pages/risk-assessment.css';
+@import './pages/family-planning.css';
+@import './pages/maternal-care.css';
+@import './pages/death.css';
+@import './pages/user-management.css';
+@import './pages/user-management-wizard.css';
+@import './pages/user-management-view.css';
+@import './pages/user-management-residents.css';
+@import './pages/household-requests.css';
+@import './pages/household-water-supply.css';
+@import './pages/environmental-health-dashboard.css';
+@import './pages/health-records-child-care.css';
+@import './pages/health-records-child-care-non-residents.css';
+@import './pages/health-records-risk-assessment.css';
+@import './pages/health-records-family-planning.css';
+@import './pages/health-records-non-resident-family-planning.css';
+
+/*
+ * Tailwind theme colors reference tokens.css (:root variables).
+ * tokens.css is the single source of truth — update colors there only.
+ * Tailwind v4 resolves var() at runtime so utilities like text-lml-primary
+ * stay in sync with the design system automatically.
+ */
+@theme {
+    /* Typography */
+    --font-sans: var(--lml-font-sans);
+    --font-brand: var(--lml-font-brand);
+
+    /* LMLinga palette — mirrors tokens.css for Tailwind utility classes */
+    --color-lml-primary: var(--lml-primary);
+    --color-lml-secondary: var(--lml-secondary);
+    --color-lml-light-green: var(--lml-light-green);
+    --color-lml-soft-green: var(--lml-soft-green);
+    --color-lml-background: var(--lml-background);
+    --color-lml-dark-green: var(--lml-dark-green);
+    --color-lml-text-green: var(--lml-text-green);
+    --color-lml-accent: var(--lml-accent);
+    --color-lml-deep-green: var(--lml-deep-green);
+}

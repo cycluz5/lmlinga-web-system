@@ -1,0 +1,59 @@
+LMLinga — Health Records → Child Care → Deworming
+TEST RESULTS (final verification for Claude review package)
+
+Working directory:
+C:\Users\Kathlyn Cris\Desktop\LMLinga_Dev\lmlingaFinal
+
+==================================================
+PRIMARY
+==================================================
+
+EXACT COMMAND:
+php vendor/bin/phpunit tests/Feature/HealthRecordsDewormingTest.php
+
+RESULT (actual final run):
+PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.2.12
+Configuration: C:\Users\Kathlyn Cris\Desktop\LMLinga_Dev\lmlingaFinal\phpunit.xml
+
+.................                                                 17 / 17 (100%)
+
+Time: 00:01.536, Memory: 36.00 MB
+
+OK (17 tests, 191 assertions)
+
+EXIT CODE: 0
+TESTS: 17
+ASSERTIONS: 191
+
+==================================================
+REGRESSION
+==================================================
+
+EXACT COMMAND:
+php vendor/bin/phpunit tests/Feature/HealthRecordsDewormingTest.php tests/Feature/HealthRecordsChildCareSummaryTest.php tests/Feature/HealthRecordsSidebarNavigationTest.php tests/Feature/HealthRecordsVitaminATest.php tests/Feature/HealthRecordsOperationTimbangTest.php
+
+RESULT (actual final run):
+PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.2.12
+Configuration: C:\Users\Kathlyn Cris\Desktop\LMLinga_Dev\lmlingaFinal\phpunit.xml
+
+................................................................. 65 / 65 (100%)
+
+Time: 00:04.137, Memory: 38.00 MB
+
+OK (65 tests, 648 assertions)
+
+EXIT CODE: 0
+TESTS: 65
+ASSERTIONS: 648
+
+==================================================
+NOTES
+==================================================
+
+- These results were recorded from the agent session that completed the
+  Deworming UI refinement before packaging.
+- This packaging task did not re-run PHPUnit and did not modify tests.

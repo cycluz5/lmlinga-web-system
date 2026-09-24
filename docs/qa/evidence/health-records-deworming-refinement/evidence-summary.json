@@ -1,0 +1,103 @@
+{
+  "capturedAt": "2026-08-08T00:49:18.655Z",
+  "url": "http://127.0.0.1:8000/health-records/child-care/deworming?role=bhw",
+  "note": "Figma fidelity refinement evidence. Each PNG includes DevTools Device Toolbar with exact CSS viewport W×H.",
+  "measurements": [
+    {
+      "id": "DW-R1",
+      "file": "DW-R1-desktop-1440x900.png",
+      "requested": {
+        "width": 1440,
+        "height": 900
+      },
+      "measured": {
+        "innerWidth": 1440,
+        "innerHeight": 900,
+        "clientWidth": 1440,
+        "scrollWidth": 1440,
+        "pageOverflow": false,
+        "tableLocalScroll": false
+      }
+    },
+    {
+      "id": "DW-R2",
+      "file": "DW-R2-desktop-1366x768.png",
+      "requested": {
+        "width": 1366,
+        "height": 768
+      },
+      "measured": {
+        "innerWidth": 1366,
+        "innerHeight": 768,
+        "clientWidth": 1366,
+        "scrollWidth": 1366,
+        "pageOverflow": false,
+        "tableLocalScroll": false
+      }
+    },
+    {
+      "id": "DW-R3",
+      "file": "DW-R3-tablet-820x1180.png",
+      "requested": {
+        "width": 820,
+        "height": 1180
+      },
+      "measured": {
+        "innerWidth": 820,
+        "innerHeight": 1180,
+        "clientWidth": 820,
+        "scrollWidth": 820,
+        "pageOverflow": false,
+        "tableLocalScroll": false
+      }
+    },
+    {
+      "id": "DW-R4",
+      "file": "DW-R4-tablet-768x1024.png",
+      "requested": {
+        "width": 768,
+        "height": 1024
+      },
+      "measured": {
+        "innerWidth": 768,
+        "innerHeight": 1024,
+        "clientWidth": 768,
+        "scrollWidth": 768,
+        "pageOverflow": false,
+        "tableLocalScroll": false
+      }
+    },
+    {
+      "id": "DW-R5",
+      "file": "DW-R5-mobile-390x844.png",
+      "requested": {
+        "width": 390,
+        "height": 844
+      },
+      "measured": {
+        "innerWidth": 390,
+        "innerHeight": 844,
+        "clientWidth": 390,
+        "scrollWidth": 390,
+        "pageOverflow": false,
+        "tableLocalScroll": true
+      }
+    },
+    {
+      "id": "DW-R6",
+      "file": "DW-R6-mobile-360x800.png",
+      "requested": {
+        "width": 360,
+        "height": 800
+      },
+      "measured": {
+        "innerWidth": 360,
+        "innerHeight": 800,
+        "clientWidth": 360,
+        "scrollWidth": 360,
+        "pageOverflow": false,
+        "tableLocalScroll": true
+      }
+    }
+  ]
+}

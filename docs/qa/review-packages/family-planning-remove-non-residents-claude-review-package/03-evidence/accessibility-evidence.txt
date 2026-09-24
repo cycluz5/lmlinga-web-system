@@ -1,0 +1,33 @@
+# Accessibility evidence — Health Records → Family Planning
+# After removal of Non-Residents user-facing access (packaging-only; production not modified)
+
+Inspected file: resources/views/pages/health-records/family-planning.blade.php (current)
+
+Removed (confirmed absent in current Blade):
+- Link text "Non - Residents Client"
+- aria-label="Open Non-Residents Client listing"
+- class lml-hr-fp__badge
+- wrapper class lml-hr-fp__title-row
+
+Confirmed absent on the resident Family Planning page:
+- leftover aria-label for the removed Non-Residents link
+- dangling aria-controls associated with Non-Residents
+- role="tab" / role="tablist" / empty tablist (this page never used a tab pair)
+
+Heading structure:
+- Page topbar title remains Family Planning
+- In-page heading: h2#lml-hr-fp-heading "Family Planning"
+- Description: p#lml-hr-fp-desc
+
+Add / Export:
+- role="group" aria-label="Family Planning actions"
+- Add: aria-label="Add family planning record"
+- Export: aria-label="Export Family Planning data"
+
+Sidebar (resources/views/components/lml/dashboard/sidebar.blade.php):
+- Health Records child "Family Planning" remains a real named-route link
+- No Non-Residents sidebar destination under Family Planning
+- Tests assert Family Planning is aria-current="page" on the resident index
+
+CSS:
+- .lml-hr-fp__title-row and .lml-hr-fp__badge rules removed from health-records-family-planning.css

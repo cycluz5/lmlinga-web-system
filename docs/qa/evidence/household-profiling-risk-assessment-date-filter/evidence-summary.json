@@ -1,0 +1,31 @@
+{
+  "patch": "risk-assessment-history-date-filter",
+  "status": "FILTER PATCH READY FOR INDEPENDENT REVIEW",
+  "phpunit": {
+    "file": "tests/Feature/HouseholdProfilingRiskAssessmentTest.php",
+    "command": "php artisan test --filter=HouseholdProfilingRiskAssessmentTest",
+    "exit_code": 0,
+    "tests_passed": 20,
+    "assertions": 156,
+    "log": "docs/qa/evidence/household-profiling-risk-assessment-date-filter/ra-date-filter-phpunit.txt"
+  },
+  "js": {
+    "file": "tests/js/risk-assessment.test.mjs",
+    "command": "node --test tests/js/risk-assessment.test.mjs",
+    "exit_code": 0,
+    "tests_passed": 11,
+    "log": "docs/qa/evidence/household-profiling-risk-assessment-date-filter/ra-date-filter-js.txt"
+  },
+  "regression": {
+    "command": "php artisan test --filter=\"HouseholdProfilingRiskAssessmentTest|HouseholdProfilingHouseholdMemberViewTest\"",
+    "exit_code": 0,
+    "tests_passed": 28,
+    "assertions": 199,
+    "log": "docs/qa/evidence/household-profiling-risk-assessment-date-filter/ra-date-filter-regression.txt"
+  },
+  "build": {
+    "command": "npm run build",
+    "exit_code": 0,
+    "log": "docs/qa/evidence/household-profiling-risk-assessment-date-filter/ra-date-filter-build.txt"
+  }
+}

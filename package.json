@@ -1,0 +1,25 @@
+{
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "vite build",
+        "dev": "vite",
+        "test:js": "node --test tests/js/dashboard-sidebar.test.mjs tests/js/staff-login.test.mjs tests/js/child-nutrition-newborn.test.mjs tests/js/risk-assessment.test.mjs tests/js/family-planning.test.mjs tests/js/offline-status.test.mjs tests/js/offline-opaque-urls.test.mjs tests/js/offline-changes.test.mjs tests/js/offline-discard.test.mjs tests/js/offline-discard-ui.test.mjs tests/js/offline-queue.test.mjs tests/js/offline-replay.test.mjs tests/js/offline-forms.test.mjs tests/js/offline-sw-policy.test.mjs tests/js/offline-sw-warmup.test.mjs tests/js/offline-prepare.test.mjs tests/js/offline-phase1-record-view.test.mjs tests/js/offline-dont-sync-member-edit.test.mjs tests/js/offline-module-nav-guard.test.mjs tests/js/offline-unavailable.test.mjs tests/js/offline-staff-dataset-prepare.test.mjs tests/js/offline-export.test.mjs tests/js/spot-mapping-overlap.test.mjs tests/js/spot-mapping-sync-reconcile.test.mjs tests/js/spot-mapping-offline-plot.test.mjs tests/js/household-profiling-offline-view.test.mjs tests/js/household-profiling-offline-nav.test.mjs tests/js/user-management-offline-nav.test.mjs tests/js/user-management-offline-update.test.mjs tests/js/user-management-offline-warmup.test.mjs tests/js/user-management-edit-date-max.test.mjs tests/js/profile-back.test.mjs tests/js/offline-related-warmup.test.mjs tests/js/offline-local-member.test.mjs tests/js/offline-local-household.test.mjs tests/js/offline-local-household-members.test.mjs tests/js/offline-health-eh-continuum.test.mjs tests/js/offline-health-summary-continuum.test.mjs tests/js/offline-hh-create-eh-journey.test.mjs tests/js/offline-household-attention-repair.test.mjs tests/js/offline-identity-map.test.mjs tests/js/offline-hp-bootstrap.test.mjs tests/js/offline-hp-writeback.test.mjs tests/js/offline-hp-member-hydrate.test.mjs tests/js/offline-eh-handoff.test.mjs tests/js/offline-hp-plot-head.test.mjs tests/js/offline-eh-step1-hydrate.test.mjs tests/js/offline-hp-queued-member-edit.test.mjs tests/js/maternal-care-trimester-lock.test.mjs tests/js/death-requests.test.mjs tests/js/health-records-vitamin-a.test.mjs tests/js/health-records-deworming.test.mjs tests/js/nutritional-status.test.mjs"
+    },
+    "devDependencies": {
+        "@tailwindcss/vite": "^4.0.0",
+        "axios": "^1.7.4",
+        "concurrently": "^9.0.1",
+        "laravel-vite-plugin": "^1.2.0",
+        "tailwindcss": "^4.0.0",
+        "vite": "^6.0.11"
+    },
+    "dependencies": {
+        "@popperjs/core": "^2.11.8",
+        "bootstrap": "^5.3.8",
+        "bootstrap-icons": "^1.13.1",
+        "html-to-image": "^1.11.13",
+        "jspdf": "^4.2.1",
+        "leaflet": "^1.9.4"
+    }
+}

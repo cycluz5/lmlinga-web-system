@@ -1,0 +1,209 @@
+﻿
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:9:-        
+"dev": "vite"
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:10:+        
+"dev": "vite",
+> docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:11:+        
+"test:js": "node --test tests/js/dashboard-sidebar.test.mjs tests/js/child-nutrition-newborn.test.mjs 
+tests/js/risk-assessment.test.mjs"
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:12:     },
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:13:     
+"devDependencies": {
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:23:+@import 
+'./pages/school-based-immunization.css';
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:24:+@import 
+'./pages/child-nutrition.css';
+> docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:25:+@import 
+'./pages/risk-assessment.css';
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:26: @import 
+'./pages/user-management.css';
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:27: @import 
+'./pages/user-management-wizard.css';
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:52:+import 
+'./pages/school-based-immunization';
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:53:+import 
+'./pages/child-nutrition';
+> docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:54:+import 
+'./pages/risk-assessment';
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:55: import 
+'./pages/user-management';
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:56: import 
+'./pages/user-management-edit';
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:74: function 
+recordToastMessage(recordName) {
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:75:     const 
+map = {
+> docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:76:-        
+'Risk Assessment': 'Risk Assessment details are not yet implemented in this UI phase.',
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:77:         
+'Family Planning': 'Family Planning record details are not yet implemented in this UI phase.',
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:78:         
+Maternal: 'Maternal record details are not yet implemented in this UI phase.',
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:95:     @php
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:96:         
+$healthRecords = [
+> docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:97:-            
+'Risk Assessment',
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:98:             
+'Family Planning',
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:99:             
+'Maternal',
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:101:         ];
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:102:+        
+$riskAssessmentUrl = ($demoHousehold && $demoMember)
+> docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:103:+            
+? route('household-profiling.members.risk-assessment', [
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:104:+            
+    'householdNo' => $demoHousehold['householdNo'],
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:105:+            
+    'memberId' => $demoMember['id'],
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:115:+            
+                @if ($riskAssessmentUrl)
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:116:+            
+                    <li class="lml-hh-member-view__record">
+> docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:117:+            
+                        <span>Risk Assessment</span>
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:118:+            
+                        <a
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:119:+            
+                            href="{{ $riskAssessmentUrl }}"
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:120:+            
+                            class="lml-hh-member-view__record-view lml-focus-ring"
+> docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:121:+            
+                            data-hh-member-risk-assessment
+> docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:122:+            
+                            aria-label="View Risk Assessment history for {{ $demoMember['name'] }}"
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:123:+            
+                        >
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:124:+            
+                            View
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:138: use 
+Illuminate\Support\Facades\Route;
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:139: use 
+App\Http\Controllers\HouseholdProfiling\HouseholdAmenitiesController;
+> docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:140:+use 
+App\Support\DemoRiskAssessment;
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:141: 
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:142: 
+Route::get('/', function () {
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:219: 
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:220:+    /*
+> docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:221:+     | 
+Resident-specific Risk Assessment (Household Profiling member workflow).
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:222:+     | 
+Optional health-worker assessment ΓÇö empty history is valid.
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:223:+     | 
+Distinct from barangay-wide Health Records modules.
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:224:+     */
+> docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:225:+    
+Route::get('/household-profiling/{householdNo}/members/{memberId}/risk-assessment', function (string $householdNo, 
+string $memberId) {
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:226:+        
+$key = DemoCatalog::normalizeHouseholdNo($householdNo);
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:227:+        
+$memberKey = DemoCatalog::normalizeMemberId($memberId);
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:229:+        
+$member = $household ? lml_demo_find_member($household, $memberKey) : null;
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:230:+
+> docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:231:+        
+return view('pages.household-profiling.risk-assessment-history', [
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:232:+            
+'active' => 'household-profiling',
+> docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:233:+            
+'pageTitle' => 'Risk Assessment',
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:234:+            
+'pageSubtitle' => $member
+> docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:235:+            
+    ? 'Risk assessment history for '.$member['name'].' in '.$key.'.'
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:236:+            
+    : 'Demo member was not found.',
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:237:+            
+'householdNo' => $key,
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:240:+            
+'demoMember' => $member,
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:241:+            
+'assessments' => $member
+> docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:242:+            
+    ? DemoRiskAssessment::forMember($key, $memberKey)
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:243:+            
+    : [],
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:244:+        ]);
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:246:+        
+'householdNo' => 'HH-[0-9]+',
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:247:+        
+'memberId' => 'MB-[0-9]+',
+> docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:248:+    
+])->name('household-profiling.members.risk-assessment');
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:249:+
+> docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:250:+    
+Route::get('/household-profiling/{householdNo}/members/{memberId}/risk-assessment/create', function (string 
+$householdNo, string $memberId) {
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:251:+        
+$key = DemoCatalog::normalizeHouseholdNo($householdNo);
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:252:+        
+$memberKey = DemoCatalog::normalizeMemberId($memberId);
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:254:+        
+$member = $household ? lml_demo_find_member($household, $memberKey) : null;
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:255:+
+> docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:256:+        
+return view('pages.household-profiling.risk-assessment-form', [
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:257:+            
+'active' => 'household-profiling',
+> docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:258:+            
+'pageTitle' => 'Risk Assessment',
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:259:+            
+'pageSubtitle' => $member
+> docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:260:+            
+    ? 'Add risk assessment for '.$member['name'].' in '.$key.'.'
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:261:+            
+    : 'Demo member was not found.',
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:262:+            
+'householdNo' => $key,
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:270:+        
+'householdNo' => 'HH-[0-9]+',
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:271:+        
+'memberId' => 'MB-[0-9]+',
+> docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:272:+    
+])->name('household-profiling.members.risk-assessment.create');
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:273:+
+> docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:274:+    
+Route::get('/household-profiling/{householdNo}/members/{memberId}/risk-assessment/{assessmentId}', function (string 
+$householdNo, string $memberId, string $assessmentId) {
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:275:+        
+$key = DemoCatalog::normalizeHouseholdNo($householdNo);
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:276:+        
+$memberKey = DemoCatalog::normalizeMemberId($memberId);
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:278:+        
+$member = $household ? lml_demo_find_member($household, $memberKey) : null;
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:279:+        
+$assessment = $member
+> docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:280:+            
+? DemoRiskAssessment::find($key, $memberKey, $assessmentId)
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:281:+            
+: null;
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:282:+
+> docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:283:+        
+return view('pages.household-profiling.risk-assessment-form', [
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:284:+            
+'active' => 'household-profiling',
+> docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:285:+            
+'pageTitle' => 'Risk Assessment',
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:286:+            
+'pageSubtitle' => $member
+> docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:287:+            
+    ? 'View risk assessment for '.$member['name'].' in '.$key.'.'
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:288:+            
+    : 'Demo member was not found.',
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:289:+            
+'householdNo' => $key,
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:299:+        
+'memberId' => 'MB-[0-9]+',
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:300:+        
+'assessmentId' => 'RA-[0-9]+',
+> docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:301:+    
+])->name('household-profiling.members.risk-assessment.show');
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:302:+
+  docs\qa\evidence\household-profiling-risk-assessment-final-verification\RA-04-shared-files-diff.txt:303:     
+Route::get('/environmental-health', [
+
+

@@ -1,0 +1,21 @@
+﻿===== git diff (unstaged) -- lmlingaFinal/routes/web.php =====
+diff --git a/lmlingaFinal/routes/web.php b/lmlingaFinal/routes/web.php
+index fb9f72e..ea83e9d 100644
+--- a/lmlingaFinal/routes/web.php
++++ b/lmlingaFinal/routes/web.php
+@@ -842,6 +842,11 @@
+         'show',
+     ])->where('childKey', '[A-Za-z0-9\-]+')->name('health-records.child-care.non-residents.show');
+ 
++    Route::get('/health-records/child-care/non-residents/{childKey}/edit', [
++        \App\Http\Controllers\HealthRecords\NonResidentChildCareController::class,
++        'edit',
++    ])->where('childKey', '[A-Za-z0-9\-]+')->name('health-records.child-care.non-residents.edit');
++
+     Route::get('/health-records/child-care/non-residents/{childKey}/nutrition', [
+         \App\Http\Controllers\HealthRecords\NonResidentChildCareController::class,
+         'nutrition',
+
+===== git diff --cached (staged) -- lmlingaFinal/routes/web.php =====
+
+

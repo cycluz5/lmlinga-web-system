@@ -1,0 +1,50 @@
+LMLinga — Health Records → Family Planning — Remove Non-Residents UI
+FILE INVENTORY (review package copies)
+
+Format: PACKAGE PATH  |  ORIGINAL / NOTES
+
+01-source/resident/family-planning.blade.php  |  resources/views/pages/health-records/family-planning.blade.php
+01-source/resident/health-records-family-planning.css  |  resources/css/pages/health-records-family-planning.css
+01-source/resident/health-records-family-planning.js  |  resources/js/pages/health-records-family-planning.js
+01-source/resident/sidebar.blade.php  |  resources/views/components/lml/dashboard/sidebar.blade.php
+01-source/resident/FamilyPlanningSummaryController.php  |  app/Http/Controllers/HealthRecords/FamilyPlanningSummaryController.php
+01-source/resident/HealthRecordsFamilyPlanning.php  |  app/Support/HealthRecordsFamilyPlanning.php
+01-source/resident/web.php  |  routes/web.php (complete current file)
+
+01-source/legacy-non-residents/NonResidentFamilyPlanningController.php  |  app/Http/Controllers/HealthRecords/NonResidentFamilyPlanningController.php
+01-source/legacy-non-residents/HealthRecordsNonResidentFamilyPlanning.php  |  app/Support/HealthRecordsNonResidentFamilyPlanning.php
+01-source/legacy-non-residents/health-records-non-resident-family-planning.css  |  resources/css/pages/health-records-non-resident-family-planning.css
+01-source/legacy-non-residents/health-records-non-resident-family-planning.js  |  resources/js/pages/health-records-non-resident-family-planning.js
+01-source/legacy-non-residents/non-resident-family-planning.php  |  resources/demo/non-resident-family-planning.php
+01-source/legacy-non-residents/index.blade.php  |  resources/views/pages/health-records/non-resident-family-planning/index.blade.php
+01-source/legacy-non-residents/create-client.blade.php  |  resources/views/pages/health-records/non-resident-family-planning/create-client.blade.php
+01-source/legacy-non-residents/show.blade.php  |  resources/views/pages/health-records/non-resident-family-planning/show.blade.php
+01-source/legacy-non-residents/visit-form.blade.php  |  resources/views/pages/health-records/non-resident-family-planning/visit-form.blade.php
+01-source/legacy-non-residents/partials/workflow-nav.blade.php  |  resources/views/pages/health-records/non-resident-family-planning/partials/workflow-nav.blade.php
+01-source/legacy-non-residents/partials/client-identity-banner.blade.php  |  resources/views/pages/health-records/non-resident-family-planning/partials/client-identity-banner.blade.php
+01-source/legacy-non-residents/partials/commodity-rows.blade.php  |  resources/views/pages/health-records/non-resident-family-planning/partials/commodity-rows.blade.php
+
+02-tests/HealthRecordsFamilyPlanningTest.php  |  tests/Feature/HealthRecordsFamilyPlanningTest.php
+02-tests/HealthRecordsNonResidentFamilyPlanningTest.php  |  tests/Feature/HealthRecordsNonResidentFamilyPlanningTest.php
+02-tests/HealthRecordsSidebarNavigationTest.php  |  tests/Feature/HealthRecordsSidebarNavigationTest.php
+
+03-evidence/test-results.txt  |  generated (fresh php artisan test)
+03-evidence/sidebar-navigation-test-results.txt  |  generated (fresh php artisan test)
+03-evidence/build-results.txt  |  generated (fresh npm run build)
+03-evidence/git-diff.txt  |  generated (scoped git diff)
+03-evidence/git-status.txt  |  generated (scoped + full porcelain)
+03-evidence/family-planning-routes-excerpt.txt  |  excerpt of routes/web.php Family Planning routes
+03-evidence/accessibility-evidence.txt  |  generated
+03-evidence/regression-evidence.txt  |  generated
+03-evidence/screenshot-provenance.txt  |  generated
+03-evidence/layout-measurements.json  |  copy of 04-screenshots/layout-measurements.json
+03-evidence/capture-family-planning.mjs  |  packaging capture script (not production)
+
+04-screenshots/family-planning-1440x900.png  |  post-patch capture of resident FP page
+04-screenshots/family-planning-1366x768.png  |  post-patch capture of resident FP page
+04-screenshots/family-planning-820x1180.png  |  post-patch capture of resident FP page
+04-screenshots/family-planning-390x844.png  |  post-patch capture of resident FP page
+04-screenshots/layout-measurements.json  |  generated
+
+05-reports/REVIEW-MANIFEST.md  |  generated for this package
+05-reports/FILE-INVENTORY.txt  |  this file

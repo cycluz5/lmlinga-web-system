@@ -1,0 +1,55 @@
+DB-16 OPERATION TIMBANG — FINAL PRODUCTION FREEZE MANIFEST
+============================================================
+Package folder: lmlingaFinal/review_packages/DB-16_OPERATION_TIMBANG_FINAL_PRODUCTION_FREEZE/
+Purpose:        Documentation-only final freeze / review package
+Branch:         review/db16-operation-timbang-final-refresh
+HEAD:           ff041f7835d3e1f75e50af47f110a9633d07d440
+                DB 16 - REFINEMENT OF MONTH AND YEAR FILTERS
+Prior commit:   9f0ff1d3c0b18bfab44fad2d95112908255f174b
+                DB-16: OPERATION TIMBANG
+
+VERDICT
+  Independent review:  B — READY WITH MINOR NON-BLOCKING NOTES
+  Production freeze:   APPROVED FOR PRODUCTION FREEZE
+  Tests:               php artisan test --filter=OperationTimbang
+                       35 passed (247 assertions)
+
+PACKAGE CONTENTS (documentation only; no production copies required)
+  README.md
+  DB-16_FINAL_PRODUCTION_FREEZE_REVIEW.md
+  DB-16_REVIEW_MANIFEST.txt
+  evidence/PACKAGE_STAMP.txt
+  evidence/GIT_BRANCH.txt
+  evidence/GIT_HEAD.txt
+  evidence/GIT_LOG_5.txt
+  evidence/GIT_STATUS_SHORT.txt
+  evidence/GIT_SHOW_REFINEMENT_COMMIT.txt
+  evidence/GIT_SHOW_PERSISTENCE_COMMIT.txt
+  evidence/IMPLEMENTATION_PATHS_GIT_TRACKED.txt
+  evidence/TEST_EVIDENCE.txt
+  evidence/IMPLEMENTATION_PATHS.md
+
+AUTHORITATIVE IMPLEMENTATION PATHS (live app; not modified by this package)
+  routes/web.php
+    (GET health-records.child-care.operation-timbang)
+  app/Http/Controllers/HealthRecords/ChildCareSummaryController.php
+  app/Support/OperationTimbangMonitoringService.php
+  app/Support/HealthRecordsOperationTimbang.php
+  app/Models/OperationTimbangMeasurement.php
+  app/Models/Resident.php
+    (operationTimbangMeasurements relationship)
+  database/migrations/2026_08_26_100000_create_operation_timbang_measurements_table.php
+  database/factories/OperationTimbangMeasurementFactory.php
+  resources/views/pages/health-records/child-care-operation-timbang.blade.php
+  resources/js/pages/health-records-operation-timbang.js
+  tests/Feature/HealthRecordsOperationTimbangTest.php
+  tests/Feature/OperationTimbangPersistenceTest.php
+
+NOT INCLUDED (intentionally)
+  Unrelated review ZIPs, importantFiles, other DB workstreams
+  node_modules, vendor, .env, database dumps
+  Production source file copies (paths documented; live tree is source of truth)
+  OT-N1 polish, Export Data implementation, invented DOH formulas
+
+GIT SAFETY
+  No git add / commit / push / merge / rebase / reset performed for this package.

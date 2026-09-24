@@ -1,0 +1,35 @@
+[
+  {
+    "viewport": "1440x900",
+    "file": "desktop-1440x900.png",
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "overflow": false,
+    "homeWidth": 1104,
+    "contentPaddingLeft": "28px",
+    "contentPaddingRight": "28px",
+    "cardCount": 12
+  },
+  {
+    "viewport": "820x1180",
+    "file": "tablet-820x1180.png",
+    "scrollWidth": 820,
+    "clientWidth": 820,
+    "overflow": false,
+    "homeWidth": 772,
+    "contentPaddingLeft": "24px",
+    "contentPaddingRight": "24px",
+    "cardCount": 12
+  },
+  {
+    "viewport": "390x844",
+    "file": "mobile-390x844.png",
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "overflow": false,
+    "homeWidth": 358,
+    "contentPaddingLeft": "16px",
+    "contentPaddingRight": "16px",
+    "cardCount": 12
+  }
+]

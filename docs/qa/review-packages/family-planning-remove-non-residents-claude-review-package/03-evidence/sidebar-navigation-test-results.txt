@@ -1,0 +1,37 @@
+﻿Command: php artisan test --filter=HealthRecordsSidebarNavigationTest
+Working directory: lmlingaFinal
+Exit code: 0
+Tests: 14 passed
+Assertions: 200
+Duration: 3.94s
+Captured: 2026-08-16 (packaging session, fresh execution)
+Note: This existing sidebar/navigation contract test includes Family Planning as one of five Health Records children. It was executed in addition to the targeted FP filter run.
+
+----- complete terminal output -----
+
+   WARN  Metadata found in doc-comment for method Tests\Feature\HouseholdWaterSupplyStep3Test::test_each_sanitary_toilet_choice_derives_sanitary(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Feature\HouseholdWaterSupplyStep3Test::test_each_unsanitary_toilet_choice_derives_unsanitary(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Feature\SpotMappingHandoffWorkflowTest::test_legitimate_plot_handoff_workflow_per_role(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   PASS  Tests\Feature\HealthRecordsSidebarNavigationTest
+  Γ£ô dashboard keeps health records collapsed and inactive                                                        1.09s  
+  Γ£ô unrelated route health records parent is not route active                                                    0.04s  
+  Γ£ô health records dropdown contains only five items in order                                                    0.05s  
+  Γ£ô health records children do not use hash placeholders                                                         0.08s  
+  Γ£ô child care sidebar item is not remapped to child immunization                                                0.05s  
+  Γ£ô ui role maps health records child route families                                                             0.02s  
+  Γ£ô ui role does not treat child immunization as health records child care                                       0.10s  
+  Γ£ô expanded health records highlights only active child                                                         0.03s  
+  Γ£ô built css hides closed sidebar panels with important                                                         0.06s  
+  Γ£ô routes outside health records leave dropdown collapsed and inactive                                          0.04s  
+  Γ£ô child immunization keeps household profiling active and health records collapsed                             0.04s  
+  Γ£ô birth history keeps household profiling active and health records collapsed                                  0.04s  
+  Γ£ô environmental health keeps health records collapsed                                                          1.91s  
+  Γ£ô canonical health records child routes are named index destinations                                           0.03s  
+
+  Tests:    14 passed (200 assertions)
+  Duration: 3.94s
+
+

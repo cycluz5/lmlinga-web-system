@@ -1,0 +1,6 @@
+﻿ZIP_PATH=C:\Users\Kathlyn Cris\Desktop\LMLinga_Dev\lmlingaFinal\docs\qa\evidence\household-profiling-death-phase1\death-phase1-final-closeout-evidence.zip
+FILE_COUNT=49
+SIZE_BYTES=2765863
+SHA256=2178C6917581D7CB38ADFE05CD122365000438AE4A748FB6BAB924AFB4BB154B
+MANIFEST_IN_ZIP=True
+MANIFEST_PATHS=07-manifest\FINAL-CLOSEOUT-MANIFEST.md; FINAL-CLOSEOUT-MANIFEST.md

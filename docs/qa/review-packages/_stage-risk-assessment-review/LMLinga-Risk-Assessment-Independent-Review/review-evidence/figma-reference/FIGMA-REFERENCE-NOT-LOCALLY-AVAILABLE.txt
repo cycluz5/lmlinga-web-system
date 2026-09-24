@@ -1,0 +1,4 @@
+﻿FIGMA REFERENCE NOT LOCALLY AVAILABLE — USER MUST ATTACH SEPARATELY TO CLAUDE
+
+No approved Risk Assessment Figma screenshot was found inside this repository for packaging.
+Attach the Risk Assessment Figma screenshot separately when submitting to Claude.

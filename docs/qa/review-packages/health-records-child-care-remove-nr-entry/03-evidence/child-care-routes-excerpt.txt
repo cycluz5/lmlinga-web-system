@@ -1,0 +1,96 @@
+﻿SOURCE: routes/web.php
+LINES: 805-896 (Child Care resident + Non-Resident GET routes)
+NOTE: Copied for review only. Production file was not modified by packaging.
+
+ 805|    /*
+ 806|     | Health Records â€” Child Care barangay-wide summary (demo catalog aggregate).
+ 807|     | Vitamin A / Deworming / Operation Timbang monitoring summaries reuse
+ 808|     | named child-care routes.
+ 809|     */
+ 810|    Route::get('/health-records/child-care', [
+ 811|        \App\Http\Controllers\HealthRecords\ChildCareSummaryController::class,
+ 812|        'index',
+ 813|    ])->name('health-records.child-care.index');
+ 814|
+ 815|    Route::get('/health-records/child-care/vitamin-a', [
+ 816|        \App\Http\Controllers\HealthRecords\ChildCareSummaryController::class,
+ 817|        'vitaminA',
+ 818|    ])->name('health-records.child-care.vitamin-a');
+ 819|
+ 820|    Route::get('/health-records/child-care/deworming', [
+ 821|        \App\Http\Controllers\HealthRecords\ChildCareSummaryController::class,
+ 822|        'deworming',
+ 823|    ])->name('health-records.child-care.deworming');
+ 824|
+ 825|    Route::get('/health-records/child-care/operation-timbang', [
+ 826|        \App\Http\Controllers\HealthRecords\ChildCareSummaryController::class,
+ 827|        'operationTimbang',
+ 828|    ])->name('health-records.child-care.operation-timbang');
+ 829|
+ 830|    Route::get('/health-records/child-care/non-residents', [
+ 831|        \App\Http\Controllers\HealthRecords\NonResidentChildCareController::class,
+ 832|        'index',
+ 833|    ])->name('health-records.child-care.non-residents.index');
+ 834|
+ 835|    Route::get('/health-records/child-care/non-residents/create', [
+ 836|        \App\Http\Controllers\HealthRecords\NonResidentChildCareController::class,
+ 837|        'create',
+ 838|    ])->name('health-records.child-care.non-residents.create');
+ 839|
+ 840|    Route::get('/health-records/child-care/non-residents/{childKey}', [
+ 841|        \App\Http\Controllers\HealthRecords\NonResidentChildCareController::class,
+ 842|        'show',
+ 843|    ])->where('childKey', '[A-Za-z0-9\-]+')->name('health-records.child-care.non-residents.show');
+ 844|
+ 845|    Route::get('/health-records/child-care/non-residents/{childKey}/edit', [
+ 846|        \App\Http\Controllers\HealthRecords\NonResidentChildCareController::class,
+ 847|        'edit',
+ 848|    ])->where('childKey', '[A-Za-z0-9\-]+')->name('health-records.child-care.non-residents.edit');
+ 849|
+ 850|    Route::get('/health-records/child-care/non-residents/{childKey}/nutrition', [
+ 851|        \App\Http\Controllers\HealthRecords\NonResidentChildCareController::class,
+ 852|        'nutrition',
+ 853|    ])->where('childKey', '[A-Za-z0-9\-]+')->name('health-records.child-care.non-residents.nutrition');
+ 854|
+ 855|    Route::get('/health-records/child-care/non-residents/{childKey}/nutrition/create', [
+ 856|        \App\Http\Controllers\HealthRecords\NonResidentChildCareController::class,
+ 857|        'createMeasurement',
+ 858|    ])->where('childKey', '[A-Za-z0-9\-]+')->name('health-records.child-care.non-residents.nutrition.create');
+ 859|
+ 860|    Route::get('/health-records/child-care/non-residents/{childKey}/nutrition/{measurementId}/edit', [
+ 861|        \App\Http\Controllers\HealthRecords\NonResidentChildCareController::class,
+ 862|        'editMeasurement',
+ 863|    ])->where([
+ 864|        'childKey' => '[A-Za-z0-9\-]+',
+ 865|        'measurementId' => '[A-Za-z0-9\-]+',
+ 866|    ])->name('health-records.child-care.non-residents.nutrition.edit');
+ 867|
+ 868|    Route::get('/health-records/child-care/non-residents/{childKey}/immunization', [
+ 869|        \App\Http\Controllers\HealthRecords\NonResidentChildCareController::class,
+ 870|        'immunization',
+ 871|    ])->where('childKey', '[A-Za-z0-9\-]+')->name('health-records.child-care.non-residents.immunization');
+ 872|
+ 873|    Route::get('/health-records/child-care/non-residents/{childKey}/immunization/birth-history', [
+ 874|        \App\Http\Controllers\HealthRecords\NonResidentChildCareController::class,
+ 875|        'editBirthHistory',
+ 876|    ])->where('childKey', '[A-Za-z0-9\-]+')->name('health-records.child-care.non-residents.immunization.birth-history');
+ 877|
+ 878|    Route::get('/health-records/child-care/non-residents/{childKey}/school-based-immunization', [
+ 879|        \App\Http\Controllers\HealthRecords\NonResidentChildCareController::class,
+ 880|        'schoolBasedImmunization',
+ 881|    ])->where('childKey', '[A-Za-z0-9\-]+')->name('health-records.child-care.non-residents.school-based-immunization');
+ 882|
+ 883|    Route::get('/health-records/child-care/non-residents/{childKey}/child-nutrition', [
+ 884|        \App\Http\Controllers\HealthRecords\NonResidentChildCareController::class,
+ 885|        'childNutrition',
+ 886|    ])->where('childKey', '[A-Za-z0-9\-]+')->name('health-records.child-care.non-residents.child-nutrition');
+ 887|
+ 888|    Route::get('/health-records/child-care/non-residents/{childKey}/deworming', [
+ 889|        \App\Http\Controllers\HealthRecords\NonResidentChildCareController::class,
+ 890|        'deworming',
+ 891|    ])->where('childKey', '[A-Za-z0-9\-]+')->name('health-records.child-care.non-residents.deworming');
+ 892|
+ 893|    Route::get('/health-records/child-care/non-residents/{childKey}/deworming/create', [
+ 894|        \App\Http\Controllers\HealthRecords\NonResidentChildCareController::class,
+ 895|        'createDeworming',
+ 896|    ])->where('childKey', '[A-Za-z0-9\-]+')->name('health-records.child-care.non-residents.deworming.create');

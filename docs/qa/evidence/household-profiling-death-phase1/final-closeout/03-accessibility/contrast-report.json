@@ -1,0 +1,93 @@
+[
+  {
+    "label": "Record death information — text vs background",
+    "foregroundCss": "rgb(20, 108, 46)",
+    "backgroundCss": "rgb(255, 255, 255)",
+    "foregroundHex": "#146C2E",
+    "backgroundHex": "#FFFFFF",
+    "ratio": 6.53,
+    "threshold": 4.5,
+    "result": "PASS"
+  },
+  {
+    "label": "Record death information — icon vs background",
+    "foregroundCss": "rgb(20, 108, 46)",
+    "backgroundCss": "rgb(255, 255, 255)",
+    "foregroundHex": "#146C2E",
+    "backgroundHex": "#FFFFFF",
+    "ratio": 6.53,
+    "threshold": 4.5,
+    "result": "PASS"
+  },
+  {
+    "label": "Record death information — border vs background",
+    "foregroundCss": "rgb(20, 108, 46)",
+    "backgroundCss": "rgb(255, 255, 255)",
+    "foregroundHex": "#146C2E",
+    "backgroundHex": "#FFFFFF",
+    "ratio": 6.53,
+    "threshold": 3,
+    "result": "PASS",
+    "note": "Post-fix 2026-08-10: was #9FDDAD @ 1.56:1 FAIL; now --death-accent-text"
+  },
+  {
+    "label": "DEATH INFORMATION heading vs panel/page background",
+    "foregroundCss": "rgb(20, 108, 46)",
+    "backgroundCss": "rgb(255, 255, 255)",
+    "foregroundHex": "#146C2E",
+    "backgroundHex": "#FFFFFF",
+    "ratio": 6.53,
+    "threshold": 4.5,
+    "result": "PASS"
+  },
+  {
+    "label": "Save button — normal",
+    "foregroundCss": "rgb(255, 255, 255)",
+    "backgroundCss": "rgb(21, 115, 71)",
+    "foregroundHex": "#FFFFFF",
+    "backgroundHex": "#157347",
+    "ratio": 5.87,
+    "threshold": 4.5,
+    "result": "PASS"
+  },
+  {
+    "label": "Save button — hover",
+    "foregroundCss": "rgb(255, 255, 255)",
+    "backgroundCss": "rgb(15, 81, 50)",
+    "foregroundHex": "#FFFFFF",
+    "backgroundHex": "#0F5132",
+    "ratio": 9.36,
+    "threshold": 4.5,
+    "result": "PASS"
+  },
+  {
+    "label": "Save button — focus-visible colors",
+    "foregroundCss": "rgb(255, 255, 255)",
+    "backgroundCss": "rgb(15, 81, 50)",
+    "foregroundHex": "#FFFFFF",
+    "backgroundHex": "#0F5132",
+    "ratio": 9.36,
+    "threshold": 4.5,
+    "result": "PASS"
+  },
+  {
+    "label": "Edit button — normal",
+    "foregroundCss": "rgb(255, 255, 255)",
+    "backgroundCss": "rgb(15, 81, 50)",
+    "foregroundHex": "#FFFFFF",
+    "backgroundHex": "#0F5132",
+    "ratio": 9.36,
+    "threshold": 4.5,
+    "result": "PASS"
+  },
+  {
+    "label": "Edit button — hover",
+    "foregroundCss": "rgb(255, 255, 255)",
+    "backgroundCss": "rgb(15, 81, 50)",
+    "foregroundHex": "#FFFFFF",
+    "backgroundHex": "#0F5132",
+    "ratio": 9.36,
+    "threshold": 4.5,
+    "result": "PASS"
+  }
+]

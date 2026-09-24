@@ -1,0 +1,2169 @@
+/**
+ * LMLinga — Health Records → Child Care summary
+ * Capstone Figma proportions restored (readable scale, not miniature).
+ */
+
+.lml-hr-child-care {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.lml-hr-child-care__panel {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-width: 0;
+    padding: 1.125rem 1.25rem 1.25rem;
+    border: 1px solid rgba(var(--lml-primary-rgb), 0.38);
+    border-radius: 0.75rem;
+    background-color: #fff;
+}
+
+.lml-hr-child-care__top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.65rem 1rem;
+    min-width: 0;
+}
+
+.lml-hr-child-care__title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.65rem 1.25rem;
+    min-width: 0;
+    flex: 1 1 auto;
+}
+
+.lml-hr-child-care__title-cluster {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.65rem;
+    min-width: 0;
+}
+
+.lml-hr-child-care__title {
+    margin: 0;
+    color: #111827;
+    font-size: 1.4375rem; /* ~23px */
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+}
+
+.lml-hr-child-care__scope-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    min-height: 2rem;
+    padding: 0.28rem 0.8rem;
+    border: 1px solid #86efac;
+    border-radius: 999px;
+    background-color: #f0fdf4;
+    color: #15803d;
+    font-size: 0.75rem; /* 12px — secondary to title */
+    font-weight: 600;
+    line-height: 1.2;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.lml-hr-child-care__scope-pill i {
+    font-size: 0.875rem;
+    line-height: 1;
+}
+
+.lml-hr-child-care__scope-pill:hover {
+    background-color: #dcfce7;
+    border-color: #4ade80;
+    color: #166534;
+}
+
+.lml-hr-child-care__nav-pills {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.lml-hr-child-care__pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.125rem; /* ~34px */
+    padding: 0.35rem 0.9rem;
+    border: 1px solid #b7e4c4;
+    border-radius: 999px;
+    background-color: #fff;
+    color: #1f7a1f;
+    font-size: 0.8125rem; /* 13px */
+    font-weight: 600;
+    line-height: 1.2;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.lml-hr-child-care__pill:hover {
+    background-color: #f0fdf4;
+    border-color: #86efac;
+    color: #166534;
+}
+
+.lml-hr-child-care__actions {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    flex: 0 0 auto;
+    min-width: 0;
+}
+
+.lml-hr-child-care__add-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    flex: 0 0 auto;
+    min-height: 2.5rem; /* match Export */
+    padding: 0.45rem 0.95rem;
+    border: 1px solid #22c55e;
+    border-radius: 0.45rem;
+    background-color: #fff;
+    color: #15803d;
+    font-family: inherit;
+    font-size: 0.8125rem; /* 13px */
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.lml-hr-child-care__add-btn i {
+    font-size: 0.95rem;
+    line-height: 1;
+    color: #16a34a;
+}
+
+.lml-hr-child-care__add-btn:hover {
+    background-color: #f0fdf4;
+    border-color: #16a34a;
+    color: #166534;
+}
+
+.lml-hr-child-care__export-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    flex: 0 0 auto;
+    min-height: 2.5rem; /* 40px */
+    padding: 0.45rem 1.1rem;
+    border: 1px solid var(--lml-primary);
+    border-radius: 0.45rem;
+    background-color: var(--lml-primary);
+    color: var(--lml-dark-green, #0b3d0b);
+    font-family: inherit;
+    font-size: 0.8125rem; /* 13px */
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.lml-hr-child-care__export-btn i {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.lml-hr-child-care__export-btn:hover {
+    background-color: #16a34a;
+    border-color: #16a34a;
+    color: #fff;
+}
+
+.lml-hr-child-care__stats {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+    min-width: 0;
+}
+
+.lml-hr-child-care__card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    min-height: 6rem; /* ~96px */
+    padding: 0.85rem 1rem;
+    border-radius: 0.625rem;
+}
+
+.lml-hr-child-care__card--total {
+    background-color: #fff;
+    border: 1px solid #e8eaed;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
+}
+
+.lml-hr-child-care__card--female {
+    border: 1px solid #f5c2e0;
+    background: linear-gradient(145deg, #fff7fb 0%, #fde8f3 42%, #f8d4ea 100%);
+    box-shadow:
+        0 3px 12px rgba(190, 60, 130, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+.lml-hr-child-care__card--male {
+    border: 1px solid #b8d4f0;
+    background: linear-gradient(145deg, #f5f9ff 0%, #e6f0fc 45%, #d6e8fa 100%);
+    box-shadow:
+        0 3px 12px rgba(59, 100, 150, 0.12),
+        inset 0 1px 0 rgba(255, 255, 255, 0.65);
+}
+
+.lml-hr-child-care__card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.25rem;
+    min-width: 0;
+}
+
+.lml-hr-child-care__card-label {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.75rem; /* 12px */
+    font-weight: 700;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.lml-hr-child-care__card-value {
+    margin: 0;
+    color: #111827;
+    font-size: 1.9375rem; /* ~31px */
+    font-weight: 700;
+    line-height: 1.05;
+}
+
+.lml-hr-child-care__card-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    margin-right: 0.15rem;
+    line-height: 1;
+}
+
+.lml-hr-child-care__card-icon--total {
+    color: #9ca3af;
+    font-size: 2.35rem; /* ~38px optical */
+}
+
+.lml-hr-child-care__card-icon--female {
+    color: #8b3a6f;
+    font-size: 2.6rem; /* ~42px */
+}
+
+.lml-hr-child-care__card-icon--male {
+    color: #4a6282;
+    font-size: 2.6rem;
+}
+
+.lml-hr-child-care__filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.7rem;
+    min-width: 0;
+    padding: 0.65rem 0.7rem;
+    border: 1px solid #eef0f2;
+    border-radius: 0.625rem;
+    background-color: #fff;
+}
+
+.lml-hr-child-care__search {
+    position: relative;
+    flex: 1 1 14rem;
+    min-width: 0;
+    max-width: none;
+}
+
+.lml-hr-child-care__search-icon {
+    position: absolute;
+    top: 50%;
+    left: 0.75rem;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    font-size: 0.9375rem; /* 15px */
+    pointer-events: none;
+}
+
+.lml-hr-child-care__search-input {
+    width: 100%;
+    min-height: 2.5rem; /* 40px */
+    padding: 0.45rem 0.75rem 0.45rem 2.35rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.45rem;
+    background-color: #fff;
+    color: #374151;
+    font-family: inherit;
+    font-size: 0.8125rem; /* 13px */
+    line-height: 1.3;
+}
+
+.lml-hr-child-care__search-input::placeholder {
+    color: #9ca3af;
+    font-size: 0.8125rem;
+}
+
+.lml-hr-child-care__search-input:focus {
+    border-color: #86efac;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(var(--lml-primary-rgb), 0.15);
+}
+
+.lml-hr-child-care__select-wrap {
+    position: relative;
+    flex: 1 1 8.5rem;
+    min-width: 7.5rem;
+    max-width: 12rem;
+}
+
+.lml-hr-child-care__select {
+    width: 100%;
+    min-height: 2.5rem;
+    padding: 0.45rem 2rem 0.45rem 0.75rem;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.45rem;
+    background-color: #fff;
+    color: #4b5563;
+    font-family: inherit;
+    font-size: 0.8125rem;
+    line-height: 1.3;
+    appearance: none;
+    cursor: pointer;
+}
+
+.lml-hr-child-care__select:focus {
+    border-color: #86efac;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(var(--lml-primary-rgb), 0.15);
+}
+
+.lml-hr-child-care__select-icon {
+    position: absolute;
+    top: 50%;
+    right: 0.65rem;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    font-size: 0.75rem;
+    pointer-events: none;
+}
+
+.lml-hr-child-care__toast {
+    padding: 0.55rem 0.85rem;
+    border-radius: 0.45rem;
+    background-color: #ecfdf5;
+    border: 1px solid #a7f3d0;
+    color: #065f46;
+    font-size: 0.8125rem;
+    font-weight: 500;
+}
+
+.lml-hr-child-care__toast[hidden] {
+    display: none !important;
+}
+
+.lml-hr-child-care__results {
+    margin: 0;
+}
+
+.lml-hr-child-care__table-card {
+    position: relative;
+    min-width: 0;
+    border: 1px solid #eef0f2;
+    border-radius: 0.625rem;
+    overflow: hidden;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+}
+
+.lml-hr-child-care__table-scroll {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.lml-hr-child-care__table-scroll:focus-visible {
+    outline: 2px solid #86efac;
+    outline-offset: -2px;
+}
+
+.lml-hr-child-care__table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    font-size: 0.8125rem; /* 13px */
+}
+
+.lml-hr-child-care__col--name {
+    width: 30%;
+}
+
+.lml-hr-child-care__col--birth {
+    width: 18%;
+}
+
+.lml-hr-child-care__col--age {
+    width: 15%;
+}
+
+.lml-hr-child-care__col--health {
+    width: 20%;
+}
+
+.lml-hr-child-care__col--action {
+    width: 17%;
+}
+
+.lml-hr-child-care__table thead th {
+    padding: 0.85rem 1rem; /* ~header 42–48px with line-height */
+    background-color: #e8f7ee;
+    color: #1f5f3a;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    text-align: left;
+    white-space: nowrap;
+    border-bottom: 1px solid #d7efe0;
+}
+
+.lml-hr-child-care__table tbody td {
+    padding: 0.95rem 1rem; /* ~row 50–58px */
+    border-bottom: 1px solid #f1f3f5;
+    color: #4b5563;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    vertical-align: middle;
+}
+
+.lml-hr-child-care__table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.lml-hr-child-care__table tbody tr:hover td {
+    background-color: #fafbfc;
+}
+
+.lml-hr-child-care__table tbody tr[hidden] {
+    display: none;
+}
+
+.lml-hr-child-care__view-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+    min-height: 2rem; /* 32px */
+    padding: 0.3rem 0.8rem;
+    border: 1px solid #22c55e;
+    border-radius: 0.3rem;
+    background-color: #22c55e;
+    color: #0b3d0b;
+    font-size: 0.75rem; /* 12px */
+    font-weight: 600;
+    line-height: 1.2;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.lml-hr-child-care__view-btn:hover {
+    background-color: #16a34a;
+    border-color: #16a34a;
+    color: #fff;
+}
+
+.lml-hr-child-care__view-btn i {
+    font-size: 0.8125rem;
+}
+
+.lml-hr-child-care__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 2rem 1rem;
+    text-align: center;
+}
+
+.lml-hr-child-care__empty[hidden] {
+    display: none !important;
+}
+
+.lml-hr-child-care__empty-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 999px;
+    background-color: #f3f4f6;
+    color: #6b7280;
+    font-size: 1.1rem;
+}
+
+.lml-hr-child-care__empty-title {
+    margin: 0;
+    color: #111827;
+    font-size: 0.9375rem;
+    font-weight: 600;
+}
+
+.lml-hr-child-care__empty-hint {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.8125rem;
+}
+
+.lml-hr-child-care__stub-message {
+    margin: 0;
+    color: #4b5563;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+}
+
+@media (min-width: 640px) {
+    .lml-hr-child-care__stats {
+        /* Total ~32%, Female ~34%, Male ~34% */
+        grid-template-columns: minmax(0, 0.94fr) minmax(0, 1fr) minmax(0, 1fr);
+        gap: 0.75rem;
+    }
+
+    .lml-hr-child-care__search {
+        flex: 1.5 1 12rem;
+    }
+
+    .lml-hr-child-care__select-wrap {
+        flex: 1 1 7.5rem;
+    }
+}
+
+@media (min-width: 992px) {
+    .lml-hr-child-care__panel {
+        padding: 1.25rem 1.35rem 1.35rem;
+        gap: 1.05rem;
+    }
+
+    .lml-hr-child-care__title {
+        font-size: 1.5rem; /* 24px */
+    }
+}
+
+@media (min-width: 577px) and (max-width: 991.98px) {
+    .lml-hr-child-care__table thead th,
+    .lml-hr-child-care__table tbody td {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+
+    .lml-hr-child-care__col--name {
+        width: 28%;
+    }
+
+    .lml-hr-child-care__col--action {
+        width: 14%;
+    }
+}
+
+@media (max-width: 576px) {
+    .lml-hr-child-care__panel {
+        padding: 0.75rem 0.7rem 0.85rem;
+        gap: 0.85rem;
+    }
+
+    .lml-hr-child-care__top {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.65rem;
+    }
+
+    .lml-hr-child-care__title-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.6rem;
+    }
+
+    .lml-hr-child-care__title {
+        font-size: 1.1875rem; /* ~19px */
+    }
+
+    .lml-hr-child-care__scope-pill {
+        min-height: 2.125rem;
+        padding: 0.32rem 0.85rem;
+        font-size: 0.75rem;
+    }
+
+    .lml-hr-child-care__nav-pills {
+        width: 100%;
+    }
+
+    .lml-hr-child-care__actions {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.5rem;
+    }
+
+    .lml-hr-child-care__add-btn,
+    .lml-hr-child-care__export-btn {
+        width: 100%;
+        justify-content: center;
+        min-height: 2.25rem;
+        font-size: 0.8125rem;
+    }
+
+    .lml-hr-child-care__pill {
+        min-height: 2rem;
+        font-size: 0.8125rem;
+    }
+
+    .lml-hr-child-care__stats {
+        grid-template-columns: 1fr;
+        gap: 0.65rem;
+    }
+
+    .lml-hr-child-care__card {
+        min-height: 4.625rem; /* ~74px */
+        padding: 0.75rem 0.85rem;
+    }
+
+    .lml-hr-child-care__card-value {
+        font-size: 1.625rem; /* ~26px */
+    }
+
+    .lml-hr-child-care__card-icon--total {
+        font-size: 1.875rem;
+    }
+
+    .lml-hr-child-care__card-icon--female,
+    .lml-hr-child-care__card-icon--male {
+        font-size: 2rem;
+    }
+
+    .lml-hr-child-care__filters {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.55rem;
+        padding: 0.55rem 0.6rem;
+    }
+
+    .lml-hr-child-care__search {
+        grid-column: 1 / -1;
+        flex: none;
+        max-width: none;
+        min-width: 0;
+    }
+
+    .lml-hr-child-care__select-wrap {
+        flex: none;
+        min-width: 0;
+        max-width: none;
+        width: 100%;
+    }
+
+    .lml-hr-child-care__select-wrap--sex {
+        grid-column: 1 / -1;
+    }
+
+    .lml-hr-child-care__table-scroll {
+        overflow-x: visible;
+        width: 100%;
+    }
+
+    .lml-hr-child-care__table {
+        display: block;
+        width: 100%;
+        min-width: 0;
+        table-layout: auto;
+    }
+
+    .lml-hr-child-care__table colgroup {
+        display: none;
+    }
+
+    .lml-hr-child-care__table tbody {
+        display: block;
+        width: 100%;
+    }
+
+    .lml-hr-child-care__table-card {
+        border: none;
+        box-shadow: none;
+        background: transparent;
+    }
+
+    .lml-hr-child-care__table thead {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+
+    .lml-hr-child-care__table tbody tr {
+        display: block;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0.9rem 0.95rem;
+        margin-bottom: 0.55rem;
+        border: 1px solid #eef0f2;
+        border-radius: 0.5rem;
+        background-color: #fff;
+    }
+
+    .lml-hr-child-care__table tbody tr:last-child {
+        margin-bottom: 0;
+        border-bottom: 1px solid #eef0f2;
+    }
+
+    .lml-hr-child-care__table tbody td {
+        display: block;
+        padding: 0;
+        border-bottom: none;
+        font-size: 0.8125rem;
+    }
+
+    .lml-hr-child-care__table tbody td::before {
+        content: none;
+        display: none;
+    }
+
+    .lml-hr-child-care__table tbody td.lml-hr-child-care__cell--detail::before {
+        content: attr(data-label);
+        display: block;
+    }
+
+    .lml-hr-child-care__cell--name {
+        margin-bottom: 0.65rem;
+    }
+
+    .lml-hr-child-care__record-name {
+        display: block;
+        color: #111827;
+        font-size: 0.9375rem; /* 15px */
+        font-weight: 600;
+        line-height: 1.3;
+        overflow-wrap: break-word;
+        word-break: normal;
+    }
+
+    .lml-hr-child-care__cell--detail {
+        display: grid;
+        grid-template-columns: minmax(0, 42%) minmax(0, 58%);
+        align-items: baseline;
+        column-gap: 0.65rem;
+        row-gap: 0.35rem;
+        margin-bottom: 0.35rem;
+    }
+
+    .lml-hr-child-care__cell--detail::before {
+        grid-column: 1;
+        color: #6b7280;
+        font-size: 0.6875rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        line-height: 1.3;
+    }
+
+    .lml-hr-child-care__record-value {
+        grid-column: 2;
+        min-width: 0;
+        color: #374151;
+    }
+
+    .lml-hr-child-care__table tbody td.lml-hr-child-care__cell--action {
+        display: flex;
+        justify-content: flex-end;
+        width: 100%;
+        margin-top: 0.65rem;
+        padding-top: 0.15rem;
+    }
+
+    .lml-hr-child-care__table tbody td.lml-hr-child-care__cell--action .lml-hr-child-care__view-btn {
+        min-height: 2.125rem;
+        padding: 0.35rem 0.9rem;
+        font-size: 0.8125rem;
+        margin-left: auto;
+    }
+}
+
+@media (min-width: 430px) and (max-width: 576px) {
+    .lml-hr-child-care__stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .lml-hr-child-care__card--total {
+        grid-column: 1 / -1;
+    }
+}
+
+/* ── Vitamin A monitoring summary (scoped; do not alter Child Care summary) ── */
+
+.lml-hr-child-care--vitamin-a {
+    /* Scoped Figma-aligned table tokens (Vitamin A only).
+       VA-F1: stronger mint saturation to match Figma header (#A7F3D0 family). */
+    --lml-va-header-bg: #a7f3d0;
+    --lml-va-header-bg-deep: #8eebc0;
+    --lml-va-header-text: #1a5c36;
+    --lml-va-header-border: #7ec9a0;
+    --lml-va-body-border: #b9cfc3;
+    --lml-va-body-bg: #fff;
+}
+
+.lml-hr-child-care__pill--active {
+    background-color: var(--lml-primary);
+    border-color: var(--lml-primary);
+    color: #fff;
+    font-weight: 700;
+}
+
+.lml-hr-child-care__pill--active:hover {
+    background-color: #16a34a;
+    border-color: #16a34a;
+    color: #fff;
+}
+
+.lml-hr-child-care__description {
+    margin: 0;
+    color: #4b5563;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.5;
+    max-width: 52rem;
+}
+
+.lml-hr-child-care__filters--vitamin-a {
+    display: block;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+}
+
+.lml-hr-child-care__select-wrap--zone-full {
+    flex: none;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+}
+
+.lml-hr-child-care__table--vitamin-a {
+    table-layout: auto;
+    min-width: 52rem;
+    border-collapse: collapse;
+}
+
+.lml-hr-child-care__table--vitamin-a thead th {
+    text-align: center;
+    vertical-align: middle;
+    white-space: normal;
+    line-height: 1.25;
+    border: 1px solid var(--lml-va-header-border);
+    padding: 0.55rem 0.45rem;
+    font-size: 0.75rem;
+    background-color: var(--lml-va-header-bg);
+    color: var(--lml-va-header-text);
+}
+
+.lml-hr-child-care__table--vitamin-a .lml-hr-va-th--group {
+    background-color: var(--lml-va-header-bg-deep);
+}
+
+.lml-hr-child-care__table--vitamin-a .lml-hr-va-th--age,
+.lml-hr-child-care__table--vitamin-a .lml-hr-va-cell--age {
+    text-align: left;
+    white-space: nowrap;
+    min-width: 8.5rem;
+    padding-left: 0.85rem;
+    padding-right: 0.85rem;
+}
+
+.lml-hr-va-th__stack {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.05rem;
+    line-height: 1.2;
+}
+
+.lml-hr-va-th--group {
+    font-weight: 700;
+}
+
+.lml-hr-va-th--dose {
+    font-weight: 600;
+}
+
+.lml-hr-va-th--sex {
+    font-weight: 600;
+    min-width: 3.25rem;
+}
+
+.lml-hr-child-care__table--vitamin-a tbody td,
+.lml-hr-child-care__table--vitamin-a tbody th {
+    border: 1px solid var(--lml-va-body-border);
+    padding: 0.7rem 0.5rem;
+    font-size: 0.8125rem;
+    color: #374151;
+    background-color: var(--lml-va-body-bg);
+}
+
+.lml-hr-child-care__table--vitamin-a tbody th {
+    font-weight: 700;
+    color: #111827;
+    background-color: var(--lml-va-body-bg);
+}
+
+.lml-hr-va-cell--num {
+    text-align: center;
+    min-width: 3rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.lml-hr-va-row--total th,
+.lml-hr-va-row--total td {
+    font-weight: 700;
+    background-color: #f8faf9;
+}
+
+.lml-hr-child-care__table--vitamin-a tbody tr:hover td,
+.lml-hr-child-care__table--vitamin-a tbody tr:hover th {
+    background-color: #fafbfc;
+}
+
+.lml-hr-va-row--total:hover th,
+.lml-hr-va-row--total:hover td {
+    background-color: #f3f7f4;
+}
+
+.lml-hr-va-col--age {
+    width: 12rem;
+}
+
+.lml-hr-va-col--target {
+    width: 5.5rem;
+}
+
+.lml-hr-va-col--pct {
+    width: 6.5rem;
+}
+
+@media (max-width: 576px) {
+    .lml-hr-child-care--vitamin-a .lml-hr-child-care__actions {
+        display: flex;
+        grid-template-columns: none;
+    }
+
+    .lml-hr-child-care--vitamin-a .lml-hr-child-care__export-btn {
+        width: 100%;
+    }
+
+    .lml-hr-child-care--vitamin-a .lml-hr-child-care__filters--vitamin-a {
+        display: block;
+        padding: 0;
+        border: none;
+        background: transparent;
+    }
+
+    .lml-hr-child-care--vitamin-a .lml-hr-child-care__select-wrap--zone-full {
+        grid-column: auto;
+        width: 100%;
+    }
+
+    /*
+     * Keep the grouped monitoring table as a real table with local horizontal
+     * scroll. Do not apply the Child Care summary card-stack transform.
+     */
+    .lml-hr-child-care--vitamin-a .lml-hr-child-care__table-card--vitamin-a {
+        border: 1px solid #eef0f2;
+        box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+        background-color: #fff;
+        overflow: hidden;
+    }
+
+    .lml-hr-child-care--vitamin-a .lml-hr-child-care__table-scroll--vitamin-a {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        width: 100%;
+    }
+
+    .lml-hr-child-care--vitamin-a .lml-hr-child-care__table--vitamin-a {
+        display: table;
+        width: max-content;
+        min-width: 48rem;
+        table-layout: auto;
+    }
+
+    .lml-hr-child-care--vitamin-a .lml-hr-child-care__table--vitamin-a colgroup {
+        display: table-column-group;
+    }
+
+    .lml-hr-child-care--vitamin-a .lml-hr-child-care__table--vitamin-a thead {
+        position: static;
+        width: auto;
+        height: auto;
+        padding: 0;
+        margin: 0;
+        overflow: visible;
+        clip: auto;
+        white-space: normal;
+        border: 0;
+    }
+
+    .lml-hr-child-care--vitamin-a .lml-hr-child-care__table--vitamin-a thead th {
+        display: table-cell;
+    }
+
+    .lml-hr-child-care--vitamin-a .lml-hr-child-care__table--vitamin-a tbody {
+        display: table-row-group;
+        width: auto;
+    }
+
+    .lml-hr-child-care--vitamin-a .lml-hr-child-care__table--vitamin-a tbody tr {
+        display: table-row;
+        width: auto;
+        padding: 0;
+        margin: 0;
+        border: none;
+        border-radius: 0;
+        background-color: transparent;
+    }
+
+    .lml-hr-child-care--vitamin-a .lml-hr-child-care__table--vitamin-a tbody td,
+    .lml-hr-child-care--vitamin-a .lml-hr-child-care__table--vitamin-a tbody th {
+        display: table-cell;
+        padding: 0.65rem 0.4rem;
+        border: 1px solid var(--lml-va-body-border);
+        font-size: 0.75rem;
+    }
+
+    .lml-hr-child-care--vitamin-a .lml-hr-child-care__table--vitamin-a tbody td::before {
+        content: none;
+        display: none;
+    }
+}
+
+/* ── Deworming monitoring summary (scoped; do not alter Vitamin A / Child Care summary) ── */
+
+.lml-hr-child-care--deworming {
+    /*
+     * Figma PNG pixel-sampled tokens (findings F-1 / F-2).
+     * Header: mint fill + dark green text (not brand-green + white).
+     * Second Round: stronger magenta fill sampled from Figma card interior.
+     */
+    --lml-dw-header-bg: #a8e0b3;
+    --lml-dw-header-text: #317647;
+    --lml-dw-header-border: #8fcf9e;
+    --lml-dw-row-border: #eef1f3;
+    --lml-dw-body-bg: #fff;
+    --lml-dw-card-first-bg: #f4f5f7;
+    --lml-dw-card-second-bg: #eca6e4;
+    --lml-dw-card-status-bg: #e8f1fb;
+}
+
+.lml-hr-child-care--deworming .lml-hr-child-care__panel {
+    gap: 0.7rem;
+    padding: 0.95rem 1.1rem 1.05rem;
+}
+
+.lml-hr-child-care--deworming .lml-hr-child-care__top {
+    gap: 0.5rem 0.85rem;
+    align-items: center;
+}
+
+.lml-hr-child-care--deworming .lml-hr-child-care__title {
+    font-size: 1.25rem; /* ~20px — closer to Figma in-panel heading */
+    line-height: 1.2;
+}
+
+.lml-hr-child-care--deworming .lml-hr-child-care__nav-pills {
+    gap: 0.4rem;
+}
+
+.lml-hr-child-care--deworming .lml-hr-child-care__pill {
+    min-height: 1.875rem; /* ~30px */
+    padding: 0.28rem 0.8rem;
+    font-size: 0.75rem; /* 12px */
+}
+
+.lml-hr-child-care--deworming .lml-hr-child-care__export-btn {
+    min-height: 2.125rem; /* ~34px */
+    padding: 0.35rem 0.9rem;
+    font-size: 0.75rem;
+    gap: 0.3rem;
+}
+
+.lml-hr-child-care--deworming .lml-hr-child-care__export-btn i {
+    font-size: 0.9rem;
+}
+
+.lml-hr-child-care--deworming .lml-hr-child-care__description {
+    margin: 0;
+    font-size: 0.8125rem; /* 13px */
+    line-height: 1.4;
+    color: #6b7280;
+    max-width: 48rem;
+}
+
+.lml-hr-child-care__stats--deworming {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1.35fr);
+    gap: 0.65rem;
+    min-width: 0;
+}
+
+.lml-hr-dw-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 4.5rem; /* ~72px — Figma-compact */
+    min-width: 0;
+    padding: 0.65rem 0.9rem;
+    border-radius: 0.55rem;
+    border: 1px solid transparent;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+}
+
+.lml-hr-dw-card--first-round {
+    background-color: var(--lml-dw-card-first-bg);
+    border-color: #e8eaed;
+}
+
+.lml-hr-dw-card--second-round {
+    background-color: var(--lml-dw-card-second-bg);
+    border-color: #e0a0d8;
+}
+
+.lml-hr-dw-card--status {
+    background-color: var(--lml-dw-card-status-bg);
+    border-color: #d5e4f5;
+    justify-content: flex-start;
+    padding-top: 0.55rem;
+    padding-bottom: 0.55rem;
+}
+
+.lml-hr-dw-card__body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+}
+
+.lml-hr-dw-card--first-round .lml-hr-dw-card__body,
+.lml-hr-dw-card--second-round .lml-hr-dw-card__body {
+    align-items: center;
+    text-align: center;
+}
+
+.lml-hr-dw-card--status .lml-hr-dw-card__body {
+    align-items: stretch;
+    text-align: left;
+    gap: 0.3rem;
+    height: 100%;
+}
+
+.lml-hr-dw-card__label {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.75rem; /* 12px */
+    font-weight: 500;
+    line-height: 1.25;
+}
+
+.lml-hr-dw-card__value {
+    margin: 0;
+    color: #111827;
+    font-size: 1.625rem; /* ~26px */
+    font-weight: 700;
+    line-height: 1.05;
+    font-variant-numeric: tabular-nums;
+}
+
+.lml-hr-dw-card__status-list {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.lml-hr-dw-card__status-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.65rem;
+    min-width: 0;
+}
+
+.lml-hr-dw-card__status-row dt {
+    margin: 0;
+    color: #4b5563;
+    font-size: 0.75rem;
+    font-weight: 400;
+    line-height: 1.3;
+}
+
+.lml-hr-dw-card__status-row dd {
+    margin: 0;
+    color: #111827;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+/* Compact filter strip — controls only, not four large cards */
+.lml-hr-child-care__filters--deworming {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    background: transparent;
+}
+
+.lml-hr-child-care--deworming .lml-hr-child-care__search {
+    flex: 1 1 14rem;
+    min-width: 0;
+    max-width: none;
+}
+
+.lml-hr-child-care--deworming .lml-hr-child-care__select-wrap {
+    flex: 0 1 8.25rem;
+    min-width: 7rem;
+    max-width: 9.5rem;
+}
+
+.lml-hr-child-care--deworming .lml-hr-child-care__select-wrap--sex {
+    flex-basis: 6.5rem;
+    max-width: 7.5rem;
+}
+
+.lml-hr-child-care--deworming .lml-hr-child-care__search-input,
+.lml-hr-child-care--deworming .lml-hr-child-care__select {
+    min-height: 2.125rem; /* ~34px */
+    padding-top: 0.35rem;
+    padding-bottom: 0.35rem;
+    border-radius: 0.35rem;
+    border-color: #e5e7eb;
+    font-size: 0.75rem;
+    background-color: #fff;
+}
+
+.lml-hr-child-care--deworming .lml-hr-child-care__search-input {
+    padding-left: 2.15rem;
+    padding-right: 0.65rem;
+}
+
+.lml-hr-child-care--deworming .lml-hr-child-care__search-input::placeholder {
+    font-size: 0.75rem;
+    color: #9ca3af;
+}
+
+.lml-hr-child-care--deworming .lml-hr-child-care__search-icon {
+    left: 0.65rem;
+    font-size: 0.85rem;
+}
+
+.lml-hr-child-care--deworming .lml-hr-child-care__select {
+    padding-left: 0.65rem;
+    padding-right: 1.75rem;
+    color: #6b7280;
+}
+
+.lml-hr-child-care--deworming .lml-hr-child-care__select-icon {
+    right: 0.55rem;
+    font-size: 0.7rem;
+}
+
+.lml-hr-child-care__table-card--deworming {
+    border: 1px solid #e8eaed;
+    border-radius: 0.5rem;
+    box-shadow: none;
+    background-color: #fff;
+    overflow: hidden;
+}
+
+.lml-hr-child-care__table--deworming {
+    table-layout: fixed;
+    width: 100%;
+    min-width: 38rem;
+    border-collapse: collapse;
+}
+
+.lml-hr-child-care__table--deworming thead th {
+    text-align: left;
+    vertical-align: middle;
+    white-space: nowrap;
+    padding: 0.55rem 0.85rem;
+    font-size: 0.75rem; /* 12px */
+    font-weight: 600;
+    background-color: var(--lml-dw-header-bg);
+    color: var(--lml-dw-header-text);
+    border: none;
+    border-bottom: 1px solid var(--lml-dw-header-border);
+}
+
+.lml-hr-child-care__table--deworming tbody td,
+.lml-hr-child-care__table--deworming tbody th {
+    border: none;
+    border-bottom: 1px solid var(--lml-dw-row-border);
+    padding: 0.55rem 0.85rem;
+    font-size: 0.8125rem; /* 13px */
+    font-weight: 400;
+    color: #374151;
+    background-color: var(--lml-dw-body-bg);
+    vertical-align: middle;
+}
+
+.lml-hr-child-care__table--deworming tbody tr:last-child td,
+.lml-hr-child-care__table--deworming tbody tr:last-child th {
+    border-bottom: none;
+}
+
+.lml-hr-child-care--deworming .lml-hr-child-care__table--deworming tbody th,
+.lml-hr-child-care--deworming .lml-hr-child-care__table--deworming tbody th.lml-hr-dw-cell--name {
+    font-weight: 400;
+    color: #1f2937;
+}
+
+.lml-hr-child-care__table--deworming tbody tr:hover td,
+.lml-hr-child-care__table--deworming tbody tr:hover th {
+    background-color: #fafbfc;
+}
+
+.lml-hr-child-care__table--deworming tbody tr[hidden] {
+    display: none;
+}
+
+.lml-hr-dw-col--name {
+    width: 34%;
+}
+
+.lml-hr-dw-col--age {
+    width: 14%;
+}
+
+.lml-hr-dw-col--july,
+.lml-hr-dw-col--january {
+    width: 26%;
+}
+
+.lml-hr-dw-cell--name {
+    text-align: left;
+}
+
+.lml-hr-dw-cell--age,
+.lml-hr-dw-cell--date {
+    text-align: left;
+    white-space: nowrap;
+}
+
+@media (max-width: 1100px) {
+    .lml-hr-child-care__filters--deworming {
+        flex-wrap: wrap;
+    }
+
+    .lml-hr-child-care--deworming .lml-hr-child-care__search {
+        flex: 1 1 100%;
+    }
+
+    .lml-hr-child-care--deworming .lml-hr-child-care__select-wrap {
+        flex: 1 1 7.5rem;
+        max-width: none;
+    }
+}
+
+@media (max-width: 992px) {
+    .lml-hr-child-care__stats--deworming {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .lml-hr-dw-card--status {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 576px) {
+    .lml-hr-child-care--deworming .lml-hr-child-care__actions {
+        display: flex;
+        width: 100%;
+    }
+
+    .lml-hr-child-care--deworming .lml-hr-child-care__export-btn {
+        width: 100%;
+    }
+
+    .lml-hr-child-care__stats--deworming {
+        grid-template-columns: 1fr;
+    }
+
+    .lml-hr-dw-card--status {
+        grid-column: auto;
+    }
+
+    .lml-hr-dw-card {
+        min-height: 4.15rem;
+    }
+
+    .lml-hr-child-care--deworming .lml-hr-child-care__filters--deworming {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: stretch;
+        gap: 0.45rem;
+    }
+
+    .lml-hr-child-care--deworming .lml-hr-child-care__search,
+    .lml-hr-child-care--deworming .lml-hr-child-care__select-wrap,
+    .lml-hr-child-care--deworming .lml-hr-child-care__select-wrap--sex {
+        flex: 1 1 auto;
+        width: 100%;
+        max-width: none;
+        min-width: 0;
+    }
+
+    /*
+     * Keep the Deworming monitoring table as a real table with local horizontal
+     * scroll. Do not apply the Child Care summary card-stack transform.
+     */
+    .lml-hr-child-care--deworming .lml-hr-child-care__table-card--deworming {
+        border: 1px solid #e8eaed;
+        box-shadow: none;
+        background-color: #fff;
+        overflow: hidden;
+    }
+
+    .lml-hr-child-care--deworming .lml-hr-child-care__table-scroll--deworming {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        width: 100%;
+    }
+
+    .lml-hr-child-care--deworming .lml-hr-child-care__table--deworming {
+        display: table;
+        width: max-content;
+        min-width: 34rem;
+        table-layout: fixed;
+    }
+
+    .lml-hr-child-care--deworming .lml-hr-child-care__table--deworming colgroup {
+        display: table-column-group;
+    }
+
+    .lml-hr-child-care--deworming .lml-hr-child-care__table--deworming thead {
+        position: static;
+        width: auto;
+        height: auto;
+        padding: 0;
+        margin: 0;
+        overflow: visible;
+        clip: auto;
+        white-space: normal;
+        border: 0;
+    }
+
+    .lml-hr-child-care--deworming .lml-hr-child-care__table--deworming thead th {
+        display: table-cell;
+    }
+
+    .lml-hr-child-care--deworming .lml-hr-child-care__table--deworming tbody {
+        display: table-row-group;
+        width: auto;
+    }
+
+    .lml-hr-child-care--deworming .lml-hr-child-care__table--deworming tbody tr {
+        display: table-row;
+        width: auto;
+        padding: 0;
+        margin: 0;
+        border: none;
+        border-radius: 0;
+        background-color: transparent;
+    }
+
+    .lml-hr-child-care--deworming .lml-hr-child-care__table--deworming tbody td,
+    .lml-hr-child-care--deworming .lml-hr-child-care__table--deworming tbody th {
+        display: table-cell;
+        padding: 0.5rem 0.7rem;
+        border: none;
+        border-bottom: 1px solid var(--lml-dw-row-border);
+        font-size: 0.75rem;
+        font-weight: 400;
+    }
+
+    .lml-hr-child-care--deworming .lml-hr-child-care__table--deworming tbody th {
+        font-weight: 400;
+    }
+
+    .lml-hr-child-care--deworming .lml-hr-child-care__table--deworming tbody td::before {
+        content: none;
+        display: none;
+    }
+}
+
+/* ── Operation Timbang monitoring summary (scoped; do not alter VA / DW / Summary) ── */
+/* Figma-fidelity refinement: mint table header, softer framing, green metric values. */
+
+.lml-hr-child-care--operation-timbang {
+    /* Continuation-frame Figma: light mint header + dark green text */
+    --lml-ot-header-bg: #c7e9c0;
+    --lml-ot-header-text: #2d5a27;
+    --lml-ot-header-border: #a8d4a0;
+    --lml-ot-row-border: #eef1f3;
+    --lml-ot-body-bg: #fff;
+    --lml-ot-summary-bg: #eaf6ec;
+    --lml-ot-summary-heading: #2f9e44;
+    --lml-ot-metric-border: #c8e6c9;
+    --lml-ot-metric-value: #2f9e44;
+    --lml-ot-male: #2563eb;
+    --lml-ot-female: #db2777;
+    --lml-ot-status-below: #e53935;
+    --lml-ot-status-normal: #43a047;
+    --lml-ot-status-above: #f9a825;
+    --lml-ot-month-active-bg: #2f9e44;
+    --lml-ot-month-border: #b7e4c4;
+    --lml-ot-session-border: #c8e6c9;
+    --lml-ot-panel-border: rgba(15, 23, 42, 0.08);
+}
+
+/* OT-R2 — softer outer framing than shared Child Care panel green outline */
+.lml-hr-child-care--operation-timbang .lml-hr-child-care__panel {
+    gap: 0.7rem;
+    padding: 1rem 1.15rem 1.1rem;
+    border: 1px solid var(--lml-ot-panel-border);
+    border-radius: 0.75rem;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.045);
+}
+
+.lml-hr-child-care--operation-timbang .lml-hr-child-care__top {
+    gap: 0.45rem 0.75rem;
+    align-items: center;
+}
+
+.lml-hr-child-care--operation-timbang .lml-hr-child-care__title {
+    font-size: 1.25rem;
+    line-height: 1.2;
+    font-weight: 700;
+    color: #111827;
+}
+
+.lml-hr-child-care--operation-timbang .lml-hr-child-care__title-row {
+    gap: 0.5rem 0.65rem;
+}
+
+.lml-hr-child-care--operation-timbang .lml-hr-child-care__nav-pills {
+    gap: 0.35rem;
+}
+
+.lml-hr-child-care--operation-timbang .lml-hr-child-care__pill {
+    min-height: 1.75rem;
+    padding: 0.25rem 0.75rem;
+    font-size: 0.75rem;
+    border-radius: 999px;
+    border-color: #b7e4c4;
+}
+
+.lml-hr-child-care--operation-timbang .lml-hr-child-care__export-btn {
+    min-height: 2rem;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.75rem;
+    gap: 0.3rem;
+    border-radius: 0.4rem;
+    color: #fff;
+}
+
+.lml-hr-child-care--operation-timbang .lml-hr-child-care__export-btn:hover {
+    color: #fff;
+}
+
+.lml-hr-child-care--operation-timbang .lml-hr-child-care__export-btn i {
+    font-size: 0.85rem;
+    color: inherit;
+}
+
+.lml-hr-child-care--operation-timbang .lml-hr-child-care__description {
+    margin: 0;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    line-height: 1.4;
+    color: #6b7280;
+    max-width: 46rem;
+}
+
+/* Month / year session selector — light-green framed card (Figma) */
+.lml-hr-ot-sessions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    min-width: 0;
+    padding: 0.7rem 0.85rem 0.65rem;
+    border: 1px solid var(--lml-ot-session-border);
+    border-radius: 0.6rem;
+    background-color: #fff;
+}
+
+.lml-hr-ot-sessions__row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.55rem 0.85rem;
+    min-width: 0;
+}
+
+.lml-hr-ot-sessions__months {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 0.4rem 0.5rem;
+    min-width: 0;
+    flex: 1 1 18rem;
+}
+
+.lml-hr-ot-sessions__month-label {
+    flex: 0 0 auto;
+    margin-top: 0.3rem;
+    color: #374151;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+.lml-hr-ot-sessions__pills {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.3rem;
+    min-width: 0;
+    flex: 1 1 12rem;
+}
+
+.lml-hr-ot-month-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 1.75rem;
+    padding: 0.22rem 0.65rem;
+    border: 1px solid var(--lml-ot-month-border);
+    border-radius: 999px;
+    background-color: #fff;
+    color: #1f7a1f;
+    font-family: inherit;
+    font-size: 0.71875rem;
+    font-weight: 600;
+    line-height: 1.2;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.lml-hr-ot-month-pill:hover {
+    background-color: #f0fdf4;
+    border-color: #86efac;
+    color: #166534;
+}
+
+.lml-hr-ot-month-pill--active {
+    background-color: var(--lml-ot-month-active-bg);
+    border-color: var(--lml-ot-month-active-bg);
+    color: #fff;
+    font-weight: 700;
+}
+
+/* Non-color selected cue: underline bar under active month text */
+.lml-hr-ot-month-pill--active .lml-hr-ot-month-pill__text {
+    text-decoration: underline;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 0.18em;
+}
+
+.lml-hr-ot-month-pill--active::after {
+    content: none;
+    display: none;
+}
+
+.lml-hr-ot-month-pill--active:hover {
+    background-color: #2b8a3e;
+    border-color: #2b8a3e;
+    color: #fff;
+}
+
+.lml-hr-ot-sessions__year {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex: 0 0 auto;
+}
+
+.lml-hr-ot-sessions__year-label {
+    color: #6b7280;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.lml-hr-ot-year-wrap {
+    min-width: 5.25rem;
+    max-width: 6.25rem;
+}
+
+.lml-hr-child-care--operation-timbang .lml-hr-ot-year-select {
+    min-height: 1.75rem;
+    padding-top: 0.2rem;
+    padding-bottom: 0.2rem;
+    padding-left: 0.5rem;
+    padding-right: 1.5rem;
+    border-radius: 0.35rem;
+    border-color: #d1d5db;
+    font-size: 0.75rem;
+    color: #374151;
+    background-color: #fff;
+}
+
+.lml-hr-ot-sessions__hint {
+    margin: 0;
+    color: #9ca3af;
+    font-size: 0.71875rem;
+    font-style: italic;
+    line-height: 1.35;
+}
+
+/* Monthly summary — compact cards, green numeric emphasis (Figma) */
+.lml-hr-ot-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    min-width: 0;
+    padding: 0.7rem 0.8rem 0.75rem;
+    border-radius: 0.6rem;
+    background-color: var(--lml-ot-summary-bg);
+}
+
+.lml-hr-ot-summary__heading {
+    margin: 0;
+    color: var(--lml-ot-summary-heading);
+    font-size: 0.875rem;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.lml-hr-ot-summary__grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.5rem;
+    min-width: 0;
+}
+
+.lml-hr-ot-metric {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.2rem;
+    min-width: 0;
+    min-height: 3.65rem;
+    padding: 0.5rem 0.65rem;
+    border: 1px solid var(--lml-ot-metric-border);
+    border-radius: 0.45rem;
+    background-color: #fff;
+    box-shadow: none;
+}
+
+.lml-hr-ot-metric__label {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    line-height: 1.25;
+}
+
+.lml-hr-ot-metric__value {
+    margin: 0;
+    color: var(--lml-ot-metric-value);
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.05;
+    font-variant-numeric: tabular-nums;
+}
+
+.lml-hr-ot-metric--sex-split {
+    justify-content: flex-start;
+}
+
+.lml-hr-ot-metric__sex-split {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    min-width: 0;
+}
+
+.lml-hr-ot-sex {
+    display: flex;
+    flex-direction: column;
+    gap: 0.05rem;
+    min-width: 0;
+}
+
+.lml-hr-ot-sex__value {
+    font-size: 1.125rem;
+    font-weight: 700;
+    line-height: 1.15;
+    font-variant-numeric: tabular-nums;
+}
+
+.lml-hr-ot-sex--male .lml-hr-ot-sex__value {
+    color: var(--lml-ot-male);
+}
+
+.lml-hr-ot-sex--female .lml-hr-ot-sex__value {
+    color: var(--lml-ot-female);
+}
+
+.lml-hr-ot-sex__caption {
+    color: #6b7280;
+    font-size: 0.625rem;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+/* Filters — compact horizontal strip */
+.lml-hr-child-care__filters--operation-timbang {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.55rem 0.65rem;
+    border: 1px solid #e8eaed;
+    border-radius: 0.5rem;
+    background: #fff;
+}
+
+.lml-hr-child-care--operation-timbang .lml-hr-child-care__search {
+    flex: 1 1 14rem;
+    min-width: 0;
+    max-width: none;
+}
+
+.lml-hr-child-care--operation-timbang .lml-hr-child-care__select-wrap {
+    flex: 0 1 8rem;
+    min-width: 6.75rem;
+    max-width: 9rem;
+}
+
+.lml-hr-child-care--operation-timbang .lml-hr-child-care__select-wrap--sex {
+    flex-basis: 6.25rem;
+    max-width: 7.25rem;
+}
+
+.lml-hr-child-care--operation-timbang .lml-hr-child-care__search-input,
+.lml-hr-child-care--operation-timbang .lml-hr-child-care__select {
+    min-height: 2rem;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+    border-radius: 0.35rem;
+    border-color: #e5e7eb;
+    font-size: 0.75rem;
+    background-color: #fff;
+}
+
+.lml-hr-child-care--operation-timbang .lml-hr-child-care__search-input {
+    padding-left: 2.05rem;
+    padding-right: 0.6rem;
+}
+
+.lml-hr-child-care--operation-timbang .lml-hr-child-care__search-input::placeholder {
+    font-size: 0.75rem;
+    color: #9ca3af;
+}
+
+.lml-hr-child-care--operation-timbang .lml-hr-child-care__search-icon {
+    left: 0.6rem;
+    font-size: 0.8rem;
+    color: #9ca3af;
+}
+
+.lml-hr-child-care--operation-timbang .lml-hr-child-care__select {
+    padding-left: 0.6rem;
+    padding-right: 1.7rem;
+    color: #6b7280;
+}
+
+.lml-hr-child-care--operation-timbang .lml-hr-child-care__select-icon {
+    right: 0.5rem;
+    font-size: 0.65rem;
+}
+
+/* Table — light mint header, clean white body (continuation Figma) */
+.lml-hr-child-care__table-card--operation-timbang {
+    border: none;
+    border-radius: 0.55rem;
+    box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
+    background-color: #fff;
+    overflow: hidden;
+}
+
+.lml-hr-child-care__table--operation-timbang {
+    table-layout: fixed;
+    width: 100%;
+    min-width: 42rem;
+    border-collapse: collapse;
+}
+
+.lml-hr-child-care__table--operation-timbang thead th {
+    text-align: left;
+    vertical-align: middle;
+    white-space: nowrap;
+    padding: 0.65rem 0.9rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    background-color: var(--lml-ot-header-bg);
+    color: var(--lml-ot-header-text);
+    border: none;
+    border-bottom: 1px solid var(--lml-ot-header-border);
+}
+
+.lml-hr-child-care__table--operation-timbang tbody td,
+.lml-hr-child-care__table--operation-timbang tbody th {
+    border: none;
+    border-bottom: 1px solid var(--lml-ot-row-border);
+    padding: 0.6rem 0.9rem;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    color: #374151;
+    background-color: var(--lml-ot-body-bg);
+    vertical-align: middle;
+}
+
+.lml-hr-child-care__table--operation-timbang tbody tr:nth-child(even) td,
+.lml-hr-child-care__table--operation-timbang tbody tr:nth-child(even) th {
+    background-color: var(--lml-ot-body-bg);
+}
+
+.lml-hr-child-care__table--operation-timbang tbody tr:last-child td,
+.lml-hr-child-care__table--operation-timbang tbody tr:last-child th {
+    border-bottom: none;
+}
+
+.lml-hr-child-care--operation-timbang .lml-hr-child-care__table--operation-timbang tbody th,
+.lml-hr-child-care--operation-timbang .lml-hr-child-care__table--operation-timbang tbody th.lml-hr-ot-cell--name {
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.lml-hr-child-care__table--operation-timbang tbody tr:hover td,
+.lml-hr-child-care__table--operation-timbang tbody tr:hover th {
+    background-color: #fafbfc;
+}
+
+.lml-hr-child-care__table--operation-timbang tbody tr[hidden] {
+    display: none;
+}
+
+.lml-hr-ot-col--name {
+    width: 28%;
+}
+
+.lml-hr-ot-col--age {
+    width: 14%;
+}
+
+.lml-hr-ot-col--weight,
+.lml-hr-ot-col--height,
+.lml-hr-ot-col--muac {
+    width: 12%;
+}
+
+.lml-hr-ot-col--status {
+    width: 18%;
+}
+
+.lml-hr-ot-status {
+    display: inline-block;
+    font-weight: 600;
+    line-height: 1.25;
+}
+
+.lml-hr-ot-status--below-normal {
+    color: var(--lml-ot-status-below);
+}
+
+.lml-hr-ot-status--normal {
+    color: var(--lml-ot-status-normal);
+}
+
+.lml-hr-ot-status--above-normal {
+    color: var(--lml-ot-status-above);
+}
+
+@media (max-width: 1100px) {
+    .lml-hr-ot-summary__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .lml-hr-child-care__filters--operation-timbang {
+        flex-wrap: wrap;
+    }
+
+    .lml-hr-child-care--operation-timbang .lml-hr-child-care__search {
+        flex: 1 1 100%;
+    }
+
+    .lml-hr-child-care--operation-timbang .lml-hr-child-care__select-wrap {
+        flex: 1 1 7.5rem;
+        max-width: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .lml-hr-ot-sessions__row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .lml-hr-ot-sessions__year {
+        justify-content: flex-start;
+    }
+
+    .lml-hr-child-care--operation-timbang .lml-hr-child-care__actions {
+        display: flex;
+        width: 100%;
+    }
+
+    .lml-hr-child-care--operation-timbang .lml-hr-child-care__export-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .lml-hr-ot-summary__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .lml-hr-ot-metric {
+        min-height: 3.4rem;
+    }
+
+    .lml-hr-child-care--operation-timbang .lml-hr-child-care__filters--operation-timbang {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        align-items: stretch;
+        gap: 0.45rem;
+        padding: 0.55rem;
+    }
+
+    .lml-hr-child-care--operation-timbang .lml-hr-child-care__search,
+    .lml-hr-child-care--operation-timbang .lml-hr-child-care__select-wrap,
+    .lml-hr-child-care--operation-timbang .lml-hr-child-care__select-wrap--sex {
+        flex: 1 1 auto;
+        width: 100%;
+        max-width: none;
+        min-width: 0;
+    }
+
+    /*
+     * Keep the Operation Timbang table as a real table with local horizontal
+     * scroll. Do not apply the Child Care summary card-stack transform.
+     */
+    .lml-hr-child-care--operation-timbang .lml-hr-child-care__table-card--operation-timbang {
+        border: none;
+        box-shadow: 0 1px 4px rgba(15, 23, 42, 0.06);
+        background-color: #fff;
+        overflow: hidden;
+    }
+
+    .lml-hr-child-care--operation-timbang .lml-hr-child-care__table-scroll--operation-timbang {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        width: 100%;
+    }
+
+    .lml-hr-child-care--operation-timbang .lml-hr-child-care__table--operation-timbang {
+        display: table;
+        width: max-content;
+        min-width: 38rem;
+        table-layout: fixed;
+    }
+
+    .lml-hr-child-care--operation-timbang .lml-hr-child-care__table--operation-timbang colgroup {
+        display: table-column-group;
+    }
+
+    .lml-hr-child-care--operation-timbang .lml-hr-child-care__table--operation-timbang thead {
+        position: static;
+        width: auto;
+        height: auto;
+        padding: 0;
+        margin: 0;
+        overflow: visible;
+        clip: auto;
+        white-space: normal;
+        border: 0;
+    }
+
+    .lml-hr-child-care--operation-timbang .lml-hr-child-care__table--operation-timbang thead th {
+        display: table-cell;
+    }
+
+    .lml-hr-child-care--operation-timbang .lml-hr-child-care__table--operation-timbang tbody {
+        display: table-row-group;
+        width: auto;
+    }
+
+    .lml-hr-child-care--operation-timbang .lml-hr-child-care__table--operation-timbang tbody tr {
+        display: table-row;
+        width: auto;
+        padding: 0;
+        margin: 0;
+        border: none;
+        border-radius: 0;
+        background-color: transparent;
+    }
+
+    .lml-hr-child-care--operation-timbang .lml-hr-child-care__table--operation-timbang tbody td,
+    .lml-hr-child-care--operation-timbang .lml-hr-child-care__table--operation-timbang tbody th {
+        display: table-cell;
+        padding: 0.5rem 0.7rem;
+        border: none;
+        border-bottom: 1px solid var(--lml-ot-row-border);
+        font-size: 0.75rem;
+        font-weight: 400;
+    }
+
+    .lml-hr-child-care--operation-timbang .lml-hr-child-care__table--operation-timbang tbody th {
+        font-weight: 600;
+    }
+
+    .lml-hr-child-care--operation-timbang .lml-hr-child-care__table--operation-timbang tbody td::before {
+        content: none;
+        display: none;
+    }
+}

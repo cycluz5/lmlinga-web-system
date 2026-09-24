@@ -1,0 +1,50 @@
+{
+  "add": {
+    "url": "http://127.0.0.1:8000/health-records/child-care/non-residents/gabriel-allan-s-chua/nutrition/create?role=bhw",
+    "exists": true,
+    "text": "Non-Resident",
+    "visible": true,
+    "display": "flex",
+    "visibility": "visible",
+    "opacity": "1",
+    "overflowHidden": "visible",
+    "color": "rgb(55, 65, 81)",
+    "background": "rgb(243, 244, 246)",
+    "rect": {
+      "x": 90,
+      "y": 382,
+      "width": 107,
+      "height": 22
+    },
+    "inViewport": true,
+    "clippedByProfile": false,
+    "overflow": false,
+    "formTitle": "Add Measurement for Child",
+    "childName": "Gabriel Allan S. Chua",
+    "file": "docs\\qa\\evidence\\health-records-child-care-non-residents-view\\add-measurement-390.png"
+  },
+  "edit": {
+    "url": "http://127.0.0.1:8000/health-records/child-care/non-residents/gabriel-allan-s-chua/nutrition/NR-CC-NUT-GAB-003/edit?role=bhw",
+    "exists": true,
+    "text": "Non-Resident",
+    "visible": true,
+    "display": "flex",
+    "visibility": "visible",
+    "opacity": "1",
+    "overflowHidden": "visible",
+    "color": "rgb(55, 65, 81)",
+    "background": "rgb(243, 244, 246)",
+    "rect": {
+      "x": 90,
+      "y": 382,
+      "width": 107,
+      "height": 22
+    },
+    "inViewport": true,
+    "clippedByProfile": false,
+    "overflow": false,
+    "formTitle": "Edit Measurement for Child",
+    "childName": "Gabriel Allan S. Chua",
+    "file": "docs\\qa\\evidence\\health-records-child-care-non-residents-view\\edit-measurement-390.png"
+  }
+}

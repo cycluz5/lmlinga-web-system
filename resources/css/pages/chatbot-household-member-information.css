@@ -1,0 +1,204 @@
+/**
+ * Resident Chatbot — view-only household member record.
+ * Mirrors staff member-view layout without staff actions or routes.
+ * Namespaced under .lml-chatbot-member-record
+ */
+
+.lml-chatbot-member-record {
+    --lml-member-record-border: rgba(var(--lml-light-green-rgb), 0.55);
+    --lml-member-record-label: #6b7280;
+    --lml-member-record-value: #111827;
+    --lml-member-record-section: var(--lml-light-green);
+
+    min-height: 100vh;
+    background-color: #f8faf9;
+    color: var(--lml-dark-green);
+    font-family: 'Poppins', var(--lml-font-sans);
+}
+
+.lml-chatbot-member-record__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1.1rem;
+    width: min(68rem, calc(100% - 1.5rem));
+    margin: 0 auto;
+    padding: 1.15rem 0 2.5rem;
+}
+
+.lml-chatbot-member-record__page-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem 1.25rem;
+}
+
+.lml-chatbot-member-record__identity {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    min-width: 0;
+}
+
+.lml-chatbot-member-record__back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 2.75rem;
+    height: 2.75rem;
+    color: var(--lml-light-green);
+    text-decoration: none;
+    border-radius: var(--lml-radius-md, 0.75rem);
+}
+
+.lml-chatbot-member-record__back i {
+    font-size: 1.75rem;
+    line-height: 1;
+    color: var(--lml-light-green);
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .lml-chatbot-member-record__back:hover {
+        color: #3da653;
+        background-color: rgba(var(--lml-light-green-rgb), 0.18);
+    }
+
+    .lml-chatbot-member-record__back:hover i {
+        color: #3da653;
+    }
+}
+
+.lml-chatbot-member-record__avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 4.25rem;
+    height: 4.25rem;
+    border-radius: 999px;
+    background-color: var(--lml-light-green);
+    color: #fff;
+    font-size: 2.25rem;
+    line-height: 1;
+}
+
+.lml-chatbot-member-record__identity-text {
+    min-width: 0;
+}
+
+.lml-chatbot-member-record__name {
+    margin: 0;
+    color: var(--lml-member-record-value);
+    font-size: 1.5rem;
+    font-weight: 800;
+    line-height: 1.25;
+}
+
+.lml-chatbot-member-record__subtitle {
+    margin: 0.15rem 0 0;
+    color: var(--lml-member-record-label);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.35;
+}
+
+.lml-chatbot-member-record__layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.15rem;
+    align-items: start;
+}
+
+.lml-chatbot-member-record__main-card {
+    min-width: 0;
+    background-color: #fff;
+    border: 1px solid var(--lml-member-record-border);
+    border-radius: var(--lml-radius-lg, 1rem);
+    box-shadow: var(--lml-shadow-sm, 0 1px 3px rgba(15, 23, 42, 0.06));
+}
+
+.lml-chatbot-member-record__main-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.35rem;
+    padding: 1.35rem 1.4rem 1.5rem;
+}
+
+.lml-chatbot-member-record__section-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin: 0 0 0.85rem;
+    color: var(--lml-member-record-section);
+    font-size: 0.8125rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    line-height: 1.3;
+    text-transform: uppercase;
+}
+
+.lml-chatbot-member-record__section-title i {
+    font-size: 1rem;
+    line-height: 1;
+    color: var(--lml-member-record-section);
+}
+
+.lml-chatbot-member-record__dl {
+    margin: 0;
+}
+
+.lml-chatbot-member-record__dl--paired {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem 1.5rem;
+}
+
+.lml-chatbot-member-record__item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    min-width: 0;
+}
+
+.lml-chatbot-member-record__item dt {
+    margin: 0;
+    color: var(--lml-member-record-label);
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.lml-chatbot-member-record__item dd {
+    margin: 0;
+    color: var(--lml-member-record-value);
+    font-size: 0.9375rem;
+    font-weight: 700;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+@media (max-width: 40rem) {
+    .lml-chatbot-member-record__inner {
+        width: min(100% - 1rem, 68rem);
+        padding-top: 0.85rem;
+    }
+
+    .lml-chatbot-member-record__avatar {
+        width: 3.5rem;
+        height: 3.5rem;
+        font-size: 1.85rem;
+    }
+
+    .lml-chatbot-member-record__name {
+        font-size: 1.25rem;
+    }
+
+    .lml-chatbot-member-record__dl--paired {
+        grid-template-columns: 1fr;
+    }
+
+    .lml-chatbot-member-record__main-card {
+        padding: 1.1rem 1rem 1.2rem;
+    }
+}

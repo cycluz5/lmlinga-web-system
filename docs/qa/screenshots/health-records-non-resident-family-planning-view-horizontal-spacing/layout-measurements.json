@@ -1,0 +1,110 @@
+[
+  {
+    "viewport": "1440x900",
+    "pageOverflow": false,
+    "panelWidth": 1104,
+    "panelPaddingLeft": 40,
+    "clientInfoColumnGap": 88,
+    "clientInfoLabelStart": 41,
+    "clientInfoValueStart": 249,
+    "clientInfoLabelToValueGap": 208,
+    "clientInfoLabelTextToValueGap": 143,
+    "clientInfoAllLabelStarts": [
+      41,
+      41,
+      41
+    ],
+    "clientInfoAllValueStarts": [
+      249,
+      249,
+      249
+    ],
+    "visitDateStart": 51,
+    "remarksStart": 203,
+    "editActionStart": 494,
+    "visitDateToRemarksGap": 152,
+    "remarksToEditGap": 291,
+    "historyTableWidth": 480,
+    "commodityStart": 51,
+    "quantityStart": 225,
+    "dateGivenStart": 359,
+    "commodityToQuantityGap": 174,
+    "quantityToDateGap": 134,
+    "commoditiesTableWidth": 448,
+    "previousClientInfoColumnGapPx": 32,
+    "previousHistoryTableWidthPx": 384,
+    "previousCommoditiesTableWidthPx": 356
+  },
+  {
+    "viewport": "820x1180",
+    "pageOverflow": false,
+    "panelWidth": 772,
+    "panelPaddingLeft": 24,
+    "clientInfoColumnGap": 40,
+    "clientInfoLabelStart": 25,
+    "clientInfoValueStart": 169,
+    "clientInfoLabelToValueGap": 144,
+    "clientInfoLabelTextToValueGap": 79,
+    "clientInfoAllLabelStarts": [
+      25,
+      25,
+      25
+    ],
+    "clientInfoAllValueStarts": [
+      169,
+      169,
+      169
+    ],
+    "visitDateStart": 35,
+    "remarksStart": 187,
+    "editActionStart": 414,
+    "visitDateToRemarksGap": 152,
+    "remarksToEditGap": 227,
+    "historyTableWidth": 416,
+    "commodityStart": 35,
+    "quantityStart": 193,
+    "dateGivenStart": 315,
+    "commodityToQuantityGap": 158,
+    "quantityToDateGap": 122,
+    "commoditiesTableWidth": 408,
+    "previousClientInfoColumnGapPx": 32,
+    "previousHistoryTableWidthPx": 384,
+    "previousCommoditiesTableWidthPx": 356
+  },
+  {
+    "viewport": "390x844",
+    "pageOverflow": false,
+    "panelWidth": 358,
+    "panelPaddingLeft": 16,
+    "clientInfoColumnGap": 0,
+    "clientInfoLabelStart": 17,
+    "clientInfoValueStart": 17,
+    "clientInfoLabelToValueGap": 0,
+    "clientInfoLabelTextToValueGap": -65,
+    "clientInfoAllLabelStarts": [
+      17,
+      17,
+      17
+    ],
+    "clientInfoAllValueStarts": [
+      17,
+      17,
+      17
+    ],
+    "visitDateStart": 27,
+    "remarksStart": 131,
+    "editActionStart": 314,
+    "visitDateToRemarksGap": 104,
+    "remarksToEditGap": 183,
+    "historyTableWidth": 324,
+    "commodityStart": 27,
+    "quantityStart": 130,
+    "dateGivenStart": 222,
+    "commodityToQuantityGap": 103,
+    "quantityToDateGap": 92,
+    "commoditiesTableWidth": 324,
+    "previousClientInfoColumnGapPx": 32,
+    "previousHistoryTableWidthPx": 384,
+    "previousCommoditiesTableWidthPx": 356
+  }
+]

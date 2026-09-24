@@ -1,0 +1,173 @@
+{
+  "screenshots": [
+    "01-desktop/death-no-record-1440x900.png",
+    "01-desktop/death-no-record-1366x768.png",
+    "02-tablet/death-no-record-820x1180.png",
+    "02-tablet/death-no-record-768x1024.png",
+    "03-mobile/death-no-record-390x844.png",
+    "03-mobile/death-no-record-360x800.png",
+    "01-desktop/death-create-1440x900.png",
+    "01-desktop/death-view-1440x900.png",
+    "01-desktop/death-edit-1440x900.png",
+    "02-tablet/death-create-768x1024.png",
+    "03-mobile/death-create-390x844.png"
+  ],
+  "checks": {
+    "no-record-1440x900": {
+      "mode": "empty",
+      "dlDirection": "column",
+      "stacked": true,
+      "itemTops": [
+        156,
+        180,
+        204
+      ],
+      "avatarSize": 72,
+      "nameSize": 20.8,
+      "emptyHeight": 320,
+      "ctaBg": "rgb(255, 255, 255)",
+      "ctaColor": "rgb(20, 108, 46)",
+      "ctaBorder": "rgba(81, 194, 105, 0.55)",
+      "ctaClasses": "lml-death__btn lml-death__btn--outline lml-focus-ring",
+      "overflowX": false
+    },
+    "no-record-1366x768": {
+      "mode": "empty",
+      "dlDirection": "column",
+      "stacked": true,
+      "itemTops": [
+        154,
+        178,
+        202
+      ],
+      "avatarSize": 72,
+      "nameSize": 20.8,
+      "emptyHeight": 320,
+      "ctaBg": "rgb(255, 255, 255)",
+      "ctaColor": "rgb(20, 108, 46)",
+      "ctaBorder": "rgba(81, 194, 105, 0.55)",
+      "ctaClasses": "lml-death__btn lml-death__btn--outline lml-focus-ring",
+      "overflowX": false
+    },
+    "no-record-820x1180": {
+      "mode": "empty",
+      "dlDirection": "column",
+      "stacked": true,
+      "itemTops": [
+        146,
+        170,
+        194
+      ],
+      "avatarSize": 68,
+      "nameSize": 20,
+      "emptyHeight": 260,
+      "ctaBg": "rgb(255, 255, 255)",
+      "ctaColor": "rgb(20, 108, 46)",
+      "ctaBorder": "rgba(81, 194, 105, 0.55)",
+      "ctaClasses": "lml-death__btn lml-death__btn--outline lml-focus-ring",
+      "overflowX": false
+    },
+    "no-record-768x1024": {
+      "mode": "empty",
+      "dlDirection": "column",
+      "stacked": true,
+      "itemTops": [
+        146,
+        170,
+        194
+      ],
+      "avatarSize": 68,
+      "nameSize": 20,
+      "emptyHeight": 260,
+      "ctaBg": "rgb(255, 255, 255)",
+      "ctaColor": "rgb(20, 108, 46)",
+      "ctaBorder": "rgba(81, 194, 105, 0.55)",
+      "ctaClasses": "lml-death__btn lml-death__btn--outline lml-focus-ring",
+      "overflowX": false
+    },
+    "no-record-390x844": {
+      "mode": "empty",
+      "dlDirection": "column",
+      "stacked": true,
+      "itemTops": [
+        209,
+        233,
+        256
+      ],
+      "avatarSize": 54,
+      "nameSize": 17.6,
+      "emptyHeight": 216,
+      "ctaBg": "rgb(255, 255, 255)",
+      "ctaColor": "rgb(20, 108, 46)",
+      "ctaBorder": "rgba(81, 194, 105, 0.55)",
+      "ctaClasses": "lml-death__btn lml-death__btn--outline lml-focus-ring",
+      "overflowX": false
+    },
+    "no-record-360x800": {
+      "mode": "empty",
+      "dlDirection": "column",
+      "stacked": true,
+      "itemTops": [
+        209,
+        233,
+        256
+      ],
+      "avatarSize": 54,
+      "nameSize": 17.6,
+      "emptyHeight": 210,
+      "ctaBg": "rgb(255, 255, 255)",
+      "ctaColor": "rgb(20, 108, 46)",
+      "ctaBorder": "rgba(81, 194, 105, 0.55)",
+      "ctaClasses": "lml-death__btn lml-death__btn--outline lml-focus-ring",
+      "overflowX": false
+    },
+    "create": {
+      "mode": "create",
+      "dlDirection": "column",
+      "stacked": true,
+      "itemTops": [
+        156,
+        180,
+        204
+      ],
+      "avatarSize": 72,
+      "nameSize": 20.8,
+      "emptyHeight": null,
+      "ctaBg": null,
+      "ctaColor": null,
+      "ctaBorder": null,
+      "ctaClasses": null,
+      "overflowX": false
+    },
+    "view": {
+      "mode": "view",
+      "hasEdit": true,
+      "hasSave": false
+    },
+    "edit": {
+      "mode": "edit",
+      "hasSave": true
+    }
+  },
+  "overflow": {
+    "no-record-1440x900": {
+      "overflowX": false
+    },
+    "no-record-1366x768": {
+      "overflowX": false
+    },
+    "no-record-820x1180": {
+      "overflowX": false
+    },
+    "no-record-768x1024": {
+      "overflowX": false
+    },
+    "no-record-390x844": {
+      "overflowX": false
+    },
+    "no-record-360x800": {
+      "overflowX": false
+    }
+  },
+  "errors": []
+}

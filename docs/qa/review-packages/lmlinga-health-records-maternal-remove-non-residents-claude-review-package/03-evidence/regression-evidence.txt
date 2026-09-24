@@ -1,0 +1,56 @@
+REGRESSION / SCOPE EVIDENCE
+Packaging date: 2026-08-16
+
+A. FILES BELONGING TO THIS MATERNAL PATCH
+Production:
+  resources/views/pages/health-records/maternal.blade.php
+Tests:
+  tests/Feature/HealthRecordsMaternalTest.php
+QA (not production runtime):
+  scripts/capture-hr-maternal-hide-nr-nav.mjs
+  docs/qa/screenshots/health-records-maternal-hide-nr-nav/
+  this review package
+
+Git diff for A is in 03-evidence/git-diff.txt.
+Only the resident listing Blade and Maternal feature tests changed for the product patch.
+Legacy NR views/controller/routes/CSS/JS/support/fixture were NOT modified by this patch.
+
+B. UNRELATED PRE-EXISTING DIRTY-TREE CHANGES (DO NOT TREAT AS THIS PATCH)
+Modified:
+  resources/css/pages/dashboard.css
+  resources/css/pages/health-records-family-planning.css
+  resources/js/app.js                    (adds dashboard-home import only — not Maternal)
+  resources/js/pages/spot-mapping.js
+  resources/views/pages/dashboard/index.blade.php
+  resources/views/pages/health-records/child-care*.blade.php
+  resources/views/pages/health-records/family-planning.blade.php
+  tests/Feature/HealthRecordsChildCareSummaryTest.php
+  tests/Feature/HealthRecordsDewormingTest.php
+  tests/Feature/HealthRecordsFamilyPlanningTest.php
+  tests/Feature/HealthRecordsNonResidentChildCareTest.php
+  tests/Feature/HealthRecordsNonResidentFamilyPlanningTest.php
+  tests/Feature/HealthRecordsOperationTimbangTest.php
+  tests/Feature/HealthRecordsVitaminATest.php
+Untracked dashboard / child-care / family-planning freeze + review artifacts, etc.
+
+This packaging task did not revert or edit B.
+
+MODULES NOT MODIFIED BY THE MATERNAL PATCH
+- Child Care, Family Planning, Risk Assessment, Death (no files in those modules in git-diff.txt)
+- No migrations / models / schema
+- No authorization or clinical calculation changes
+- MaternalSummaryController, NonResidentMaternalController, HealthRecordsMaternal,
+  HealthRecordsNonResidentMaternal, StoreNonResidentMaternalClientRequest,
+  NR blades, maternal CSS/JS, sidebar.blade.php, routes/web.php: unchanged vs HEAD
+  except the two files in A.
+
+RESIDUAL USER-FACING PATHS TO LEGACY NR PAGES (reported, not removed)
+1. Direct URL still works:
+   GET /health-records/maternal/non-residents
+   GET /health-records/maternal/non-residents/create
+   GET /health-records/maternal/non-residents/{clientKey}
+2. Legacy NR listing includes View links (showClientView=true on shared table partial)
+   to health-records.maternal.non-residents.show — only on the NR listing page,
+   not on the resident listing (resident include does not pass showClientView).
+3. Resident listing has no href to non-residents.index after the patch.
+4. Sidebar Maternal href is resident index only.

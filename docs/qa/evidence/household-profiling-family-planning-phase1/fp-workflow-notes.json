@@ -1,0 +1,83 @@
+[
+  {
+    "case": "all-dates-row-count",
+    "allCount": 3
+  },
+  {
+    "case": "last-3-months",
+    "last3Count": 1,
+    "last3Empty": 0
+  },
+  {
+    "case": "custom-range",
+    "customVisible": true,
+    "customCount": 2
+  },
+  {
+    "case": "custom-incomplete-from-only",
+    "incompleteCount": 3
+  },
+  {
+    "case": "custom-invalid-from-gt-to",
+    "invalidCount": 3
+  },
+  {
+    "case": "this-month",
+    "count": 0,
+    "emptyFiltered": 1
+  },
+  {
+    "case": "this-year",
+    "count": 2
+  },
+  {
+    "case": "edit-add-commodity-row",
+    "commodityRows": 2
+  },
+  {
+    "case": "preview-save",
+    "toastVisible": 1,
+    "toastText": "Preview only: Family Planning visit was kept in this browser session and was not permanently saved."
+  },
+  {
+    "case": "mobile-edit-overflow",
+    "edit390": {
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "pageOverflow": false,
+      "bodyOverflow": false,
+      "tableLocalScroll": false,
+      "fpScrollWidth": 358,
+      "fpClientWidth": 358
+    },
+    "edit360": {
+      "clientWidth": 360,
+      "scrollWidth": 360,
+      "pageOverflow": false,
+      "bodyOverflow": false,
+      "tableLocalScroll": false,
+      "fpScrollWidth": 328,
+      "fpClientWidth": 328
+    }
+  },
+  {
+    "case": "member-navigation",
+    "fpTag": "A",
+    "fpHref": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-001/family-planning",
+    "maternalStub": 1,
+    "deathStub": 1,
+    "fpStubGone": 0,
+    "sidebarActive": "Household Profiling"
+  },
+  {
+    "case": "member-fp-click-nav",
+    "landed": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-001/family-planning",
+    "toastAfterNav": 0
+  },
+  {
+    "case": "route-hrefs",
+    "createHref": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-001/family-planning/create",
+    "showHref": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-001/family-planning/FP-001",
+    "editHref": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-001/family-planning/FP-001/edit"
+  }
+]

@@ -1,0 +1,28 @@
+COMMAND: npm run build
+EXIT CODE: 0
+node.exe : npm warn Unknown env config "devdir". This will stop working in the next major version of npm.
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (npm warn Unknow...version of npm.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+> build
+> vite build
+
+vite v6.4.3 building for production...
+transforming...
+Γ£ô 152 modules transformed.
+rendering chunks...
+computing gzip size...
+public/build/assets/layers-BWBAp2CZ.png               0.70 kB
+public/build/assets/layers-2x-Bpkbi35X.png            1.26 kB
+public/build/manifest.json                            1.35 kB Γöé gzip:   0.35 kB
+public/build/assets/marker-icon-hN30_KVU.png          1.47 kB
+public/build/assets/bootstrap-icons-mSm7cUeB.woff2  134.04 kB
+public/build/assets/bootstrap-icons-BeopsB42.woff   180.29 kB
+public/build/assets/app-CLLlcC51.css                 11.08 kB Γöé gzip:   2.73 kB
+public/build/assets/app-k4Q1yQvD.css                918.79 kB Γöé gzip: 128.03 kB
+public/build/assets/app-BcJ0fNZC.js                 449.57 kB Γöé gzip: 127.03 kB
+Γ£ô built in 3.39s

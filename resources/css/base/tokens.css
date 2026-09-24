@@ -1,0 +1,50 @@
+/**
+ * LMLinga Design System — Color Tokens
+ * Single source of truth for the application palette.
+ * Tailwind @theme in app.css references these variables — update colors here only.
+ */
+:root {
+    /* Primary palette */
+    --lml-primary: #22C55E;
+    --lml-secondary: #3DA653;
+    --lml-light-green: #51C269;
+    --lml-soft-green: #BBF7D0;
+    --lml-background: #DFF5E5;
+    --lml-dark-green: #0B3D0B;
+    --lml-text-green: #1F7A1F;
+    --lml-accent: #28A71B;
+    --lml-deep-green: #145214;
+
+    /* RGB values for rgba() usage */
+    --lml-primary-rgb: 34, 197, 94;
+    --lml-secondary-rgb: 61, 166, 83;
+    --lml-light-green-rgb: 81, 194, 105;
+    --lml-soft-green-rgb: 187, 247, 208;
+    --lml-background-rgb: 223, 245, 229;
+    --lml-dark-green-rgb: 11, 61, 11;
+    --lml-text-green-rgb: 31, 122, 31;
+    --lml-accent-rgb: 40, 167, 27;
+    --lml-deep-green-rgb: 20, 82, 20;
+
+    /* Semantic aliases */
+    --lml-color-body-bg: var(--lml-background);
+    --lml-color-body-text: var(--lml-dark-green);
+    --lml-color-heading: var(--lml-deep-green);
+    --lml-color-link: var(--lml-text-green);
+    --lml-color-link-hover: var(--lml-accent);
+
+    /* Typography */
+    --lml-font-sans: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+    --lml-font-brand: 'Protest Riot', cursive;
+
+    /* Spacing & radius */
+    --lml-radius-sm: 0.375rem;
+    --lml-radius-md: 0.5rem;
+    --lml-radius-lg: 0.75rem;
+    --lml-radius-xl: 1rem;
+
+    /* Shadows */
+    --lml-shadow-sm: 0 1px 3px rgba(var(--lml-dark-green-rgb), 0.08);
+    --lml-shadow-md: 0 4px 12px rgba(var(--lml-dark-green-rgb), 0.12);
+    --lml-shadow-lg: 0 8px 24px rgba(var(--lml-dark-green-rgb), 0.16);
+}

@@ -1,0 +1,23 @@
+{
+  "case": "a11y3-iconsAriaHidden-verification",
+  "semantics": {
+    "iconCount": 6,
+    "iconsAriaHidden": true,
+    "iconsWithOwnAttr": 5,
+    "iconsWithAncestorOnly": 1,
+    "addCommodityIsButton": true,
+    "saveIsButton": true,
+    "cancelIsAnchor": true
+  },
+  "keyboardSave": {
+    "info": {
+      "tag": "BUTTON",
+      "type": "submit",
+      "text": "Save",
+      "focusVisible": true
+    },
+    "steps": 1,
+    "failed": false
+  },
+  "pass": true
+}

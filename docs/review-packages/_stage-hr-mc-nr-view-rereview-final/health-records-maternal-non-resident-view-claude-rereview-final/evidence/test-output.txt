@@ -1,0 +1,12 @@
+COMMAND: php vendor/phpunit/phpunit/phpunit tests/Feature/HealthRecordsMaternalTest.php
+EXIT CODE: 0
+PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.2.12
+Configuration: C:\Users\Kathlyn Cris\Desktop\LMLinga_Dev\lmlingaFinal\phpunit.xml
+
+.......................                                           23 / 23 (100%)
+
+Time: 00:00.883, Memory: 36.00 MB
+
+OK (23 tests, 347 assertions)

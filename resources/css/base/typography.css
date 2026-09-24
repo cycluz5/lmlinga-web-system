@@ -1,0 +1,45 @@
+/**
+ * LMLinga Design System — Typography
+ * Poppins: application-wide | Protest Riot: branding/logo only
+ */
+
+body {
+    font-family: var(--lml-font-sans);
+    color: var(--lml-color-body-text);
+    background-color: var(--lml-color-body-bg);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.lml-brand,
+.lml-logo {
+    font-family: var(--lml-font-brand);
+    letter-spacing: 0.02em;
+}
+
+h1, h2, h3, h4, h5, h6,
+.h1, .h2, .h3, .h4, .h5, .h6 {
+    color: var(--lml-color-heading);
+    font-weight: 600;
+}
+
+a {
+    color: var(--lml-color-link);
+    text-decoration: none;
+    transition: color 0.15s ease;
+}
+
+a:hover {
+    color: var(--lml-color-link-hover);
+}
+
+.lml-text-muted {
+    color: var(--lml-text-green);
+    opacity: 0.75;
+}
+
+.lml-lead {
+    font-size: 1.125rem;
+    font-weight: 400;
+    color: var(--lml-text-green);
+}

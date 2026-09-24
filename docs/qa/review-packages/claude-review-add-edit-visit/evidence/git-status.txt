@@ -1,0 +1,116 @@
+﻿ M lmlingaFinal/app/Http/Controllers/HealthRecords/NonResidentChildCareController.php
+ M lmlingaFinal/app/Http/Controllers/HealthRecords/NonResidentFamilyPlanningController.php
+ M lmlingaFinal/app/Support/HealthRecordsNonResidentChildCare.php
+ M lmlingaFinal/app/Support/HealthRecordsNonResidentFamilyPlanning.php
+ M lmlingaFinal/app/Support/HealthRecordsRiskAssessment.php
+ M lmlingaFinal/resources/css/pages/health-records-child-care-non-residents.css
+ M lmlingaFinal/resources/css/pages/health-records-non-resident-family-planning.css
+ M lmlingaFinal/resources/css/pages/health-records-risk-assessment.css
+ M lmlingaFinal/resources/demo/households.php
+ M lmlingaFinal/resources/js/pages/health-records-child-care-non-residents.js
+ M lmlingaFinal/resources/js/pages/health-records-non-resident-family-planning.js
+ M lmlingaFinal/resources/js/pages/health-records-risk-assessment.js
+ M lmlingaFinal/resources/views/pages/health-records/child-care-deworming.blade.php
+ M lmlingaFinal/resources/views/pages/health-records/child-care-non-residents-nutrition.blade.php
+ M lmlingaFinal/resources/views/pages/health-records/child-care-non-residents.blade.php
+ M lmlingaFinal/resources/views/pages/health-records/child-care-operation-timbang.blade.php
+ M lmlingaFinal/resources/views/pages/health-records/child-care-vitamin-a.blade.php
+ M lmlingaFinal/resources/views/pages/health-records/non-resident-family-planning/create-client.blade.php
+ M lmlingaFinal/resources/views/pages/health-records/non-resident-family-planning/index.blade.php
+ M lmlingaFinal/resources/views/pages/health-records/non-resident-family-planning/partials/client-identity-banner.blade.php
+ M lmlingaFinal/resources/views/pages/health-records/non-resident-family-planning/show.blade.php
+ M lmlingaFinal/resources/views/pages/health-records/non-resident-family-planning/visit-form.blade.php
+ M lmlingaFinal/resources/views/pages/health-records/partials/child-care-non-residents-profile.blade.php
+ M lmlingaFinal/resources/views/pages/health-records/risk-assessment.blade.php
+ M lmlingaFinal/routes/web.php
+ M lmlingaFinal/scripts/capture-hr-non-resident-family-planning-phase1.mjs
+ M lmlingaFinal/tests/Feature/HealthRecordsDewormingTest.php
+ M lmlingaFinal/tests/Feature/HealthRecordsNonResidentChildCareTest.php
+ M lmlingaFinal/tests/Feature/HealthRecordsNonResidentFamilyPlanningTest.php
+ M lmlingaFinal/tests/Feature/HealthRecordsOperationTimbangTest.php
+ M lmlingaFinal/tests/Feature/HealthRecordsRiskAssessmentTest.php
+ M lmlingaFinal/tests/Feature/HealthRecordsVitaminATest.php
+?? lmlingaFinal/docs/qa/evidence/health-records-child-care-non-residents-edit-patch/
+?? lmlingaFinal/docs/qa/evidence/health-records-child-care-non-residents-label-cleanup/
+?? lmlingaFinal/docs/qa/evidence/health-records-child-care-non-residents-listing-back/
+?? lmlingaFinal/docs/qa/evidence/health-records-child-care-non-residents-ot-history-labels/
+?? lmlingaFinal/docs/qa/evidence/health-records-child-care-non-residents-ot-history/
+?? lmlingaFinal/docs/qa/evidence/health-records-child-care-non-residents-view/add-measurement-390.png
+?? lmlingaFinal/docs/qa/evidence/health-records-child-care-non-residents-view/edit-measurement-390.png
+?? lmlingaFinal/docs/qa/evidence/health-records-child-care-non-residents-view/measurement-badge-390.json
+?? lmlingaFinal/docs/qa/evidence/health-records-child-care-service-nr-pills/
+?? lmlingaFinal/docs/qa/fp-nr-header-alignment-capture-out.txt
+?? lmlingaFinal/docs/qa/fp-nr-header-alignment-tests-out.txt
+?? lmlingaFinal/docs/qa/fp-nr-header-back-placement-capture-out.txt
+?? lmlingaFinal/docs/qa/fp-nr-header-spec-capture-out.txt
+?? lmlingaFinal/docs/qa/review-packages/CLAUDE_REVIEW_MANIFEST.md
+?? lmlingaFinal/docs/qa/review-packages/LMLinga_Health_Records_Risk_Assessment_Claude_Final_Review.zip
+?? lmlingaFinal/docs/qa/review-packages/LMLinga_Health_Records_Risk_Assessment_Claude_Final_Review_v2.zip
+?? lmlingaFinal/docs/qa/review-packages/claude-review-add-edit-visit/
+?? lmlingaFinal/docs/qa/review-packages/risk-assessment-build-output.txt
+?? lmlingaFinal/docs/qa/review-packages/risk-assessment-js-test-output.txt
+?? lmlingaFinal/docs/qa/review-packages/risk-assessment-phpunit-HealthRecordsRiskAssessmentTest.txt
+?? lmlingaFinal/docs/qa/review-packages/risk-assessment-phpunit-HealthRecordsSidebarNavigationTest.txt
+?? lmlingaFinal/docs/qa/review-packages/risk-assessment-phpunit-HouseholdProfilingRiskAssessmentHistoryViewEditTest.txt
+?? lmlingaFinal/docs/qa/review-packages/risk-assessment-phpunit-HouseholdProfilingRiskAssessmentTest.txt
+?? lmlingaFinal/docs/qa/screenshots/health-records-non-resident-family-planning-actions/
+?? lmlingaFinal/docs/qa/screenshots/health-records-non-resident-family-planning-add-edit-visit-actions-banner/
+?? lmlingaFinal/docs/qa/screenshots/health-records-non-resident-family-planning-add-edit-visit-alignment/
+?? lmlingaFinal/docs/qa/screenshots/health-records-non-resident-family-planning-add-edit-visit-card-height/
+?? lmlingaFinal/docs/qa/screenshots/health-records-non-resident-family-planning-add-edit-visit-closed-cards/
+?? lmlingaFinal/docs/qa/screenshots/health-records-non-resident-family-planning-add-edit-visit-figma-density/
+?? lmlingaFinal/docs/qa/screenshots/health-records-non-resident-family-planning-add-edit-visit-full-width/
+?? lmlingaFinal/docs/qa/screenshots/health-records-non-resident-family-planning-create-figma-micro-refinement/
+?? lmlingaFinal/docs/qa/screenshots/health-records-non-resident-family-planning-create-refinement/
+?? lmlingaFinal/docs/qa/screenshots/health-records-non-resident-family-planning-create-width-spacing-correction/
+?? lmlingaFinal/docs/qa/screenshots/health-records-non-resident-family-planning-figma-ui/
+?? lmlingaFinal/docs/qa/screenshots/health-records-non-resident-family-planning-header-alignment/
+?? lmlingaFinal/docs/qa/screenshots/health-records-non-resident-family-planning-header-back-placement/
+?? lmlingaFinal/docs/qa/screenshots/health-records-non-resident-family-planning-header-spec/
+?? lmlingaFinal/docs/qa/screenshots/health-records-non-resident-family-planning-list-density-refinement/
+?? lmlingaFinal/docs/qa/screenshots/health-records-non-resident-family-planning-listing-refinement/
+?? lmlingaFinal/docs/qa/screenshots/health-records-non-resident-family-planning-pagination-center/
+?? lmlingaFinal/docs/qa/screenshots/health-records-non-resident-family-planning-view-align-pass/
+?? lmlingaFinal/docs/qa/screenshots/health-records-non-resident-family-planning-view-column-spacing/
+?? lmlingaFinal/docs/qa/screenshots/health-records-non-resident-family-planning-view-data-padding/
+?? lmlingaFinal/docs/qa/screenshots/health-records-non-resident-family-planning-view-date-anchor/
+?? lmlingaFinal/docs/qa/screenshots/health-records-non-resident-family-planning-view-edit-refinement/
+?? lmlingaFinal/docs/qa/screenshots/health-records-non-resident-family-planning-view-figma-alignment/
+?? lmlingaFinal/docs/qa/screenshots/health-records-non-resident-family-planning-view-figma-refinement/
+?? lmlingaFinal/docs/qa/screenshots/health-records-non-resident-family-planning-view-final-alignment/
+?? lmlingaFinal/docs/qa/screenshots/health-records-non-resident-family-planning-view-horizontal-spacing/
+?? lmlingaFinal/docs/qa/screenshots/health-records-non-resident-family-planning-view-shared-anchor/
+?? lmlingaFinal/docs/qa/screenshots/health-records-non-resident-family-planning-view-spacing-refine/
+?? lmlingaFinal/docs/qa/screenshots/health-records-non-resident-family-planning-view-vertical-spacing/
+?? lmlingaFinal/docs/qa/screenshots/health-records-risk-assessment-final-alignment/
+?? lmlingaFinal/docs/qa/screenshots/health-records-risk-assessment-header-separator/
+?? lmlingaFinal/docs/qa/screenshots/health-records-risk-assessment-ui-refinement/
+?? lmlingaFinal/docs/review-packages/
+?? lmlingaFinal/lmlinga-child-care-non-residents-claude-final-review.zip
+?? lmlingaFinal/lmlinga-child-care-non-residents-claude-review.zip
+?? lmlingaFinal/resources/views/pages/health-records/child-care-non-residents-edit.blade.php
+?? lmlingaFinal/scripts/capture-child-care-non-residents-edit-patch.mjs
+?? lmlingaFinal/scripts/capture-child-care-non-residents-label-cleanup.mjs
+?? lmlingaFinal/scripts/capture-child-care-non-residents-listing-back.mjs
+?? lmlingaFinal/scripts/capture-child-care-non-residents-ot-history-labels.mjs
+?? lmlingaFinal/scripts/capture-child-care-non-residents-ot-history.mjs
+?? lmlingaFinal/scripts/capture-child-care-service-nr-pills.mjs
+?? lmlingaFinal/scripts/capture-hr-non-resident-family-planning-actions.mjs
+?? lmlingaFinal/scripts/capture-hr-non-resident-family-planning-add-edit-visit-alignment.mjs
+?? lmlingaFinal/scripts/capture-hr-non-resident-family-planning-create-figma-micro-refinement.mjs
+?? lmlingaFinal/scripts/capture-hr-non-resident-family-planning-create-refinement.mjs
+?? lmlingaFinal/scripts/capture-hr-non-resident-family-planning-create-width-spacing-correction.mjs
+?? lmlingaFinal/scripts/capture-hr-non-resident-family-planning-list-density-refinement.mjs
+?? lmlingaFinal/scripts/capture-hr-non-resident-family-planning-listing-refinement.mjs
+?? lmlingaFinal/scripts/capture-hr-non-resident-family-planning-pagination-center.mjs
+?? lmlingaFinal/scripts/capture-hr-non-resident-family-planning-view-column-spacing.mjs
+?? lmlingaFinal/scripts/capture-hr-non-resident-family-planning-view-edit-refinement.mjs
+?? lmlingaFinal/scripts/capture-hr-non-resident-family-planning-view-figma-alignment.mjs
+?? lmlingaFinal/scripts/capture-hr-non-resident-family-planning-view-figma-refinement.mjs
+?? lmlingaFinal/scripts/capture-hr-non-resident-family-planning-view-horizontal-spacing.mjs
+?? lmlingaFinal/scripts/capture-hr-non-resident-family-planning-view-vertical-spacing.mjs
+?? lmlingaFinal/scripts/capture-hr-risk-final-alignment.mjs
+?? lmlingaFinal/scripts/capture-hr-risk-header-separator.mjs
+?? lmlingaFinal/scripts/capture-hr-risk-ui-refinement.mjs
+?? lmlingaFinal/scripts/verify-nr-measurement-badge-390.mjs
+?? lmlingaFinal/test_output.txt

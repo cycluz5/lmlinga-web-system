@@ -1,0 +1,346 @@
+{
+  "facts1440": {
+    "gridTemplateColumns": "200px 356px",
+    "maxWidth": "576px",
+    "display": "grid",
+    "dtX": [
+      440,
+      440,
+      440,
+      440,
+      440
+    ],
+    "ddX": [
+      660,
+      660,
+      660,
+      660,
+      660
+    ],
+    "dtY": [
+      254,
+      284,
+      313,
+      342,
+      371
+    ],
+    "rows": [
+      {
+        "label": "Age",
+        "value": "3 Months",
+        "labelX": 440,
+        "valueX": 660,
+        "labelY": 254,
+        "valueY": 254,
+        "sameRow": true
+      },
+      {
+        "label": "Date Birth",
+        "value": "April 12, 2026",
+        "labelX": 440,
+        "valueX": 660,
+        "labelY": 284,
+        "valueY": 284,
+        "sameRow": true
+      },
+      {
+        "label": "Mother's Name",
+        "value": "Liza B. Malaya",
+        "labelX": 440,
+        "valueX": 660,
+        "labelY": 313,
+        "valueY": 313,
+        "sameRow": true
+      },
+      {
+        "label": "Address",
+        "value": "Zone 3, Brgy. San Jose, Iriga City",
+        "labelX": 440,
+        "valueX": 660,
+        "labelY": 342,
+        "valueY": 342,
+        "sameRow": true
+      },
+      {
+        "label": "School & Grade Level",
+        "value": "—",
+        "labelX": 440,
+        "valueX": 660,
+        "labelY": 371,
+        "valueY": 371,
+        "sameRow": true
+      }
+    ]
+  },
+  "facts820": {
+    "gridTemplateColumns": "184px 241.875px",
+    "maxWidth": "none",
+    "display": "grid",
+    "dtX": [
+      156,
+      156,
+      156,
+      156,
+      156
+    ],
+    "ddX": [
+      360,
+      360,
+      360,
+      360,
+      360
+    ],
+    "dtY": [
+      248,
+      277,
+      306,
+      336,
+      365
+    ],
+    "rows": [
+      {
+        "label": "Age",
+        "value": "3 Months",
+        "labelX": 156,
+        "valueX": 360,
+        "labelY": 248,
+        "valueY": 248,
+        "sameRow": true
+      },
+      {
+        "label": "Date Birth",
+        "value": "April 12, 2026",
+        "labelX": 156,
+        "valueX": 360,
+        "labelY": 277,
+        "valueY": 277,
+        "sameRow": true
+      },
+      {
+        "label": "Mother's Name",
+        "value": "Liza B. Malaya",
+        "labelX": 156,
+        "valueX": 360,
+        "labelY": 306,
+        "valueY": 306,
+        "sameRow": true
+      },
+      {
+        "label": "Address",
+        "value": "Zone 3, Brgy. San Jose, Iriga City",
+        "labelX": 156,
+        "valueX": 360,
+        "labelY": 336,
+        "valueY": 336,
+        "sameRow": true
+      },
+      {
+        "label": "School & Grade Level",
+        "value": "—",
+        "labelX": 156,
+        "valueX": 360,
+        "labelY": 365,
+        "valueY": 365,
+        "sameRow": true
+      }
+    ]
+  },
+  "facts390": {
+    "gridTemplateColumns": "160px 152px",
+    "maxWidth": "none",
+    "display": "grid",
+    "dtX": [
+      33,
+      33,
+      33,
+      33,
+      33
+    ],
+    "ddX": [
+      205,
+      205,
+      205,
+      205,
+      205
+    ],
+    "dtY": [
+      418,
+      447,
+      476,
+      505,
+      557
+    ],
+    "rows": [
+      {
+        "label": "Age",
+        "value": "3 Months",
+        "labelX": 33,
+        "valueX": 205,
+        "labelY": 418,
+        "valueY": 418,
+        "sameRow": true
+      },
+      {
+        "label": "Date Birth",
+        "value": "April 12, 2026",
+        "labelX": 33,
+        "valueX": 205,
+        "labelY": 447,
+        "valueY": 447,
+        "sameRow": true
+      },
+      {
+        "label": "Mother's Name",
+        "value": "Liza B. Malaya",
+        "labelX": 33,
+        "valueX": 205,
+        "labelY": 476,
+        "valueY": 476,
+        "sameRow": true
+      },
+      {
+        "label": "Address",
+        "value": "Zone 3, Brgy. San Jose, Iriga City",
+        "labelX": 33,
+        "valueX": 205,
+        "labelY": 505,
+        "valueY": 505,
+        "sameRow": true
+      },
+      {
+        "label": "School & Grade Level",
+        "value": "—",
+        "labelX": 33,
+        "valueX": 205,
+        "labelY": 557,
+        "valueY": 557,
+        "sameRow": true
+      }
+    ]
+  },
+  "deworming": {
+    "headers": [
+      {
+        "text": "Year",
+        "x": 331,
+        "w": 127,
+        "center": 394,
+        "align": "center"
+      },
+      {
+        "text": "Round",
+        "x": 458,
+        "w": 127,
+        "center": 521,
+        "align": "center"
+      },
+      {
+        "text": "SE Status",
+        "x": 585,
+        "w": 191,
+        "center": 680,
+        "align": "center"
+      },
+      {
+        "text": "Date Given",
+        "x": 775,
+        "w": 254,
+        "center": 902,
+        "align": "center"
+      },
+      {
+        "text": "Remarks",
+        "x": 1029,
+        "w": 360,
+        "center": 1209,
+        "align": "left"
+      }
+    ],
+    "cells": [
+      {
+        "text": "2026",
+        "x": 331,
+        "w": 127,
+        "center": 394,
+        "align": "center"
+      },
+      {
+        "text": "1",
+        "x": 458,
+        "w": 127,
+        "center": 521,
+        "align": "center"
+      },
+      {
+        "text": "Non-NHTS",
+        "x": 585,
+        "w": 191,
+        "center": 680,
+        "align": "center"
+      },
+      {
+        "text": "July 1, 2026",
+        "x": 775,
+        "w": 254,
+        "center": 902,
+        "align": "center"
+      },
+      {
+        "text": "—",
+        "x": 1029,
+        "w": 360,
+        "center": 1209,
+        "align": "left"
+      }
+    ],
+    "centerDelta": [
+      {
+        "col": "Year",
+        "headerCenter": 394,
+        "cellCenter": 394,
+        "delta": 0,
+        "headerAlign": "center",
+        "cellAlign": "center"
+      },
+      {
+        "col": "Round",
+        "headerCenter": 521,
+        "cellCenter": 521,
+        "delta": 0,
+        "headerAlign": "center",
+        "cellAlign": "center"
+      },
+      {
+        "col": "SE Status",
+        "headerCenter": 680,
+        "cellCenter": 680,
+        "delta": 0,
+        "headerAlign": "center",
+        "cellAlign": "center"
+      },
+      {
+        "col": "Date Given",
+        "headerCenter": 902,
+        "cellCenter": 902,
+        "delta": 0,
+        "headerAlign": "center",
+        "cellAlign": "center"
+      },
+      {
+        "col": "Remarks",
+        "headerCenter": 1209,
+        "cellCenter": 1209,
+        "delta": 0,
+        "headerAlign": "left",
+        "cellAlign": "left"
+      }
+    ]
+  },
+  "edit": {
+    "texts": "Cancel Save",
+    "hasDelete": false,
+    "hasCancel": true,
+    "hasSave": true
+  },
+  "crisleySummary": "Weight 7.2 kg Height 68.0 cm MUAC 13.8 cm Status Normal"
+}

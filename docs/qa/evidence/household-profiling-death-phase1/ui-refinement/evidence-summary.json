@@ -1,0 +1,248 @@
+{
+  "screenshots": [
+    "01-desktop/death-no-record-1440x900.png",
+    "01-desktop/death-no-record-1366x768.png",
+    "02-tablet/death-no-record-820x1180.png",
+    "02-tablet/death-no-record-768x1024.png",
+    "03-mobile/death-no-record-390x844.png",
+    "03-mobile/death-no-record-360x800.png",
+    "01-desktop/death-create-1440x900.png",
+    "01-desktop/death-create-1366x768.png",
+    "02-tablet/death-create-820x1180.png",
+    "02-tablet/death-create-768x1024.png",
+    "03-mobile/death-create-390x844.png",
+    "03-mobile/death-create-360x800.png",
+    "01-desktop/death-view-1440x900.png",
+    "01-desktop/death-view-1366x768.png",
+    "02-tablet/death-view-820x1180.png",
+    "02-tablet/death-view-768x1024.png",
+    "03-mobile/death-view-390x844.png",
+    "03-mobile/death-view-360x800.png",
+    "01-desktop/death-edit-1440x900.png",
+    "01-desktop/death-edit-1366x768.png",
+    "02-tablet/death-edit-820x1180.png",
+    "02-tablet/death-edit-768x1024.png",
+    "03-mobile/death-edit-390x844.png",
+    "03-mobile/death-edit-360x800.png",
+    "04-interactions/member-view-death-link-1440x900.png"
+  ],
+  "viewports": {
+    "1440x900": {
+      "status": "PASS",
+      "files": [
+        "01-desktop/death-no-record-1440x900.png",
+        "01-desktop/death-create-1440x900.png",
+        "01-desktop/death-view-1440x900.png",
+        "01-desktop/death-edit-1440x900.png"
+      ]
+    },
+    "1366x768": {
+      "status": "PASS",
+      "files": [
+        "01-desktop/death-no-record-1366x768.png",
+        "01-desktop/death-create-1366x768.png",
+        "01-desktop/death-view-1366x768.png",
+        "01-desktop/death-edit-1366x768.png"
+      ]
+    },
+    "820x1180": {
+      "status": "PASS",
+      "files": [
+        "02-tablet/death-no-record-820x1180.png",
+        "02-tablet/death-create-820x1180.png",
+        "02-tablet/death-view-820x1180.png",
+        "02-tablet/death-edit-820x1180.png"
+      ]
+    },
+    "768x1024": {
+      "status": "PASS",
+      "files": [
+        "02-tablet/death-no-record-768x1024.png",
+        "02-tablet/death-create-768x1024.png",
+        "02-tablet/death-view-768x1024.png",
+        "02-tablet/death-edit-768x1024.png"
+      ]
+    },
+    "390x844": {
+      "status": "PASS",
+      "files": [
+        "03-mobile/death-no-record-390x844.png",
+        "03-mobile/death-create-390x844.png",
+        "03-mobile/death-view-390x844.png",
+        "03-mobile/death-edit-390x844.png"
+      ]
+    },
+    "360x800": {
+      "status": "PASS",
+      "files": [
+        "03-mobile/death-no-record-360x800.png",
+        "03-mobile/death-create-360x800.png",
+        "03-mobile/death-view-360x800.png",
+        "03-mobile/death-edit-360x800.png"
+      ]
+    }
+  },
+  "overflow": {
+    "01-desktop/death-no-record-1440x900.png": {
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflowX": false
+    },
+    "01-desktop/death-no-record-1366x768.png": {
+      "scrollWidth": 1366,
+      "clientWidth": 1366,
+      "overflowX": false
+    },
+    "02-tablet/death-no-record-820x1180.png": {
+      "scrollWidth": 820,
+      "clientWidth": 820,
+      "overflowX": false
+    },
+    "02-tablet/death-no-record-768x1024.png": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflowX": false
+    },
+    "03-mobile/death-no-record-390x844.png": {
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflowX": false
+    },
+    "03-mobile/death-no-record-360x800.png": {
+      "scrollWidth": 360,
+      "clientWidth": 360,
+      "overflowX": false
+    },
+    "01-desktop/death-create-1440x900.png": {
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflowX": false
+    },
+    "01-desktop/death-create-1366x768.png": {
+      "scrollWidth": 1366,
+      "clientWidth": 1366,
+      "overflowX": false
+    },
+    "02-tablet/death-create-820x1180.png": {
+      "scrollWidth": 820,
+      "clientWidth": 820,
+      "overflowX": false
+    },
+    "02-tablet/death-create-768x1024.png": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflowX": false
+    },
+    "03-mobile/death-create-390x844.png": {
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflowX": false
+    },
+    "03-mobile/death-create-360x800.png": {
+      "scrollWidth": 360,
+      "clientWidth": 360,
+      "overflowX": false
+    },
+    "01-desktop/death-view-1440x900.png": {
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflowX": false
+    },
+    "01-desktop/death-view-1366x768.png": {
+      "scrollWidth": 1366,
+      "clientWidth": 1366,
+      "overflowX": false
+    },
+    "02-tablet/death-view-820x1180.png": {
+      "scrollWidth": 820,
+      "clientWidth": 820,
+      "overflowX": false
+    },
+    "02-tablet/death-view-768x1024.png": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflowX": false
+    },
+    "03-mobile/death-view-390x844.png": {
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflowX": false
+    },
+    "03-mobile/death-view-360x800.png": {
+      "scrollWidth": 360,
+      "clientWidth": 360,
+      "overflowX": false
+    },
+    "01-desktop/death-edit-1440x900.png": {
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflowX": false
+    },
+    "01-desktop/death-edit-1366x768.png": {
+      "scrollWidth": 1366,
+      "clientWidth": 1366,
+      "overflowX": false
+    },
+    "02-tablet/death-edit-820x1180.png": {
+      "scrollWidth": 820,
+      "clientWidth": 820,
+      "overflowX": false
+    },
+    "02-tablet/death-edit-768x1024.png": {
+      "scrollWidth": 768,
+      "clientWidth": 768,
+      "overflowX": false
+    },
+    "03-mobile/death-edit-390x844.png": {
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflowX": false
+    },
+    "03-mobile/death-edit-360x800.png": {
+      "scrollWidth": 360,
+      "clientWidth": 360,
+      "overflowX": false
+    },
+    "04-interactions/member-view-death-link-1440x900.png": {
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflowX": false
+    }
+  },
+  "notes": [
+    {
+      "step": "initial-mode",
+      "mode": "empty"
+    },
+    {
+      "state": "no-record",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-002/death?role=bhw&v=death-p1-ui-refine",
+      "status": "captured"
+    },
+    {
+      "state": "create",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-002/death/create?role=bhw&v=death-p1-ui-refine",
+      "status": "captured"
+    },
+    {
+      "step": "seed-record",
+      "status": "created-via-session"
+    },
+    {
+      "state": "view",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-002/death?role=bhw&v=death-p1-ui-refine",
+      "status": "captured"
+    },
+    {
+      "state": "edit",
+      "url": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-002/death/edit?role=bhw&v=death-p1-ui-refine",
+      "status": "captured"
+    },
+    {
+      "step": "member-death-link",
+      "href": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-002/death"
+    }
+  ],
+  "errors": [],
+  "passLabel": "death-phase1-ui-refinement"
+}

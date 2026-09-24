@@ -1,0 +1,138 @@
+# Git evidence SCOPED Family Planning Non-Residents UI removal 
+# repo: C:\Users\Kathlyn Cris\Desktop\LMLinga_Dev 
+ 
+===== UNSTAGED  
+diff --git a/lmlingaFinal/resources/css/pages/health-records-family-planning.css b/lmlingaFinal/resources/css/pages/health-records-family-planning.css
+index 10f74a3..197c1ef 100644
+--- a/lmlingaFinal/resources/css/pages/health-records-family-planning.css
++++ b/lmlingaFinal/resources/css/pages/health-records-family-planning.css
+@@ -38,14 +38,6 @@ .lml-hr-fp__title-block {
+     flex: 1 1 16rem;
+ }
+ 
+-.lml-hr-fp__title-row {
+-    display: flex;
+-    flex-wrap: wrap;
+-    align-items: center;
+-    gap: 0.45rem 0.65rem;
+-    min-width: 0;
+-}
+-
+ .lml-hr-fp__title {
+     margin: 0;
+     color: #166534;
+@@ -55,34 +47,6 @@ .lml-hr-fp__title {
+     letter-spacing: -0.01em;
+ }
+ 
+-.lml-hr-fp__badge {
+-    display: inline-flex;
+-    align-items: center;
+-    justify-content: center;
+-    flex: 0 0 auto;
+-    min-height: 1.5rem;
+-    padding: 0.15rem 0.65rem;
+-    border: 1.5px solid #22c55e;
+-    border-radius: 999px;
+-    background-color: #ecfdf5;
+-    color: #15803d;
+-    font-size: 0.6875rem; /* 11px */
+-    font-weight: 600;
+-    line-height: 1.2;
+-    white-space: nowrap;
+-}
+-
+-a.lml-hr-fp__badge {
+-    text-decoration: none;
+-}
+-
+-@media (hover: hover) and (pointer: fine) {
+-    a.lml-hr-fp__badge:hover {
+-        background-color: #d1fae5;
+-        color: #14532d;
+-    }
+-}
+-
+ .lml-hr-fp__description {
+     margin: 0;
+     max-width: 38rem;
+@@ -662,11 +626,6 @@ @media (max-width: 576px) {
+         font-size: 1.125rem;
+     }
+ 
+-    .lml-hr-fp__badge {
+-        font-size: 0.625rem;
+-        padding: 0.12rem 0.55rem;
+-    }
+-
+     .lml-hr-fp__description {
+         font-size: 0.71875rem;
+     }
+diff --git a/lmlingaFinal/resources/views/pages/health-records/family-planning.blade.php b/lmlingaFinal/resources/views/pages/health-records/family-planning.blade.php
+index 3b25f7e..67eeb32 100644
+--- a/lmlingaFinal/resources/views/pages/health-records/family-planning.blade.php
++++ b/lmlingaFinal/resources/views/pages/health-records/family-planning.blade.php
+@@ -28,16 +28,7 @@ class="lml-hr-fp"
+         <div class="lml-hr-fp__panel">
+             <header class="lml-hr-fp__top">
+                 <div class="lml-hr-fp__title-block">
+-                    <div class="lml-hr-fp__title-row">
+-                        <h2 class="lml-hr-fp__title" id="lml-hr-fp-heading">Family Planning</h2>
+-                        <a
+-                            href="{{ route('health-records.family-planning.non-residents.index') }}"
+-                            class="lml-hr-fp__badge lml-focus-ring"
+-                            aria-label="Open Non-Residents Client listing"
+-                        >
+-                            Non - Residents Client
+-                        </a>
+-                    </div>
++                    <h2 class="lml-hr-fp__title" id="lml-hr-fp-heading">Family Planning</h2>
+                     <p class="lml-hr-fp__description" id="lml-hr-fp-desc">
+                         {{ $pageDescription }}
+                     </p>
+diff --git a/lmlingaFinal/tests/Feature/HealthRecordsFamilyPlanningTest.php b/lmlingaFinal/tests/Feature/HealthRecordsFamilyPlanningTest.php
+index 94291a0..4d48e45 100644
+--- a/lmlingaFinal/tests/Feature/HealthRecordsFamilyPlanningTest.php
++++ b/lmlingaFinal/tests/Feature/HealthRecordsFamilyPlanningTest.php
+@@ -35,7 +35,12 @@ public function test_family_planning_page_renders_successfully(): void
+             '/id="lml-hr-fp-heading"[^>]*>\s*Family Planning\s*</u',
+             $html
+         );
+-        $this->assertStringContainsString('Non - Residents Client', $html);
++        $this->assertStringNotContainsString('Non - Residents Client', $html);
++        $this->assertStringNotContainsString('Open Non-Residents Client listing', $html);
++        $this->assertStringNotContainsString(
++            'href="'.e(route('health-records.family-planning.non-residents.index')).'"',
++            $html
++        );
+         $this->assertStringContainsString(
+             'Record and management of family planning details for monitoring and tracking reproductive health services.',
+             $html
+diff --git a/lmlingaFinal/tests/Feature/HealthRecordsNonResidentFamilyPlanningTest.php b/lmlingaFinal/tests/Feature/HealthRecordsNonResidentFamilyPlanningTest.php
+index 516e2e6..06913cb 100644
+--- a/lmlingaFinal/tests/Feature/HealthRecordsNonResidentFamilyPlanningTest.php
++++ b/lmlingaFinal/tests/Feature/HealthRecordsNonResidentFamilyPlanningTest.php
+@@ -311,7 +311,7 @@ public function test_edit_visit_screen_renders(): void
+         $this->assertStringContainsString('data-visit-id="NR-FP-001"', $html);
+     }
+ 
+-    public function test_frozen_summary_links_to_non_resident_listing(): void
++    public function test_frozen_summary_does_not_link_to_non_resident_listing(): void
+     {
+         $response = $this->withSession([UiRole::SESSION_KEY => 'bhw'])
+             ->get(route('health-records.family-planning.index'));
+@@ -319,10 +319,11 @@ public function test_frozen_summary_links_to_non_resident_listing(): void
+         $response->assertOk();
+         $html = $response->getContent();
+ 
+-        $this->assertStringContainsString(
++        $this->assertStringNotContainsString(
+             'href="'.e(route('health-records.family-planning.non-residents.index')).'"',
+             $html
+         );
++        $this->assertStringNotContainsString('Non - Residents Client', $html);
+         $this->assertStringContainsString('Total FP Patients', $html);
+         $this->assertStringContainsString('data-hr-fp-add', $html);
+     }
+ 
+===== STAGED  

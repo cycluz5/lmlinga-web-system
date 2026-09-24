@@ -1,0 +1,227 @@
+[
+  {
+    "viewport": "1440x900",
+    "pageOverflow": false,
+    "panelWidth": 1104,
+    "panelPaddingLeft": 40,
+    "contentWidth": 1024,
+    "headingStart": {
+      "x": 1,
+      "ratio": 0.001
+    },
+    "clientInfoLabelStart": {
+      "x": 1,
+      "ratio": 0.001
+    },
+    "clientInfoValueStart": {
+      "x": 381,
+      "ratio": 0.3721
+    },
+    "clientInfoValueAnchorPx": 381,
+    "clientInfoAllValueStarts": [
+      381,
+      381,
+      381
+    ],
+    "visitDateStart": {
+      "x": 1,
+      "ratio": 0.001
+    },
+    "remarksStart": {
+      "x": 165,
+      "ratio": 0.1611
+    },
+    "editActionStart": {
+      "x": 300,
+      "ratio": 0.293
+    },
+    "historyTableWidth": 320,
+    "historyTableRightEdge": 321,
+    "commodityStart": {
+      "x": 1,
+      "ratio": 0.001
+    },
+    "quantityStart": {
+      "x": 381,
+      "ratio": 0.3721
+    },
+    "dateGivenStart": {
+      "x": 469,
+      "ratio": 0.458
+    },
+    "commoditiesTableWidth": 568,
+    "commoditiesTableRightEdge": 569,
+    "sectionBorderTopWidths": [
+      "0px",
+      "0px"
+    ],
+    "historyHeaderBackground": "rgba(0, 0, 0, 0)",
+    "beforeSnapshot": {
+      "clientInfoValueStartPx": 321,
+      "visitDate": 1,
+      "remarks": 157,
+      "edit": 318,
+      "historyWidth": 344,
+      "commodity": 1,
+      "quantity": 165,
+      "dateGiven": 250,
+      "commoditiesWidth": 408
+    },
+    "figmaTargets": {
+      "clientInfoValuePaddingLeft": true,
+      "remarksDataPaddingLeftOnly": true,
+      "commoditiesDataPaddingLeftEqual": true,
+      "headersUnchanged": true
+    }
+  },
+  {
+    "viewport": "820x1180",
+    "pageOverflow": false,
+    "panelWidth": 772,
+    "panelPaddingLeft": 24,
+    "contentWidth": 724,
+    "headingStart": {
+      "x": 1,
+      "ratio": 0.0014
+    },
+    "clientInfoLabelStart": {
+      "x": 1,
+      "ratio": 0.0014
+    },
+    "clientInfoValueStart": {
+      "x": 233,
+      "ratio": 0.3218
+    },
+    "clientInfoValueAnchorPx": 233,
+    "clientInfoAllValueStarts": [
+      233,
+      233,
+      233
+    ],
+    "visitDateStart": {
+      "x": 1,
+      "ratio": 0.0014
+    },
+    "remarksStart": {
+      "x": 151,
+      "ratio": 0.2086
+    },
+    "editActionStart": {
+      "x": 300,
+      "ratio": 0.4144
+    },
+    "historyTableWidth": 320,
+    "historyTableRightEdge": 321,
+    "commodityStart": {
+      "x": 1,
+      "ratio": 0.0014
+    },
+    "quantityStart": {
+      "x": 233,
+      "ratio": 0.3218
+    },
+    "dateGivenStart": {
+      "x": 305,
+      "ratio": 0.4213
+    },
+    "commoditiesTableWidth": 392,
+    "commoditiesTableRightEdge": 393,
+    "sectionBorderTopWidths": [
+      "0px",
+      "0px"
+    ],
+    "historyHeaderBackground": "rgba(0, 0, 0, 0)",
+    "beforeSnapshot": {
+      "clientInfoValueStartPx": 321,
+      "visitDate": 1,
+      "remarks": 157,
+      "edit": 318,
+      "historyWidth": 344,
+      "commodity": 1,
+      "quantity": 165,
+      "dateGiven": 250,
+      "commoditiesWidth": 408
+    },
+    "figmaTargets": {
+      "clientInfoValuePaddingLeft": true,
+      "remarksDataPaddingLeftOnly": true,
+      "commoditiesDataPaddingLeftEqual": true,
+      "headersUnchanged": true
+    }
+  },
+  {
+    "viewport": "390x844",
+    "pageOverflow": false,
+    "panelWidth": 358,
+    "panelPaddingLeft": 16,
+    "contentWidth": 326,
+    "headingStart": {
+      "x": 1,
+      "ratio": 0.0031
+    },
+    "clientInfoLabelStart": {
+      "x": 1,
+      "ratio": 0.0031
+    },
+    "clientInfoValueStart": {
+      "x": 1,
+      "ratio": 0.0031
+    },
+    "clientInfoValueAnchorPx": 1,
+    "clientInfoAllValueStarts": [
+      1,
+      1,
+      1
+    ],
+    "visitDateStart": {
+      "x": 1,
+      "ratio": 0.0031
+    },
+    "remarksStart": {
+      "x": 105,
+      "ratio": 0.3221
+    },
+    "editActionStart": {
+      "x": 296,
+      "ratio": 0.908
+    },
+    "historyTableWidth": 324,
+    "historyTableRightEdge": 325,
+    "commodityStart": {
+      "x": 1,
+      "ratio": 0.0031
+    },
+    "quantityStart": {
+      "x": 114,
+      "ratio": 0.3497
+    },
+    "dateGivenStart": {
+      "x": 195,
+      "ratio": 0.5982
+    },
+    "commoditiesTableWidth": 324,
+    "commoditiesTableRightEdge": 325,
+    "sectionBorderTopWidths": [
+      "0px",
+      "0px"
+    ],
+    "historyHeaderBackground": "rgba(0, 0, 0, 0)",
+    "beforeSnapshot": {
+      "clientInfoValueStartPx": 321,
+      "visitDate": 1,
+      "remarks": 157,
+      "edit": 318,
+      "historyWidth": 344,
+      "commodity": 1,
+      "quantity": 165,
+      "dateGiven": 250,
+      "commoditiesWidth": 408
+    },
+    "figmaTargets": {
+      "clientInfoValuePaddingLeft": true,
+      "remarksDataPaddingLeftOnly": true,
+      "commoditiesDataPaddingLeftEqual": true,
+      "headersUnchanged": true
+    }
+  }
+]

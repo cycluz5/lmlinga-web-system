@@ -1,0 +1,50 @@
+[
+  {
+    "viewport": "1440x900",
+    "ok": true,
+    "pageOverflow": false,
+    "footerWidth": 1068,
+    "footerCenterX": 860,
+    "paginationWidth": 98,
+    "paginationCenterX": 860,
+    "paginationCenterOffset": 0,
+    "paginationPosition": "center",
+    "entrySummaryPosition": "left",
+    "currentPage": "1",
+    "previousDisabled": true,
+    "nextDisabled": true,
+    "perPageControlPresent": false
+  },
+  {
+    "viewport": "820x1180",
+    "ok": true,
+    "pageOverflow": false,
+    "footerWidth": 736,
+    "footerCenterX": 410,
+    "paginationWidth": 98,
+    "paginationCenterX": 410,
+    "paginationCenterOffset": 0,
+    "paginationPosition": "center",
+    "entrySummaryPosition": "left",
+    "currentPage": "1",
+    "previousDisabled": true,
+    "nextDisabled": true,
+    "perPageControlPresent": false
+  },
+  {
+    "viewport": "390x844",
+    "ok": true,
+    "pageOverflow": false,
+    "footerWidth": 322,
+    "footerCenterX": 195,
+    "paginationWidth": 98,
+    "paginationCenterX": 195,
+    "paginationCenterOffset": 0,
+    "paginationPosition": "center",
+    "entrySummaryPosition": "left",
+    "currentPage": "1",
+    "previousDisabled": true,
+    "nextDisabled": true,
+    "perPageControlPresent": false
+  }
+]

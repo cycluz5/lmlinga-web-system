@@ -1,0 +1,1229 @@
+/* BHW/BNS/BSPO public registration page */
+
+.lml-register-page {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    min-height: 100vh;
+    min-height: 100dvh;
+    background: linear-gradient(180deg, #f8fffa 30.58%, #6abc73 100%);
+    overflow-x: hidden;
+}
+
+.lml-register-header {
+    flex-shrink: 0;
+    padding: 0.75rem 1rem 0.25rem 1rem;
+}
+
+.lml-register-logo {
+    display: inline-flex;
+    align-items: center;
+    color: #00820e;
+    font-family: var(--lml-font-sans);
+    font-weight: 700;
+    font-size: 1.625rem;
+    line-height: 1;
+}
+
+.lml-register-logo img {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    margin-right: 0;
+}
+
+.lml-register-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+    padding: 0.35rem 1rem 0.75rem;
+}
+
+.lml-register-card {
+    width: 100%;
+    max-width: min(780px, calc(100vw - 2rem));
+    min-height: clamp(620px, 76vh, 700px);
+    padding: 2rem 2.5rem;
+    border-radius: 33px;
+    background: linear-gradient(
+        180deg,
+        rgba(100, 242, 213, 0.3) 2.88%,
+        rgba(255, 255, 255, 0.3) 33.17%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow: 0 8px 32px rgba(var(--lml-dark-green-rgb), 0.12);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.lml-register-card__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 1.3rem;
+}
+
+.lml-register-card__title {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-width: 0;
+}
+
+.lml-register-card__icon {
+    flex-shrink: 0;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: #000;
+}
+
+.lml-register-card__heading {
+    margin: 0;
+    color: #000;
+    font-size: clamp(1.125rem, 1.8vw, 1.625rem);
+    font-weight: 700;
+    line-height: 1.15;
+}
+
+.lml-register-card__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 34px;
+    height: 34px;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: #000;
+    font-size: 1.125rem;
+    line-height: 1;
+    text-decoration: none;
+    transition: background-color 0.15s ease;
+}
+
+.lml-register-card__close:hover,
+.lml-register-card__close:focus-visible {
+    background-color: rgba(255, 255, 255, 0.35);
+    color: #000;
+}
+
+.lml-register-form {
+    max-width: 674px;
+    margin: 0 auto;
+}
+
+.lml-register-name-group {
+    margin: 0 0 1rem;
+    padding: 0;
+    border: 0;
+    min-width: 0;
+}
+
+.lml-register-field__legend {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    float: none;
+    width: auto;
+    max-width: 100%;
+    margin-bottom: 0.45rem;
+    padding: 0;
+    color: #000;
+    font-size: clamp(0.9375rem, 1.3vw, 1.25rem);
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+.lml-register-field__legend .bi {
+    color: var(--lml-deep-green);
+    font-size: 1.15em;
+    line-height: 1;
+}
+
+.lml-register-name-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.75rem;
+    width: 100%;
+}
+
+.lml-register-field {
+    margin-bottom: 1rem !important;
+}
+
+.lml-register-field--name {
+    margin-bottom: 0 !important;
+}
+
+.lml-register-field .lml-form-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.45rem;
+    color: #000;
+    font-size: clamp(0.9375rem, 1.3vw, 1.25rem);
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+.lml-register-field .lml-form-label .bi {
+    color: var(--lml-deep-green);
+    font-size: 1.15em;
+    line-height: 1;
+}
+
+.lml-register-field .lml-form-control {
+    min-height: 48px;
+    padding: 0.5rem 0.85rem;
+    border: 0;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.12);
+    color: #000;
+    font-size: 1.125rem; /* ~18px placeholders match Figma */
+}
+
+.lml-register-field .lml-form-control::placeholder {
+    color: #000;
+    opacity: 0.5;
+}
+
+.lml-register-field .lml-form-control:focus {
+    border-color: transparent;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.12), 0 0 0 0.2rem rgba(var(--lml-primary-rgb), 0.2);
+}
+
+.lml-register-field .form-select.lml-form-control {
+    background-position: right 0.85rem center;
+    padding-right: 2.25rem;
+}
+
+/* Password eye toggle — overlayed inside the field (Figma) */
+.lml-register-form .lml-password-input {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+.lml-register-form .lml-password-input.input-group {
+    display: block;
+    flex-wrap: nowrap;
+}
+
+.lml-register-form .lml-password-input .lml-form-control {
+    width: 100%;
+    padding-right: 2.75rem;
+    border-radius: 4px;
+}
+
+.lml-register-form .lml-password-input__toggle {
+    position: absolute;
+    top: 50%;
+    right: 0.45rem;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    color: #000;
+    font-size: 1.15rem;
+    line-height: 1;
+    transform: translateY(-50%);
+}
+
+.lml-register-form .lml-password-input__toggle:hover,
+.lml-register-form .lml-password-input__toggle:focus-visible {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #000;
+}
+
+.lml-register-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 1.35rem;
+}
+
+.lml-register-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 180px;
+    min-height: 48px;
+    padding: 0.5rem 1.75rem;
+    border: 0;
+    border-radius: 31px;
+    background-color: #c7f8c1;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.12);
+    color: #000;
+    font-family: var(--lml-font-sans);
+    font-size: clamp(0.9375rem, 1.3vw, 1.125rem);
+    font-weight: 700;
+    line-height: 1.2;
+    transition: filter 0.15s ease, transform 0.15s ease;
+}
+
+.lml-register-submit:hover {
+    filter: brightness(0.97);
+}
+
+.lml-register-submit:active {
+    transform: translateY(1px);
+}
+
+.lml-register-footer {
+    margin: 0;
+    color: #000;
+    font-size: 0.8125rem;
+    font-weight: 300;
+    line-height: 1.3;
+    text-align: center;
+}
+
+.lml-register-login-link {
+    margin-left: 0.15rem;
+    color: var(--lml-deep-green);
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+}
+
+.lml-register-login-link:hover,
+.lml-register-login-link:focus-visible {
+    color: var(--lml-deep-green);
+    opacity: 1;
+}
+
+/* Desktop/laptop: lock to viewport, center card, scroll main only if needed */
+@media (min-width: 768px) {
+    .lml-register-page {
+        height: 100vh;
+        height: 100dvh;
+        max-height: 100dvh;
+        overflow: hidden;
+    }
+
+    .lml-register-main {
+        overflow-y: auto;
+        overscroll-behavior: contain;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .lml-register-header {
+        padding: 0.625rem 0.75rem 0.125rem;
+    }
+
+    .lml-register-logo {
+        font-size: 1.375rem;
+    }
+
+    .lml-register-logo img {
+        width: 52px;
+        height: 52px;
+    }
+
+    .lml-register-main {
+        padding: 0.25rem 0.75rem 0.625rem;
+    }
+
+    .lml-register-card {
+        max-width: min(780px, calc(100vw - 1.5rem));
+        min-height: clamp(560px, 78vh, 640px);
+        padding: 1.25rem 1.25rem 1.35rem;
+        border-radius: 22px;
+    }
+
+    .lml-register-name-grid {
+        gap: 0.65rem;
+    }
+
+    .lml-register-field {
+        margin-bottom: 0.85rem !important;
+    }
+
+    .lml-register-field--name {
+        margin-bottom: 0 !important;
+    }
+
+    .lml-register-field .lml-form-control {
+        min-height: 44px;
+        font-size: 1rem;
+    }
+}
+
+/* Narrow tablets / large phones: stack name fields */
+@media (max-width: 767.98px) {
+    .lml-register-name-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .lml-register-page {
+        min-height: 100dvh;
+    }
+
+    .lml-register-header {
+        padding: 0.5rem 0.625rem 0;
+    }
+
+    .lml-register-logo img {
+        width: 44px;
+        height: 44px;
+    }
+
+    .lml-register-main {
+        align-items: flex-start;
+        padding: 0.375rem 0.625rem 0.5rem;
+    }
+
+    .lml-register-card {
+        max-width: 100%;
+        min-height: auto;
+        padding: 1rem 0.875rem 1.1rem;
+        border-radius: 18px;
+    }
+
+    .lml-register-card__header {
+        margin-bottom: 0.85rem;
+    }
+
+    .lml-register-card__icon {
+        font-size: 1.25rem;
+    }
+
+    .lml-register-name-group {
+        margin-bottom: 0.85rem;
+    }
+
+    .lml-register-name-grid {
+        grid-template-columns: 1fr;
+        gap: 0.55rem;
+    }
+
+    .lml-register-field {
+        margin-bottom: 0.75rem !important;
+    }
+
+    .lml-register-field--name {
+        margin-bottom: 0 !important;
+    }
+
+    .lml-register-field .lml-form-label,
+    .lml-register-field__legend {
+        font-size: 1rem;
+    }
+
+    .lml-register-field .lml-form-control {
+        min-height: 42px;
+        padding: 0.4rem 0.7rem;
+        font-size: 0.9375rem;
+    }
+
+    .lml-register-actions {
+        margin-top: 1rem;
+        gap: 0.5rem;
+    }
+
+    .lml-register-submit {
+        width: 100%;
+        max-width: 240px;
+        min-height: 48px;
+        min-width: 0;
+    }
+}
+
+/* Very short viewports: allow gentle scroll without horizontal overflow */
+@media (max-height: 700px) {
+    .lml-register-page {
+        height: auto;
+        max-height: none;
+        overflow-x: hidden;
+        overflow-y: auto;
+    }
+
+    .lml-register-main {
+        overflow-y: visible;
+    }
+}
+
+/* ── Login page (Figma 532:754) — shares register chrome ───── */
+
+.lml-login-card {
+    display: flex;
+    flex-direction: column;
+    min-height: clamp(500px, 68vh, 579px);
+    padding: 1.35rem 2.5rem 1.5rem;
+}
+
+.lml-login-card__top {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 0.15rem;
+}
+
+.lml-login-card__intro {
+    margin-bottom: 1.35rem;
+    text-align: center;
+}
+
+.lml-login-card__heading {
+    margin: 0 0 0.35rem;
+    color: #000;
+    font-size: clamp(1.25rem, 2.2vw, 1.875rem); /* ~30px */
+    font-weight: 500;
+    line-height: 1.25;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+}
+
+.lml-login-card__subtitle {
+    margin: 0 auto;
+    max-width: 36rem;
+    color: #000;
+    font-size: 0.9375rem; /* 15px */
+    font-weight: 300;
+    line-height: 1.45;
+}
+
+/* Form column: ~674px centered inside the glass card (Figma inputs) */
+.lml-login-form.lml-register-form,
+.lml-login-form {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 auto;
+    width: 100%;
+    max-width: 674px;
+    margin-inline: auto;
+}
+
+.lml-login-field {
+    display: block;
+    position: relative;
+    width: 100%;
+    margin-bottom: 1.15rem;
+    z-index: 0;
+}
+
+.lml-login-field--password {
+    margin-bottom: 0.35rem;
+}
+
+.lml-login-field__label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin-bottom: 0.45rem;
+    color: #000;
+    font-size: clamp(1rem, 1.5vw, 1.35rem); /* ~25px desktop */
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+.lml-login-field__label .bi {
+    font-size: 1.15em;
+    line-height: 1;
+}
+
+/*
+ | Staff login inputs must remain direct, clickable controls.
+ | The password eye toggle overlays inside the password field only.
+ | Forgot Password stays below the field, never inside the control.
+ */
+.lml-login-page .lml-login-field .lml-form-control,
+.lml-login-page .lml-login-field .lml-login-field__control {
+    display: block;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 100%;
+    min-height: 56px;
+    padding: 0.65rem 0.9rem;
+    border: 0;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    color: #000;
+    font-size: 1rem;
+    pointer-events: auto;
+}
+
+.lml-login-page .lml-login-field--password .lml-password-input {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+.lml-login-page .lml-login-field--password .lml-password-input.input-group {
+    display: block;
+    flex-wrap: nowrap;
+}
+
+.lml-login-page .lml-login-field--password .lml-password-input .lml-form-control {
+    padding-right: 2.75rem;
+}
+
+.lml-login-page .lml-login-field--password .lml-password-input__toggle {
+    position: absolute;
+    top: 50%;
+    right: 0.45rem;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    color: #000;
+    font-size: 1.15rem;
+    line-height: 1;
+    transform: translateY(-50%);
+}
+
+.lml-login-page .lml-login-field--password .lml-password-input__toggle:hover,
+.lml-login-page .lml-login-field--password .lml-password-input__toggle:focus-visible {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #000;
+}
+
+.lml-login-page .lml-login-field .lml-form-control:focus,
+.lml-login-page .lml-login-field .lml-login-field__control:focus {
+    border-color: transparent;
+    outline: none;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25), 0 0 0 0.2rem rgba(var(--lml-primary-rgb), 0.2);
+}
+
+/* Align with the right edge of the password input — BELOW the field, never inside it */
+.lml-login-forgot {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    margin-top: 0.55rem;
+    margin-bottom: 0;
+    pointer-events: auto;
+}
+
+.lml-login-forgot__link {
+    position: static;
+    color: var(--lml-deep-green);
+    font-size: clamp(0.9375rem, 1.3vw, 1.25rem); /* ~20px */
+    font-weight: 400;
+    line-height: 1.3;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.lml-login-forgot__link:hover,
+.lml-login-forgot__link:focus-visible {
+    color: #00820e;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+}
+
+.lml-login-error {
+    margin: 0 0 1rem;
+    padding: 0.7rem 0.85rem;
+    border: 1px solid rgba(185, 28, 28, 0.35);
+    border-radius: var(--lml-radius-md);
+    background-color: #fef2f2;
+    color: #991b1b;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.lml-login-status {
+    margin: 0 0 1rem;
+    padding: 0.7rem 0.85rem;
+    border: 1px solid rgba(0, 130, 14, 0.35);
+    border-radius: var(--lml-radius-md);
+    background-color: #f0fdf4;
+    color: #166534;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.lml-login-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.65rem;
+    margin-top: 1.15rem;
+    padding-top: 0;
+    width: 100%;
+}
+
+.lml-login-submit {
+    min-width: 197px;
+    min-height: 56px;
+    font-size: clamp(1rem, 1.5vw, 1.35rem);
+}
+
+.lml-login-footer {
+    font-size: 0.9375rem; /* 15px */
+    text-align: center;
+}
+
+@media (min-width: 992px) {
+    .lml-login-card {
+        padding: 1.75rem 3.25rem 2rem;
+    }
+
+    .lml-login-form.lml-register-form,
+    .lml-login-form {
+        max-width: 674px;
+    }
+
+    .lml-login-field {
+        margin-bottom: 1.35rem;
+    }
+
+    .lml-login-field--password {
+        margin-bottom: 0.4rem;
+    }
+
+    .lml-login-page .lml-login-field .lml-form-control,
+    .lml-login-page .lml-login-field .lml-login-field__control {
+        min-height: 58px;
+    }
+
+    .lml-login-submit {
+        min-height: 65px;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .lml-login-card {
+        min-height: clamp(480px, 72vh, 560px);
+        padding: 1.15rem 1.25rem 1.35rem;
+    }
+
+    .lml-login-form.lml-register-form,
+    .lml-login-form {
+        max-width: 100%;
+    }
+
+    .lml-login-card__intro {
+        margin-bottom: 1.1rem;
+    }
+
+    .lml-login-field {
+        margin-bottom: 1rem;
+    }
+
+    .lml-login-field--password {
+        margin-bottom: 0.3rem;
+    }
+
+    .lml-login-page .lml-login-field .lml-form-control,
+    .lml-login-page .lml-login-field .lml-login-field__control {
+        min-height: 48px;
+    }
+
+    .lml-login-actions {
+        margin-top: 1rem;
+        gap: 0.55rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .lml-login-card {
+        min-height: auto;
+        padding: 1rem 0.95rem 1.15rem;
+    }
+
+    .lml-login-card__heading {
+        font-size: 1.15rem;
+    }
+
+    .lml-login-card__subtitle {
+        font-size: 0.875rem;
+    }
+
+    .lml-login-field__label {
+        font-size: 1rem;
+    }
+
+    .lml-login-page .lml-login-field .lml-form-control,
+    .lml-login-page .lml-login-field .lml-login-field__control {
+        min-height: 44px;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.9375rem;
+    }
+
+    .lml-login-forgot__link {
+        font-size: 0.9375rem;
+    }
+
+    .lml-login-submit {
+        width: 100%;
+        max-width: 240px;
+        min-width: 0;
+        min-height: 48px;
+    }
+
+    .lml-login-footer {
+        font-size: 0.8125rem;
+    }
+}
+
+/* ── Password recovery (Forgot + Reset) — exact reference match ─ */
+
+/*
+ | Tall portrait auth dialog. Content-driven height — scoped so
+ | login/register chrome stays unchanged.
+ */
+.lml-recovery-card.lml-login-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: min(470px, calc(100vw - 2rem));
+    min-height: 0;
+    height: auto;
+    padding: 1.75rem 1.85rem 2.15rem;
+    border-radius: 28px;
+}
+
+/* Close X — out of content flow */
+.lml-recovery-card__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 2;
+}
+
+.lml-recovery-card__stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+    padding-top: 1.35rem;
+}
+
+/* Hero icon badge */
+.lml-recovery-hero {
+    display: flex;
+    justify-content: center;
+    margin: 0.15rem 0 1.55rem; /* slight float-down from top stack */
+}
+
+.lml-recovery-hero__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 84px;
+    height: 84px;
+    border-radius: 50%;
+    background: rgba(var(--lml-soft-green-rgb), 0.42);
+    border: 1px solid rgba(var(--lml-soft-green-rgb), 0.8);
+    box-shadow: 0 6px 20px rgba(var(--lml-dark-green-rgb), 0.06);
+    transform: translateY(2px);
+}
+
+.lml-recovery-hero__icon {
+    font-size: 2.15rem;
+    line-height: 1;
+    color: var(--lml-text-green, #1f7a1f);
+}
+
+.lml-recovery-card .lml-login-card__intro {
+    width: 100%;
+    margin-bottom: 3rem; /* +16px breathing room before first field */
+    text-align: center;
+}
+
+.lml-forgot-card__heading,
+.lml-reset-card__heading {
+    margin: 0 0 0.7rem;
+    text-transform: none;
+    letter-spacing: normal;
+    font-size: clamp(1.5rem, 2.4vw, 1.875rem); /* ~24–30px */
+    font-weight: 700;
+    line-height: 1.25;
+    color: #000;
+}
+
+.lml-forgot-card__subtitle,
+.lml-reset-card__subtitle {
+    margin: 0 auto;
+    font-size: 0.9rem;
+    font-weight: 300;
+    line-height: 1.55;
+    color: #000;
+}
+
+/* Forgot: wider copy (~3 lines). Reset: keep compact. */
+.lml-forgot-card__subtitle {
+    max-width: min(22.5rem, 92%);
+}
+
+.lml-reset-card__subtitle {
+    max-width: 290px;
+}
+
+/* Form ~88% of card interior — inputs + button share edges */
+.lml-recovery-card .lml-recovery-form {
+    flex: 0 1 auto;
+    width: 88%;
+    max-width: 88%;
+    margin-inline: auto;
+}
+
+.lml-recovery-card .lml-login-field {
+    margin-bottom: 1.35rem;
+}
+
+.lml-recovery-card .lml-login-field__label {
+    margin-bottom: 0.4rem;
+    font-size: 1.05rem;
+    font-weight: 500;
+}
+
+.lml-recovery-card .lml-login-field .lml-form-control,
+.lml-recovery-card .lml-login-field .lml-login-field__control {
+    min-height: 48px;
+    /* Match Login field shadow exactly */
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.lml-recovery-card .lml-login-field .lml-form-control:focus,
+.lml-recovery-card .lml-login-field .lml-login-field__control:focus {
+    border-color: transparent;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25), 0 0 0 0.2rem rgba(var(--lml-primary-rgb), 0.2);
+}
+
+/* Eye toggle overlayed inside password fields (Reset only) */
+.lml-recovery-card .lml-password-input {
+    position: relative;
+    display: block;
+    width: 100%;
+}
+
+.lml-recovery-card .lml-password-input .lml-form-control,
+.lml-recovery-card .lml-password-input .lml-login-field__control {
+    width: 100%;
+    padding-right: 2.75rem;
+}
+
+.lml-recovery-card .lml-password-input__toggle {
+    position: absolute;
+    top: 50%;
+    right: 0.45rem;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    padding: 0;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    color: #000;
+    font-size: 1.15rem;
+    line-height: 1;
+    transform: translateY(-50%);
+}
+
+.lml-recovery-card .lml-password-input__toggle:hover,
+.lml-recovery-card .lml-password-input__toggle:focus-visible {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #000;
+}
+
+.lml-recovery-card .lml-login-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    margin-top: 1.65rem;
+    gap: 1.05rem;
+}
+
+/*
+ | Shared recovery CTA: full-width strong green, white text,
+ | rounded rectangle (not pale pill).
+ */
+.lml-recovery-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    min-height: 50px;
+    padding: 0.7rem 1rem;
+    border: 0;
+    border-radius: 10px;
+    /* Deep green + white meets WCAG AA (~9.2:1); primary #22C55E failed at ~2.3:1 */
+    background-color: var(--lml-deep-green, #145214);
+    box-shadow: 0 3px 8px rgba(var(--lml-dark-green-rgb), 0.1);
+    color: #fff;
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.lml-recovery-submit:hover {
+    background-color: var(--lml-dark-green, #0b3d0b);
+    color: #fff;
+}
+
+.lml-recovery-submit:focus-visible {
+    background-color: var(--lml-deep-green, #145214);
+    color: #fff;
+}
+
+.lml-recovery-submit:active {
+    background-color: var(--lml-dark-green, #0b3d0b);
+    transform: translateY(1px);
+    color: #fff;
+}
+
+.lml-forgot-footer {
+    margin: 0;
+    text-align: center;
+}
+
+@media (min-width: 992px) {
+    .lml-recovery-card.lml-login-card {
+        max-width: min(535px, calc(100vw - 2.5rem));
+        min-height: 0;
+        /* more horizontal breathing room; top padding preserved */
+        padding: 2.65rem 2.6rem 2.35rem;
+        border-radius: 30px;
+    }
+
+    .lml-recovery-card__close {
+        top: 1.1rem;
+        right: 1.15rem;
+    }
+
+    .lml-recovery-card__stack {
+        padding-top: 1.5rem;
+    }
+
+    .lml-recovery-hero {
+        margin: 0.2rem 0 1.75rem;
+    }
+
+    .lml-recovery-hero__badge {
+        width: 92px;
+        height: 92px;
+    }
+
+    .lml-recovery-hero__icon {
+        font-size: 2.35rem;
+    }
+
+    .lml-recovery-card .lml-login-card__intro {
+        margin-bottom: 3.15rem; /* +16px vs prior desktop gap */
+    }
+
+    .lml-forgot-card__heading,
+    .lml-reset-card__heading {
+        font-size: 1.875rem; /* 30px */
+        margin-bottom: 0.75rem;
+    }
+
+    .lml-forgot-card__subtitle,
+    .lml-reset-card__subtitle {
+        font-size: 0.9375rem;
+        line-height: 1.6;
+    }
+
+    .lml-forgot-card__subtitle {
+        max-width: min(22.5rem, 90%);
+    }
+
+    .lml-recovery-card .lml-login-field {
+        margin-bottom: 1.45rem;
+    }
+
+    .lml-recovery-card .lml-login-field .lml-form-control,
+    .lml-recovery-card .lml-login-field .lml-login-field__control {
+        min-height: 52px;
+    }
+
+    .lml-recovery-card .lml-login-actions {
+        margin-top: 1.85rem;
+        gap: 1.15rem;
+    }
+
+    .lml-recovery-submit {
+        min-height: 54px;
+        font-size: 1.1rem;
+    }
+}
+
+@media (max-width: 991.98px) {
+    .lml-recovery-card.lml-login-card {
+        max-width: min(450px, calc(100vw - 1.5rem));
+        min-height: 0;
+        padding: 1.5rem 1.5rem 1.9rem;
+        border-radius: 24px;
+    }
+
+    .lml-recovery-card__close {
+        top: 0.85rem;
+        right: 0.85rem;
+    }
+
+    .lml-recovery-card__stack {
+        padding-top: 1.15rem;
+    }
+
+    .lml-recovery-hero {
+        margin-bottom: 1.4rem;
+    }
+
+    .lml-recovery-hero__badge {
+        width: 76px;
+        height: 76px;
+    }
+
+    .lml-recovery-hero__icon {
+        font-size: 1.95rem;
+    }
+
+    .lml-recovery-card .lml-login-card__intro {
+        margin-bottom: 1.7rem;
+    }
+
+    .lml-forgot-card__heading,
+    .lml-reset-card__heading {
+        font-size: 1.5rem;
+    }
+
+    .lml-recovery-card .lml-recovery-form {
+        width: 90%;
+        max-width: 90%;
+    }
+
+    .lml-recovery-card .lml-login-actions {
+        margin-top: 1.5rem;
+        gap: 0.95rem;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .lml-recovery-card.lml-login-card {
+        max-width: 100%;
+        min-height: 0;
+        padding: 1.25rem 1.1rem 1.6rem;
+        border-radius: 20px;
+    }
+
+    .lml-recovery-card__stack {
+        padding-top: 1rem;
+    }
+
+    .lml-recovery-hero {
+        margin-bottom: 1.2rem;
+    }
+
+    .lml-recovery-hero__badge {
+        width: 68px;
+        height: 68px;
+    }
+
+    .lml-recovery-hero__icon {
+        font-size: 1.75rem;
+    }
+
+    .lml-recovery-card .lml-login-card__intro {
+        margin-bottom: 1.45rem;
+    }
+
+    .lml-forgot-card__heading,
+    .lml-reset-card__heading {
+        font-size: 1.35rem;
+        margin-bottom: 0.55rem;
+    }
+
+    .lml-forgot-card__subtitle,
+    .lml-reset-card__subtitle {
+        font-size: 0.85rem;
+        max-width: 100%;
+        line-height: 1.5;
+    }
+
+    .lml-recovery-card .lml-recovery-form {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .lml-recovery-card .lml-login-field {
+        margin-bottom: 1.15rem;
+    }
+
+    .lml-recovery-card .lml-login-field .lml-form-control,
+    .lml-recovery-card .lml-login-field .lml-login-field__control {
+        min-height: 46px;
+    }
+
+    .lml-recovery-card .lml-login-actions {
+        margin-top: 1.35rem;
+        gap: 0.9rem;
+    }
+
+    .lml-recovery-submit {
+        min-height: 48px;
+        font-size: 0.975rem;
+        white-space: nowrap;
+    }
+}
+
+/* Short viewports: natural height + page scroll (register page rules) */
+@media (max-height: 700px) {
+    .lml-recovery-card.lml-login-card {
+        min-height: 0;
+    }
+}
+
+.lml-change-password__alert,
+.lml-change-password__toast {
+    margin: 0 0 0.85rem;
+}
+
+.lml-change-password-page .lml-register-logo {
+    cursor: default;
+}
+
+.lml-change-password__back {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0.75rem;
+    color: var(--lml-deep-green);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.lml-change-password__back:hover {
+    text-decoration: underline;
+}
+
+

@@ -1,0 +1,8 @@
+﻿# Relevant import lines from application entrypoints
+
+## resources/css/app.css
+@import './pages/health-records-risk-assessment.css';
+
+## resources/js/app.js
+import './pages/health-records-risk-assessment';
+

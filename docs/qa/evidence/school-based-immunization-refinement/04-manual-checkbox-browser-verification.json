@@ -1,0 +1,69 @@
+{
+  "steps": [
+    {
+      "step": "view-mode-locked",
+      "count": 6,
+      "allDisabled": true,
+      "allUnchecked": true,
+      "editVisible": true,
+      "saveHidden": true
+    },
+    {
+      "step": "edit-mode-enabled",
+      "ok": true
+    },
+    {
+      "step": "manual-check-blank-dates",
+      "g1td": true,
+      "g1mr": false,
+      "g7td": false,
+      "g7mr": true,
+      "hpv1": true,
+      "hpv2": false,
+      "dates": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ]
+    },
+    {
+      "step": "uncheck-recheck",
+      "ok": true
+    },
+    {
+      "step": "save-blank-dates-checked-boxes",
+      "toast": "Preview only: school-based immunization changes were kept on this page and were not permanently saved.",
+      "editing": "false",
+      "editVisible": true,
+      "saveHidden": true,
+      "g1td": true,
+      "g7mr": true,
+      "hpv1": true,
+      "boxesDisabled": true,
+      "dates": [
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+      ],
+      "requiredErrors": false
+    },
+    {
+      "step": "date-without-checkbox",
+      "date": "2024-06-15",
+      "checkbox": false
+    },
+    {
+      "step": "save-date-without-checkbox",
+      "date": "2024-06-15",
+      "checkbox": false
+    }
+  ],
+  "passed": true,
+  "summary": "MANUAL + OPTIONAL + INDEPENDENT"
+}

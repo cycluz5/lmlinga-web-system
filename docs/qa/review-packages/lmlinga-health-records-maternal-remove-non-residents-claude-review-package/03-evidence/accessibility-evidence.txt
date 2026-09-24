@@ -1,0 +1,33 @@
+ACCESSIBILITY VERIFICATION — Health Records → Maternal Care
+Resident listing after Non-Residents nav removal
+Packaging capture: 2026-08-16T12:16:46.486Z
+URL: http://127.0.0.1:8765/health-records/maternal?role=bns
+
+REMOVED WITH THE PATCH
+- data-hr-mc-non-residents
+- aria-label="Open Maternal Care Non Residents listing"
+- href to health-records.maternal.non-residents.index
+- .lml-hr-mc__action-left wrapper (would have been empty)
+
+NOT PRESENT (DOM inspection at 1440 / 1366 / 820 / 390)
+- [data-hr-mc-non-residents] = false
+- visible "Non Residents" control text = false
+- role="tablist" = false
+- .lml-hr-mc__action-left = not in DOM
+- empty left action region = false
+
+REMAINING LABELS (all four viewports)
+- #lml-hr-mc-heading text: Maternal Care (visually-hidden; topbar also shows Maternal Care)
+- #lml-hr-mc-desc: resident page description (table scroll uses aria-labelledby / aria-describedby)
+- action group: role="group" aria-label="Maternal Care actions"
+- Add: aria-label="Add maternal care record"
+- Export Data: aria-label="Export Maternal Care data"
+- Sidebar Maternal: aria-current="page", href=/health-records/maternal
+
+NO duplicated heading introduced by the patch.
+NO replacement Non-Residents control.
+NO orphaned aria-controls / tab IDs for a Non-Residents panel (none existed as tabs).
+
+Known leftover CSS (not used on resident listing after this patch):
+- .lml-hr-mc__scope-pill rules remain in health-records-maternal.css
+- Intentionally not deleted during the UI patch (no backend/CSS cleanup authorization)

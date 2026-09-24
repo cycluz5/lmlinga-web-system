@@ -1,0 +1,112 @@
+{
+  "screenshots": [
+    "01-desktop/death-no-record-1440x900.png",
+    "01-desktop/death-no-record-1366x768.png",
+    "02-tablet/death-no-record-820x1180.png",
+    "02-tablet/death-no-record-768x1024.png",
+    "03-mobile/death-no-record-390x844.png",
+    "03-mobile/death-no-record-360x800.png",
+    "01-desktop/death-create-sanity-1440x900.png"
+  ],
+  "checks": {
+    "1440x900": {
+      "panelHeight": 320,
+      "panelWidth": 1104,
+      "minHeight": "320px",
+      "titleOutside": true,
+      "ctaBg": "rgb(255, 255, 255)",
+      "ctaColor": "rgb(20, 108, 46)",
+      "ctaBorder": "rgba(81, 194, 105, 0.55)",
+      "ctaClasses": "lml-death__btn lml-death__btn--outline lml-focus-ring",
+      "overflowX": false,
+      "mode": "empty"
+    },
+    "1366x768": {
+      "panelHeight": 320,
+      "panelWidth": 1030,
+      "minHeight": "320px",
+      "titleOutside": true,
+      "ctaBg": "rgb(255, 255, 255)",
+      "ctaColor": "rgb(20, 108, 46)",
+      "ctaBorder": "rgba(81, 194, 105, 0.55)",
+      "ctaClasses": "lml-death__btn lml-death__btn--outline lml-focus-ring",
+      "overflowX": false,
+      "mode": "empty"
+    },
+    "820x1180": {
+      "panelHeight": 260,
+      "panelWidth": 772,
+      "minHeight": "260px",
+      "titleOutside": true,
+      "ctaBg": "rgb(255, 255, 255)",
+      "ctaColor": "rgb(20, 108, 46)",
+      "ctaBorder": "rgba(81, 194, 105, 0.55)",
+      "ctaClasses": "lml-death__btn lml-death__btn--outline lml-focus-ring",
+      "overflowX": false,
+      "mode": "empty"
+    },
+    "768x1024": {
+      "panelHeight": 260,
+      "panelWidth": 720,
+      "minHeight": "260px",
+      "titleOutside": true,
+      "ctaBg": "rgb(255, 255, 255)",
+      "ctaColor": "rgb(20, 108, 46)",
+      "ctaBorder": "rgba(81, 194, 105, 0.55)",
+      "ctaClasses": "lml-death__btn lml-death__btn--outline lml-focus-ring",
+      "overflowX": false,
+      "mode": "empty"
+    },
+    "390x844": {
+      "panelHeight": 216,
+      "panelWidth": 358,
+      "minHeight": "216px",
+      "titleOutside": true,
+      "ctaBg": "rgb(255, 255, 255)",
+      "ctaColor": "rgb(20, 108, 46)",
+      "ctaBorder": "rgba(81, 194, 105, 0.55)",
+      "ctaClasses": "lml-death__btn lml-death__btn--outline lml-focus-ring",
+      "overflowX": false,
+      "mode": "empty"
+    },
+    "360x800": {
+      "panelHeight": 210,
+      "panelWidth": 328,
+      "minHeight": "210px",
+      "titleOutside": true,
+      "ctaBg": "rgb(255, 255, 255)",
+      "ctaColor": "rgb(20, 108, 46)",
+      "ctaBorder": "rgba(81, 194, 105, 0.55)",
+      "ctaClasses": "lml-death__btn lml-death__btn--outline lml-focus-ring",
+      "overflowX": false,
+      "mode": "empty"
+    },
+    "createSanity": {
+      "mode": "create",
+      "saveClasses": "lml-death__btn lml-death__btn--primary lml-focus-ring",
+      "saveBg": "rgb(21, 115, 71)",
+      "saveColor": "rgb(255, 255, 255)"
+    }
+  },
+  "overflow": {
+    "1440x900": {
+      "overflowX": false
+    },
+    "1366x768": {
+      "overflowX": false
+    },
+    "820x1180": {
+      "overflowX": false
+    },
+    "768x1024": {
+      "overflowX": false
+    },
+    "390x844": {
+      "overflowX": false
+    },
+    "360x800": {
+      "overflowX": false
+    }
+  },
+  "errors": []
+}

@@ -1,0 +1,22 @@
+﻿EXACT COMMAND:
+php vendor/phpunit/phpunit/phpunit tests/Feature/HealthRecordsChildCareSummaryTest.php tests/Feature/HealthRecordsVitaminATest.php tests/Feature/HealthRecordsDewormingTest.php tests/Feature/HealthRecordsOperationTimbangTest.php tests/Feature/HealthRecordsNonResidentChildCareTest.php tests/Feature/HealthRecordsSidebarNavigationTest.php
+
+WORKING DIRECTORY:
+C:\Users\Kathlyn Cris\Desktop\LMLinga_Dev\lmlingaFinal
+
+EXIT CODE:
+0
+
+COMPLETE TERMINAL OUTPUT:
+PHPUnit 11.5.56 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.2.12
+Configuration: C:\Users\Kathlyn Cris\Desktop\LMLinga_Dev\lmlingaFinal\phpunit.xml
+
+................................................................. 65 / 77 ( 84%)
+............                                                      77 / 77 (100%)
+
+Time: 00:13.779, Memory: 42.00 MB
+
+OK (77 tests, 1022 assertions)
+

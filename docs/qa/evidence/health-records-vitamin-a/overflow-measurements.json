@@ -1,0 +1,50 @@
+[
+  {
+    "width": 1440,
+    "height": 900,
+    "clientWidth": 1440,
+    "scrollWidth": 1440,
+    "overflow": false,
+    "tableLocalScroll": false
+  },
+  {
+    "width": 820,
+    "height": 1180,
+    "clientWidth": 820,
+    "scrollWidth": 820,
+    "overflow": false,
+    "tableLocalScroll": true
+  },
+  {
+    "width": 768,
+    "height": 1024,
+    "clientWidth": 768,
+    "scrollWidth": 768,
+    "overflow": false,
+    "tableLocalScroll": true
+  },
+  {
+    "width": 430,
+    "height": 932,
+    "clientWidth": 430,
+    "scrollWidth": 430,
+    "overflow": false,
+    "tableLocalScroll": true
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "clientWidth": 390,
+    "scrollWidth": 390,
+    "overflow": false,
+    "tableLocalScroll": true
+  },
+  {
+    "width": 360,
+    "height": 800,
+    "clientWidth": 360,
+    "scrollWidth": 360,
+    "overflow": false,
+    "tableLocalScroll": true
+  }
+]

@@ -1,0 +1,62 @@
+LMLinga Dashboard — Post-Refinement Responsive Evidence
+Source: docs/qa/screenshots/dashboard-map-caption-overlap-fix/overflow-report.json
+Capture script: scripts/capture-dashboard-summary-counts.mjs
+
+Width equality of map, household table, and Health Indicators is expected
+ONLY in stacked tablet/mobile layouts.
+
+On desktop/laptop, Health Indicators occupies the assigned right-side column
+and is intentionally NOT the same width as the map/table column.
+
+==================================================
+DESKTOP — 1440px
+==================================================
+workspace: grid (side-by-side)
+map width: 731 (left 300 / right 1031)
+household table width: 731 (left 300 / right 1031)
+Health Indicators width: 375 (left 1045 / right 1420)
+caption/attribution overlap: false (gap 10px)
+scrollWidth: 1440
+clientWidth: 1440
+pageOverflow: false
+
+==================================================
+LAPTOP — 1366px
+==================================================
+workspace: grid (side-by-side)
+map width: 682 (left 300 / right 982)
+household table width: 682 (left 300 / right 982)
+Health Indicators width: 350 (left 996 / right 1346)
+caption/attribution overlap: false (gap 10px)
+scrollWidth: 1366
+clientWidth: 1366
+pageOverflow: false
+
+==================================================
+TABLET — 820px (stacked)
+==================================================
+workspace: flex (stacked)
+map width: 772 (left 24 / right 796)
+household table width: 772 (left 24 / right 796)
+Health Indicators width: 772 (left 24 / right 796)
+caption/attribution overlap: false (gap 10px)
+scrollWidth: 820
+clientWidth: 820
+pageOverflow: false
+
+==================================================
+MOBILE — 390px (stacked)
+==================================================
+workspace: flex (stacked)
+map width: 358 (left 16 / right 374)
+household table width: 358 (left 16 / right 374)
+Health Indicators width: 358 (left 16 / right 374)
+scrollWidth: 390
+clientWidth: 390
+pageOverflow: false
+internal household-table overflow: true (table wrap only; page does not scroll horizontally)
+
+Caption bottom: 688
+Attribution top: 712
+Gap: 24px
+Overlap: false

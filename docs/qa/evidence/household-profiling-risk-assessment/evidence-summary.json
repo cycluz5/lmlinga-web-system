@@ -1,0 +1,73 @@
+{
+  "module": "Household Profiling — Resident Risk Assessment",
+  "captured_at": "2026-08-08",
+  "server": "http://127.0.0.1:8765",
+  "role": "bns via ?role=bns",
+  "viewports": {
+    "RA-E1": {
+      "size": "1440x900",
+      "inner": {"w": 1440, "h": 900},
+      "overflow": false,
+      "screenshots": [
+        "RA-E1-1440x900-history.png",
+        "RA-E1-1440x900-wizard-step1.png",
+        "RA-E1-1440x900-wizard-step5.png",
+        "RA-E1-1440x900-wizard-step5-actions.png"
+      ]
+    },
+    "RA-E2": {
+      "size": "1366x768",
+      "inner": {"w": 1366, "h": 768},
+      "scrollWidth": 1351,
+      "clientWidth": 1351,
+      "overflow": false,
+      "screenshots": ["RA-E2-1366x768-wizard-step1.png"]
+    },
+    "RA-E3": {
+      "size": "820x1180",
+      "inner": {"w": 820, "h": 1180},
+      "overflow": false,
+      "screenshots": ["RA-E3-820x1180-wizard-step1.png"]
+    },
+    "RA-E4": {
+      "size": "768x1024",
+      "overflow": false,
+      "screenshots": ["RA-E4-768x1024-wizard-step1.png"],
+      "notes": "Two-column check grid retained at 768px (stacks below 768)."
+    },
+    "RA-E5": {
+      "size": "390x844",
+      "inner": {"w": 390, "h": 844},
+      "overflow": false,
+      "gridTemplateColumns": "single column",
+      "screenshots": [
+        "RA-E5-390x844-wizard-step1.png",
+        "RA-E5-390x844-history-empty.png"
+      ]
+    },
+    "RA-E6": {
+      "size": "360x800",
+      "inner": {"w": 360, "h": 800},
+      "overflow": false,
+      "screenshots": ["RA-E6-360x800-wizard-step1.png"]
+    }
+  },
+  "tests": {
+    "phpunit": {
+      "command": "php artisan test --filter=\"HouseholdProfilingRiskAssessmentTest|HouseholdProfilingHouseholdMemberViewTest\"",
+      "exit_code": 0,
+      "passed": 20,
+      "assertions": 139
+    },
+    "js": {
+      "command": "npm run test:js -- tests/js/risk-assessment.test.mjs",
+      "exit_code": 0,
+      "passed": 22,
+      "suites": 11
+    },
+    "build": {
+      "command": "npm run build",
+      "exit_code": 0
+    }
+  }
+}

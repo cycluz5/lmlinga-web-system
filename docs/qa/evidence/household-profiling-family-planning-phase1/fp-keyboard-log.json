@@ -1,0 +1,522 @@
+[
+  {
+    "case": "tab-to-date-filter",
+    "info": {
+      "tag": "SELECT",
+      "type": null,
+      "name": "date",
+      "href": null,
+      "aria": "Filter family planning visits by visit date",
+      "text": "Date\nAll Dates\nThis Month\nLast 3 Months\nThis Year\nCustom range",
+      "className": "lml-fp__date-select lml-focus-ring",
+      "focusVisible": true,
+      "focus": true,
+      "outline": "rgb(47, 158, 68) none 0px",
+      "outlineWidth": "0px",
+      "boxShadow": "rgba(81, 194, 105, 0.2) 0px 0px 0px 2px"
+    },
+    "trail": [
+      {
+        "tag": "SELECT",
+        "type": null,
+        "name": "date",
+        "href": null,
+        "aria": "Filter family planning visits by visit date",
+        "text": "Date\nAll Dates\nThis Month\nLast 3 Months\nThis Year\nCustom range",
+        "className": "lml-fp__date-select lml-focus-ring",
+        "focusVisible": true,
+        "focus": true,
+        "outline": "rgb(47, 158, 68) none 0px",
+        "outlineWidth": "0px",
+        "boxShadow": "rgba(81, 194, 105, 0.2) 0px 0px 0px 2px"
+      }
+    ],
+    "steps": 1,
+    "failed": false
+  },
+  {
+    "case": "tab-to-add",
+    "info": {
+      "tag": "A",
+      "type": null,
+      "name": null,
+      "href": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-001/family-planning/create",
+      "aria": "Add family planning visit record for Kristine Reyes",
+      "text": "ADD",
+      "className": "lml-fp__add-btn lml-focus-ring",
+      "focusVisible": true,
+      "focus": true,
+      "outline": "rgb(34, 197, 94) solid 2px",
+      "outlineWidth": "2px",
+      "boxShadow": "none"
+    },
+    "trail": [
+      {
+        "tag": "A",
+        "type": null,
+        "name": null,
+        "href": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-001/family-planning/create",
+        "aria": "Add family planning visit record for Kristine Reyes",
+        "text": "ADD",
+        "className": "lml-fp__add-btn lml-focus-ring",
+        "focusVisible": true,
+        "focus": true,
+        "outline": "rgb(34, 197, 94) solid 2px",
+        "outlineWidth": "2px",
+        "boxShadow": "none"
+      }
+    ],
+    "steps": 1,
+    "failed": false
+  },
+  {
+    "case": "tab-to-view-link",
+    "info": {
+      "tag": "A",
+      "type": null,
+      "name": null,
+      "href": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-001/family-planning/FP-001",
+      "aria": "View family planning visit on June 8, 2026 for Kristine Reyes",
+      "text": "View\n→",
+      "className": "lml-fp__view-link lml-focus-ring",
+      "focusVisible": true,
+      "focus": true,
+      "outline": "rgb(34, 197, 94) solid 2px",
+      "outlineWidth": "2px",
+      "boxShadow": "none"
+    },
+    "trail": [
+      {
+        "tag": "DIV",
+        "type": null,
+        "name": null,
+        "href": null,
+        "aria": null,
+        "text": "Family planning visit records for Kristine Reyes\nVisit Date\tCommodities Given\tTo",
+        "className": "lml-fp__table-scroll",
+        "focusVisible": true,
+        "focus": true,
+        "outline": "rgb(16, 16, 16) auto 1px",
+        "outlineWidth": "1px",
+        "boxShadow": "none"
+      },
+      {
+        "tag": "A",
+        "type": null,
+        "name": null,
+        "href": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-001/family-planning/FP-001",
+        "aria": "View family planning visit on June 8, 2026 for Kristine Reyes",
+        "text": "View\n→",
+        "className": "lml-fp__view-link lml-focus-ring",
+        "focusVisible": true,
+        "focus": true,
+        "outline": "rgb(34, 197, 94) solid 2px",
+        "outlineWidth": "2px",
+        "boxShadow": "none"
+      }
+    ],
+    "steps": 2,
+    "failed": false
+  },
+  {
+    "case": "edit-tab-to-date",
+    "info": {
+      "tag": "INPUT",
+      "type": "date",
+      "name": "visited_at",
+      "href": null,
+      "aria": null,
+      "text": "",
+      "className": "lml-fp__input lml-focus-ring",
+      "focusVisible": true,
+      "focus": true,
+      "outline": "rgb(17, 24, 39) none 0px",
+      "outlineWidth": "0px",
+      "boxShadow": "rgba(81, 194, 105, 0.2) 0px 0px 0px 2px"
+    },
+    "trail": [
+      {
+        "tag": "BUTTON",
+        "type": "submit",
+        "name": null,
+        "href": null,
+        "aria": null,
+        "text": "Save",
+        "className": "lml-fp__btn lml-fp__btn--save lml-focus-ring",
+        "focusVisible": true,
+        "focus": true,
+        "outline": "rgb(34, 197, 94) solid 2px",
+        "outlineWidth": "2px",
+        "boxShadow": "none"
+      },
+      {
+        "tag": "INPUT",
+        "type": "date",
+        "name": "visited_at",
+        "href": null,
+        "aria": null,
+        "text": "",
+        "className": "lml-fp__input lml-focus-ring",
+        "focusVisible": true,
+        "focus": true,
+        "outline": "rgb(17, 24, 39) none 0px",
+        "outlineWidth": "0px",
+        "boxShadow": "rgba(81, 194, 105, 0.2) 0px 0px 0px 2px"
+      }
+    ],
+    "steps": 2,
+    "failed": false
+  },
+  {
+    "case": "edit-tab-to-remarks",
+    "info": {
+      "tag": "TEXTAREA",
+      "type": null,
+      "name": "remarks",
+      "href": null,
+      "aria": null,
+      "text": "Pills given to the resident.",
+      "className": "lml-fp__textarea lml-focus-ring",
+      "focusVisible": true,
+      "focus": true,
+      "outline": "rgb(17, 24, 39) none 0px",
+      "outlineWidth": "0px",
+      "boxShadow": "rgba(81, 194, 105, 0.2) 0px 0px 0px 2px"
+    },
+    "trail": [
+      {
+        "tag": "INPUT",
+        "type": "date",
+        "name": "visited_at",
+        "href": null,
+        "aria": null,
+        "text": "",
+        "className": "lml-fp__input lml-focus-ring",
+        "focusVisible": true,
+        "focus": true,
+        "outline": "rgb(17, 24, 39) none 0px",
+        "outlineWidth": "0px",
+        "boxShadow": "rgba(81, 194, 105, 0.2) 0px 0px 0px 2px"
+      },
+      {
+        "tag": "INPUT",
+        "type": "date",
+        "name": "visited_at",
+        "href": null,
+        "aria": null,
+        "text": "",
+        "className": "lml-fp__input lml-focus-ring",
+        "focusVisible": true,
+        "focus": true,
+        "outline": "rgb(17, 24, 39) none 0px",
+        "outlineWidth": "0px",
+        "boxShadow": "rgba(81, 194, 105, 0.2) 0px 0px 0px 2px"
+      },
+      {
+        "tag": "INPUT",
+        "type": "date",
+        "name": "visited_at",
+        "href": null,
+        "aria": null,
+        "text": "",
+        "className": "lml-fp__input lml-focus-ring",
+        "focusVisible": false,
+        "focus": false,
+        "outline": "rgb(17, 24, 39) none 0px",
+        "outlineWidth": "0px",
+        "boxShadow": "none"
+      },
+      {
+        "tag": "TEXTAREA",
+        "type": null,
+        "name": "remarks",
+        "href": null,
+        "aria": null,
+        "text": "Pills given to the resident.",
+        "className": "lml-fp__textarea lml-focus-ring",
+        "focusVisible": true,
+        "focus": true,
+        "outline": "rgb(17, 24, 39) none 0px",
+        "outlineWidth": "0px",
+        "boxShadow": "rgba(81, 194, 105, 0.2) 0px 0px 0px 2px"
+      }
+    ],
+    "steps": 4,
+    "failed": false
+  },
+  {
+    "case": "edit-tab-to-commodity",
+    "info": {
+      "tag": "SELECT",
+      "type": null,
+      "name": "commodities[0][name]",
+      "href": null,
+      "aria": null,
+      "text": "Select commodity\nPills\nPills - Combined\nCondoms\nDMPA\nIUD\nImplant",
+      "className": "lml-fp__input lml-focus-ring",
+      "focusVisible": true,
+      "focus": true,
+      "outline": "rgb(17, 24, 39) none 0px",
+      "outlineWidth": "0px",
+      "boxShadow": "rgba(81, 194, 105, 0.2) 0px 0px 0px 2px"
+    },
+    "trail": [
+      {
+        "tag": "SELECT",
+        "type": null,
+        "name": "commodities[0][name]",
+        "href": null,
+        "aria": null,
+        "text": "Select commodity\nPills\nPills - Combined\nCondoms\nDMPA\nIUD\nImplant",
+        "className": "lml-fp__input lml-focus-ring",
+        "focusVisible": true,
+        "focus": true,
+        "outline": "rgb(17, 24, 39) none 0px",
+        "outlineWidth": "0px",
+        "boxShadow": "rgba(81, 194, 105, 0.2) 0px 0px 0px 2px"
+      }
+    ],
+    "steps": 1,
+    "failed": false
+  },
+  {
+    "case": "edit-tab-to-qty",
+    "info": {
+      "tag": "INPUT",
+      "type": "number",
+      "name": "commodities[0][quantity]",
+      "href": null,
+      "aria": null,
+      "text": "",
+      "className": "lml-fp__input lml-focus-ring",
+      "focusVisible": true,
+      "focus": true,
+      "outline": "rgb(17, 24, 39) none 0px",
+      "outlineWidth": "0px",
+      "boxShadow": "rgba(81, 194, 105, 0.2) 0px 0px 0px 2px"
+    },
+    "trail": [
+      {
+        "tag": "INPUT",
+        "type": "number",
+        "name": "commodities[0][quantity]",
+        "href": null,
+        "aria": null,
+        "text": "",
+        "className": "lml-fp__input lml-focus-ring",
+        "focusVisible": true,
+        "focus": true,
+        "outline": "rgb(17, 24, 39) none 0px",
+        "outlineWidth": "0px",
+        "boxShadow": "rgba(81, 194, 105, 0.2) 0px 0px 0px 2px"
+      }
+    ],
+    "steps": 1,
+    "failed": false
+  },
+  {
+    "case": "edit-tab-to-remove",
+    "info": {
+      "tag": "BUTTON",
+      "type": "button",
+      "name": null,
+      "href": null,
+      "aria": "Remove commodity row",
+      "text": "",
+      "className": "lml-fp__commodity-remove lml-focus-ring",
+      "focusVisible": true,
+      "focus": true,
+      "outline": "rgb(34, 197, 94) solid 2px",
+      "outlineWidth": "2px",
+      "boxShadow": "none"
+    },
+    "trail": [
+      {
+        "tag": "BUTTON",
+        "type": "button",
+        "name": null,
+        "href": null,
+        "aria": "Remove commodity row",
+        "text": "",
+        "className": "lml-fp__commodity-remove lml-focus-ring",
+        "focusVisible": true,
+        "focus": true,
+        "outline": "rgb(34, 197, 94) solid 2px",
+        "outlineWidth": "2px",
+        "boxShadow": "none"
+      }
+    ],
+    "steps": 1,
+    "failed": false
+  },
+  {
+    "case": "edit-tab-to-add-commodity",
+    "info": {
+      "tag": "BUTTON",
+      "type": "button",
+      "name": null,
+      "href": null,
+      "aria": null,
+      "text": "Add Another Commodity",
+      "className": "lml-fp__add-commodity lml-focus-ring",
+      "focusVisible": true,
+      "focus": true,
+      "outline": "rgb(34, 197, 94) solid 2px",
+      "outlineWidth": "2px",
+      "boxShadow": "none"
+    },
+    "trail": [
+      {
+        "tag": "SELECT",
+        "type": null,
+        "name": "commodities[1][name]",
+        "href": null,
+        "aria": null,
+        "text": "Select commodity\nPills\nPills - Combined\nCondoms\nDMPA\nIUD\nImplant",
+        "className": "lml-fp__input lml-focus-ring",
+        "focusVisible": true,
+        "focus": true,
+        "outline": "rgb(17, 24, 39) none 0px",
+        "outlineWidth": "0px",
+        "boxShadow": "rgba(81, 194, 105, 0.2) 0px 0px 0px 2px"
+      },
+      {
+        "tag": "INPUT",
+        "type": "number",
+        "name": "commodities[1][quantity]",
+        "href": null,
+        "aria": null,
+        "text": "",
+        "className": "lml-fp__input lml-focus-ring",
+        "focusVisible": true,
+        "focus": true,
+        "outline": "rgb(17, 24, 39) none 0px",
+        "outlineWidth": "0px",
+        "boxShadow": "rgba(81, 194, 105, 0.2) 0px 0px 0px 2px"
+      },
+      {
+        "tag": "BUTTON",
+        "type": "button",
+        "name": null,
+        "href": null,
+        "aria": "Remove commodity row",
+        "text": "",
+        "className": "lml-fp__commodity-remove lml-focus-ring",
+        "focusVisible": true,
+        "focus": true,
+        "outline": "rgb(34, 197, 94) solid 2px",
+        "outlineWidth": "2px",
+        "boxShadow": "none"
+      },
+      {
+        "tag": "BUTTON",
+        "type": "button",
+        "name": null,
+        "href": null,
+        "aria": null,
+        "text": "Add Another Commodity",
+        "className": "lml-fp__add-commodity lml-focus-ring",
+        "focusVisible": true,
+        "focus": true,
+        "outline": "rgb(34, 197, 94) solid 2px",
+        "outlineWidth": "2px",
+        "boxShadow": "none"
+      }
+    ],
+    "steps": 4,
+    "failed": false
+  },
+  {
+    "case": "edit-tab-to-cancel",
+    "info": {
+      "tag": "A",
+      "type": null,
+      "name": null,
+      "href": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-001/family-planning/FP-003",
+      "aria": null,
+      "text": "Cancel",
+      "className": "lml-fp__btn lml-fp__btn--cancel lml-focus-ring",
+      "focusVisible": true,
+      "focus": true,
+      "outline": "rgb(34, 197, 94) solid 2px",
+      "outlineWidth": "2px",
+      "boxShadow": "none"
+    },
+    "trail": [
+      {
+        "tag": "A",
+        "type": null,
+        "name": null,
+        "href": "http://127.0.0.1:8765/household-profiling/HH-151/members/MB-001/family-planning/FP-003",
+        "aria": null,
+        "text": "Cancel",
+        "className": "lml-fp__btn lml-fp__btn--cancel lml-focus-ring",
+        "focusVisible": true,
+        "focus": true,
+        "outline": "rgb(34, 197, 94) solid 2px",
+        "outlineWidth": "2px",
+        "boxShadow": "none"
+      }
+    ],
+    "steps": 1,
+    "failed": false
+  },
+  {
+    "case": "edit-tab-to-save",
+    "info": {
+      "tag": "BUTTON",
+      "type": "submit",
+      "name": null,
+      "href": null,
+      "aria": null,
+      "text": "Save",
+      "className": "lml-fp__btn lml-fp__btn--save lml-focus-ring",
+      "focusVisible": true,
+      "focus": true,
+      "outline": "rgb(34, 197, 94) solid 2px",
+      "outlineWidth": "2px",
+      "boxShadow": "none"
+    },
+    "trail": [
+      {
+        "tag": "BUTTON",
+        "type": "submit",
+        "name": null,
+        "href": null,
+        "aria": null,
+        "text": "Save",
+        "className": "lml-fp__btn lml-fp__btn--save lml-focus-ring",
+        "focusVisible": true,
+        "focus": true,
+        "outline": "rgb(34, 197, 94) solid 2px",
+        "outlineWidth": "2px",
+        "boxShadow": "none"
+      }
+    ],
+    "steps": 1,
+    "failed": false
+  },
+  {
+    "case": "semantics-edit-page",
+    "iconCount": 6,
+    "iconsAriaHidden": true,
+    "iconsWithOwnAttr": 5,
+    "iconsWithAncestorOnly": 1,
+    "addCommodityIsButton": true,
+    "saveIsButton": true,
+    "cancelIsAnchor": true,
+    "a11y3Fixed": true
+  },
+  {
+    "case": "semantics-main-page",
+    "addIsAnchor": true,
+    "viewLinksAreAnchors": 3
+  },
+  {
+    "case": "semantics-view-page",
+    "readonlyInputs": 5,
+    "readonlyTextareas": 1,
+    "disabledFieldsets": 2,
+    "editIsAnchor": true
+  }
+]

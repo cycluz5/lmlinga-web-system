@@ -1,0 +1,7 @@
+{
+  "viewport": "1440x900",
+  "infoRowGap": 10,
+  "sectionBlockPaddingBottom": 20,
+  "sectionBlockPaddingTop": 20,
+  "gapBetweenClientInfoAndVisitHistory": 0
+}

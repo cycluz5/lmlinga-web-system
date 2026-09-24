@@ -1,0 +1,24 @@
+FAMILY PLANNING PHASE 1 — PROCESS CLOSURE NOTE
+Date: 2026-08-09
+
+A11Y-3: FIXED (evidence script only)
+- File: docs/qa/evidence/household-profiling-family-planning-phase1/capture-fp-phase1-evidence.mjs
+- Change: iconsAriaHidden now uses el.closest('[aria-hidden="true"]') !== null
+- Verified: fp-a11y3-icons-verification.json → iconsAriaHidden=true, keyboard Save ok
+
+FROZEN-2: BASELINE COMMIT NOT CREATED
+Reason: working tree is mixed across multiple modules. A single baseline commit
+cannot be staged safely without either:
+  (1) including unfinished/unrelated modules (Health Records Child Care suite,
+      Child Nutrition, School-Based Immunization, birth-history refinements,
+      large docs/qa screenshot trees, scripts/), OR
+  (2) omitting shared integration files that also contain those modules
+      (routes/web.php, resources/js/app.js, resources/css/app.css, sidebar,
+      UiRole, package.json) while leaving RA/FP only partially baselined.
+
+Risk Assessment production files remain UNTRACKED (??). No RA file was
+modified in this process-closure pass. No silent normalization was performed.
+
+Manual repository decision required before any baseline commit, e.g.:
+- split module-scoped commits with explicit product owner approval, OR
+- stage a curated "reviewed modules" set after excluding unfinished work.

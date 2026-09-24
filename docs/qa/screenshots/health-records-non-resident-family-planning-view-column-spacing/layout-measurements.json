@@ -1,0 +1,53 @@
+[
+  {
+    "viewport": "1440x900",
+    "pageOverflow": false,
+    "panelWidth": 1104,
+    "panelPaddingLeft": 40,
+    "clientInfoColumnGap": 32,
+    "clientInfoLabelToValueGap": 32,
+    "visitDateToRemarksGap": 0,
+    "remarksToEditGap": 0,
+    "historyTableWidth": 384,
+    "commodityToQuantityGap": 0,
+    "quantityToDateGap": 0,
+    "commoditiesTableWidth": 356,
+    "previousClientInfoColumnGapPx": 8,
+    "previousVisitDatePaddingRightPx": 16,
+    "previousCommodityPaddingRightPx": 12
+  },
+  {
+    "viewport": "820x1180",
+    "pageOverflow": false,
+    "panelWidth": 772,
+    "panelPaddingLeft": 24,
+    "clientInfoColumnGap": 20,
+    "clientInfoLabelToValueGap": 20,
+    "visitDateToRemarksGap": 0,
+    "remarksToEditGap": 0,
+    "historyTableWidth": 384,
+    "commodityToQuantityGap": 0,
+    "quantityToDateGap": 0,
+    "commoditiesTableWidth": 356,
+    "previousClientInfoColumnGapPx": 8,
+    "previousVisitDatePaddingRightPx": 16,
+    "previousCommodityPaddingRightPx": 12
+  },
+  {
+    "viewport": "390x844",
+    "pageOverflow": false,
+    "panelWidth": 358,
+    "panelPaddingLeft": 16,
+    "clientInfoColumnGap": 0,
+    "clientInfoLabelToValueGap": -324,
+    "visitDateToRemarksGap": 0,
+    "remarksToEditGap": 0,
+    "historyTableWidth": 384,
+    "commodityToQuantityGap": 0,
+    "quantityToDateGap": 0,
+    "commoditiesTableWidth": 344,
+    "previousClientInfoColumnGapPx": 8,
+    "previousVisitDatePaddingRightPx": 16,
+    "previousCommodityPaddingRightPx": 12
+  }
+]

@@ -1,0 +1,69 @@
+﻿
+> resources\views\pages\household-profiling\school-based-immunization.blade.php:8:    HPV dose labels: Vaccines Type 
+and record fields use "1st Dose" / "2nd Dose"
+  resources\views\pages\household-profiling\school-based-immunization.blade.php:9:    when Figma layer text appears 
+duplicated or conflicts with that structure.
+  resources\views\pages\household-profiling\school-based-immunization.blade.php:10:
+> resources\views\pages\household-profiling\school-based-immunization.blade.php:70:         | Vaccine Type selections, 
+so no recorded/completed status is shown.
+  resources\views\pages\household-profiling\school-based-immunization.blade.php:71:         | Status must agree with 
+displayed data — do not invent completion.
+  resources\views\pages\household-profiling\school-based-immunization.blade.php:72:         */
+> resources\views\pages\household-profiling\school-based-immunization.blade.php:335:                                   
+                     type="date"
+  resources\views\pages\household-profiling\school-based-immunization.blade.php:336:                                   
+                     id="{{ $fieldId }}"
+  resources\views\pages\household-profiling\school-based-immunization.blade.php:337:                                   
+                     name="vaccines[{{ $card['key'] }}][{{ $dose['key'] }}]"
+> resources\views\pages\household-profiling\school-based-immunization.blade.php:355:                            
+aria-labelledby="lml-sbi-hpv-heading"
+  resources\views\pages\household-profiling\school-based-immunization.blade.php:356:                        >
+> resources\views\pages\household-profiling\school-based-immunization.blade.php:357:                            <h3 
+id="lml-sbi-hpv-heading" class="lml-sbi__grade-title">
+  resources\views\pages\household-profiling\school-based-immunization.blade.php:358:                                
+Human Papillomavirus (HPV)
+  resources\views\pages\household-profiling\school-based-immunization.blade.php:359:                            </h3>
+> resources\views\pages\household-profiling\school-based-immunization.blade.php:386:                                   
+             type="date"
+  resources\views\pages\household-profiling\school-based-immunization.blade.php:387:                                   
+             id="{{ $fieldId }}"
+  resources\views\pages\household-profiling\school-based-immunization.blade.php:388:                                   
+             name="vaccines[hpv][{{ $dose['key'] }}]"
+> resources\views\pages\household-profiling\school-based-immunization.blade.php:403:                    <aside 
+class="lml-sbi__aside" aria-labelledby="lml-sbi-types-heading">
+  resources\views\pages\household-profiling\school-based-immunization.blade.php:404:                        <div 
+class="lml-sbi__types-card">
+> resources\views\pages\household-profiling\school-based-immunization.blade.php:405:                            <h3 
+id="lml-sbi-types-heading" class="lml-sbi__types-title">
+  resources\views\pages\household-profiling\school-based-immunization.blade.php:406:                                <i 
+class="bi bi-shield-plus" aria-hidden="true"></i>
+> resources\views\pages\household-profiling\school-based-immunization.blade.php:407:                                
+<span>Vaccines Type</span>
+  resources\views\pages\household-profiling\school-based-immunization.blade.php:408:                            </h3>
+  resources\views\pages\household-profiling\school-based-immunization.blade.php:409:                            <div 
+class="lml-sbi__types-groups">
+> resources\views\pages\household-profiling\school-based-immunization.blade.php:411:                                   
+ <fieldset class="lml-sbi__types-fieldset">
+  resources\views\pages\household-profiling\school-based-immunization.blade.php:412:                                   
+     <legend class="lml-sbi__types-legend">
+  resources\views\pages\household-profiling\school-based-immunization.blade.php:413:                                   
+         {{ $group['legend'] }}
+> resources\views\pages\household-profiling\school-based-immunization.blade.php:418:                                   
+                 $checkboxId = 'lml-sbi-type-'.$item['key'];
+  resources\views\pages\household-profiling\school-based-immunization.blade.php:419:                                   
+             @endphp
+  resources\views\pages\household-profiling\school-based-immunization.blade.php:420:                                   
+             <li>
+> resources\views\pages\household-profiling\school-based-immunization.blade.php:421:                                   
+                 <label class="lml-sbi__type-row" for="{{ $checkboxId }}">
+  resources\views\pages\household-profiling\school-based-immunization.blade.php:422:                                   
+                     <input
+  resources\views\pages\household-profiling\school-based-immunization.blade.php:423:                                   
+                         type="checkbox"
+> resources\views\pages\household-profiling\school-based-immunization.blade.php:436:                                   
+ </fieldset>
+  resources\views\pages\household-profiling\school-based-immunization.blade.php:437:                                
+@endforeach
+  resources\views\pages\household-profiling\school-based-immunization.blade.php:438:                            </div>
+
+

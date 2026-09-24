@@ -1,0 +1,53 @@
+LMLinga — relevant route context for Non-Resident Maternal Individual View
+Source: routes/web.php (excerpt only; the live file was not modified)
+
+------------------------------------------------------------------------
+Group / middleware
+------------------------------------------------------------------------
+Authenticated dashboard shell modules (UI preview; no real auth stack yet).
+PersistUiRole applies only here — not on public/auth/chatbot pages.
+
+Route::middleware('ui.role')->group(function () {
+    ...
+
+    /*
+     | Health Records — Maternal Care barangay-wide listing (UI-phase).
+     | Independent of Household Profiling → member Maternal Care.
+     | Female-only eligibility is enforced in HealthRecordsMaternal.
+     */
+    Route::get('/health-records/maternal', [
+        \App\Http\Controllers\HealthRecords\MaternalSummaryController::class,
+        'index',
+    ])->name('health-records.maternal.index');
+
+    Route::get('/health-records/maternal/non-residents', [
+        \App\Http\Controllers\HealthRecords\NonResidentMaternalController::class,
+        'index',
+    ])->name('health-records.maternal.non-residents.index');
+
+    Route::get('/health-records/maternal/non-residents/create', [
+        \App\Http\Controllers\HealthRecords\NonResidentMaternalController::class,
+        'create',
+    ])->name('health-records.maternal.non-residents.create');
+
+    Route::post('/health-records/maternal/non-residents', [
+        \App\Http\Controllers\HealthRecords\NonResidentMaternalController::class,
+        'store',
+    ])->name('health-records.maternal.non-residents.store');
+
+    Route::get('/health-records/maternal/non-residents/{clientKey}', [
+        \App\Http\Controllers\HealthRecords\NonResidentMaternalController::class,
+        'show',
+    ])->where('clientKey', '[A-Za-z0-9\-]+')->name('health-records.maternal.non-residents.show');
+});
+
+------------------------------------------------------------------------
+Individual View route (this review)
+------------------------------------------------------------------------
+Method: GET
+Path:   /health-records/maternal/non-residents/{clientKey}
+Name:   health-records.maternal.non-residents.show
+Param:  clientKey  where [A-Za-z0-9\-]+
+Controller: App\Http\Controllers\HealthRecords\NonResidentMaternalController::show
+Middleware: ui.role (dashboard group)
+Example:    /health-records/maternal/non-residents/ana-p-villanueva

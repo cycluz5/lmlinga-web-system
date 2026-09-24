@@ -1,0 +1,226 @@
+[
+  {
+    "state": "A-bhw-form",
+    "viewport": "1440x900",
+    "innerWidth": 1440,
+    "scrollWidth": 1440,
+    "overflow": false
+  },
+  {
+    "state": "B-disabled-submit",
+    "viewport": "1440x900",
+    "innerWidth": 1440,
+    "scrollWidth": 1440,
+    "overflow": false
+  },
+  {
+    "state": "C-completed-form",
+    "viewport": "1440x900",
+    "innerWidth": 1440,
+    "scrollWidth": 1440,
+    "overflow": false
+  },
+  {
+    "state": "D-confirmation-modal",
+    "viewport": "1440x900",
+    "innerWidth": 1440,
+    "scrollWidth": 1440,
+    "overflow": false
+  },
+  {
+    "state": "A-bhw-form",
+    "viewport": "1366x768",
+    "innerWidth": 1366,
+    "scrollWidth": 1366,
+    "overflow": false
+  },
+  {
+    "state": "B-disabled-submit",
+    "viewport": "1366x768",
+    "innerWidth": 1366,
+    "scrollWidth": 1366,
+    "overflow": false
+  },
+  {
+    "state": "C-completed-form",
+    "viewport": "1366x768",
+    "innerWidth": 1366,
+    "scrollWidth": 1366,
+    "overflow": false
+  },
+  {
+    "state": "D-confirmation-modal",
+    "viewport": "1366x768",
+    "innerWidth": 1366,
+    "scrollWidth": 1366,
+    "overflow": false
+  },
+  {
+    "state": "A-bhw-form",
+    "viewport": "820x1180",
+    "innerWidth": 820,
+    "scrollWidth": 820,
+    "overflow": false
+  },
+  {
+    "state": "B-disabled-submit",
+    "viewport": "820x1180",
+    "innerWidth": 820,
+    "scrollWidth": 820,
+    "overflow": false
+  },
+  {
+    "state": "C-completed-form",
+    "viewport": "820x1180",
+    "innerWidth": 820,
+    "scrollWidth": 820,
+    "overflow": false
+  },
+  {
+    "state": "D-confirmation-modal",
+    "viewport": "820x1180",
+    "innerWidth": 820,
+    "scrollWidth": 820,
+    "overflow": false
+  },
+  {
+    "state": "A-bhw-form",
+    "viewport": "390x844",
+    "innerWidth": 390,
+    "scrollWidth": 390,
+    "overflow": false
+  },
+  {
+    "state": "B-disabled-submit",
+    "viewport": "390x844",
+    "innerWidth": 390,
+    "scrollWidth": 390,
+    "overflow": false
+  },
+  {
+    "state": "C-completed-form",
+    "viewport": "390x844",
+    "innerWidth": 390,
+    "scrollWidth": 390,
+    "overflow": false
+  },
+  {
+    "state": "D-confirmation-modal",
+    "viewport": "390x844",
+    "innerWidth": 390,
+    "scrollWidth": 390,
+    "overflow": false
+  },
+  {
+    "state": "E-pending-verification",
+    "viewport": "1440x900",
+    "innerWidth": 1440,
+    "scrollWidth": 1440,
+    "overflow": false
+  },
+  {
+    "state": "F-admin-list",
+    "viewport": "1440x900",
+    "innerWidth": 1440,
+    "scrollWidth": 1440,
+    "overflow": false
+  },
+  {
+    "state": "G-admin-verify",
+    "viewport": "1440x900",
+    "innerWidth": 1440,
+    "scrollWidth": 1440,
+    "overflow": false
+  },
+  {
+    "state": "H-reject-reason",
+    "viewport": "1440x900",
+    "innerWidth": 1440,
+    "scrollWidth": 1440,
+    "overflow": false
+  },
+  {
+    "state": "E-pending-verification",
+    "viewport": "1366x768",
+    "innerWidth": 1366,
+    "scrollWidth": 1366,
+    "overflow": false
+  },
+  {
+    "state": "F-admin-list",
+    "viewport": "1366x768",
+    "innerWidth": 1366,
+    "scrollWidth": 1366,
+    "overflow": false
+  },
+  {
+    "state": "G-admin-verify",
+    "viewport": "1366x768",
+    "innerWidth": 1366,
+    "scrollWidth": 1366,
+    "overflow": false
+  },
+  {
+    "state": "H-reject-reason",
+    "viewport": "1366x768",
+    "innerWidth": 1366,
+    "scrollWidth": 1366,
+    "overflow": false
+  },
+  {
+    "state": "E-pending-verification",
+    "viewport": "820x1180",
+    "innerWidth": 820,
+    "scrollWidth": 820,
+    "overflow": false
+  },
+  {
+    "state": "F-admin-list",
+    "viewport": "820x1180",
+    "innerWidth": 820,
+    "scrollWidth": 820,
+    "overflow": false
+  },
+  {
+    "state": "G-admin-verify",
+    "viewport": "820x1180",
+    "innerWidth": 820,
+    "scrollWidth": 820,
+    "overflow": false
+  },
+  {
+    "state": "H-reject-reason",
+    "viewport": "820x1180",
+    "innerWidth": 820,
+    "scrollWidth": 820,
+    "overflow": false
+  },
+  {
+    "state": "E-pending-verification",
+    "viewport": "390x844",
+    "innerWidth": 390,
+    "scrollWidth": 390,
+    "overflow": false
+  },
+  {
+    "state": "F-admin-list",
+    "viewport": "390x844",
+    "innerWidth": 390,
+    "scrollWidth": 390,
+    "overflow": false
+  },
+  {
+    "state": "G-admin-verify",
+    "viewport": "390x844",
+    "innerWidth": 390,
+    "scrollWidth": 390,
+    "overflow": false
+  },
+  {
+    "state": "H-reject-reason",
+    "viewport": "390x844",
+    "innerWidth": 390,
+    "scrollWidth": 390,
+    "overflow": false
+  }
+]

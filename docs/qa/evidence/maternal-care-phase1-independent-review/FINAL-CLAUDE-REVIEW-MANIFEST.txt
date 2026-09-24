@@ -1,0 +1,76 @@
+﻿FINAL-CLAUDE-REVIEW-MANIFEST.txt
+================================
+Packaging date/time: 2026-08-09 21:18:09 +08:00
+Repository/project: LMLinga Community Health Information System
+Feature: Maternal Care Phase 1
+Purpose: Final Claude Independent Review (post Claude-findings closure)
+
+POST-FIX SOURCE INCLUDED IN SOURCE PACKAGE
+- Current post-fix Maternal Care implementation files
+- Explicitly includes POST-FIX:
+  resources/css/pages/maternal-care.css
+  resources/views/pages/household-profiling/partials/maternal-care-delivery.blade.php
+- F-01 primary CTA contrast fix included
+- F-02 accent-text contrast fix included
+- F-03 dead disabled Blade conditional cleanup included
+- F-04 / F-05 intentionally unchanged (LOW/non-blocking)
+
+RESPONSIVE VIEWPORT COVERAGE (existing automated evidence preserved)
+- 1440x900
+- 1366x768
+- 820x1180
+- 768x1024
+- 390x844
+- 360x800
+Desktop PNG count: 18
+Tablet PNG count: 18
+Mobile PNG count: 18
+
+INTERACTION EVIDENCE
+- Interaction PNG count (including post-fix): 29
+- Post-fix contrast PNG count: 4
+  - contrast-primary-accent-1440x900.png
+  - contrast-primary-accent-820x1180.png
+  - contrast-primary-accent-390x844.png
+  - contrast-register-cta-1440x900.png
+
+NAVIGATION / REGRESSION EVIDENCE
+- Navigation/regression PNG count: 7
+
+TEST FILES (source package)
+- tests/Feature/HouseholdProfilingMaternalCareTest.php
+- tests/Feature/HouseholdProfilingHouseholdMemberViewTest.php
+- tests/Feature/HouseholdProfilingFamilyPlanningTest.php
+- tests/Feature/HouseholdProfilingRiskAssessmentTest.php
+- tests/Feature/HealthRecordsSidebarNavigationTest.php
+
+TEST LOGS INCLUDED (qa evidence package)
+- family-planning-regression.txt
+- health-records-sidebar-regression.txt
+- household-member-regression.txt
+- maternal-care-test.txt
+- post-fix-family-planning.txt
+- post-fix-health-records-sidebar.txt
+- post-fix-household-member.txt
+- post-fix-maternal-care-test.txt
+- post-fix-risk-assessment.txt
+- risk-assessment-regression.txt
+
+BUILD EVIDENCE INCLUDED
+- npm-run-build.txt
+- post-fix-npm-run-build.txt
+
+EVIDENCE CAPTURE SCRIPTS (QA-ONLY tooling; NOT production application logic)
+- capture-mc-phase1-evidence.mjs
+- capture-post-fix-contrast.mjs
+
+SECURITY / EXCLUSIONS
+- .env / .env.* excluded: YES
+- secrets/credentials/API keys excluded: YES
+- node_modules excluded: YES
+- vendor excluded: YES
+- .git excluded: YES
+
+NOTES
+- Full responsive screenshot package was preserved (not regenerated for packaging).
+- Post-fix contrast screenshots are supplemental closure evidence.

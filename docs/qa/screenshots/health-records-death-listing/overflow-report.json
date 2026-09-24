@@ -1,0 +1,506 @@
+[
+  {
+    "viewport": "1440x900",
+    "file": "C:\\Users\\Kathlyn Cris\\Desktop\\LMLinga_Dev\\lmlingaFinal\\docs\\qa\\screenshots\\health-records-death-listing\\death-1440x900.png",
+    "title": "Death",
+    "overflow": false,
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "documentElement": {
+      "scrollWidth": 1440,
+      "clientWidth": 1440
+    },
+    "deathPanel": {
+      "x": 308,
+      "y": 126,
+      "width": 1104,
+      "height": 564
+    },
+    "deathWrapper": {
+      "x": 308,
+      "y": 126,
+      "width": 1104,
+      "height": 564
+    },
+    "titleExportGap": -49,
+    "descriptionBottomY": 194,
+    "exportTopY": 144,
+    "centered": {
+      "leftGap": 28,
+      "rightGap": 28,
+      "aligned": true
+    },
+    "columnAlignment": {
+      "lefts": [
+        1252,
+        327,
+        688,
+        1048,
+        327,
+        327
+      ],
+      "rights": [
+        1393,
+        672,
+        1032,
+        1393,
+        1393,
+        1393
+      ],
+      "leftSpread": 925,
+      "rightSpread": 721
+    },
+    "export": {
+      "x": 1252,
+      "y": 144,
+      "width": 141,
+      "height": 40
+    },
+    "search": {
+      "x": 327,
+      "y": 305,
+      "width": 256,
+      "height": 40
+    },
+    "selects": [
+      {
+        "id": "lml-hr-death-zone",
+        "x": 594,
+        "y": 305,
+        "width": 192,
+        "height": 40
+      },
+      {
+        "id": "lml-hr-death-cause",
+        "x": 796,
+        "y": 305,
+        "width": 192,
+        "height": 40
+      },
+      {
+        "id": "lml-hr-death-sex",
+        "x": 998,
+        "y": 305,
+        "width": 192,
+        "height": 40
+      },
+      {
+        "id": "lml-hr-death-year",
+        "x": 1201,
+        "y": 305,
+        "width": 192,
+        "height": 40
+      }
+    ],
+    "cardStyles": [
+      {
+        "label": "Total Deaths",
+        "backgroundImage": "none",
+        "backgroundColor": "rgb(255, 255, 255)",
+        "height": 84
+      },
+      {
+        "label": "Female",
+        "backgroundImage": "none",
+        "backgroundColor": "rgb(253, 232, 239)",
+        "height": 84
+      },
+      {
+        "label": "Male",
+        "backgroundImage": "none",
+        "backgroundColor": "rgb(231, 238, 246)",
+        "height": 84
+      }
+    ],
+    "filters": {
+      "x": 327,
+      "y": 305,
+      "width": 1065,
+      "height": 40
+    },
+    "stats": {
+      "x": 327,
+      "y": 207,
+      "width": 1065,
+      "height": 84
+    },
+    "tableScroll": {
+      "x": 328,
+      "y": 359,
+      "width": 1063,
+      "height": 310,
+      "scrollWidth": 1063,
+      "clientWidth": 1063,
+      "hidden": false
+    },
+    "activeSidebar": "Death",
+    "cards": [
+      {
+        "label": "Total Deaths",
+        "value": "6",
+        "box": {
+          "x": 327,
+          "y": 207,
+          "width": 344,
+          "height": 84
+        }
+      },
+      {
+        "label": "Female",
+        "value": "3",
+        "box": {
+          "x": 688,
+          "y": 207,
+          "width": 344,
+          "height": 84
+        }
+      },
+      {
+        "label": "Male",
+        "value": "3",
+        "box": {
+          "x": 1048,
+          "y": 207,
+          "width": 344,
+          "height": 84
+        }
+      }
+    ]
+  },
+  {
+    "viewport": "820x1180",
+    "file": "C:\\Users\\Kathlyn Cris\\Desktop\\LMLinga_Dev\\lmlingaFinal\\docs\\qa\\screenshots\\health-records-death-listing\\death-820x1180.png",
+    "title": "Death",
+    "overflow": false,
+    "scrollWidth": 820,
+    "clientWidth": 820,
+    "documentElement": {
+      "scrollWidth": 820,
+      "clientWidth": 820
+    },
+    "deathPanel": {
+      "x": 24,
+      "y": 119,
+      "width": 772,
+      "height": 853
+    },
+    "deathWrapper": {
+      "x": 24,
+      "y": 119,
+      "width": 772,
+      "height": 853
+    },
+    "titleExportGap": -49,
+    "descriptionBottomY": 187,
+    "exportTopY": 138,
+    "centered": {
+      "leftGap": 24,
+      "rightGap": 24,
+      "aligned": true
+    },
+    "columnAlignment": {
+      "lefts": [
+        638,
+        41,
+        41,
+        41,
+        41,
+        41
+      ],
+      "rights": [
+        779,
+        779,
+        779,
+        779,
+        779,
+        779
+      ],
+      "leftSpread": 597,
+      "rightSpread": 0
+    },
+    "export": {
+      "x": 638,
+      "y": 138,
+      "width": 141,
+      "height": 40
+    },
+    "search": {
+      "x": 41,
+      "y": 487,
+      "width": 738,
+      "height": 40
+    },
+    "selects": [
+      {
+        "id": "lml-hr-death-zone",
+        "x": 41,
+        "y": 538,
+        "width": 364,
+        "height": 40
+      },
+      {
+        "id": "lml-hr-death-cause",
+        "x": 415,
+        "y": 538,
+        "width": 364,
+        "height": 40
+      },
+      {
+        "id": "lml-hr-death-sex",
+        "x": 41,
+        "y": 588,
+        "width": 364,
+        "height": 40
+      },
+      {
+        "id": "lml-hr-death-year",
+        "x": 415,
+        "y": 588,
+        "width": 364,
+        "height": 40
+      }
+    ],
+    "cardStyles": [
+      {
+        "label": "Total Deaths",
+        "backgroundImage": "none",
+        "backgroundColor": "rgb(255, 255, 255)",
+        "height": 84
+      },
+      {
+        "label": "Female",
+        "backgroundImage": "none",
+        "backgroundColor": "rgb(253, 232, 239)",
+        "height": 84
+      },
+      {
+        "label": "Male",
+        "backgroundImage": "none",
+        "backgroundColor": "rgb(231, 238, 246)",
+        "height": 84
+      }
+    ],
+    "filters": {
+      "x": 41,
+      "y": 487,
+      "width": 738,
+      "height": 141
+    },
+    "stats": {
+      "x": 41,
+      "y": 201,
+      "width": 738,
+      "height": 273
+    },
+    "tableScroll": {
+      "x": 42,
+      "y": 643,
+      "width": 736,
+      "height": 310,
+      "scrollWidth": 736,
+      "clientWidth": 736,
+      "hidden": false
+    },
+    "activeSidebar": "Death",
+    "cards": [
+      {
+        "label": "Total Deaths",
+        "value": "6",
+        "box": {
+          "x": 41,
+          "y": 201,
+          "width": 738,
+          "height": 84
+        }
+      },
+      {
+        "label": "Female",
+        "value": "3",
+        "box": {
+          "x": 41,
+          "y": 295,
+          "width": 738,
+          "height": 84
+        }
+      },
+      {
+        "label": "Male",
+        "value": "3",
+        "box": {
+          "x": 41,
+          "y": 390,
+          "width": 738,
+          "height": 84
+        }
+      }
+    ]
+  },
+  {
+    "viewport": "390x844",
+    "file": "C:\\Users\\Kathlyn Cris\\Desktop\\LMLinga_Dev\\lmlingaFinal\\docs\\qa\\screenshots\\health-records-death-listing\\death-390x844.png",
+    "title": "Death",
+    "overflow": false,
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "documentElement": {
+      "scrollWidth": 390,
+      "clientWidth": 390
+    },
+    "deathPanel": {
+      "x": 8,
+      "y": 188,
+      "width": 374,
+      "height": 1084
+    },
+    "deathWrapper": {
+      "x": 8,
+      "y": 188,
+      "width": 374,
+      "height": 1084
+    },
+    "titleExportGap": 14,
+    "descriptionBottomY": 269,
+    "exportTopY": 283,
+    "centered": {
+      "leftGap": 8,
+      "rightGap": 8,
+      "aligned": true
+    },
+    "columnAlignment": {
+      "lefts": [
+        25,
+        25,
+        25,
+        25,
+        25,
+        25
+      ],
+      "rights": [
+        365,
+        365,
+        365,
+        365,
+        365,
+        365
+      ],
+      "leftSpread": 0,
+      "rightSpread": 0
+    },
+    "export": {
+      "x": 25,
+      "y": 283,
+      "width": 340,
+      "height": 40
+    },
+    "search": {
+      "x": 25,
+      "y": 622,
+      "width": 340,
+      "height": 40
+    },
+    "selects": [
+      {
+        "id": "lml-hr-death-zone",
+        "x": 25,
+        "y": 673,
+        "width": 340,
+        "height": 40
+      },
+      {
+        "id": "lml-hr-death-cause",
+        "x": 25,
+        "y": 723,
+        "width": 340,
+        "height": 40
+      },
+      {
+        "id": "lml-hr-death-sex",
+        "x": 25,
+        "y": 774,
+        "width": 340,
+        "height": 40
+      },
+      {
+        "id": "lml-hr-death-year",
+        "x": 25,
+        "y": 824,
+        "width": 340,
+        "height": 40
+      }
+    ],
+    "cardStyles": [
+      {
+        "label": "Total Deaths",
+        "backgroundImage": "none",
+        "backgroundColor": "rgb(255, 255, 255)",
+        "height": 84
+      },
+      {
+        "label": "Female",
+        "backgroundImage": "none",
+        "backgroundColor": "rgb(253, 232, 239)",
+        "height": 84
+      },
+      {
+        "label": "Male",
+        "backgroundImage": "none",
+        "backgroundColor": "rgb(231, 238, 246)",
+        "height": 84
+      }
+    ],
+    "filters": {
+      "x": 25,
+      "y": 622,
+      "width": 340,
+      "height": 242
+    },
+    "stats": {
+      "x": 25,
+      "y": 336,
+      "width": 340,
+      "height": 273
+    },
+    "tableScroll": {
+      "x": 26,
+      "y": 879,
+      "width": 338,
+      "height": 373,
+      "scrollWidth": 576,
+      "clientWidth": 338,
+      "hidden": false
+    },
+    "activeSidebar": "Death",
+    "cards": [
+      {
+        "label": "Total Deaths",
+        "value": "6",
+        "box": {
+          "x": 25,
+          "y": 336,
+          "width": 340,
+          "height": 84
+        }
+      },
+      {
+        "label": "Female",
+        "value": "3",
+        "box": {
+          "x": 25,
+          "y": 431,
+          "width": 340,
+          "height": 84
+        }
+      },
+      {
+        "label": "Male",
+        "value": "3",
+        "box": {
+          "x": 25,
+          "y": 525,
+          "width": 340,
+          "height": 84
+        }
+      }
+    ]
+  }
+]

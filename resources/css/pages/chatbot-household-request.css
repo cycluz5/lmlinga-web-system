@@ -1,0 +1,501 @@
+/**
+ * Resident AI Chatbot — Household Record Access Request form.
+ * Scoped under .lml-chatbot-household-request.
+ */
+
+.lml-chatbot-household-request {
+    --lml-hh-req-gap-back-card: clamp(0.75rem, 1.2vh, 1.125rem);
+    --lml-hh-req-gap-icon-title: 0.5rem;
+    --lml-hh-req-gap-title-desc: 0.5rem;
+    --lml-hh-req-gap-desc-section: clamp(1.25rem, 2vh, 1.5rem);
+    --lml-hh-req-gap-legend-line: clamp(0.5rem, 0.8vh, 0.75rem);
+    --lml-hh-req-gap-legend-fields: clamp(1.25rem, 2vh, 1.5rem);
+    --lml-hh-req-gap-fieldsets: clamp(1.3rem, 2vh, 1.55rem);
+    --lml-hh-req-gap-label-control: 0.45rem;
+    --lml-hh-req-gap-actions-top: clamp(1.35rem, 2.2vh, 1.55rem);
+
+    min-height: 100vh;
+    background-color: #fff;
+}
+
+/*
+ * Body uses .lml-page (--lml-background mint). Override only on this view so no
+ * green strip appears above Back to chatbot or around the page edges.
+ */
+body.lml-page:has(> .lml-chatbot-household-request) {
+    background-color: #fff;
+}
+
+.lml-chatbot-household-request__inner {
+    width: min(92vw, 1080px);
+    margin-inline: auto;
+    margin-top: clamp(0.75rem, 1.8vh, 1.25rem);
+    margin-bottom: clamp(0.75rem, 1.8vh, 1.25rem);
+}
+
+.lml-chatbot-household-request__header {
+    margin-bottom: var(--lml-hh-req-gap-back-card);
+}
+
+.lml-chatbot-household-request__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-height: 44px;
+    padding: 0.35rem 0.15rem;
+    color: var(--lml-text-green);
+    font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+    font-weight: 600;
+    line-height: 1.2;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.lml-chatbot-household-request__back i {
+    font-size: 1.05rem;
+    line-height: 1;
+}
+
+.lml-chatbot-household-request__main {
+    padding: 0;
+}
+
+.lml-chatbot-household-request__card {
+    width: 100%;
+    margin: 0;
+    padding-block: clamp(1.5rem, 2.5vh, 2.25rem);
+    padding-inline: clamp(1.5rem, 4vw, 3rem);
+    border: 1px solid rgba(var(--lml-secondary-rgb), 0.42);
+    border-radius: 1.125rem;
+    background-color: #fff;
+    box-shadow: 0 10px 28px rgba(20, 90, 45, 0.12);
+}
+
+.lml-chatbot-household-request__hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: var(--lml-hh-req-gap-desc-section);
+    text-align: center;
+}
+
+.lml-chatbot-household-request__hero-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(34px, 4vw, 40px);
+    height: clamp(34px, 4vw, 40px);
+    margin-bottom: var(--lml-hh-req-gap-icon-title);
+    border-radius: 0.45rem;
+    background-color: rgba(var(--lml-soft-green-rgb), 0.35);
+    color: var(--lml-deep-green);
+    font-size: 1.15rem;
+    line-height: 1;
+}
+
+.lml-chatbot-household-request__title {
+    margin: 0 0 var(--lml-hh-req-gap-title-desc);
+    color: var(--lml-deep-green);
+    font-size: clamp(1.65rem, 2.3vw, 2.1rem);
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.lml-chatbot-household-request__intro {
+    margin: 0;
+    max-width: min(100%, 780px);
+    color: var(--lml-text-green);
+    font-size: clamp(0.95rem, 1.2vw, 1.1rem);
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+.lml-chatbot-household-request__fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    width: 100%;
+    min-width: 0;
+}
+
+.lml-chatbot-household-request__fieldset + .lml-chatbot-household-request__fieldset {
+    margin-top: var(--lml-hh-req-gap-fieldsets);
+}
+
+.lml-chatbot-household-request__legend {
+    /*
+     * Legend + float:left keeps full-width section headers with an underline row
+     * beneath the icon/title. Native <legend> width is inconsistent across browsers;
+     * do not remove this workaround without cross-browser verification.
+     */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    float: left;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    margin: 0 0 var(--lml-hh-req-gap-legend-fields);
+    padding: 0;
+    color: var(--lml-deep-green);
+    font-size: 0.92rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    line-height: 1.2;
+    text-transform: uppercase;
+}
+
+.lml-chatbot-household-request__legend-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+}
+
+.lml-chatbot-household-request__legend-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 1.75rem;
+    height: 1.75rem;
+    border: 1px solid rgba(var(--lml-secondary-rgb), 0.55);
+    border-radius: 999px;
+    background-color: #fff;
+    color: var(--lml-deep-green);
+    font-size: 0.82rem;
+    line-height: 1;
+}
+
+.lml-chatbot-household-request__legend-text {
+    flex: 0 1 auto;
+    white-space: nowrap;
+}
+
+.lml-chatbot-household-request__legend-line {
+    display: block;
+    width: 100%;
+    height: 1px;
+    margin-top: var(--lml-hh-req-gap-legend-line);
+    background-color: var(--lml-soft-green);
+}
+
+.lml-chatbot-household-request__grid {
+    clear: both;
+    display: grid;
+    row-gap: 0.85rem;
+    column-gap: 1.15rem;
+}
+
+.lml-chatbot-household-request__field .lml-form-label {
+    margin-bottom: var(--lml-hh-req-gap-label-control);
+    font-size: clamp(0.92rem, 1.05vw, 0.98rem);
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.lml-chatbot-household-request__field .lml-form-help,
+.lml-chatbot-household-request__field .lml-form-error {
+    margin-top: 0.32rem;
+    font-size: clamp(0.82rem, 0.95vw, 0.86rem);
+    line-height: 1.35;
+}
+
+.lml-chatbot-household-request__field .lml-form-help {
+    max-width: 95%;
+    color: var(--lml-text-green);
+    opacity: 1;
+}
+
+.lml-chatbot-household-request__field .lml-form-control {
+    min-height: 48px;
+    padding: 0.65rem 0.9rem;
+    font-size: clamp(0.94rem, 1.05vw, 1rem);
+    border-radius: 0.45rem;
+    border-color: rgba(var(--lml-secondary-rgb), 0.4);
+    background-color: rgba(var(--lml-soft-green-rgb), 0.22);
+}
+
+.lml-chatbot-household-request__field select.lml-form-control {
+    padding-right: 2.25rem;
+    background-position: right 0.85rem center;
+}
+
+.lml-chatbot-household-request__field .lml-form-control::placeholder {
+    color: var(--lml-text-green);
+    font-size: inherit;
+    opacity: 1;
+}
+
+.lml-chatbot-household-request__field .lml-form-control.is-invalid,
+.lml-chatbot-household-request__field .lml-form-control[aria-invalid='true'] {
+    border-color: var(--bs-danger);
+}
+
+.lml-chatbot-household-request__actions {
+    display: grid;
+    grid-template-columns: minmax(240px, 270px) minmax(280px, 320px);
+    justify-content: center;
+    gap: 1.15rem;
+    margin-top: var(--lml-hh-req-gap-actions-top);
+}
+
+.lml-chatbot-household-request__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    min-height: 50px;
+    padding: 0.7rem 1.15rem;
+    border-radius: 9999px;
+    font-size: clamp(0.94rem, 1.05vw, 1rem);
+    font-weight: 600;
+    line-height: 1;
+    text-decoration: none;
+    border: 1px solid transparent;
+}
+
+.lml-chatbot-household-request__btn--cancel {
+    background-color: #fff;
+    border-color: rgba(var(--lml-secondary-rgb), 0.62);
+    color: var(--lml-text-green);
+}
+
+.lml-chatbot-household-request__btn--cancel:hover {
+    background-color: rgba(var(--lml-soft-green-rgb), 0.35);
+    color: var(--lml-deep-green);
+}
+
+.lml-chatbot-household-request__btn--submit {
+    background-color: var(--lml-secondary);
+    color: #fff;
+}
+
+.lml-chatbot-household-request__btn--submit:hover {
+    background-color: #359649;
+    color: #fff;
+}
+
+/* ── Desktop ─────────────────────────────────────────────────── */
+
+@media (min-width: 992px) {
+    .lml-chatbot-household-request__grid--two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .lml-chatbot-household-request__grid--three {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+/* ── Tablet ──────────────────────────────────────────────────── */
+
+@media (min-width: 641px) and (max-width: 991.98px) {
+    .lml-chatbot-household-request__inner {
+        width: min(94vw, 920px);
+    }
+
+    .lml-chatbot-household-request__card {
+        padding-block: 1.35rem;
+        padding-inline: 1.65rem;
+    }
+
+    .lml-chatbot-household-request__title {
+        font-size: clamp(1.45rem, 2.5vw, 1.85rem);
+    }
+
+    .lml-chatbot-household-request__intro {
+        font-size: clamp(0.92rem, 1.6vw, 1.02rem);
+    }
+
+    .lml-chatbot-household-request__grid--two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .lml-chatbot-household-request__grid--three {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .lml-chatbot-household-request__grid--three .lml-chatbot-household-request__field:last-child {
+        grid-column: 1 / -1;
+    }
+
+    .lml-chatbot-household-request__actions {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+/* ── Mobile ──────────────────────────────────────────────────── */
+
+@media (max-width: 640px) {
+    .lml-chatbot-household-request__inner {
+        width: calc(100% - 1.25rem);
+        margin-top: 0.65rem;
+        margin-bottom: 0.85rem;
+    }
+
+    .lml-chatbot-household-request__back {
+        min-height: 44px;
+        font-size: 0.95rem;
+    }
+
+    .lml-chatbot-household-request__card {
+        padding: 1.25rem 1.1rem 1.4rem;
+        border-radius: 1rem;
+    }
+
+    .lml-chatbot-household-request__hero-icon {
+        width: 34px;
+        height: 34px;
+        font-size: 1rem;
+    }
+
+    .lml-chatbot-household-request__title {
+        font-size: clamp(1.35rem, 5.5vw, 1.55rem);
+    }
+
+    .lml-chatbot-household-request__intro {
+        font-size: clamp(0.9rem, 3.8vw, 1rem);
+        line-height: 1.45;
+    }
+
+    .lml-chatbot-household-request__legend {
+        font-size: 0.82rem;
+    }
+
+    .lml-chatbot-household-request__legend-heading {
+        gap: 0.5rem;
+    }
+
+    .lml-chatbot-household-request__legend-icon {
+        width: 1.6rem;
+        height: 1.6rem;
+        font-size: 0.75rem;
+    }
+
+    .lml-chatbot-household-request__legend-text {
+        white-space: normal;
+    }
+
+    .lml-chatbot-household-request__grid--two,
+    .lml-chatbot-household-request__grid--three {
+        grid-template-columns: 1fr;
+        row-gap: 0.8rem;
+        column-gap: 0;
+    }
+
+    .lml-chatbot-household-request__field .lml-form-label {
+        font-size: 0.92rem;
+    }
+
+    .lml-chatbot-household-request__field .lml-form-control {
+        min-height: 44px;
+        font-size: 0.95rem;
+    }
+
+    .lml-chatbot-household-request__actions {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+
+    .lml-chatbot-household-request__btn {
+        width: 100%;
+        min-height: 46px;
+    }
+}
+
+@media (max-width: 360px) {
+    .lml-chatbot-household-request__inner {
+        width: calc(100% - 1rem);
+    }
+
+    .lml-chatbot-household-request__card {
+        padding-inline: 0.95rem;
+    }
+
+    .lml-chatbot-household-request__legend-text {
+        white-space: normal;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .lml-chatbot-household-request__btn {
+        transition: none;
+    }
+}
+
+.lml-hh-status {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.75rem;
+}
+
+.lml-hh-status--inline {
+    margin-bottom: 0.5rem;
+}
+
+.lml-hh-status__badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2rem;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.8125rem;
+    font-weight: 700;
+}
+
+.lml-hh-status__badge--verifying {
+    background-color: #eff6ff;
+    color: #1d4ed8;
+}
+
+.lml-hh-status__badge--approved {
+    background-color: #ecfdf3;
+    color: #166534;
+}
+
+.lml-hh-status__badge--rejected,
+.lml-hh-status__badge--failed-1,
+.lml-hh-status__badge--failed-2,
+.lml-hh-status__badge--failed-3,
+.lml-hh-status__badge--daily-limit {
+    background-color: #fef2f2;
+    color: #991b1b;
+}
+
+.lml-hh-status__note {
+    margin: 0;
+    max-width: 40rem;
+    color: #4b5563;
+    font-size: 0.875rem;
+    line-height: 1.45;
+}
+
+.lml-hh-status__blocked {
+    margin: 0;
+    color: #991b1b;
+    font-weight: 600;
+}
+
+.lml-hh-status__pending {
+    width: 1.75rem;
+    height: 1.75rem;
+    border: 3px solid rgba(29, 78, 216, 0.2);
+    border-top-color: #1d4ed8;
+    border-radius: 50%;
+    animation: lml-hh-spin 0.8s linear infinite;
+}
+
+@keyframes lml-hh-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .lml-hh-status__pending {
+        animation: none;
+    }
+}

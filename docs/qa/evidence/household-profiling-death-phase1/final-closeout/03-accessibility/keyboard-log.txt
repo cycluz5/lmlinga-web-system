@@ -1,0 +1,81 @@
+NO RECORD: mode=empty; backReached=true; Record CTA reached=true; CTA focusVisible=true
+CREATE fields reachable: {"save":true,"cause":true,"date":true,"chooseFile":true}
+VIEW: readonly not inputs; editReached=true; readonlyFocused=false
+EDIT fields reachable: {"save":true,"cause":true,"date":true,"chooseFile":true}
+
+{
+  "saveFocusStyles": {
+    "color": "rgb(255, 255, 255)",
+    "background": "rgb(15, 81, 50)",
+    "outline": "rgb(34, 197, 94) solid 2px",
+    "outlineWidth": "2px",
+    "boxShadow": "none"
+  },
+  "editFocusStyles": {
+    "color": "rgb(255, 255, 255)",
+    "background": "rgb(15, 81, 50)",
+    "outline": "rgb(34, 197, 94) solid 2px",
+    "outlineWidth": "2px",
+    "boxShadow": "none"
+  },
+  "noRecord": {
+    "steps": [
+      {
+        "phase": "back-focused",
+        "tag": "a",
+        "className": "lml-death__back lml-focus-ring",
+        "outlineWidth": "2px",
+        "outline": "rgb(34, 197, 94) solid 2px"
+      },
+      {
+        "tag": "a",
+        "id": null,
+        "className": "lml-death__btn lml-death__btn--outline lml-focus-ring",
+        "dataAttrs": "data-death-record-cta",
+        "text": "Record death information",
+        "outline": "rgb(20, 108, 46) solid 2px",
+        "outlineWidth": "2px",
+        "boxShadow": "none"
+      }
+    ],
+    "mode": "empty",
+    "backReached": true,
+    "backFocusVisible": true,
+    "recordCtaReached": true,
+    "recordCtaFocusVisible": true
+  },
+  "create": {
+    "fields": {
+      "save": true,
+      "cause": true,
+      "date": true,
+      "chooseFile": true
+    }
+  },
+  "view": {
+    "readonlyCount": 2,
+    "readonlyTags": [
+      "p",
+      "p"
+    ],
+    "readonlyTabindex": [
+      null,
+      null
+    ],
+    "readonlyContentEditable": [
+      null,
+      null
+    ],
+    "editPresent": true,
+    "editReached": true,
+    "readonlyFocused": false
+  },
+  "edit": {
+    "fields": {
+      "save": true,
+      "cause": true,
+      "date": true,
+      "chooseFile": true
+    }
+  }
+}

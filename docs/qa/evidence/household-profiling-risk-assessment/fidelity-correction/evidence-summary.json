@@ -1,0 +1,48 @@
+{
+  "module": "Household Profiling — Risk Assessment Figma Fidelity Correction",
+  "captured_at": "2026-08-08",
+  "server": "http://127.0.0.1:8765",
+  "scoped_greens": {
+    "--ra-accent": "#51c269",
+    "--ra-accent-mid": "#3da653",
+    "--ra-accent-text": "#2f9e44",
+    "--ra-table-header": "#3da653",
+    "note": "Scoped under .lml-risk-assess only; global tokens unchanged"
+  },
+  "desktop_fidelity": {
+    "A_history": "RA-F-A-1440-history.png",
+    "B_date_dropdown_open": "RA-F-B-1440-date-dropdown-open.png",
+    "C_step1": "RA-F-C-1440-step1.png",
+    "D_step2": "RA-F-D-1440-step2.png",
+    "E_step3": "RA-F-E-1440-step3.png",
+    "F_step4": "RA-F-F-1440-step4.png",
+    "G_step5": "RA-F-G-1440-step5.png"
+  },
+  "responsive": {
+    "RA-E1_1440x900": ["RA-F-A-1440-history.png", "RA-F-C-1440-step1.png", "RA-F-G-1440-step5.png"],
+    "RA-E2_1366x768": {"file": "RA-F-E2-1366-history.png", "overflow": false},
+    "RA-E3_820x1180": {"file": "RA-F-E3-820-history.png", "overflow": false},
+    "RA-E4_768x1024": {"file": "RA-F-E4-768-history.png"},
+    "RA-E5_390x844": {"file": "RA-F-E5-390-history.png"},
+    "RA-E6_360x800": {"files": ["RA-F-E6-360-history.png", "RA-F-E6-360-step1.png"]}
+  },
+  "corrections": [
+    "Softer RA-scoped greens",
+    "History heading icon",
+    "Compact Date filter with All Dates inside; Clear removed",
+    "Increased option-row vertical padding",
+    "Removed developer-facing UI copy"
+  ],
+  "tests": {
+    "phpunit": {
+      "command": "php artisan test --filter=\"HouseholdProfilingRiskAssessmentTest|HouseholdProfilingHouseholdMemberViewTest\"",
+      "exit_code": 0,
+      "passed": 21,
+      "assertions": 154
+    },
+    "build": {
+      "command": "npm run build",
+      "exit_code": 0
+    }
+  }
+}

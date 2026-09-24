@@ -1,0 +1,81 @@
+{
+  "overflow": [
+    {
+      "page": "resident",
+      "viewport": "1440x900",
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflow": false
+    },
+    {
+      "page": "resident",
+      "viewport": "820x1180",
+      "scrollWidth": 820,
+      "clientWidth": 820,
+      "overflow": false
+    },
+    {
+      "page": "resident",
+      "viewport": "390x844",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflow": false
+    }
+  ],
+  "measure1440": {
+    "resident": {
+      "back": null,
+      "add": {
+        "x": 1169,
+        "y": 143,
+        "width": 83,
+        "height": 40,
+        "right": 1253
+      },
+      "export": {
+        "x": 1260,
+        "y": 143,
+        "width": 133,
+        "height": 40,
+        "right": 1393
+      },
+      "actionRow": {
+        "x": 327,
+        "y": 143,
+        "width": 1065,
+        "height": 40,
+        "right": 1393
+      },
+      "firstCard": {
+        "x": 327,
+        "y": 196,
+        "width": 203,
+        "height": 72,
+        "right": 531
+      },
+      "lastCard": {
+        "x": 1189,
+        "y": 196,
+        "width": 203,
+        "height": 72,
+        "right": 1393
+      },
+      "filters": {
+        "x": 327,
+        "y": 282,
+        "width": 1065,
+        "height": 38,
+        "right": 1393
+      },
+      "table": {
+        "x": 327,
+        "y": 333,
+        "width": 1065,
+        "height": 257,
+        "right": 1393
+      },
+      "addExportSameRow": true,
+      "backAddSameRow": null
+    }
+  }
+}

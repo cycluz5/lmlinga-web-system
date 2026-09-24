@@ -1,0 +1,48 @@
+﻿Command: php artisan test --filter="HealthRecordsFamilyPlanningTest|HealthRecordsNonResidentFamilyPlanningTest"
+Working directory: lmlingaFinal
+Exit code: 0
+Tests: 24 passed
+Assertions: 315
+Duration: 13.52s
+Captured: 2026-08-16 (packaging session, fresh execution)
+
+----- complete terminal output -----
+
+   WARN  Metadata found in doc-comment for method Tests\Feature\HouseholdWaterSupplyStep3Test::test_each_sanitary_toilet_choice_derives_sanitary(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Feature\HouseholdWaterSupplyStep3Test::test_each_unsanitary_toilet_choice_derives_unsanitary(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   WARN  Metadata found in doc-comment for method Tests\Feature\SpotMappingHandoffWorkflowTest::test_legitimate_plot_handoff_workflow_per_role(). Metadata in doc-comments is deprecated and will no longer be supported in PHPUnit 12. Update your test code to use attributes instead.
+
+   PASS  Tests\Feature\HealthRecordsFamilyPlanningTest
+  Γ£ô family planning route resolves                                                                               3.02s  
+  Γ£ô family planning page renders successfully                                                                    0.54s  
+  Γ£ô summary cards render from fixture                                                                            0.05s  
+  Γ£ô filter controls render                                                                                       0.05s  
+  Γ£ô table headers and fixture rows render                                                                        0.05s  
+  Γ£ô add and export controls exist                                                                                0.04s  
+  Γ£ô sidebar family planning is real link and active                                                              0.05s  
+  Γ£ô summary counts match fixture rows                                                                            0.03s  
+  Γ£ô remains independent of household profiling family planning                                                   0.02s  
+
+   PASS  Tests\Feature\HealthRecordsNonResidentFamilyPlanningTest
+  Γ£ô non resident routes resolve                                                                                  0.59s  
+  Γ£ô listing renders with filters and table                                                                       0.06s  
+  Γ£ô listing header actions include back add export                                                               0.05s  
+  Γ£ô sidebar family planning active on listing                                                                    0.05s  
+  Γ£ô add new client screen renders                                                                                0.29s  
+  Γ£ô client record renders                                                                                        0.09s  
+  Γ£ô add visit screen renders                                                                                     0.05s  
+  Γ£ô edit visit screen renders                                                                                    0.05s  
+  Γ£ô frozen summary does not link to non resident listing                                                         0.05s  
+  Γ£ô household profiling family planning remains separate                                                         0.02s  
+  Γ£ô listing actions column links per client                                                                      0.22s  
+  Γ£ô listing edit targets latest visit for client with visits                                                     0.06s  
+  Γ£ô client details add visit link uses selected client                                                           0.06s  
+  Γ£ô edit visit renders selected client context                                                                   0.08s  
+  Γ£ô client details sidebar family planning active                                                                0.05s  
+
+  Tests:    24 passed (315 assertions)
+  Duration: 13.52s
+
+

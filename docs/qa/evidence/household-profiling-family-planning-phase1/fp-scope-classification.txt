@@ -1,0 +1,36 @@
+﻿FAMILY PLANNING PHASE 1 — SCOPE CLASSIFICATION
+Generated: 2026-08-09T13:29:05.3286502+08:00
+
+A. Family Planning-specific files
+- app/Support/DemoFamilyPlanning.php (new)
+- resources/demo/family-planning.php (new)
+- resources/css/pages/family-planning.css (new)
+- resources/js/pages/family-planning.js (new)
+- resources/views/pages/household-profiling/family-planning-history.blade.php (new)
+- resources/views/pages/household-profiling/family-planning-form.blade.php (new)
+- resources/views/pages/household-profiling/family-planning-show.blade.php (new)
+- resources/views/pages/household-profiling/partials/family-planning-member-card.blade.php (new)
+- tests/Feature/HouseholdProfilingFamilyPlanningTest.php (new)
+- tests/js/family-planning.test.mjs (new)
+- docs/qa/evidence/household-profiling-family-planning-phase1/** (evidence only)
+
+B. Shared files changed only for FP integration (inspect hunks)
+- routes/web.php — FP route family added (also contains other prior modules)
+- resources/views/pages/household-profiling/member-view.blade.php — FP link replaces stub
+- resources/js/pages/household-member-view.js — FP toast branch removed
+- resources/js/app.js — import family-planning
+- resources/css/app.css — import family-planning.css
+- tests/Feature/HouseholdProfilingHouseholdMemberViewTest.php — FP link assertions
+- package.json — test:js includes family-planning.test.mjs
+
+C. Unrelated dirty working-tree files (NOT Family Planning Phase 1)
+- Risk Assessment module files (DemoRiskAssessment, RA views/css/js/tests/controller/request)
+- Health Records Child Care / Vitamin A / Deworming / Operation Timbang
+- School-Based Immunization / Child Nutrition / sidebar collapse work
+- Birth history / dashboard CSS / households demo / UiRole / other docs/qa evidence
+(See fp-git-status.txt for full dirty tree.)
+
+D. Risk Assessment production-file change check for THIS evidence pass
+- NO production source modifications were made during this evidence-closure pass.
+- Evidence-only scripts/logs/screenshots were written under docs/qa/evidence/household-profiling-family-planning-phase1/
+- Risk Assessment files remain present in the dirty working tree from prior workstreams; they were not edited in this pass.

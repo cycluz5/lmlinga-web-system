@@ -1,0 +1,28 @@
+﻿# Health Records — Maternal Care routes excerpt from routes/web.php
+# Lines 948-976 (repository as packaged). Household Profiling maternal-care
+# routes exist separately (~615-709) and are independent of this listing.
+
+    Route::get('/health-records/maternal', [
+        \App\Http\Controllers\HealthRecords\MaternalSummaryController::class,
+        'index',
+    ])->name('health-records.maternal.index');
+
+    Route::get('/health-records/maternal/non-residents', [
+        \App\Http\Controllers\HealthRecords\NonResidentMaternalController::class,
+        'index',
+    ])->name('health-records.maternal.non-residents.index');
+
+    Route::get('/health-records/maternal/non-residents/create', [
+        \App\Http\Controllers\HealthRecords\NonResidentMaternalController::class,
+        'create',
+    ])->name('health-records.maternal.non-residents.create');
+
+    Route::post('/health-records/maternal/non-residents', [
+        \App\Http\Controllers\HealthRecords\NonResidentMaternalController::class,
+        'store',
+    ])->name('health-records.maternal.non-residents.store');
+
+    Route::get('/health-records/maternal/non-residents/{clientKey}', [
+        \App\Http\Controllers\HealthRecords\NonResidentMaternalController::class,
+        'show',
+    ])->where('clientKey', '[A-Za-z0-9\-]+')->name('health-records.maternal.non-residents.show');
