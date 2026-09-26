@@ -51,4 +51,21 @@ return [
         'timeout' => (int) env('SEMAPHORE_HTTP_TIMEOUT', 10),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Ollama (chatbot embeddings + chat completion)
+    |--------------------------------------------------------------------------
+    |
+    | Ollama runs inside the same container as the app (see Dockerfile /
+    | docker/entrypoint.sh), listening on localhost.
+    |
+    */
+    'ollama' => [
+        'base_url' => env('OLLAMA_BASE_URL', 'http://127.0.0.1:11434'),
+        // When set and the chat model ends in "-cloud", requests go straight
+        // to ollama.com's hosted API instead of the local server — no
+        // `ollama signin` needed. Generate at https://ollama.com/settings/keys.
+        'api_key' => env('OLLAMA_API_KEY'),
+    ],
+
 ];

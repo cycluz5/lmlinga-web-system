@@ -12,7 +12,39 @@ use Illuminate\Support\Facades\Log;
 
 class RagService
 {
-    protected string $ollamaBaseUrl = 'http://127.0.0.1:11434';
+    protected string $ollamaBaseUrl;
+    protected ?string $ollamaApiKey;
+    protected string $ollamaCloudUrl = 'https://ollama.com';
+
+    public function __construct()
+    {
+        $this->ollamaBaseUrl = config('services.ollama.base_url', 'http://127.0.0.1:11434');
+        $this->ollamaApiKey = config('services.ollama.api_key');
+    }
+
+    /**
+     * Cloud chat models (e.g. "gemma4:31b-cloud") are served directly by
+     * ollama.com when an API key is configured, so a local `ollama signin`
+     * is never required. Non-cloud models still go through the local server.
+     */
+    protected function usesOllamaCloud(): bool
+    {
+        return str_ends_with($this->chatModel, '-cloud')
+            && $this->ollamaApiKey !== null
+            && $this->ollamaApiKey !== '';
+    }
+
+    protected function ollamaChatRequest(array $payload): \Illuminate\Http\Client\Response
+    {
+        if ($this->usesOllamaCloud()) {
+            return Http::withToken($this->ollamaApiKey)
+                ->timeout(180)
+                ->post("{$this->ollamaCloudUrl}/api/chat", $payload);
+        }
+
+        return Http::timeout(180)->post("{$this->ollamaBaseUrl}/api/chat", $payload);
+    }
+
     protected string $embeddingModel = 'nomic-embed-text';
     protected string $chatModel = 'gemma4:31b-cloud';
 
@@ -1819,7 +1851,7 @@ $ollamaOptions = [
     ],
 ];
 
-$response = Http::timeout(180)->post("{$this->ollamaBaseUrl}/api/chat", $ollamaOptions);
+$response = $this->ollamaChatRequest($ollamaOptions);
 $response->throw();
 $rawContent = $response->json('message.content');
 $structured = $this->formatStructuredAnswer($rawContent, $question, $language);
@@ -2361,20 +2393,17 @@ protected function regenerateBikolFromContext(
         ],
     ];
 
-    $response = Http::timeout(180)->post(
-        "{$this->ollamaBaseUrl}/api/chat",
-        [
-            'model' => $this->chatModel,
-            'messages' => $messages,
-            'stream' => false,
-            'format' => 'json',
-            'keep_alive' => '30m',
-            'options' => [
-                'temperature' => 0.0,
-                'num_predict' => 700,
-            ],
-        ]
-    );
+    $response = $this->ollamaChatRequest([
+        'model' => $this->chatModel,
+        'messages' => $messages,
+        'stream' => false,
+        'format' => 'json',
+        'keep_alive' => '30m',
+        'options' => [
+            'temperature' => 0.0,
+            'num_predict' => 700,
+        ],
+    ]);
 
     $response->throw();
 

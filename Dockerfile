@@ -3,12 +3,13 @@
 # ---------------------------------------------------------------------------
 # Stage 1: build front-end assets (Vite -> public/build, service worker -> public/sw.js)
 # ---------------------------------------------------------------------------
-FROM node:20-alpine AS assets
+FROM node:20.20-alpine AS assets
 
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm ci
+RUN --mount=type=cache,target=/root/.npm \
+    npm ci
 
 COPY vite.config.js ./
 COPY resources ./resources
@@ -18,12 +19,13 @@ RUN npm run build
 # ---------------------------------------------------------------------------
 # Stage 2: PHP dependencies
 # ---------------------------------------------------------------------------
-FROM composer:2 AS vendor
+FROM composer:2.10 AS vendor
 
 WORKDIR /app
 
 COPY composer.json composer.lock ./
-RUN composer install \
+RUN --mount=type=cache,target=/tmp/composer-cache \
+    COMPOSER_CACHE_DIR=/tmp/composer-cache composer install \
         --no-dev \
         --no-interaction \
         --no-scripts \
@@ -32,17 +34,29 @@ RUN composer install \
         --ignore-platform-reqs
 
 # ---------------------------------------------------------------------------
-# Stage 3: runtime (PHP 8.2 + Apache)
+# Stage 3: Ollama binary (copied into the runtime image below)
 # ---------------------------------------------------------------------------
-FROM php:8.2-apache AS app
+FROM ollama/ollama:0.34.4 AS ollama-bin
+
+# ---------------------------------------------------------------------------
+# Stage 4: runtime (PHP 8.2 + Apache + Ollama, single container)
+# ---------------------------------------------------------------------------
+FROM php:8.2.33-apache AS app
 
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public \
-    COMPOSER_ALLOW_SUPERUSER=1
+    COMPOSER_ALLOW_SUPERUSER=1 \
+    OLLAMA_MODELS=/var/lib/ollama \
+    OLLAMA_HOST=127.0.0.1:11434
+
+COPY --from=ollama-bin /bin/ollama /usr/local/bin/ollama
+RUN mkdir -p "$OLLAMA_MODELS"
 
 # PHP extensions: pdo_mysql (DB), gd (PDF image embedding), intl, bcmath, zip, opcache.
 # mbstring, openssl and zlib (gzcompress) ship with the base image.
+# Remove the installer + apt lists afterward — only the compiled .so files are needed at runtime.
 ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
-RUN install-php-extensions pdo_mysql gd intl bcmath zip opcache pcntl
+RUN install-php-extensions pdo_mysql gd intl bcmath zip opcache pcntl \
+    && rm -rf /usr/local/bin/install-php-extensions /var/lib/apt/lists/* /tmp/*
 
 RUN sed -ri 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf \
     && sed -ri 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf \
@@ -50,7 +64,7 @@ RUN sed -ri 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-avail
     && mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 COPY docker/php.ini "$PHP_INI_DIR/conf.d/zz-app.ini"
-COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+COPY --from=vendor /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 

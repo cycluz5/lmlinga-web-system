@@ -9,10 +9,13 @@ services:
       DB_HOST: db
       DB_PORT: 3306
       RUN_MIGRATIONS: ${RUN_MIGRATIONS:-false}
+      OLLAMA_BASE_URL: http://127.0.0.1:11434
     ports:
       - "${APP_PORT:-8080}:80"
     volumes:
       - app-storage:/var/www/html/storage
+      - ollama-data:/var/lib/ollama
+      - ollama-home:/root/.ollama
     depends_on:
       db:
         condition: service_healthy
@@ -38,3 +41,5 @@ services:
 volumes:
   app-storage:
   db-data:
+  ollama-data:
+  ollama-home:
