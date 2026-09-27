@@ -173,9 +173,10 @@ class DeathRecordsErdModeTest extends TestCase
         $this->assertSame($staff['admin']->id, (int) $row->verified_by);
         $this->assertNotNull($row->verified_at);
         $this->assertTrue(ResidentVitalStatus::isDeceased('HH-003', $memberId));
-        if (Schema::hasTable('resident_statuses')) {
-            $this->assertSame(0, DB::table('resident_statuses')->where('status', 'deceased')->count());
-        }
+        $status = DB::table('resident_statuses')->where('resident_id', $request->resident_id)->first();
+        $this->assertNotNull($status);
+        $this->assertSame('Deceased', $status->status);
+        $this->assertSame($request->id, (int) $status->death_record_id);
     }
 
     public function test_rejection_stores_reason_and_leaves_resident_active(): void

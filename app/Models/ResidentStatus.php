@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\DeathRecordsErdMode;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -17,8 +18,17 @@ class ResidentStatus extends Model
         'resident_id',
         'status',
         'death_request_id',
+        'death_record_id',
         'recorded_at',
     ];
+
+    /**
+     * ERD mode: resident_status_id PK, FKs to residents and death_records.
+     */
+    public function getKeyName(): string
+    {
+        return DeathRecordsErdMode::isActive() ? 'resident_status_id' : 'id';
+    }
 
     /**
      * @return array<string, string>
@@ -33,7 +43,7 @@ class ResidentStatus extends Model
 
     public function isDeceased(): bool
     {
-        return $this->status === self::STATUS_DECEASED;
+        return strcasecmp((string) $this->status, self::STATUS_DECEASED) === 0;
     }
 
     /**
@@ -41,7 +51,10 @@ class ResidentStatus extends Model
      */
     public function deathRequest(): BelongsTo
     {
-        return $this->belongsTo(DeathRequest::class);
+        return $this->belongsTo(
+            DeathRequest::class,
+            DeathRecordsErdMode::isActive() ? 'death_record_id' : 'death_request_id'
+        );
     }
 
     /**
