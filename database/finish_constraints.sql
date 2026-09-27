@@ -44,7 +44,7 @@ ALTER TABLE `resident_accounts`
 ALTER TABLE `resident_password_resets`
   ADD CONSTRAINT `fk_residentreset_account` FOREIGN KEY (`account_id`) REFERENCES `resident_accounts` (`account_id`);
 
--- (skipped) resident_statuses -> death_requests: that table does not exist in Final_DB_9-24-26.sql
+-- resident_statuses: rebuilt with FKs to residents / death_records in erd_schema_fixes.sql
 
 --
 -- Constraints for table `risk_assessment`
