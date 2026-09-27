@@ -26,7 +26,7 @@ return new class extends Migration
             
             $table->foreignId('resident_id')
                 ->unique()
-                ->constrained('residents', 'resident_id')
+                ->constrained('residents')
                 ->restrictOnDelete();
             $table->json('selected_vaccine_types')->nullable();
             $table->text('remarks')->nullable();

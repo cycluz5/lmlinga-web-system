@@ -11,6 +11,10 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        // Production runs behind a host reverse proxy (Caddy) that terminates TLS;
+        // the app port is bound to 127.0.0.1, so only that proxy can reach it.
+        $middleware->trustProxies(at: '*');
+
         $middleware->prepend(\App\Http\Middleware\DecodeOpaqueUrl::class);
 
         $middleware->web(prepend: [
