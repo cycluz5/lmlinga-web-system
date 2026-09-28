@@ -20,6 +20,30 @@ CREATE TABLE `adult_immunization` (
   CONSTRAINT `fk_adult_imm_resident` FOREIGN KEY (`resident_id`) REFERENCES `residents` (`resident_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `announcement_age_presets`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `announcement_age_presets` (
+  `announcement_age_preset_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `announcement_id` bigint(20) unsigned NOT NULL,
+  `preset` varchar(32) NOT NULL,
+  PRIMARY KEY (`announcement_age_preset_id`),
+  UNIQUE KEY `uq_announcement_age_preset` (`announcement_id`,`preset`),
+  CONSTRAINT `announcement_age_presets_announcement_id_foreign` FOREIGN KEY (`announcement_id`) REFERENCES `announcements` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `announcement_zones`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `announcement_zones` (
+  `announcement_zone_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `announcement_id` bigint(20) unsigned NOT NULL,
+  `zone` varchar(64) NOT NULL,
+  PRIMARY KEY (`announcement_zone_id`),
+  UNIQUE KEY `uq_announcement_zone` (`announcement_id`,`zone`),
+  CONSTRAINT `announcement_zones_announcement_id_foreign` FOREIGN KEY (`announcement_id`) REFERENCES `announcements` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `announcements`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -31,15 +55,10 @@ CREATE TABLE `announcements` (
   `event_time` time DEFAULT NULL,
   `place` varchar(120) DEFAULT NULL,
   `target_group` varchar(32) NOT NULL,
-  `age_presets` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`age_presets`)),
   `age_min_months` smallint(5) unsigned DEFAULT NULL,
   `age_max_months` smallint(5) unsigned DEFAULT NULL,
-  `zone_mode` varchar(16) NOT NULL,
-  `zones` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`zones`)),
-  `audience_label` varchar(255) NOT NULL,
   `estimated_reach` int(10) unsigned DEFAULT NULL,
   `posted_by_user_id` bigint(20) unsigned DEFAULT NULL,
-  `posted_by_name` varchar(120) NOT NULL,
   `posted_by_role` varchar(16) NOT NULL,
   `posted_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   `created_at` timestamp NULL DEFAULT NULL,
@@ -617,18 +636,18 @@ CREATE TABLE `notifications` (
   `title` varchar(150) NOT NULL,
   `message` text DEFAULT NULL,
   `recipient_context` text DEFAULT NULL,
-  `place` varchar(120) DEFAULT NULL,
-  `event_date` date DEFAULT NULL,
-  `event_time` time DEFAULT NULL,
   `related_request_id` bigint(20) unsigned DEFAULT NULL,
   `related_conversation_id` bigint(20) unsigned DEFAULT NULL,
+  `related_announcement_id` bigint(20) unsigned DEFAULT NULL,
   `is_read` tinyint(1) NOT NULL DEFAULT 0,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`notification_id`),
   KEY `fk_notif_account` (`account_id`),
   KEY `fk_notif_request` (`related_request_id`),
   KEY `fk_notif_conv` (`related_conversation_id`),
+  KEY `fk_notif_announcement` (`related_announcement_id`),
   CONSTRAINT `fk_notif_account` FOREIGN KEY (`account_id`) REFERENCES `resident_accounts` (`account_id`),
+  CONSTRAINT `fk_notif_announcement` FOREIGN KEY (`related_announcement_id`) REFERENCES `announcements` (`id`) ON DELETE SET NULL,
   CONSTRAINT `fk_notif_conv` FOREIGN KEY (`related_conversation_id`) REFERENCES `chatbot_conversations` (`conversation_id`),
   CONSTRAINT `fk_notif_request` FOREIGN KEY (`related_request_id`) REFERENCES `record_requests` (`request_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -804,7 +823,8 @@ CREATE TABLE `record_request_otps` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`otp_id`),
-  KEY `fk_record_request_otps_request_id` (`request_id`)
+  KEY `fk_record_request_otps_request_id` (`request_id`),
+  CONSTRAINT `fk_record_request_otps_request_id` FOREIGN KEY (`request_id`) REFERENCES `record_requests` (`request_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `record_requests`;
@@ -1212,7 +1232,6 @@ CREATE TABLE `worker_appointments` (
   `user_id` bigint(20) unsigned NOT NULL,
   `role` enum('BHW','BNS','BSPO','Admin') NOT NULL,
   `assigned_barangay` varchar(100) DEFAULT NULL,
-  `assigned_zone` varchar(20) DEFAULT NULL,
   `date_appointed` date DEFAULT NULL,
   `end_of_appointment` date DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -1287,3 +1306,7 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (55,'2026_09_28_140
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (56,'2026_09_28_150000_create_maternal_trans_outs_table',3);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (57,'2026_09_28_160000_add_cpab_to_child_immunization_header',4);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (58,'2026_09_29_100000_normalize_child_immunization_header',5);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (59,'2026_09_29_110000_normalize_announcement_audience',6);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (60,'2026_09_29_120000_link_notifications_to_announcements',6);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (61,'2026_09_29_130000_add_record_request_otps_request_foreign_key',7);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (62,'2026_09_29_140000_drop_worker_appointments_assigned_zone',7);

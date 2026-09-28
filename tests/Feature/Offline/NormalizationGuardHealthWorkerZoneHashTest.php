@@ -11,6 +11,7 @@ use App\Support\StaffRole;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Tests\Support\InteractsWithOfflineSync;
+use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
 /**
@@ -61,15 +62,14 @@ class NormalizationGuardHealthWorkerZoneHashTest extends TestCase
         $this->assertSame('Zone 2', (string) $this->appointment($worker)->assigned_zone, 'Scalar holds the primary (first) zone.');
     }
 
-    public function test_changing_only_the_scalar_assigned_zone_does_not_change_the_hash(): void
+    public function test_hash_depends_only_on_the_zone_list(): void
     {
+        // The scalar worker_appointments.assigned_zone copy was dropped (3NF), so the
+        // zone list in worker_appointment_zones is the only zone input to the hash.
+        $this->assertFalse(Schema::hasColumn('worker_appointments', 'assigned_zone'));
+
         $worker = $this->seedWorker();
         $before = OfflineFieldHasher::healthWorker($worker->fresh());
-
-        $appointment = $this->appointment($worker);
-        DB::table($appointment->getTable())
-            ->where($appointment->getKeyName(), $appointment->getKey())
-            ->update(['assigned_zone' => 'Zone 5']);
 
         $this->assertSame($before, OfflineFieldHasher::healthWorker($worker->fresh()));
     }

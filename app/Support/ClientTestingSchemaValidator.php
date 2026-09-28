@@ -26,7 +26,7 @@ final class ClientTestingSchemaValidator
             'user_id', 'first_name', 'last_name', 'email', 'username', 'password', 'status',
         ]));
         $errors = array_merge($errors, self::requireColumns('worker_appointments', [
-            'user_id', 'role', 'assigned_barangay', 'assigned_zone', 'date_appointed', 'end_of_appointment',
+            'user_id', 'role', 'assigned_barangay', 'date_appointed', 'end_of_appointment',
         ]));
         $errors = array_merge($errors, self::requireColumns('households', [
             'household_id', 'household_no', 'purok', 'latitude', 'longitude', 'household_type', 'date_registered',

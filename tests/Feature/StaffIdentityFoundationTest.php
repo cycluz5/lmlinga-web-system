@@ -368,11 +368,14 @@ class StaffIdentityFoundationTest extends TestCase
 
         $this->assertTrue(Schema::hasTable('worker_appointments'));
         foreach ([
-            'user_id', 'role', 'assigned_barangay', 'assigned_zone',
+            'user_id', 'role', 'assigned_barangay',
             'date_appointed', 'end_of_appointment', 'is_current',
         ] as $column) {
             $this->assertTrue(Schema::hasColumn('worker_appointments', $column), "Missing worker_appointments.{$column}");
         }
+        // Zones live only in worker_appointment_zones (3NF).
+        $this->assertFalse(Schema::hasColumn('worker_appointments', 'assigned_zone'));
+        $this->assertTrue(Schema::hasTable('worker_appointment_zones'));
 
         $driver = Schema::getConnection()->getDriverName();
         if (in_array($driver, ['mysql', 'mariadb'], true)) {

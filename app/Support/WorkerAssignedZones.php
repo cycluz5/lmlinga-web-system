@@ -76,7 +76,9 @@ final class WorkerAssignedZones
      */
     public static function backfillPivotFromScalarAppointments(): int
     {
-        if (! Schema::hasTable('worker_appointments') || ! Schema::hasTable('worker_appointment_zones')) {
+        if (! Schema::hasTable('worker_appointments')
+            || ! Schema::hasTable('worker_appointment_zones')
+            || ! Schema::hasColumn('worker_appointments', 'assigned_zone')) {
             return 0;
         }
 

@@ -374,30 +374,43 @@ final class ClientTestingProvisioner
             ->orderByDesc('date_appointed')
             ->first();
 
+        // The 3NF schema keeps zones only in worker_appointment_zones.
+        $scalarZone = UserManagementErdMode::appointmentsStoreScalarZone()
+            ? ['assigned_zone' => $defaults['assigned_zone']]
+            : [];
+
         if ($open === null) {
-            DB::table('worker_appointments')->insert([
+            $appointmentId = DB::table('worker_appointments')->insertGetId([
                 'user_id' => $userId,
                 'role' => $storedRole,
                 'assigned_barangay' => $defaults['assigned_barangay'],
-                'assigned_zone' => $defaults['assigned_zone'],
                 'date_appointed' => $defaults['date_appointed'],
                 'end_of_appointment' => null,
                 'created_at' => now(),
                 'updated_at' => now(),
-            ]);
+            ] + $scalarZone, $appointmentKey);
+        } else {
+            $appointmentId = $open->{$appointmentKey};
 
-            return;
+            DB::table('worker_appointments')
+                ->where($appointmentKey, $appointmentId)
+                ->update([
+                    'role' => $storedRole,
+                    'assigned_barangay' => $defaults['assigned_barangay'],
+                    'date_appointed' => $defaults['date_appointed'],
+                    'updated_at' => now(),
+                ] + $scalarZone);
         }
 
-        DB::table('worker_appointments')
-            ->where($appointmentKey, $open->{$appointmentKey})
-            ->update([
-                'role' => $storedRole,
-                'assigned_barangay' => $defaults['assigned_barangay'],
+        if ($scalarZone === [] && Schema::hasTable('worker_appointment_zones')) {
+            DB::table('worker_appointment_zones')->where('appointment_id', $appointmentId)->delete();
+            DB::table('worker_appointment_zones')->insert([
+                'appointment_id' => $appointmentId,
                 'assigned_zone' => $defaults['assigned_zone'],
-                'date_appointed' => $defaults['date_appointed'],
+                'created_at' => now(),
                 'updated_at' => now(),
             ]);
+        }
     }
 
     private function provisionLookupTables(): void

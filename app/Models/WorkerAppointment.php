@@ -13,10 +13,20 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Validation\ValidationException;
 
+/**
+ * assigned_zone is the primary (first) zone. On the 3NF schema it is derived from
+ * worker_appointment_zones; assigning it before the first save seeds that row.
+ *
+ * @property string|null $assigned_zone
+ */
 class WorkerAppointment extends Model
 {
     /** @use HasFactory<\Database\Factories\WorkerAppointmentFactory> */
     use HasFactory;
+
+    private bool $hasPendingZone = false;
+
+    private ?string $pendingZone = null;
 
     /**
      * @var list<string>
@@ -74,6 +84,53 @@ class WorkerAppointment extends Model
                         ?? now()->toDateString(),
                 ]);
         });
+
+        static::saved(function (WorkerAppointment $appointment): void {
+            if (! $appointment->hasPendingZone) {
+                return;
+            }
+
+            $zone = $appointment->pendingZone;
+            $appointment->hasPendingZone = false;
+            $appointment->pendingZone = null;
+
+            if ($zone === null
+                || ! Schema::hasTable('worker_appointment_zones')
+                || $appointment->assignedZones()->exists()) {
+                return;
+            }
+
+            $appointment->assignedZones()->create(['assigned_zone' => $zone]);
+            $appointment->unsetRelation('assignedZones');
+        });
+    }
+
+    public function setAssignedZoneAttribute(mixed $value): void
+    {
+        $zone = trim((string) ($value ?? ''));
+        $zone = $zone === '' ? null : $zone;
+
+        if (UserManagementErdMode::appointmentsStoreScalarZone()) {
+            $this->attributes['assigned_zone'] = $zone;
+
+            return;
+        }
+
+        $this->hasPendingZone = true;
+        $this->pendingZone = $zone;
+    }
+
+    public function getAssignedZoneAttribute(mixed $value): ?string
+    {
+        if (UserManagementErdMode::appointmentsStoreScalarZone()) {
+            return $value;
+        }
+
+        if ($this->hasPendingZone) {
+            return $this->pendingZone;
+        }
+
+        return WorkerAssignedZones::primary($this->assignedZoneLabels());
     }
 
     /**
@@ -111,24 +168,28 @@ class WorkerAppointment extends Model
             }
         }
 
-        $scalar = trim((string) ($this->assigned_zone ?? ''));
+        $scalar = trim((string) ($this->attributes['assigned_zone'] ?? ''));
 
         return $scalar !== '' ? [$scalar] : [];
     }
 
     /**
-     * Replace this appointment's zone set in place and keep assigned_zone as the first zone.
+     * Replace this appointment's zone set in place (and the legacy scalar primary zone).
      *
      * @param  list<string>|string|null  $zones
      */
     public function syncAssignedZones(array|string|null $zones): void
     {
         $normalized = WorkerAssignedZones::normalize($zones);
-        $primary = WorkerAssignedZones::primary($normalized);
 
-        $this->forceFill([
-            'assigned_zone' => $primary,
-        ])->save();
+        if (UserManagementErdMode::appointmentsStoreScalarZone()) {
+            $this->forceFill([
+                'assigned_zone' => WorkerAssignedZones::primary($normalized),
+            ])->save();
+        }
+
+        $this->hasPendingZone = false;
+        $this->pendingZone = null;
 
         if (! Schema::hasTable('worker_appointment_zones')) {
             return;
