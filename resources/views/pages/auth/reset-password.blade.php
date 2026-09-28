@@ -54,6 +54,7 @@
                     <form
                         class="lml-login-form lml-recovery-form lml-reset-form"
                         action="{{ route('password.update') }}"
+                        data-lml-page-loader="Updating your password…"
                         method="post"
                         novalidate
                     >

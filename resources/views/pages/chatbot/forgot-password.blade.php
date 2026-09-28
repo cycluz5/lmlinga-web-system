@@ -35,6 +35,7 @@
                     <form
                         class="lml-chatbot-forgot-password__form"
                         action="{{ route('chatbot.password.email') }}"
+                        data-lml-page-loader="Sending reset link…"
                         method="post"
                         novalidate
                     >

@@ -211,6 +211,7 @@
                             <footer class="lml-chatbot-household-info__member-footer">
                                 <a
                                     href="{{ route('chatbot.household.members.show', ['member' => $member['residentId']]) }}"
+                                    data-lml-page-loader="Loading member information…"
                                     class="lml-chatbot-household-info__view-record lml-focus-ring"
                                     aria-label="View record for {{ $member['name'] }}"
                                 >

@@ -500,6 +500,7 @@ function initChatbotMain(root) {
     const messages = root.querySelector('[data-lml-messages]');
     const composer = root.querySelector('[data-lml-composer]');
     const composerInput = root.querySelector('[data-lml-composer-input]');
+    const sendBtn = root.querySelector('[data-lml-send]');
     const langLive = root.querySelector('[data-lml-lang-live]');
     const pinnedList = root.querySelector('[data-lml-chat-list="pinned"]');
     const recentList = root.querySelector('[data-lml-chat-list="recent"]');
@@ -514,6 +515,7 @@ function initChatbotMain(root) {
     let demoReplyTimer = null;
     let currentConversationId = null;
     let historyLoadToken = 0;
+    let askPending = false;
     const RECENT_HISTORY_LIMIT = 20;
     let pendingDeleteConversationId = null;
     let pendingDeleteConversationTitle = null;
@@ -1040,6 +1042,17 @@ function initChatbotMain(root) {
     async function refreshConversationList() {
         if (!recentList && !pinnedList) {
             return;
+        }
+
+        // Only on first load — later refreshes keep the current rows visible.
+        const hasRows = root.querySelector('[data-lml-chat-list] [data-lml-chat-item]') !== null;
+        if (!hasRows) {
+            [pinnedEmpty, recentEmpty].forEach((emptyEl) => {
+                if (emptyEl) {
+                    emptyEl.textContent = 'Loading chats…';
+                    emptyEl.hidden = false;
+                }
+            });
         }
 
         try {
@@ -1734,14 +1747,29 @@ function getSelectedLanguageCode() {
     return map[label] || 'en';
 }
 
+/**
+ * Lock sending while an answer is on its way (typing bubble shows progress).
+ * The textarea stays editable so the next question can be drafted.
+ */
+function setAskPending(pending) {
+    askPending = pending;
+    composer?.setAttribute('aria-busy', pending ? 'true' : 'false');
+    if (sendBtn) {
+        sendBtn.disabled = pending;
+        sendBtn.classList.toggle('is-loading', pending);
+        sendBtn.setAttribute('aria-label', pending ? 'Waiting for reply…' : 'Send message');
+    }
+}
+
 if (composer && composerInput) {
     composer.addEventListener('submit', async (event) => {
         event.preventDefault();
         const text = composerInput.value.trim();
-        if (!text) {
+        if (!text || askPending) {
             return;
         }
 
+        setAskPending(true);
         appendMessage('user', text);
         composerInput.value = '';
         autoGrowTextarea();
@@ -1784,6 +1812,8 @@ appendMessage('assistant', data.answer, data.points, data.title, data.language, 
                 'Sorry, something went wrong. Please try again in a moment.'
             );
             console.error('Chatbot request failed:', error);
+        } finally {
+            setAskPending(false);
         }
     });
 
