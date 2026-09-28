@@ -61,7 +61,7 @@ class RagService
 
     public function indexAllDocuments(): array
     {
-        $root = storage_path('app/health_docs');
+        $root = resource_path('health_docs');
         $languages = ['en', 'tl', 'bcl'];
         $totalChunks = 0;
         $log = [];
@@ -355,8 +355,8 @@ class RagService
         $resolveCurrentText = function ($file) use (&$fullTextCache): ?string {
             $cacheKey = $file->language . '|' . $file->category . '|' . $file->source_file;
             if (!array_key_exists($cacheKey, $fullTextCache)) {
-                $path = storage_path(
-                    "app/health_docs/{$file->language}/{$file->category}/{$file->source_file}"
+                $path = resource_path(
+                    "health_docs/{$file->language}/{$file->category}/{$file->source_file}"
                 );
                 $fullTextCache[$cacheKey] = File::exists($path)
                     ? (string) File::get($path)
@@ -1267,7 +1267,7 @@ class RagService
             return $this->resolvedDocumentTextCache[$cacheKey];
         }
 
-        $path = storage_path("app/health_docs/{$language}/{$category}/{$source}");
+        $path = resource_path("health_docs/{$language}/{$category}/{$source}");
         if (File::exists($path)) {
             return $this->resolvedDocumentTextCache[$cacheKey] = trim((string) File::get($path));
         }
@@ -5683,7 +5683,7 @@ protected function resolveBikolDocumentByStrongHeading(string $question): ?array
         return null;
     }
 
-    $root = storage_path('app/health_docs/bcl');
+    $root = resource_path('health_docs/bcl');
     if (!File::isDirectory($root)) {
         return null;
     }
@@ -5718,7 +5718,7 @@ protected function resolveBikolDocumentByStrongHeading(string $question): ?array
 protected function resolveBikolSourceFileContent(string $sourceFile): string
 {
     $sourceFile = trim($sourceFile);
-    $root = storage_path('app/health_docs/bcl');
+    $root = resource_path('health_docs/bcl');
     if ($sourceFile === '' || !File::isDirectory($root)) {
         return '';
     }
@@ -6319,6 +6319,7 @@ protected function matchEnglishSectionHeadingIntent(string $line, string $lower)
 
     if (
         preg_match('/^(?:what\s+)?causes?\b/u', $lower) === 1
+        || preg_match('/^what\s+are\s+the\s+(?:common\s+)?causes?\b/u', $lower) === 1
         || preg_match('/^causes?\s+and\s+risk\b/u', $lower) === 1
         || preg_match('/^risk\s+factors?\b/u', $lower) === 1
     ) {
@@ -6328,6 +6329,7 @@ protected function matchEnglishSectionHeadingIntent(string $line, string $lower)
     if (
         preg_match('/^(?:signs?\s+and\s+)?symptoms?\b/u', $lower) === 1
         || preg_match('/^symptoms?\s+of\b/u', $lower) === 1
+        || preg_match('/^what\s+are\s+the\s+(?:common\s+)?(?:signs?\s+and\s+)?symptoms?\b/u', $lower) === 1
         || preg_match('/^signs?\b/u', $lower) === 1
     ) {
         return 'symptoms';
@@ -6357,7 +6359,7 @@ protected function matchEnglishSectionHeadingIntent(string $line, string $lower)
 
     // Known boundaries that end prior medical sections without being answer buckets.
     if (preg_match(
-        '/^(?:transmission|mode\s+of\s+transmission|assessment(?:\s+and\s+care)?|diagnosis|important\s+reminder|facts?\s+and\s+myths|what\s+should\s+you\s+do)\b/u',
+        '/^(?:transmission|mode\s+of\s+transmission|assessment(?:\s+and\s+care)?|diagnosis|important\s+reminder|facts?\s+and\s+myths|what\s+should\s+you\s+do|what\s+to\s+do)\b/u',
         $lower
     ) === 1) {
         return 'other';

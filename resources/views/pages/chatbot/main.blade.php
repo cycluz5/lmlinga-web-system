@@ -121,6 +121,7 @@
                     {{-- Verified: Access CTA only — never show stored OTP/match decision_reason here. --}}
                     <a
                         href="{{ route('chatbot.household.information') }}"
+                        data-lml-page-loader="Loading household information…"
                         class="lml-chatbot-main__household-btn lml-chatbot-main__household-btn--approved lml-focus-ring"
                         data-lml-sidebar-tab="household"
                         data-lml-household-btn

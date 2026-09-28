@@ -58,6 +58,7 @@ import './pages/announcement-list';
 import './pages/announcement-manage';
 import './offline/offline-client';
 import './offline/offline-sw-register';
+import './page-loader';
 import './offline/offline-export';
 
 window.bootstrap = bootstrap;

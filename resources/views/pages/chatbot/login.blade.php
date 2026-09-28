@@ -33,6 +33,7 @@
                     <form
                         class="lml-chatbot-login__form"
                         action="{{ route('chatbot.login.store') }}"
+                        data-lml-page-loader="Logging in…"
                         method="post"
                         novalidate
                     >

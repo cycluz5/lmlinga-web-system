@@ -94,6 +94,7 @@
                         @if ($isSuccess)
                             <a
                                 href="{{ route('chatbot.household.information') }}"
+                                data-lml-page-loader="Loading household information…"
                                 class="lml-chatbot-household-request__btn lml-chatbot-household-request__btn--submit lml-focus-ring"
                             >
                                 Continue to Household Information

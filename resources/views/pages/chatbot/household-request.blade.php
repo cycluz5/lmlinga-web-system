@@ -61,6 +61,7 @@
                     @else
                     <form
                         action="{{ route('chatbot.household.verification.store') }}"
+                        data-lml-page-loader="Checking your household record…"
                         method="post"
                         novalidate
                         data-lml-household-request-form

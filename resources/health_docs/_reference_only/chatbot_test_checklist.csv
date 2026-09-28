@@ -1,0 +1,44 @@
+Test ID,Language,Topic,Intent,Question,Expected Result,Actual Result,Pass/Fail,Notes
+T01,English,Greeting,general,hello,Friendly canned greeting reply,,,Baseline sanity check
+T02,Tagalog,Greeting,general,kumusta,Friendly canned greeting reply in Tagalog,,,Baseline sanity check
+T03,Bikol-Iriga,Greeting,general,kumusta?,Friendly canned greeting reply in Bikol,,,Baseline sanity check
+T04,English,Hypertension,Definition,What is hypertension?,Real definition answer with a title (not the no-info fallback),,,
+T05,English,Hypertension,Symptoms,What are the symptoms of hypertension?,Answer drawn from the Symptoms section of hypertension.txt,,,
+T06,English,Hypertension,Causes,What causes hypertension?,Answer drawn from the Causes section,,,
+T07,English,Hypertension,Prevention,How can hypertension be prevented?,Answer drawn from the Prevention section,,,
+T08,English,Hypertension,Treatment,What is the treatment for hypertension?,Answer drawn from the Treatment section,,,
+T09,Tagalog,Hypertension,Depinisyon,Ano ang hypertension?,Tunay na sagot tungkol sa hypertension,,,
+T10,Tagalog,Hypertension,Sintomas,Ano ang mga sintomas ng hypertension?,Sagot mula sa Symptoms section,,,
+T11,Tagalog,Hypertension,Sanhi,Ano ang sanhi ng hypertension?,Sagot mula sa Causes section,,,
+T12,Tagalog,Hypertension,Pag-iwas,Paano maiiwasan ang hypertension?,Sagot mula sa Prevention section,,,
+T13,Tagalog,Hypertension,Gamot,Ano ang gamot sa hypertension?,Sagot mula sa Treatment section,,,
+T14,Bikol-Iriga,Hypertension,Definisyon,Uno an hypertension?,Tunay na simbag manungod sa hypertension,,,
+T15,Bikol-Iriga,Hypertension,Sintomas,Uno an mga senyales kan hypertension?,Simbag hale sa Symptoms section,,,
+T16,Bikol-Iriga,Hypertension,Kausa,Uno an dahilan kan hypertension?,Simbag hale sa Causes section,,,
+T17,Bikol-Iriga,Hypertension,Management,Pauno aatamanon o malikayan an hypertension?,"Simbag hale sa Prevention/Treatment section (Bikol merges both into ""management"")",,,See merged-intent note
+T18,English,Asthma,Definition,What is asthma?,Real definition answer,,,
+T19,English,Asthma,Symptoms,What are the symptoms of asthma?,Answer from Symptoms section,,,
+T20,English,Asthma,Treatment,What is the treatment for asthma?,Answer from Treatment section,,,
+T21,Tagalog,Hika (Asthma),Sintomas,Ano ang mga sintomas ng hika?,Sagot mula sa Symptoms section,,,
+T22,Bikol-Iriga,Hika (Asthma),Sintomas,Uno an mga senyales kan hika?,Simbag hale sa Symptoms section,,,
+T23,English,Dengue,Definition,What is dengue?,Real definition answer,,,
+T24,English,Dengue,Prevention,How can dengue be prevented?,Answer from Prevention section,,,
+T25,Tagalog,Dengue,Pag-iwas,Paano maiiwasan ang dengue?,Sagot mula sa Prevention section,,,
+T26,Bikol-Iriga,Dengue,Management,Pauno malikayan an dengue?,Simbag hale sa Prevention section,,,
+T27,English,Malnutrition,Definition,What is malnutrition?,Real definition answer,,,
+T28,English,Malnutrition,Symptoms,What are the symptoms of malnutrition?,Answer from Symptoms section,,,
+T29,Tagalog,Malnutrisyon,Sanhi,Ano ang sanhi ng malnutrisyon?,Sagot mula sa Causes section,,,
+T30,Bikol-Iriga,Malnutrisyon,Kausa,Uno an dahilan kan malnutrisyon?,Simbag hale sa Causes section,,,
+T31,English,Tetanus,Definition,What is tetanus?,Real definition answer,,,
+T32,English,Tetanus,Prevention,How can tetanus be prevented?,Answer from Prevention section,,,
+T33,Tagalog,Tetanus,Pag-iwas,Paano maiiwasan ang tetanus?,Sagot mula sa Prevention section,,,
+T34,Bikol-Iriga,Tetanus,Management,Pauno malikayan an tetanus?,Simbag hale sa Prevention section,,,
+T35,Bikol-Iriga,Rabies,Warning,Kinagat ako nin ayam uno an dapat kong gibuhon?,"Urgent-tone answer advising consultation, distinct from a plain definition answer",,,Tests isBikolWarningQuestion()
+T36,Bikol-Iriga,Epilepsy,Warning,Nagkombolsyon an aking ko uno an dapat kong gibuhon?,Urgent-tone answer advising immediate consultation,,,Tests isBikolWarningQuestion()
+T37,Bikol-Iriga,Immunization,Schedule,Uno an bakuna sa 9 na bulan?,"Age-scoped answer for the 9-month vaccination schedule, not a generic definition",,,Tests isBikolScheduleQuestion()
+T38,English,Fever (known gap),Definition,What is fever?,"Known gap: generic ""I don't have enough information"" response is CORRECT here (no dedicated fever document yet)",,,Regression check - should still show no-info until fever.txt is added
+T39,Tagalog,Fever (known gap),Depinisyon,Ano ang lagnat?,Known gap: generic no-info response is correct,,,Regression check
+T40,Bikol-Iriga,Fever (known gap),Definisyon,Uno an kalintura?,Known gap: generic no-info response is correct,,,Regression check
+T41,English,Retrieval false-positive regression,Definition,What is fever?,"Must NOT return the unrelated ""newborn hearing screening"" document as a source",,,Regression check for the ""of every"" -> ""fever"" substring bug fix
+T42,Security,Logged-out chatbot access,N/A,Log out then navigate directly to /chatbot/main,Must redirect to /chatbot/login and NOT show the chat interface,,,Regression check for the logout/session security fix
+T43,Security,Cached page after logout,N/A,Log out then press browser Back button on a previously open chatbot/login or chatbot/main tab,Must NOT show a stale authenticated page from cache; should show/redirect to login,,,Regression check for auth.nocache headers

@@ -1,0 +1,955 @@
+LMLinga Health Chatbot — Acceptable Question SCENARIOS (multiple phrasings)
+=============================================================================
+NOT part of the indexed corpus. Reference/testing document only — kept
+outside the en/tl/bcl language folders so it is never picked up by
+`php artisan health:index`.
+
+WHY MULTIPLE PHRASINGS
+------------------------
+The chatbot only answers when it can match a document that is genuinely
+ABOUT the topic (checked by title/heading, not just body mentions — see the
+identity-gate logic in app/Services/RagService.php). Different phrasings of
+the "same" question can extract different keywords and be treated
+differently by that gate. Testing several phrasings per topic — formal,
+casual, symptom/concern-framed, and prevention-framed — is the way to find
+phrasings that fail even though the topic itself is supported, versus
+phrasings that fail because the topic genuinely has no document (like fever
+right now).
+
+Each topic below lists 4 phrasing variants per language. If one variant
+fails while others for the same topic succeed, that specific phrasing is
+worth flagging as a retrieval gap even though the topic itself is covered.
+
+
+#############################################################################
+# ENGLISH
+#############################################################################
+
+--- Child Care ---
+
+Autism
+ 1. What is autism?
+ 2. Can you explain autism to me?
+ 3. Do you have information about autism spectrum disorder?
+ 4. I think my child might have autism, what should I know?
+
+Immunization / Baby Vaccines
+ 1. What vaccines does my baby need?
+ 2. Can you tell me about immunization for babies?
+ 3. Do you have information about baby vaccination?
+ 4. Why is immunization important for my baby?
+
+Newborn Hearing Screening
+ 1. What is a newborn hearing screening?
+ 2. Do you have information about hearing screening for babies?
+ 3. Why should my baby get a hearing test?
+ 4. Can your baby hear you? How do I know?
+
+Breastfeeding / Nursing
+ 1. Do you have tips for breastfeeding?
+ 2. How do I make nursing a pleasant experience?
+ 3. Can you tell me about breastfeeding my baby?
+ 4. What should I know about nursing?
+
+Baby Nutrition (First 1,000 Days)
+ 1. How do we care for a baby's nutrition during the first 1,000 days?
+ 2. What should I feed my baby in the first year?
+ 3. Do you have information about baby nutrition?
+ 4. Why are the first 1,000 days important for nutrition?
+
+Puberty for Teen Boys
+ 1. What happens to a teen boy's body during puberty?
+ 2. Can you explain puberty for boys?
+ 3. Do you have information about growing up as a teen boy?
+ 4. What changes should a teen boy expect during puberty?
+
+Malnutrition
+ 1. What is malnutrition?
+ 2. Can you explain malnutrition to me?
+ 3. Do you have information about malnutrition in children?
+ 4. How do I know if my child has malnutrition?
+
+National Deworming Month
+ 1. What is National Deworming Month?
+ 2. Do you have information about deworming?
+ 3. Why is deworming important for children?
+ 4. When is National Deworming Month?
+
+Pneumonia in Children
+ 1. What is pneumonia in children?
+ 2. Can you explain pneumonia in kids to me?
+ 3. Do you have information about childhood pneumonia?
+ 4. My child has a cough and fever, could it be pneumonia?
+
+Newborn Screening (NBS)
+ 1. What is newborn screening?
+ 2. Can you tell me about NBS for babies?
+ 3. Do you have information about newborn screening?
+ 4. Why does my newborn baby need to be screened?
+
+Micronutrient Deficiency
+ 1. What is micronutrient deficiency?
+ 2. Can you explain micronutrient deficiency to me?
+ 3. Do you have information about micronutrient deficiency in children?
+ 4. What are signs of micronutrient deficiency?
+
+--- Family Planning ---
+
+Birth Control Pills
+ 1. What should I know about birth control pills?
+ 2. Can you explain oral contraceptives to me?
+ 3. Do you have information about family planning pills?
+ 4. Are pills a good family planning method for me?
+
+Modern Family Planning Methods
+ 1. What are the modern family planning methods?
+ 2. Can you tell me about family planning options?
+ 3. Do you have information about modern contraceptive methods?
+ 4. What family planning methods are available?
+
+Family Planning Facts
+ 1. What are the facts about family planning?
+ 2. Can you explain family planning to me?
+ 3. Do you have general information about family planning?
+ 4. Why is family planning important?
+
+--- Maternal Care ---
+
+Menopause
+ 1. What is menopause?
+ 2. Can you explain menopause to me?
+ 3. Do you have information about menopause?
+ 4. What should I expect during menopause?
+
+Preterm Birth
+ 1. What is preterm birth?
+ 2. Can you explain preterm or early birth to me?
+ 3. Do you have information about premature birth?
+ 4. What causes preterm birth?
+
+Tetanus
+ 1. What is tetanus?
+ 2. Can you explain tetanus to me?
+ 3. Do you have information about tetanus?
+ 4. How do you get tetanus?
+
+--- Other / General Health ---
+
+Oral Health During Pregnancy
+ 1. How do I take care of my teeth during pregnancy?
+ 2. Can you explain oral health during pregnancy?
+ 3. Do you have information about dental care while pregnant?
+ 4. Why does pregnancy affect my gums and teeth?
+
+Hypertension
+ 1. What is hypertension?
+ 2. Can you explain high blood pressure to me?
+ 3. Do you have information about hypertension?
+ 4. What should I do if I have high blood pressure?
+
+Asthma
+ 1. What is asthma?
+ 2. Can you explain asthma to me?
+ 3. Do you have information about asthma?
+ 4. What are the symptoms of asthma?
+
+Gout
+ 1. What is gout?
+ 2. Can you explain gout to me?
+ 3. Do you have information about gout?
+ 4. What causes gout attacks?
+
+Kidney Cancer
+ 1. What is kidney cancer?
+ 2. Can you explain kidney cancer to me?
+ 3. Do you have information about kidney cancer?
+ 4. What are the signs of kidney cancer?
+
+Liver Cancer
+ 1. What is liver cancer?
+ 2. Can you explain liver cancer to me?
+ 3. Do you have information about liver cancer?
+ 4. What causes liver cancer?
+
+Blood Donation Program
+ 1. What is the blood donation program?
+ 2. Can you tell me about donating blood?
+ 3. Do you have information about blood donation?
+ 4. Who can join the blood donation program?
+
+Breast Cancer
+ 1. What is breast cancer?
+ 2. Can you explain breast cancer to me?
+ 3. Do you have information about breast cancer?
+ 4. What are the warning signs of breast cancer?
+
+Cholera
+ 1. What is cholera?
+ 2. Can you explain cholera to me?
+ 3. Do you have information about cholera?
+ 4. How do you catch cholera?
+
+Chronic Kidney Disease (CKD)
+ 1. What is chronic kidney disease?
+ 2. Can you explain CKD to me?
+ 3. Do you have information about chronic kidney disease?
+ 4. What causes chronic kidney disease?
+
+Handwashing
+ 1. How should I wash my hands properly?
+ 2. Can you explain proper handwashing to me?
+ 3. Do you have information about clean hands and handwashing?
+ 4. Why is handwashing important?
+
+Deafness
+ 1. What is deafness?
+ 2. Can you explain deafness to me?
+ 3. Do you have information about hearing loss?
+ 4. What causes deafness?
+
+Dementia
+ 1. What is dementia?
+ 2. Can you explain dementia to me?
+ 3. Do you have information about dementia?
+ 4. What are the signs of dementia?
+
+Diabetes
+ 1. What are healthy habits for managing diabetes?
+ 2. Can you explain diabetes to me?
+ 3. Do you have information about building healthy habits with diabetes?
+ 4. What are the three steps to managing diabetes?
+
+Gender Identity
+ 1. What is gender identity?
+ 2. Can you explain gender identity to me?
+ 3. Do you have information about gender identity?
+ 4. Am I a man, a woman, both, or none of the above?
+
+Proper Coughing (Tuberculosis Prevention)
+ 1. What is the proper way to cough to prevent tuberculosis?
+ 2. Can you explain proper coughing etiquette to me?
+ 3. Do you have information about preventing tuberculosis through coughing?
+ 4. How do I cough properly so I don't spread TB?
+
+Heart Attack
+ 1. What is a heart attack?
+ 2. Can you explain a heart attack to me?
+ 3. Do you have information about heart attacks?
+ 4. What are the warning signs of a heart attack?
+
+Hepatitis
+ 1. What is hepatitis?
+ 2. Can you explain hepatitis to me?
+ 3. Do you have information about hepatitis?
+ 4. How is hepatitis spread?
+
+HIV and AIDS
+ 1. What is HIV and AIDS?
+ 2. Can you explain HIV and AIDS to me?
+ 3. Do you have information about HIV and AIDS?
+ 4. How is HIV transmitted?
+
+Dengue Prevention
+ 1. How do I prevent dengue?
+ 2. Can you explain dengue prevention to me?
+ 3. Do you have information about avoiding dengue?
+ 4. What are the symptoms of dengue?
+
+Influenza
+ 1. What is influenza?
+ 2. Can you explain the flu to me?
+ 3. Do you have information about influenza?
+ 4. What are the symptoms of the flu?
+
+Low Back Pain
+ 1. What is low back pain?
+ 2. Can you explain low back pain to me?
+ 3. Do you have information about pain in the lower back?
+ 4. What causes low back pain?
+
+Lung Cancer
+ 1. What is lung cancer?
+ 2. Can you explain lung cancer to me?
+ 3. Do you have information about lung cancer?
+ 4. What are the early signs of lung cancer?
+
+Malaria
+ 1. What is malaria?
+ 2. Can you explain malaria to me?
+ 3. Do you have information about malaria?
+ 4. How do you get malaria?
+
+Pinggang Pinoy (Plate of Pinoy)
+ 1. What is Pinggang Pinoy?
+ 2. Can you explain the Plate of Pinoy to me?
+ 3. Do you have information about Pinggang Pinoy?
+ 4. How do I use Pinggang Pinoy for a balanced diet?
+
+Flu Prevention (Rainy Season)
+ 1. How do I prevent flu during rainy season?
+ 2. Can you explain how to avoid influenza in the rainy season?
+ 3. Do you have information about preventing wild diseases this rainy season?
+ 4. What illnesses should I watch out for during rainy season?
+
+Rabies
+ 1. What is rabies?
+ 2. Can you explain rabies to me?
+ 3. Do you have information about rabies?
+ 4. What should I do if a dog bites me? Could it be rabies?
+
+Seven Healthy Habits
+ 1. What are seven healthy habits for a healthier life?
+ 2. Can you explain healthy habits to me?
+ 3. Do you have information about living a healthier life?
+ 4. What habits should I build for better health?
+
+The 10 Kumainments
+ 1. What are the 10 Kumainments?
+ 2. Can you explain the Kumainments to me?
+ 3. Do you have information about the 10 Kumainments?
+ 4. What are the rules of healthy eating in the Kumainments?
+
+Epilepsy
+ 1. What is epilepsy?
+ 2. Can you explain epilepsy to me?
+ 3. Do you have information about epilepsy?
+ 4. What causes seizures in epilepsy?
+
+Stroke
+ 1. What is stroke?
+ 2. Can you explain stroke to me?
+ 3. Do you have information about stroke?
+ 4. What are the warning signs of a stroke?
+
+Smoking Effects
+ 1. What does smoking do to your body?
+ 2. Can you explain the effects of smoking to me?
+ 3. Do you have information about the dangers of smoking?
+ 4. Why is smoking bad for my health?
+
+
+#############################################################################
+# TAGALOG
+#############################################################################
+
+--- Pangangalaga sa Bata ---
+
+Autism
+ 1. Ano ang autism?
+ 2. Maaari mo bang ipaliwanag ang autism?
+ 3. May impormasyon ba kayo tungkol sa autism spectrum disorder?
+ 4. Baka autistic ang anak ko, ano ang dapat kong malaman?
+
+Bakuna para sa Sanggol (Immunization)
+ 1. Anong bakuna ang kailangan ng aking sanggol?
+ 2. Maaari mo bang ipaliwanag ang immunization para sa sanggol?
+ 3. May impormasyon ba kayo tungkol sa pagbabakuna ng sanggol?
+ 4. Bakit mahalaga ang bakuna para sa sanggol?
+
+Newborn Hearing Screening
+ 1. Ano ang newborn hearing screening?
+ 2. May impormasyon ba kayo tungkol sa pagsusuri ng pandinig ng sanggol?
+ 3. Bakit kailangang magpasuri ng pandinig ang aking sanggol?
+ 4. Naririnig ba ako ng aking sanggol?
+
+Pagpapasuso (Breastfeeding)
+ 1. May mga tip ba kayo sa pagpapasuso?
+ 2. Paano gawing kasiya-siya ang pagpapasuso?
+ 3. Maaari mo bang ipaliwanag ang pagpapasuso ng sanggol?
+ 4. Ano ang dapat kong malaman tungkol sa breastfeeding?
+
+Nutrisyon sa Unang 1,000 Araw
+ 1. Paano alagaan ang nutrisyon ng sanggol sa unang 1,000 araw?
+ 2. Ano ang dapat ipakain sa sanggol sa unang taon?
+ 3. May impormasyon ba kayo tungkol sa nutrisyon ng sanggol?
+ 4. Bakit mahalaga ang unang 1,000 araw para sa nutrisyon?
+
+Puberty para sa Teen Boys
+ 1. Ano ang nangyayari sa katawan ng batang lalaki sa puberty?
+ 2. Maaari mo bang ipaliwanag ang puberty para sa lalaki?
+ 3. May impormasyon ba kayo tungkol sa paglaki bilang teen boy?
+ 4. Anong pagbabago ang aasahan ng batang lalaki sa puberty?
+
+Malnutrisyon
+ 1. Ano ang malnutrisyon?
+ 2. Maaari mo bang ipaliwanag ang malnutrisyon?
+ 3. May impormasyon ba kayo tungkol sa malnutrisyon ng bata?
+ 4. Paano ko malalaman kung may malnutrisyon ang anak ko?
+
+National Deworming Month
+ 1. Ano ang National Deworming Month?
+ 2. May impormasyon ba kayo tungkol sa deworming?
+ 3. Bakit mahalaga ang deworming para sa bata?
+ 4. Kailan ang National Deworming Month?
+
+Pneumonia sa mga Bata
+ 1. Ano ang pneumonia sa mga bata?
+ 2. Maaari mo bang ipaliwanag ang pneumonia sa bata?
+ 3. May impormasyon ba kayo tungkol sa pneumonia ng bata?
+ 4. Ubo at lagnat ang anak ko, baka pneumonia ito?
+
+Newborn Screening (NBS)
+ 1. Ano ang newborn screening?
+ 2. Maaari mo bang ipaliwanag ang NBS para sa sanggol?
+ 3. May impormasyon ba kayo tungkol sa newborn screening?
+ 4. Bakit kailangang i-screen ang aking bagong panganak?
+
+Micronutrient Deficiency
+ 1. Ano ang micronutrient deficiency?
+ 2. Maaari mo bang ipaliwanag ang micronutrient deficiency?
+ 3. May impormasyon ba kayo tungkol sa kakulangan sa micronutrient ng bata?
+ 4. Ano ang mga senyales ng micronutrient deficiency?
+
+--- Family Planning ---
+
+Pills bilang Family Planning
+ 1. Ano ang dapat kong malaman tungkol sa pills bilang family planning?
+ 2. Maaari mo bang ipaliwanag ang oral contraceptives?
+ 3. May impormasyon ba kayo tungkol sa pills para sa family planning?
+ 4. Mainam ba ang pills bilang paraan ng family planning para sa akin?
+
+Mga Modernong Paraan ng Family Planning
+ 1. Ano ang mga modernong paraan ng family planning?
+ 2. Maaari mo bang ipaliwanag ang mga opsyon sa family planning?
+ 3. May impormasyon ba kayo tungkol sa modernong contraceptive methods?
+ 4. Anong mga family planning method ang available?
+
+Mga Katotohanan Tungkol sa Family Planning
+ 1. Ano ang mga katotohanan tungkol sa family planning?
+ 2. Maaari mo bang ipaliwanag ang family planning?
+ 3. May pangkalahatang impormasyon ba kayo tungkol sa family planning?
+ 4. Bakit mahalaga ang family planning?
+
+--- Maternal Care ---
+
+Menopause
+ 1. Ano ang menopause?
+ 2. Maaari mo bang ipaliwanag ang menopause?
+ 3. May impormasyon ba kayo tungkol sa menopause?
+ 4. Ano ang dapat kong asahan sa menopause?
+
+Preterm o Napaagang Panganganak
+ 1. Ano ang preterm o napaagang panganganak?
+ 2. Maaari mo bang ipaliwanag ang premature na panganganak?
+ 3. May impormasyon ba kayo tungkol sa preterm birth?
+ 4. Ano ang sanhi ng preterm birth?
+
+Tetanus
+ 1. Ano ang tetanus?
+ 2. Maaari mo bang ipaliwanag ang tetanus?
+ 3. May impormasyon ba kayo tungkol sa tetanus?
+ 4. Paano nakukuha ang tetanus?
+
+--- Iba Pang Kalusugan ---
+
+Kalusugan ng Bibig Habang Buntis
+ 1. Paano alagaan ang bibig at ngipin habang buntis?
+ 2. Maaari mo bang ipaliwanag ang oral health habang buntis?
+ 3. May impormasyon ba kayo tungkol sa pangangalaga ng ngipin habang buntis?
+ 4. Bakit naaapektuhan ang gilagid at ngipin ko habang buntis?
+
+Hypertension
+ 1. Ano ang hypertension?
+ 2. Maaari mo bang ipaliwanag ang mataas na presyon ng dugo?
+ 3. May impormasyon ba kayo tungkol sa hypertension?
+ 4. Ano ang dapat kong gawin kung mataas ang presyon ko?
+
+Hika (Asthma)
+ 1. Ano ang hika?
+ 2. Maaari mo bang ipaliwanag ang asthma?
+ 3. May impormasyon ba kayo tungkol sa hika?
+ 4. Ano ang mga sintomas ng hika?
+
+Gout
+ 1. Ano ang gout?
+ 2. Maaari mo bang ipaliwanag ang gout?
+ 3. May impormasyon ba kayo tungkol sa gout?
+ 4. Ano ang sanhi ng gout attack?
+
+Kanser sa Bato
+ 1. Ano ang kanser sa bato?
+ 2. Maaari mo bang ipaliwanag ang kidney cancer?
+ 3. May impormasyon ba kayo tungkol sa kanser sa bato?
+ 4. Ano ang mga senyales ng kanser sa bato?
+
+Kanser sa Atay
+ 1. Ano ang kanser sa atay?
+ 2. Maaari mo bang ipaliwanag ang liver cancer?
+ 3. May impormasyon ba kayo tungkol sa kanser sa atay?
+ 4. Ano ang sanhi ng kanser sa atay?
+
+Blood Donation Program
+ 1. Ano ang blood donation program?
+ 2. Maaari mo bang ipaliwanag ang pagbibigay ng dugo?
+ 3. May impormasyon ba kayo tungkol sa blood donation?
+ 4. Sino ang pwedeng mag-donate ng dugo?
+
+Kanser sa Suso (Breast Cancer)
+ 1. Ano ang kanser sa suso?
+ 2. Maaari mo bang ipaliwanag ang breast cancer?
+ 3. May impormasyon ba kayo tungkol sa breast cancer?
+ 4. Ano ang mga babala ng kanser sa suso?
+
+Cholera
+ 1. Ano ang cholera?
+ 2. Maaari mo bang ipaliwanag ang cholera?
+ 3. May impormasyon ba kayo tungkol sa cholera?
+ 4. Paano nakukuha ang cholera?
+
+Malalang Sakit sa Bato (CKD)
+ 1. Ano ang malalang sakit sa bato?
+ 2. Maaari mo bang ipaliwanag ang CKD?
+ 3. May impormasyon ba kayo tungkol sa chronic kidney disease?
+ 4. Ano ang sanhi ng CKD?
+
+Paghuhugas ng Kamay
+ 1. Paano maghugas ng kamay nang tama?
+ 2. Maaari mo bang ipaliwanag ang tamang paghuhugas ng kamay?
+ 3. May impormasyon ba kayo tungkol sa malinis na kamay?
+ 4. Bakit mahalaga ang paghuhugas ng kamay?
+
+Pagkabingi (Deafness)
+ 1. Ano ang pagkabingi?
+ 2. Maaari mo bang ipaliwanag ang deafness?
+ 3. May impormasyon ba kayo tungkol sa pagkawala ng pandinig?
+ 4. Ano ang sanhi ng pagkabingi?
+
+Dementia
+ 1. Ano ang dementia?
+ 2. Maaari mo bang ipaliwanag ang dementia?
+ 3. May impormasyon ba kayo tungkol sa dementia?
+ 4. Ano ang mga senyales ng dementia?
+
+Diyabetis
+ 1. Anong malusog na gawi ang makakatulong sa diyabetis?
+ 2. Maaari mo bang ipaliwanag ang diyabetis?
+ 3. May impormasyon ba kayo tungkol sa pagbuo ng malusog na gawi para sa diyabetis?
+ 4. Ano ang tatlong hakbang sa pamamahala ng diyabetis?
+
+Gender Identity
+ 1. Ano ang gender identity?
+ 2. Maaari mo bang ipaliwanag ang gender identity?
+ 3. May impormasyon ba kayo tungkol sa gender identity?
+ 4. Lalaki ba ako, babae, pareho, o wala sa nabanggit?
+
+Tamang Pag-ubo (Pag-iwas sa Tuberculosis)
+ 1. Ano ang tamang paraan ng pag-ubo para maiwasan ang tuberculosis?
+ 2. Maaari mo bang ipaliwanag ang tamang pag-ubo?
+ 3. May impormasyon ba kayo tungkol sa pag-iwas sa TB gamit ang tamang pag-ubo?
+ 4. Paano ako dapat umubo para hindi kumalat ang TB?
+
+Atake sa Puso (Heart Attack)
+ 1. Ano ang atake sa puso?
+ 2. Maaari mo bang ipaliwanag ang heart attack?
+ 3. May impormasyon ba kayo tungkol sa atake sa puso?
+ 4. Ano ang mga babala ng atake sa puso?
+
+Hepatitis
+ 1. Ano ang hepatitis?
+ 2. Maaari mo bang ipaliwanag ang hepatitis?
+ 3. May impormasyon ba kayo tungkol sa hepatitis?
+ 4. Paano kumakalat ang hepatitis?
+
+HIV at AIDS
+ 1. Ano ang HIV at AIDS?
+ 2. Maaari mo bang ipaliwanag ang HIV at AIDS?
+ 3. May impormasyon ba kayo tungkol sa HIV at AIDS?
+ 4. Paano naipapasa ang HIV?
+
+Pag-iwas sa Dengue
+ 1. Paano maiiwasan ang dengue?
+ 2. Maaari mo bang ipaliwanag ang pag-iwas sa dengue?
+ 3. May impormasyon ba kayo tungkol sa dengue?
+ 4. Ano ang mga sintomas ng dengue?
+
+Influenza (Trangkaso)
+ 1. Ano ang influenza?
+ 2. Maaari mo bang ipaliwanag ang trangkaso?
+ 3. May impormasyon ba kayo tungkol sa influenza?
+ 4. Ano ang mga sintomas ng trangkaso?
+
+Pananakit ng Ibabang Likod (Low Back Pain)
+ 1. Ano ang pananakit ng ibabang bahagi ng likod?
+ 2. Maaari mo bang ipaliwanag ang low back pain?
+ 3. May impormasyon ba kayo tungkol sa sakit sa likod?
+ 4. Ano ang sanhi ng pananakit ng likod?
+
+Kanser sa Baga (Lung Cancer)
+ 1. Ano ang kanser sa baga?
+ 2. Maaari mo bang ipaliwanag ang lung cancer?
+ 3. May impormasyon ba kayo tungkol sa kanser sa baga?
+ 4. Ano ang mga unang senyales ng kanser sa baga?
+
+Malaria
+ 1. Ano ang malaria?
+ 2. Maaari mo bang ipaliwanag ang malaria?
+ 3. May impormasyon ba kayo tungkol sa malaria?
+ 4. Paano nakukuha ang malaria?
+
+Pinggang Pinoy
+ 1. Ano ang Pinggang Pinoy?
+ 2. Maaari mo bang ipaliwanag ang Pinggang Pinoy?
+ 3. May impormasyon ba kayo tungkol sa Pinggang Pinoy?
+ 4. Paano ginagamit ang Pinggang Pinoy para sa balanseng pagkain?
+
+Pag-iwas sa Trangkaso sa Tag-ulan
+ 1. Paano maiiwasan ang trangkaso sa tag-ulan?
+ 2. Maaari mo bang ipaliwanag kung paano umiwas sa influenza sa tag-ulan?
+ 3. May impormasyon ba kayo tungkol sa pag-iwas sa sakit sa tag-ulan?
+ 4. Anong sakit ang dapat kong bantayan sa tag-ulan?
+
+Rabies
+ 1. Ano ang rabies?
+ 2. Maaari mo bang ipaliwanag ang rabies?
+ 3. May impormasyon ba kayo tungkol sa rabies?
+ 4. Ano ang gagawin ko kung kinagat ako ng aso? Baka rabies ito?
+
+Pitong Malusog na Gawi
+ 1. Ano ang pitong malusog na gawi para sa mas malusog na pamumuhay?
+ 2. Maaari mo bang ipaliwanag ang malusog na gawi?
+ 3. May impormasyon ba kayo tungkol sa mas malusog na pamumuhay?
+ 4. Anong gawi ang dapat kong sundin para sa mas magandang kalusugan?
+
+10 Kumainments
+ 1. Ano ang 10 Kumainments?
+ 2. Maaari mo bang ipaliwanag ang Kumainments?
+ 3. May impormasyon ba kayo tungkol sa 10 Kumainments?
+ 4. Ano ang mga alituntunin ng Kumainments sa malusog na pagkain?
+
+Epilepsy
+ 1. Ano ang epilepsy?
+ 2. Maaari mo bang ipaliwanag ang epilepsy?
+ 3. May impormasyon ba kayo tungkol sa epilepsy?
+ 4. Ano ang sanhi ng seizure sa epilepsy?
+
+Stroke
+ 1. Ano ang stroke?
+ 2. Maaari mo bang ipaliwanag ang stroke?
+ 3. May impormasyon ba kayo tungkol sa stroke?
+ 4. Ano ang mga babala ng stroke?
+
+Epekto ng Paninigarilyo
+ 1. Ano ang epekto ng paninigarilyo sa katawan?
+ 2. Maaari mo bang ipaliwanag ang epekto ng sigarilyo?
+ 3. May impormasyon ba kayo tungkol sa panganib ng paninigarilyo?
+ 4. Bakit masama ang paninigarilyo sa kalusugan?
+
+
+#############################################################################
+# BIKOL-IRIGA
+#############################################################################
+
+--- Pag-ataman sa Igin ---
+
+Autism
+ 1. Uno an autism?
+ 2. Puwede mo bang ipaliwanag an autism?
+ 3. May impormasyon ka dahon manungod sa autism spectrum disorder?
+ 4. Tibaad autistic an aking ko, uno an dapat kong maaraman?
+
+Bakuna Para sa Igin (Immunization)
+ 1. Anong bakuna an kaipuhan kan sakuyang igin?
+ 2. Puwede mo bang ipaliwanag an immunization para sa igin?
+ 3. May impormasyon ka dahon manungod sa pagbabakuna kan igin?
+ 4. Taano ta importante an bakuna para sa igin?
+
+Newborn Hearing Screening
+ 1. Uno an newborn hearing screening?
+ 2. May impormasyon ka dahon manungod sa pagsusuri kan pandangog kan igin?
+ 3. Taano ta kaipuhan mapasuri an pandangog kan sakuyang igin?
+ 4. Nadadangog daw ako kan sakuyang igin?
+
+Pagpapasuso (Breastfeeding)
+ 1. May mga tip ka dahon manungod sa pagpapasuso?
+ 2. Pauno gibuhon na kaogmahan an pagpapasuso?
+ 3. Puwede mo bang ipaliwanag an pagpapasuso kan igin?
+ 4. Uno an dapat kong maaraman manungod sa breastfeeding?
+
+Nutrisyon sa Enot na 1,000 Aldaw
+ 1. Pauno aatamanon an nutrisyon kan igin sa enot na 1,000 aldaw?
+ 2. Uno an dapat ipakakan sa igin sa enot na taon?
+ 3. May impormasyon ka dahon manungod sa nutrisyon kan igin?
+ 4. Taano ta importante an enot na 1,000 aldaw para sa nutrisyon?
+
+Puberty Para sa Teen Boys
+ 1. Uno an nangyayari sa lawas kan batang lalaki sa puberty?
+ 2. Puwede mo bang ipaliwanag an puberty para sa lalaki?
+ 3. May impormasyon ka dahon manungod sa paglakaw bilang teen boy?
+ 4. Anong pagbabago an aasahan kan batang lalaki sa puberty?
+
+Malnutrisyon
+ 1. Uno an malnutrisyon?
+ 2. Puwede mo bang ipaliwanag an malnutrisyon?
+ 3. May impormasyon ka dahon manungod sa malnutrisyon kan igen?
+ 4. Pauno ko maaaraman kung may malnutrisyon an aking ko?
+
+National Deworming Month
+ 1. Uno an National Deworming Month?
+ 2. May impormasyon ka dahon manungod sa deworming/pagpurga?
+ 3. Taano ta importante an pagpurga sa igen?
+ 4. Kasuarin an National Deworming Month?
+
+Pneumonia sa mga Igen
+ 1. Uno an pneumonia sa mga igen?
+ 2. Puwede mo bang ipaliwanag an pneumonia sa igen?
+ 3. May impormasyon ka dahon manungod sa pneumonia kan igen?
+ 4. May ubo asin kalintura an aking ko, tibaad pneumonia ini?
+
+Newborn Screening (NBS)
+ 1. Uno an newborn screening?
+ 2. Puwede mo bang ipaliwanag an NBS para sa igin?
+ 3. May impormasyon ka dahon manungod sa newborn screening?
+ 4. Taano ta kaipuhan mapabayad an sakuyang bagong pangigin?
+
+Micronutrient Deficiency
+ 1. Uno an micronutrient deficiency?
+ 2. Puwede mo bang ipaliwanag an micronutrient deficiency?
+ 3. May impormasyon ka dahon manungod sa kakulangan sa micronutrient kan igen?
+ 4. Anong senyales an micronutrient deficiency?
+
+--- Family Planning ---
+
+Pill Bilang Family Planning
+ 1. Uno an dapat kong maaraman manungod sa pill bilang family planning?
+ 2. Puwede mo bang ipaliwanag an oral contraceptives?
+ 3. May impormasyon ka dahon manungod sa pill para sa family planning?
+ 4. Maray daw an pill bilang pagi kan family planning para sa sakuya?
+
+Mga Modernong Pagi kan Family Planning
+ 1. Uno an mga modernong pagi kan family planning?
+ 2. Puwede mo bang ipaliwanag an mga opsyon sa family planning?
+ 3. May impormasyon ka dahon manungod sa modernong contraceptive methods?
+ 4. Anong family planning method an available?
+
+Mga Kamaturan Manungod sa Family Planning
+ 1. Uno an mga kamaturan manungod sa family planning?
+ 2. Puwede mo bang ipaliwanag an family planning?
+ 3. May pangkagabsan impormasyon ka dahon manungod sa family planning?
+ 4. Taano ta importante an family planning?
+
+--- Maternal Care ---
+
+Menopause
+ 1. Uno an menopause?
+ 2. Puwede mo bang ipaliwanag an menopause?
+ 3. May impormasyon ka dahon manungod sa menopause?
+ 4. Uno an dapat kong aasahan sa menopause?
+
+Preterm o Napaamay na Panganganak
+ 1. Uno an preterm o napaamay na panganganak?
+ 2. Puwede mo bang ipaliwanag an premature na panganganak?
+ 3. May impormasyon ka dahon manungod sa preterm birth?
+ 4. Uno an kausa kan preterm birth?
+
+Tetanus
+ 1. Uno an tetanus?
+ 2. Puwede mo bang ipaliwanag an tetanus?
+ 3. May impormasyon ka dahon manungod sa tetanus?
+ 4. Pauno naeenot an tetanus?
+
+--- Iba Pang Kalusugan ---
+
+Kalusugan kan Ngipon Habang Buntis
+ 1. Pauno aatamanon an ngipon habang buntis?
+ 2. Puwede mo bang ipaliwanag an oral health habang buntis?
+ 3. May impormasyon ka dahon manungod sa pag-ataman kan ngipon habang buntis?
+ 4. Taano ta naaapektuhan an gilagid asin ngipon ko habang buntis?
+
+Hypertension
+ 1. Uno an hypertension?
+ 2. Puwede mo bang ipaliwanag an halangkaw na presyon kan rugo?
+ 3. May impormasyon ka dahon manungod sa hypertension?
+ 4. Uno an dapat kong gibuhon kun halangkaw an presyon ko?
+
+Hika (Asthma)
+ 1. Uno an hika?
+ 2. Puwede mo bang ipaliwanag an asthma?
+ 3. May impormasyon ka dahon manungod sa hika?
+ 4. Anong senyales an hika?
+
+Gout
+ 1. Uno an gout?
+ 2. Puwede mo bang ipaliwanag an gout (piyo)?
+ 3. May impormasyon ka dahon manungod sa gout?
+ 4. Uno an kausa kan gout attack?
+
+Kanser sa Bato
+ 1. Uno an kanser sa bato?
+ 2. Puwede mo bang ipaliwanag an kidney cancer?
+ 3. May impormasyon ka dahon manungod sa kanser sa bato?
+ 4. Anong senyales an kanser sa bato?
+
+Kanser sa Atay
+ 1. Uno an kanser sa atay?
+ 2. Puwede mo bang ipaliwanag an liver cancer?
+ 3. May impormasyon ka dahon manungod sa kanser sa atay?
+ 4. Uno an kausa kan kanser sa atay?
+
+Blood Donation Program
+ 1. Uno an blood donation program?
+ 2. Puwede mo bang ipaliwanag an pagtao nin rugo?
+ 3. May impormasyon ka dahon manungod sa blood donation?
+ 4. Sisay an puwedeng mag-donate nin rugo?
+
+Kanser sa Soso (Breast Cancer)
+ 1. Uno an kanser sa soso?
+ 2. Puwede mo bang ipaliwanag an breast cancer?
+ 3. May impormasyon ka dahon manungod sa breast cancer?
+ 4. Anong babala kan kanser sa soso?
+
+Cholera
+ 1. Uno an cholera?
+ 2. Puwede mo bang ipaliwanag an cholera?
+ 3. May impormasyon ka dahon manungod sa cholera?
+ 4. Pauno naeenot an cholera?
+
+Malalang Ilang sa Bato (CKD)
+ 1. Uno an malalang ilang sa bato?
+ 2. Puwede mo bang ipaliwanag an CKD?
+ 3. May impormasyon ka dahon manungod sa chronic kidney disease?
+ 4. Uno an kausa kan CKD?
+
+Panunugas kan Kamot
+ 1. Pauno managas nin tama an kamot?
+ 2. Puwede mo bang ipaliwanag an tamang panunugas kan kamot?
+ 3. May impormasyon ka dahon manungod sa malinig na kamot?
+ 4. Taano ta importante an panunugas kan kamot?
+
+Pagkabungog (Deafness)
+ 1. Uno an pagkabungog?
+ 2. Puwede mo bang ipaliwanag an deafness?
+ 3. May impormasyon ka dahon manungod sa pagkawara kan pandangog?
+ 4. Uno an kausa kan pagkabungog?
+
+Dementia
+ 1. Uno an dementia?
+ 2. Puwede mo bang ipaliwanag an dementia?
+ 3. May impormasyon ka dahon manungod sa dementia?
+ 4. Anong senyales an dementia?
+
+Diyabetes
+ 1. Anong maray na gibo an makakatabang sa diyabetes?
+ 2. Puwede mo bang ipaliwanag an diyabetes?
+ 3. May impormasyon ka dahon manungod sa pagbilog nin maray na gibo para sa diyabetes?
+ 4. Uno an tulong gawi sa pagmaneho kan diyabetes?
+
+Gender Identity
+ 1. Uno an gender identity?
+ 2. Puwede mo bang ipaliwanag an gender identity?
+ 3. May impormasyon ka dahon manungod sa gender identity?
+ 4. Lalaki ba ako, babayi, pareho, o uda sa nasabi?
+
+Tamang Pag-ubo (Pag-likay sa Tuberculosis)
+ 1. Uno an tamang paagi nin pag-ubo tanganing malikayan an tuberculosis?
+ 2. Puwede mo bang ipaliwanag an tamang pag-ubo?
+ 3. May impormasyon ka dahon manungod sa pag-likay sa TB paagi sa tamang pag-ubo?
+ 4. Pauno ako dapat mag-ubo tanganing dai makalat an TB?
+
+Heart Attack
+ 1. Uno an heart attack?
+ 2. Puwede mo bang ipaliwanag an heart attack?
+ 3. May impormasyon ka dahon manungod sa heart attack?
+ 4. Anong babala kan heart attack?
+
+Hepatitis
+ 1. Uno an hepatitis?
+ 2. Puwede mo bang ipaliwanag an hepatitis?
+ 3. May impormasyon ka dahon manungod sa hepatitis?
+ 4. Pauno nakakalat an hepatitis?
+
+HIV asin AIDS
+ 1. Uno an HIV asin AIDS?
+ 2. Puwede mo bang ipaliwanag an HIV asin AIDS?
+ 3. May impormasyon ka dahon manungod sa HIV asin AIDS?
+ 4. Pauno naitatao an HIV?
+
+Pag-likay sa Dengue
+ 1. Pauno malikayan an dengue?
+ 2. Puwede mo bang ipaliwanag an pag-likay sa dengue?
+ 3. May impormasyon ka dahon manungod sa dengue?
+ 4. Anong senyales kan dengue?
+
+Influenza (Trangkaso)
+ 1. Uno an influenza?
+ 2. Puwede mo bang ipaliwanag an trangkaso?
+ 3. May impormasyon ka dahon manungod sa influenza?
+ 4. Anong senyales kan trangkaso?
+
+Kulog sa Ibabang Bahagi kan Likod (Low Back Pain)
+ 1. Uno an kulog sa ibabang bahagi kan likod?
+ 2. Puwede mo bang ipaliwanag an low back pain?
+ 3. May impormasyon ka dahon manungod sa kulog kan likod?
+ 4. Uno an kausa kan kulog kan likod?
+
+Kanser sa Baga (Lung Cancer)
+ 1. Uno an kanser sa baga?
+ 2. Puwede mo bang ipaliwanag an lung cancer?
+ 3. May impormasyon ka dahon manungod sa kanser sa baga?
+ 4. Anong enot na senyales kan kanser sa baga?
+
+Malaria
+ 1. Uno an malaria?
+ 2. Puwede mo bang ipaliwanag an malaria?
+ 3. May impormasyon ka dahon manungod sa malaria?
+ 4. Pauno naeenot an malaria?
+
+Pinggang Pinoy
+ 1. Uno an Pinggang Pinoy?
+ 2. Puwede mo bang ipaliwanag an Pinggang Pinoy?
+ 3. May impormasyon ka dahon manungod sa Pinggang Pinoy?
+ 4. Pauno gagamiton an Pinggang Pinoy para sa balanseng kakanon?
+
+Pag-likay sa Trangkaso sa Tag-uran
+ 1. Pauno malikayan an trangkaso sa tag-uran?
+ 2. Puwede mo bang ipaliwanag kun pauno malikayan an influenza sa tag-uran?
+ 3. May impormasyon ka dahon manungod sa pag-likay sa hilang sa tag-uran?
+ 4. Anong hilang an dapat kong bantayan sa tag-uran?
+
+Rabies
+ 1. Uno an rabies?
+ 2. Puwede mo bang ipaliwanag an rabies?
+ 3. May impormasyon ka dahon manungod sa rabies?
+ 4. Uno an gigibuhon ko kun kinagat ako nin ayam? Tibaad rabies ini?
+
+Pitong Makusog na Gibo
+ 1. Uno an pitong makusog na gibo para sa mas maray na pambuway?
+ 2. Puwede mo bang ipaliwanag an makusog na gibo?
+ 3. May impormasyon ka dahon manungod sa mas maray na pambuway?
+ 4. Anong gibo an dapat kong sunudon para sa mas marhay na salud?
+
+10 Kumainments
+ 1. Uno an 10 Kumainments?
+ 2. Puwede mo bang ipaliwanag an Kumainments?
+ 3. May impormasyon ka dahon manungod sa 10 Kumainments?
+ 4. Uno an mga alituntunin kan Kumainments sa marhay na pagkakan?
+
+Epilepsy
+ 1. Uno an epilepsy?
+ 2. Puwede mo bang ipaliwanag an epilepsy?
+ 3. May impormasyon ka dahon manungod sa epilepsy?
+ 4. Uno an kausa kan seizure sa epilepsy?
+
+Stroke
+ 1. Uno an stroke?
+ 2. Puwede mo bang ipaliwanag an stroke?
+ 3. May impormasyon ka dahon manungod sa stroke?
+ 4. Anong babala kan stroke?
+
+Epekto kan Pagsisigarilyo
+ 1. Uno an epekto kan pagsisigarilyo sa lawas?
+ 2. Puwede mo bang ipaliwanag an epekto kan sigarilyo?
+ 3. May impormasyon ka dahon manungod sa peligro kan pagsisigarilyo?
+ 4. Taano ta maraot an pagsisigarilyo sa salud?
+
+
+=============================================================================
+NOTES
+=============================================================================
+- Topics NOT listed above (e.g. fever, cough alone, diarrhea, headache) have
+  no dedicated document yet, so every phrasing will currently fail with
+  "I don't have enough information" regardless of wording.
+- If ANY one phrasing for a listed topic fails while the others succeed,
+  that is a genuine retrieval/keyword-extraction gap worth reporting with
+  the exact wording used — not a missing-content issue.
+- Greetings (hello, kumusta, good morning) are handled separately and always
+  get a friendly reply.
