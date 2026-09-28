@@ -34,6 +34,7 @@
                     <form
                         class="lml-chatbot-reset-password__form"
                         action="{{ route('chatbot.password.update') }}"
+                        data-lml-page-loader="Updating your password…"
                         method="post"
                         novalidate
                     >

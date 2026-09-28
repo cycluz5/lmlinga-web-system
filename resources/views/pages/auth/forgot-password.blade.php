@@ -55,6 +55,7 @@
                     <form
                         class="lml-login-form lml-recovery-form lml-forgot-form"
                         action="{{ route('password.email') }}"
+                        data-lml-page-loader="Sending reset link…"
                         method="post"
                         novalidate
                     >

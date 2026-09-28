@@ -1722,6 +1722,26 @@
     cursor: not-allowed;
 }
 
+/* Waiting for a reply: swap the send icon for a spinner. */
+.lml-chatbot-main__send.is-loading {
+    opacity: 1;
+    cursor: progress;
+}
+
+.lml-chatbot-main__send.is-loading i {
+    display: none;
+}
+
+.lml-chatbot-main__send.is-loading::after {
+    content: '';
+    width: 1.1rem;
+    height: 1.1rem;
+    border: 2px solid rgba(var(--lml-soft-green-rgb), 0.6);
+    border-top-color: var(--lml-deep-green);
+    border-radius: 50%;
+    animation: lml-page-loader-spin 0.8s linear infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
     .lml-chatbot-main__sidebar,
     .lml-chatbot-main__lang-btn,

@@ -46,6 +46,7 @@
                 <form
                     class="lml-login-form"
                     action="{{ route('login.store') }}"
+                    data-lml-page-loader="Logging in…"
                     method="post"
                     novalidate
                     autocomplete="off"

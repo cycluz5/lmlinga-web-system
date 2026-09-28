@@ -85,6 +85,7 @@
                     <form
                         class="lml-chatbot-register__form"
                         action="{{ route('chatbot.register.store') }}"
+                        data-lml-page-loader="Creating your account…"
                         method="post"
                         novalidate
                         data-lml-register-form
