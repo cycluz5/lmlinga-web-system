@@ -805,8 +805,15 @@ function isLoadableAppScriptSrc(src) {
     }
     try {
         const parsed = new URL(raw, 'http://localhost');
-        return parsed.pathname.startsWith('/build/assets/')
-            && /^(localhost|127\.0\.0\.1)$/i.test(parsed.hostname);
+        if (!parsed.pathname.startsWith('/build/assets/')) {
+            return false;
+        }
+        if (/^(localhost|127\.0\.0\.1)$/i.test(parsed.hostname)) {
+            return true;
+        }
+        // Production builds emit absolute APP_URL asset URLs (e.g. https://lmlinga.com/build/...).
+        const pageOrigin = typeof location !== 'undefined' ? location.origin : '';
+        return Boolean(pageOrigin) && parsed.origin === pageOrigin;
     } catch {
         return false;
     }

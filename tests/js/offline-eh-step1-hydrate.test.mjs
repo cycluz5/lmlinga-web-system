@@ -438,6 +438,29 @@ describe('offline EH Step 1 production init after hydration', () => {
         assert.equal(isPlainEhFallbackHtml(plainEhFallbackHtml('537', 1)), true);
     });
 
+    it('accepts absolute same-origin app script URLs emitted with a production APP_URL', () => {
+        const previous = Object.getOwnPropertyDescriptor(globalThis, 'location');
+        Object.defineProperty(globalThis, 'location', {
+            value: { origin: 'https://lmlinga.com' },
+            configurable: true,
+            writable: true,
+        });
+        try {
+            const shell = canonicalEhShellHtml(1, '537');
+            const sameOrigin = shell.replace('src="/build/assets/app.js"', 'src="https://lmlinga.com/build/assets/app-BJC_SmOv.js"');
+            const foreign = shell.replace('src="/build/assets/app.js"', 'src="https://evil.example/build/assets/app-BJC_SmOv.js"');
+            assert.notEqual(sameOrigin, shell);
+            assert.equal(isCanonicalEhShellHtml(sameOrigin, 1), true);
+            assert.equal(isCanonicalEhShellHtml(foreign, 1), false);
+        } finally {
+            if (previous) {
+                Object.defineProperty(globalThis, 'location', previous);
+            } else {
+                delete globalThis.location;
+            }
+        }
+    });
+
     it('selecting Level I after production init + hydration updates status and enables Next', async () => {
         const fixture = mountStep1('537');
         await putHouseholdSnapshot(7, { household_no: '537', water: {}, sanitation: {}, local: true });
