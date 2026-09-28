@@ -686,6 +686,7 @@ Route::middleware(['auth', 'staff.account-usable', 'staff.password-current', 'ui
             'childKey' => $child !== null ? (string) $child['key'] : '',
             'roundOptions' => HealthRecordsDeworming::roundOptions(),
             'seStatusOptions' => HealthRecordsDeworming::seStatusOptions(),
+            'householdSeStatus' => \App\Support\DewormingRecordService::householdSeStatus($ctx['resident']),
             'persistenceSource' => $persistenceSource,
         ]);
     })->where([

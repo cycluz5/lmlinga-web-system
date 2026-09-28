@@ -22,9 +22,7 @@ class HouseholdFactory extends Factory
         return [
             'household_no' => 'HH-'.$seq,
             'zone' => fake()->randomElement(['Zone 1', 'Zone 2', 'Zone 3', 'Zone 4', 'Zone 5']),
-            'street' => fake()->randomElement(['Layuan St.', 'Dalipay St.', 'Cateel Bay St.']),
             'date_registered' => fake()->date(),
-            'address' => null,
             'latitude' => null,
             'longitude' => null,
             'accomplished_by' => null,

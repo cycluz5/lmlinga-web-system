@@ -58,6 +58,12 @@ ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/relea
 RUN install-php-extensions pdo_mysql gd intl bcmath zip opcache pcntl \
     && rm -rf /usr/local/bin/install-php-extensions /var/lib/apt/lists/* /tmp/*
 
+# `php artisan migrate` on an empty database loads database/schema/mysql-schema.sql
+# (the 66-table 3NF schema) through the mysql CLI.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends mariadb-client \
+    && rm -rf /var/lib/apt/lists/*
+
 RUN sed -ri 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/sites-available/*.conf \
     && sed -ri 's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' /etc/apache2/apache2.conf /etc/apache2/conf-available/*.conf \
     && a2enmod rewrite headers \

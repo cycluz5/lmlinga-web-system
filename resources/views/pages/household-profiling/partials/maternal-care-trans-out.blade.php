@@ -1,5 +1,6 @@
 @php
     $canPersist = (bool) ($canPersist ?? false);
+    $readOnly = (bool) ($readOnly ?? false);
     $updateUrl = route('household-profiling.members.maternal-care.update', $routeParams + [
         'section' => 'trans-out',
     ]);
@@ -11,23 +12,18 @@
         <div class="lml-mc__panel-titles">
             <h2 id="lml-mc-transout-title" class="lml-mc__panel-title">Trans-Out</h2>
             <p class="lml-mc__panel-subtitle">
-                Manually transfer out her profile.
+                {{ $readOnly ? 'Transfer-out details for this pregnancy.' : 'Manually transfer out her profile.' }}
             </p>
         </div>
     </header>
-
-    @if ($canPersist && \App\Support\MaternalCareErdMode::isPersistenceActive())
-        <p class="lml-mc__hint" data-mc-trans-out-erd-note>
-            Transfer-out is saved as pregnancy status only. Facility, reason, stage, and date are not stored in the current maternal database.
-        </p>
-    @endif
 
     <form
         method="post"
         action="{{ $updateUrl }}"
         class="lml-mc__form"
         data-mc-section-form="trans-out"
-        data-editing="true"
+        data-editing="{{ $readOnly ? 'false' : 'true' }}"
+        @if ($readOnly) data-mc-readonly="true" onsubmit="return false;" @endif
         novalidate
         @include('offline.maternal-section-attrs', ['section' => 'trans-out'])
     >
@@ -44,6 +40,7 @@
                     class="lml-mc__input lml-focus-ring"
                     value="{{ $trans['to_facility'] ?? '' }}"
                     autocomplete="organization"
+                    @disabled($readOnly)
                 >
             </div>
             <div class="lml-mc__field">
@@ -52,6 +49,7 @@
                     id="lml-mc-occurred-stage"
                     name="occurred_at_stage"
                     class="lml-mc__input lml-focus-ring"
+                    @disabled($readOnly)
                 >
                     <option value="">Select stage</option>
                     @foreach ([
@@ -75,6 +73,7 @@
                     id="lml-mc-trans-reason"
                     name="reason"
                     class="lml-mc__input lml-focus-ring"
+                    @disabled($readOnly)
                 >
                     <option value="">Select reason</option>
                     @foreach ([
@@ -101,10 +100,12 @@
                     class="lml-mc__input lml-focus-ring"
                     value="{{ $trans['date_transferred_out'] ?? '' }}"
                     max="{{ now()->toDateString() }}"
+                    @disabled($readOnly)
                 >
             </div>
         </div>
 
+        @unless ($readOnly)
         <div class="lml-mc__form-actions">
             <a
                 href="{{ route('household-profiling.members.maternal-care.index', $routeParams) }}"
@@ -116,5 +117,6 @@
                 Save
             </button>
         </div>
+        @endunless
     </form>
 </section>

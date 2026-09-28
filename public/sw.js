@@ -1,6 +1,6 @@
 (() => {
   // resources/js/offline/offline-sw-policy.js
-  var CACHE_VERSION = "offline-7-v20";
+  var CACHE_VERSION = "offline-7-v21";
   var ASSETS_CACHE = `lmlinga-assets-${CACHE_VERSION}`;
   var FALLBACK_CACHE = `lmlinga-fallback-${CACHE_VERSION}`;
   var META_CACHE = `lmlinga-meta-${CACHE_VERSION}`;

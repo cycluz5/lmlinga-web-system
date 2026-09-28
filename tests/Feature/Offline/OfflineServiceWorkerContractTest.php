@@ -187,6 +187,9 @@ class OfflineServiceWorkerContractTest extends TestCase
         $this->assertStringContainsString('data-plot-new-url="'.e(route('spot-mapping.plot-new')).'"', $html);
         $this->assertStringContainsString('name="first_name"', $html);
         $this->assertStringNotContainsString(route('household-profiling.create'), $html);
+        // Plotting is online-only: the page carries the (hidden) offline toast, UM-style.
+        $this->assertStringContainsString('data-spot-map-offline-notice', $html);
+        $this->assertStringContainsString('lml-spot-map__toast', $html);
 
         $this->assertSame('POST', Route::getRoutes()->getByName('spot-mapping.plot-new')?->methods()[0] ?? null);
     }
@@ -297,7 +300,7 @@ class OfflineServiceWorkerContractTest extends TestCase
         $base = (string) file_get_contents(resource_path('js/maps/la-medalla-base.js'));
 
         $this->assertStringContainsString("map.on('tileerror'", $spot);
-        $this->assertStringContainsString('queuePlotNewHousehold', $spot);
+        $this->assertStringContainsString('SPOT_MAP_OFFLINE_MESSAGE', $spot);
         $this->assertStringContainsString('tile.openstreetmap.org', $base);
         $this->assertStringNotContainsString('tile.openstreetmap.org', $runtime);
         $this->assertStringNotContainsString('openstreetmap.org/{z}/{x}/{y}', $runtime);

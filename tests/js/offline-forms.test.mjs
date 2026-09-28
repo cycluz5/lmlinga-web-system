@@ -359,13 +359,15 @@ describe('offline form queueing', () => {
     it('does not fabricate a Laravel EH handoff token on the offline plot path', () => {
         assert.equal(formsSource.includes('localStorage'), false);
         assert.equal(queueSource.includes('localStorage'), false);
-        assert.match(spotSource, /queuePlotNewHousehold/);
+        // Spot Map is online-only: its offline branch only shows a message, never queues or hands off.
+        assert.doesNotMatch(spotSource, /queuePlotNewHousehold/);
         assert.match(spotSource, /isClientOffline/);
-        assert.match(spotSource, /Stored on this device/);
+        assert.doesNotMatch(spotSource, /Stored on this device/);
         const offlineBranch = spotSource.slice(
-            spotSource.indexOf('const finishLocalQueue'),
+            spotSource.indexOf('const stopForOffline'),
             spotSource.indexOf('const response = await fetch(createUrl'),
         );
+        assert.match(offlineBranch, /SPOT_MAP_OFFLINE_MESSAGE/);
         assert.equal(offlineBranch.includes('handoff'), false);
         assert.equal(offlineBranch.includes('location.replace'), false);
         assert.equal(offlineBranch.includes('lml_pending_water_supply_household'), false);
@@ -374,8 +376,6 @@ describe('offline form queueing', () => {
             /import \{ persistPlotHouseholdReadModel \} from '\.\/offline-hp-store\.js'/,
         );
         assert.equal(formsSource.includes("import('./offline-hp-store.js')"), false);
-        assert.match(offlineBranch, /await persistPlotHouseholdReadModel\(queued\.record\.actor_id, queued\.record\.payload\)/);
-        assert.match(spotSource, /import \{ persistPlotHouseholdReadModel \} from '\.\.\/offline\/offline-hp-store'/);
     });
 });
 

@@ -6,8 +6,8 @@
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { createLaMedallaBaseMap, LA_MEDALLA_CENTER, LA_MEDALLA_ZOOM } from '../maps/la-medalla-base';
-import { isClientOffline, isNetworkFailure, queuePlotNewHousehold } from '../offline/offline-forms';
-import { persistPlotHouseholdReadModel } from '../offline/offline-hp-store';
+import { isClientOffline, isNetworkFailure } from '../offline/offline-forms';
+import { OFFLINE_EVENTS } from '../offline/offline-status.js';
 import { initSpotMappingExport } from './spot-mapping-export';
 import {
     applyOverlapLayerPlan,
@@ -326,6 +326,9 @@ export function statsAfterQueuedSpotPlotPromotion(stats = {}) {
 
 export const OFFLINE_PLOT_PROMPT =
     "You're offline. Click on the map to plot the household location.";
+
+/** Plotting is online-only; offline households are added in Household Profiling as pending plots. */
+export const SPOT_MAP_OFFLINE_MESSAGE = 'Plotting household is not available when offline.';
 
 /**
  * Decide GPS vs manual plot without touching Leaflet.
@@ -747,6 +750,46 @@ function initSpotMapping() {
 
         plotBtn.disabled = locating;
         syncPlotExistingButton();
+    }
+
+    const offlineNotice = root.querySelector('[data-spot-map-offline-notice]');
+    let offlineNoticeTimer = null;
+
+    /**
+     * Plotting is online-only. The page looks the same offline; only an attempt to plot
+     * shows the message — like User Management: status-bar notice + page toast.
+     */
+    function showOfflineToast() {
+        const detail = { message: SPOT_MAP_OFFLINE_MESSAGE, source: 'spot-mapping' };
+        if (typeof window.LmlingaOffline?.emit === 'function') {
+            window.LmlingaOffline.emit(OFFLINE_EVENTS.NOTICE, detail);
+        } else if (typeof CustomEvent === 'function') {
+            window.dispatchEvent(new CustomEvent(OFFLINE_EVENTS.NOTICE, { detail }));
+        }
+        if (!offlineNotice) {
+            return;
+        }
+        offlineNotice.textContent = SPOT_MAP_OFFLINE_MESSAGE;
+        offlineNotice.hidden = false;
+        window.clearTimeout(offlineNoticeTimer);
+        offlineNoticeTimer = window.setTimeout(() => {
+            offlineNotice.hidden = true;
+            offlineNotice.textContent = '';
+        }, 3600);
+    }
+
+    /** Going offline mid-plot stops placing; coming back online clears the toast. */
+    function syncOnlineOnlyState() {
+        const offline = isClientOffline();
+        if (offline && placing) {
+            setPlacing(false);
+            hideOverlay();
+        }
+        if (!offline && offlineNotice) {
+            window.clearTimeout(offlineNoticeTimer);
+            offlineNotice.hidden = true;
+            offlineNotice.textContent = '';
+        }
     }
 
     function clearFieldError(fieldKey) {
@@ -1589,8 +1632,18 @@ function initSpotMapping() {
         syncVisualGroups();
     });
 
+    const showSpotMapOfflineMessage = () => {
+        syncOnlineOnlyState();
+        showOfflineToast();
+    };
+
     plotBtn.addEventListener('click', () => {
         if (locating) {
+            return;
+        }
+
+        if (isClientOffline()) {
+            showSpotMapOfflineMessage();
             return;
         }
 
@@ -1608,6 +1661,11 @@ function initSpotMapping() {
             return;
         }
 
+        if (isClientOffline()) {
+            showSpotMapOfflineMessage();
+            return;
+        }
+
         if (placing) {
             setPlacing(false);
             return;
@@ -1616,8 +1674,18 @@ function initSpotMapping() {
         startGpsPlot();
     });
 
+    for (const eventName of ['online', 'offline', OFFLINE_EVENTS.ONLINE, OFFLINE_EVENTS.OFFLINE]) {
+        window.addEventListener(eventName, syncOnlineOnlyState);
+    }
+    syncOnlineOnlyState();
+
     map.on('click', (event) => {
         if (!placing || locating) {
+            return;
+        }
+
+        if (isClientOffline()) {
+            showSpotMapOfflineMessage();
             return;
         }
 
@@ -1777,15 +1845,11 @@ function initSpotMapping() {
             }
 
             if (isClientOffline()) {
-                const message = 'A connection is required to plot an existing pending household.';
                 if (panelNote) {
-                    panelNote.textContent = message;
+                    panelNote.textContent = SPOT_MAP_OFFLINE_MESSAGE;
                     panelNote.hidden = false;
                 }
-                showOverlay(message, {
-                    mode: 'error',
-                    icon: 'bi-exclamation-triangle-fill',
-                });
+                showSpotMapOfflineMessage();
                 confirmBtn.disabled = false;
                 confirmBtn.removeAttribute('aria-busy');
                 return;
@@ -1913,44 +1977,19 @@ function initSpotMapping() {
             panelNote.hidden = false;
         }
 
-        const finishLocalQueue = async () => {
-            const queued = await queuePlotNewHousehold(plotPayload, {
-                window,
-                root: document.querySelector('[data-lml-offline-root]'),
-            });
-            if (!queued.ok) {
-                throw new Error(
-                    'This update could not be stored on this device. Keep this page open and try again when a connection is available.',
-                );
-            }
-            await persistPlotHouseholdReadModel(queued.record.actor_id, queued.record.payload);
+        // Spot Map is online-only: never store a plot on the device.
+        const stopForOffline = () => {
             if (panelNote) {
-                panelNote.textContent = 'Stored on this device. Waiting to sync.';
+                panelNote.textContent = SPOT_MAP_OFFLINE_MESSAGE;
                 panelNote.hidden = false;
             }
-            confirmBtn.disabled = true;
-            confirmBtn.setAttribute('data-offline-queued', '1');
+            showSpotMapOfflineMessage();
+            confirmBtn.disabled = false;
             confirmBtn.removeAttribute('aria-busy');
         };
 
         if (isClientOffline()) {
-            try {
-                await finishLocalQueue();
-            } catch (error) {
-                const message = error instanceof Error && error.message
-                    ? error.message
-                    : GENERIC_PLOT_FAILURE;
-                if (panelNote) {
-                    panelNote.textContent = message;
-                    panelNote.hidden = false;
-                }
-                showOverlay(message, {
-                    mode: 'error',
-                    icon: 'bi-exclamation-triangle-fill',
-                });
-                confirmBtn.disabled = false;
-                confirmBtn.removeAttribute('aria-busy');
-            }
+            stopForOffline();
             return;
         }
 
@@ -2022,12 +2061,8 @@ function initSpotMapping() {
             return;
         } catch (error) {
             if (isNetworkFailure(error)) {
-                try {
-                    await finishLocalQueue();
-                    return;
-                } catch {
-                    // Storage failed; show the existing failure UI below.
-                }
+                stopForOffline();
+                return;
             }
 
             const message = error instanceof Error && error.message

@@ -10,7 +10,8 @@
     Nutrition Program Iron / Vitamin A dates read from hydrated $nutritionState.
     Birth History editing lives on the dedicated Child Immunization Birth
     History page. ERD-supported Birth History fields persist on child_nutrition
-    (legacy: child_nutritions newborn_* columns). PCAB is not an ERD column.
+    (legacy: child_nutritions newborn_* columns). CPAB persists on the child
+    immunization header (child_immunization[s].cpab).
 --}}
 @extends('layouts.dashboard')
 

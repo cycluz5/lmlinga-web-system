@@ -60,6 +60,9 @@ return [
             'options' => extension_loaded('pdo_mysql') ? array_filter([
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
+            // Folder containing the mysql client, prepended to PATH for artisan
+            // (loading database/schema/mysql-schema.sql). See AppServiceProvider.
+            'client_bin_path' => env('DB_CLIENT_BIN_PATH'),
         ],
 
         'mariadb' => [

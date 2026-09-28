@@ -103,12 +103,17 @@
                             </div>
                             <div class="lml-hr-cc-nr__field">
                                 <label for="lml-hr-dw-se">SE Status</label>
-                                <select id="lml-hr-dw-se" name="se_status" class="lml-hr-cc-nr__input lml-focus-ring">
-                                    <option value="">Select</option>
-                                    @foreach ($seStatusOptions as $option)
-                                        <option value="{{ $option }}">{{ $option }}</option>
-                                    @endforeach
-                                </select>
+                                {{-- Retrieved from the member's household (household type); not editable here. --}}
+                                <input
+                                    id="lml-hr-dw-se"
+                                    type="text"
+                                    class="lml-hr-cc-nr__input"
+                                    value="{{ $householdSeStatus ?? 'Not set' }}"
+                                    readonly
+                                    aria-describedby="lml-hr-dw-se-hint"
+                                    data-deworming-household-se
+                                >
+                                <small id="lml-hr-dw-se-hint" class="text-muted">Based on the household's type.</small>
                             </div>
                             <div class="lml-hr-cc-nr__field">
                                 <label for="lml-hr-dw-date">Date Given</label>

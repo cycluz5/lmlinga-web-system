@@ -34,6 +34,8 @@ final class ErdMaternalCareSchema
         Schema::dropIfExists('hiv_screening');
         Schema::dropIfExists('cvc_screening');
         Schema::dropIfExists('gestational_screening');
+        Schema::dropIfExists('maternal_trans_outs');
+        Schema::dropIfExists('td_immunization');
         Schema::dropIfExists('maternal_care');
 
         DB::statement('CREATE TABLE maternal_care (
@@ -227,6 +229,27 @@ final class ErdMaternalCareSchema
             $table->date('date_given')->nullable();
             $table->timestamps();
             $table->unique('maternal_care_id', 'uq_ppvita_matcare');
+        });
+
+        Schema::create('maternal_trans_outs', function ($table): void {
+            $table->id('trans_out_id');
+            $table->unsignedBigInteger('maternal_care_id');
+            $table->string('to_facility', 160)->nullable();
+            $table->string('occurred_at_stage', 120)->nullable();
+            $table->string('reason', 255)->nullable();
+            $table->date('date_transferred_out')->nullable();
+            $table->timestamps();
+            $table->unique('maternal_care_id', 'uq_transout_matcare');
+        });
+
+        // Resident-scoped, not pregnancy-scoped (Td series spans pregnancies).
+        Schema::create('td_immunization', function ($table): void {
+            $table->id('td_immunization_id');
+            $table->unsignedBigInteger('resident_id');
+            $table->unsignedTinyInteger('dose_number')->nullable();
+            $table->date('date_given')->nullable();
+            $table->timestamps();
+            $table->unique(['resident_id', 'dose_number'], 'uq_tdimm_resident_dose');
         });
 
         MaternalCareErdMode::resetCachedState();

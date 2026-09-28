@@ -35,7 +35,10 @@ final class DewormingRecordService
 
         $year = (int) ($payload['year'] ?? 0);
         $round = (int) ($payload['round'] ?? 0);
-        $seStatus = trim((string) ($payload['se_status'] ?? ''));
+        // SE Status belongs to the household; a client value is only a fallback
+        // for legacy schemas whose households have no household_type.
+        $seStatus = self::householdSeStatus($resident)
+            ?? trim((string) ($payload['se_status'] ?? ''));
         $dateGiven = trim((string) ($payload['date_given'] ?? ''));
         $remarks = $this->nullableString($payload['remarks'] ?? null);
 
@@ -45,7 +48,9 @@ final class DewormingRecordService
             $attributes = [
                 'resident_id' => $resident->id,
                 'year' => $year,
-                DewormingErdMode::roundColumn() => $round,
+                // Fillable "round"; DewormingRecord::setRoundAttribute maps it to
+                // deworming_round on the 3NF schema (a raw column key is dropped).
+                'round' => $round,
                 'date_given' => $dateGiven,
                 'remarks' => $remarks ?? HealthRecordsDeworming::REMARKS_NONE,
             ];
@@ -69,19 +74,37 @@ final class DewormingRecordService
      */
     public function recordsForResident(Resident $resident): array
     {
+        $householdSeStatus = self::householdSeStatus($resident);
+
         return DewormingRecord::query()
             ->where('resident_id', $resident->id)
             ->orderByDesc('year')
             ->orderByDesc(DewormingErdMode::roundColumn())
             ->get()
-            ->map(fn (DewormingRecord $record): array => self::toPresentation($record))
+            ->map(fn (DewormingRecord $record): array => self::toPresentation($record, $householdSeStatus))
             ->all();
+    }
+
+    /**
+     * SE Status (NHTS / Non-NHTS) of the resident's household, from
+     * households.household_type. Null when the household has none recorded.
+     */
+    public static function householdSeStatus(?Resident $resident): ?string
+    {
+        if ($resident === null) {
+            return null;
+        }
+
+        $resident->loadMissing('household');
+        $type = trim((string) ($resident->household?->getAttribute('household_type') ?? ''));
+
+        return in_array($type, HealthRecordsDeworming::seStatusOptions(), true) ? $type : null;
     }
 
     /**
      * @return array<string, mixed>
      */
-    public static function toPresentation(DewormingRecord $record): array
+    public static function toPresentation(DewormingRecord $record, ?string $householdSeStatus = null): array
     {
         $dateGiven = $record->date_given;
 
@@ -89,7 +112,7 @@ final class DewormingRecordService
             'id' => (string) $record->id,
             'year' => (string) $record->year,
             'round' => (string) $record->round,
-            'se_status' => (string) $record->se_status,
+            'se_status' => $householdSeStatus ?? (string) $record->se_status,
             'date_given' => $dateGiven instanceof Carbon
                 ? $dateGiven->toDateString()
                 : (string) $dateGiven,

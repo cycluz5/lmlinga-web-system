@@ -21,7 +21,8 @@ class StoreDewormingRecordRequest extends FormRequest
         return [
             'year' => ['required', 'integer', 'min:2000', 'max:2100'],
             'round' => ['required', 'string', Rule::in(HealthRecordsDeworming::roundOptions())],
-            'se_status' => ['required', 'string', Rule::in(HealthRecordsDeworming::seStatusOptions())],
+            // Retrieved from the member's household (households.household_type), not entered.
+            'se_status' => ['nullable', 'string', Rule::in(HealthRecordsDeworming::seStatusOptions())],
             'date_given' => ['required', 'date', 'date_format:Y-m-d', 'before_or_equal:today'],
             'remarks' => ['nullable', 'string', 'max:2000'],
             // resident_id must never be accepted from the client.
@@ -39,7 +40,6 @@ class StoreDewormingRecordRequest extends FormRequest
             'year.integer' => 'Year must be a valid number.',
             'round.required' => 'Deworming round is required.',
             'round.in' => 'Deworming round selection is invalid.',
-            'se_status.required' => 'SE Status is required.',
             'se_status.in' => 'SE Status selection is invalid.',
             'date_given.required' => 'Date given is required.',
             'date_given.date_format' => 'Date given must be a valid date.',

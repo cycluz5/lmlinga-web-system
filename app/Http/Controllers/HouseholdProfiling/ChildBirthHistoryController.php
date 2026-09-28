@@ -5,6 +5,7 @@ namespace App\Http\Controllers\HouseholdProfiling;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreChildBirthHistoryRequest;
 use App\Support\ChildBirthHistoryService;
+use App\Support\CpabSuggestion;
 use App\Support\HealthMemberIdentity;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -21,9 +22,15 @@ class ChildBirthHistoryController extends Controller
         $ctx = $this->identity->resolve($householdNo, $memberId);
         $persistenceSource = HealthMemberIdentity::persistenceSource($ctx);
         $birthHistoryForm = null;
+        $cpabSuggestion = null;
 
         if ($ctx['resident'] !== null && ChildBirthHistoryService::persistenceAvailable()) {
             $birthHistoryForm = ChildBirthHistoryService::formValuesForResident($ctx['resident']);
+
+            // Suggest only while no CPAB is saved; a saved answer always wins.
+            if (($birthHistoryForm['pcab'] ?? '') === '') {
+                $cpabSuggestion = CpabSuggestion::forChild($ctx['resident']);
+            }
         }
 
         return view('pages.household-profiling.child-immunization-birth-history-edit', [
@@ -38,6 +45,7 @@ class ChildBirthHistoryController extends Controller
             'demoMember' => $ctx['member'],
             'persistenceSource' => $persistenceSource,
             'birthHistoryForm' => $birthHistoryForm,
+            'cpabSuggestion' => $cpabSuggestion,
         ]);
     }
 

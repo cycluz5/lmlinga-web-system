@@ -58,8 +58,9 @@ describe('spot mapping existing pending household plot', () => {
         assert.match(spotSource, /data-spot-map-plot/);
         assert.match(spotSource, /clearPendingSelection\(\)/);
         assert.match(spotSource, /data-plot-new-url/);
-        assert.match(spotSource, /queuePlotNewHousehold\(plotPayload/);
+        assert.doesNotMatch(spotSource, /queuePlotNewHousehold/);
         assert.match(bladeSource, /Plot New Household/);
+        assert.match(bladeSource, /data-spot-map-offline-notice/);
     });
 
     it('still uses GPS then manual map-click for placing', () => {

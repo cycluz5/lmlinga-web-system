@@ -14,7 +14,8 @@ use Illuminate\Support\Facades\Schema;
  * Authoritative ERD storage is child_nutrition (one row per resident):
  * length_at_birth_cm, weight_at_birth_kg, initiated_breastfeeding_date.
  * Legacy sqlite may also have child_nutritions newborn_* columns and/or
- * child_birth_histories (PCAB / stored status only exist on that legacy table).
+ * child_birth_histories (stored status only exists on that legacy table).
+ * CPAB lives on the child immunization header (child_immunization[s].cpab).
  */
 final class ChildBirthHistoryService
 {
@@ -84,6 +85,8 @@ final class ChildBirthHistoryService
             $this->upsertNutritionBirthFields($resident, $weight, $length, $bfDate);
         }
 
+        $this->upsertImmunizationHeaderCpab($resident, $pcab !== '' ? $pcab : null);
+
         if (self::legacyBirthHistoryTableAvailable()) {
             ChildBirthHistory::query()->updateOrCreate(
                 ['resident_id' => $resident->getKey()],
@@ -114,7 +117,7 @@ final class ChildBirthHistoryService
             $legacy = $resident->childBirthHistory;
         }
 
-        if ($nutrition === null && $legacy === null) {
+        if ($nutrition === null && $legacy === null && self::immunizationHeaderCpab($resident) === '') {
             return null;
         }
 
@@ -132,7 +135,10 @@ final class ChildBirthHistoryService
             $nutrition['breastfeeding_date'],
             self::formatIsoDate($legacy?->breastfeeding_date)
         );
-        $pcab = $legacy !== null ? (string) ($legacy->pcab ?? '') : '';
+        $pcab = self::firstFilled(
+            self::immunizationHeaderCpab($resident),
+            $legacy !== null ? (string) ($legacy->pcab ?? '') : ''
+        );
         $storedStatus = trim((string) ($legacy?->status ?? ''));
 
         return [
@@ -172,7 +178,9 @@ final class ChildBirthHistoryService
             $legacy = $resident->childBirthHistory;
         }
 
-        if ($nutrition === null && $legacy === null) {
+        $headerCpab = self::immunizationHeaderCpab($resident);
+
+        if ($nutrition === null && $legacy === null && $headerCpab === '') {
             return $empty;
         }
 
@@ -187,7 +195,7 @@ final class ChildBirthHistoryService
                 $nutrition['length'],
                 self::formatDecimal($legacy?->birth_length_cm)
             ),
-            'pcab' => self::pcabFormValue($legacy),
+            'pcab' => self::firstFilled($headerCpab, self::pcabFormValue($legacy)),
             'breastfeeding_date' => self::firstFilled(
                 $nutrition['breastfeeding_date'],
                 self::formatIsoDate($legacy?->breastfeeding_date)
@@ -367,6 +375,60 @@ final class ChildBirthHistoryService
         $trimmed = trim((string) $value);
 
         return $trimmed === '' ? null : $trimmed;
+    }
+
+    private static function immunizationHeaderHasCpab(): bool
+    {
+        $table = ChildImmunizationErdMode::headerTable();
+
+        return Schema::hasTable($table) && Schema::hasColumn($table, 'cpab');
+    }
+
+    /**
+     * CPAB stored on the resident's child immunization header, or '' when none.
+     */
+    private static function immunizationHeaderCpab(Resident $resident): string
+    {
+        if (! self::immunizationHeaderHasCpab()) {
+            return '';
+        }
+
+        return (string) (DB::table(ChildImmunizationErdMode::headerTable())
+            ->where('resident_id', $resident->getKey())
+            ->value('cpab') ?? '');
+    }
+
+    /**
+     * Sparse upsert: never creates an empty header row just to store "no CPAB".
+     */
+    private function upsertImmunizationHeaderCpab(Resident $resident, ?string $pcab): void
+    {
+        if (! self::immunizationHeaderHasCpab()) {
+            return;
+        }
+
+        $table = ChildImmunizationErdMode::headerTable();
+        $exists = DB::table($table)->where('resident_id', $resident->getKey())->exists();
+
+        if ($exists) {
+            DB::table($table)->where('resident_id', $resident->getKey())->update([
+                'cpab' => $pcab,
+                'updated_at' => now(),
+            ]);
+
+            return;
+        }
+
+        if ($pcab === null) {
+            return;
+        }
+
+        DB::table($table)->insert([
+            'resident_id' => $resident->getKey(),
+            'cpab' => $pcab,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
     }
 
     private static function firstFilled(string $preferred, string $fallback): string

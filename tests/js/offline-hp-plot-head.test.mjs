@@ -393,7 +393,8 @@ describe('offline plot 536 button path writes hp_members immediately', () => {
         const store = readFileSync(path.resolve('resources/js/offline/offline-hp-store.js'), 'utf8');
         assert.match(forms, /import \{ persistPlotHouseholdReadModel \} from '\.\/offline-hp-store\.js'/);
         assert.equal(forms.includes("import('./offline-hp-store.js')"), false);
-        assert.match(spot, /await persistPlotHouseholdReadModel\(queued\.record\.actor_id, queued\.record\.payload\)/);
+        // Spot Map is online-only and no longer queues plots itself.
+        assert.doesNotMatch(spot, /persistPlotHouseholdReadModel/);
         assert.match(store, /export async function persistPlotHouseholdReadModel/);
         assert.doesNotMatch(
             store.slice(store.indexOf('export async function membersForHousehold'), store.indexOf('export async function replaceHouseholdProfilingSnapshots')),

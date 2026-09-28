@@ -120,7 +120,9 @@ class OfflineClientQueueContractTest extends TestCase
         $this->assertStringContainsString('data-plot-new-url="'.e(route('spot-mapping.plot-new')).'"', $html);
 
         $js = (string) file_get_contents(resource_path('js/pages/spot-mapping.js'));
-        $this->assertStringContainsString('queuePlotNewHousehold', $js);
+        // Spot Map is online-only: offline shows a message instead of queueing a plot.
+        $this->assertStringNotContainsString('queuePlotNewHousehold', $js);
+        $this->assertStringContainsString('SPOT_MAP_OFFLINE_MESSAGE', $js);
         $this->assertStringContainsString('isClientOffline', $js);
         $this->assertStringContainsString("operation_type: OPERATION_TYPES.PLOT_HOUSEHOLD_WITH_HEAD", (string) file_get_contents(resource_path('js/offline/offline-forms.js')));
         $this->assertStringContainsString('handoff_token', $js);

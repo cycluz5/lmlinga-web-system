@@ -5,6 +5,7 @@ namespace App\Http\Controllers\HouseholdProfiling;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreChildNutritionRequest;
 use App\Support\ChildNutritionService;
+use App\Support\DewormingRecordService;
 use App\Support\HealthMemberIdentity;
 use App\Support\HealthRecordsDeworming;
 use Illuminate\Http\RedirectResponse;
@@ -58,6 +59,7 @@ class ChildNutritionController extends Controller
             'dewormingCanAdd' => $dewormingCanAdd,
             'dewormingRoundOptions' => HealthRecordsDeworming::roundOptions(),
             'dewormingSeStatusOptions' => HealthRecordsDeworming::seStatusOptions(),
+            'dewormingHouseholdSeStatus' => DewormingRecordService::householdSeStatus($ctx['resident']),
         ]);
     }
 

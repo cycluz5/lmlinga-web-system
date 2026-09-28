@@ -5,7 +5,7 @@
  * CSRF tokens are stripped from cached HTML and are never treated as credentials.
  */
 
-export const CACHE_VERSION = 'offline-7-v20';
+export const CACHE_VERSION = 'offline-7-v21';
 
 export const ASSETS_CACHE = `lmlinga-assets-${CACHE_VERSION}`;
 export const FALLBACK_CACHE = `lmlinga-fallback-${CACHE_VERSION}`;

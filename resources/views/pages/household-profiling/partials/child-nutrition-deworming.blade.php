@@ -152,12 +152,17 @@
                         </div>
                         <div class="lml-hr-cc-nr__field">
                             <label for="lml-child-nut-dw-se">SE Status</label>
-                            <select id="lml-child-nut-dw-se" name="se_status" class="lml-hr-cc-nr__input lml-focus-ring">
-                                <option value="">Select</option>
-                                @foreach ($dewormingSeStatusOptions as $option)
-                                    <option value="{{ $option }}" @selected((string) old('se_status') === (string) $option)>{{ $option }}</option>
-                                @endforeach
-                            </select>
+                            {{-- Retrieved from the member's household (household type); not editable here. --}}
+                            <input
+                                id="lml-child-nut-dw-se"
+                                type="text"
+                                class="lml-hr-cc-nr__input"
+                                value="{{ $dewormingHouseholdSeStatus ?? 'Not set' }}"
+                                readonly
+                                aria-describedby="lml-child-nut-dw-se-hint"
+                                data-deworming-household-se
+                            >
+                            <small id="lml-child-nut-dw-se-hint" class="text-muted">Based on the household's type.</small>
                         </div>
                         <div class="lml-hr-cc-nr__field">
                             <label for="lml-child-nut-dw-date">Date Given</label>

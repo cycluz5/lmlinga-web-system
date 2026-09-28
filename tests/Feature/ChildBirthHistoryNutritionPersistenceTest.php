@@ -434,7 +434,11 @@ class ChildBirthHistoryNutritionPersistenceTest extends TestCase
         $this->assertSame('3.10', $presentation['birth_history']['weight']);
         $this->assertSame('Normal', $presentation['birth_history']['status']);
         $this->assertSame('06/01/2024', $presentation['birth_history']['breastfeeding_date_display']);
-        $this->assertSame('', $presentation['birth_history']['pcab']);
+        // CPAB now persists on the child immunization header (no child_birth_histories table).
+        $this->assertSame(
+            'At least 2 doses received at least 1 month prior to delivery',
+            $presentation['birth_history']['pcab']
+        );
 
         $this->post(route('household-profiling.members.child-immunization.birth-history.store', $params), [
             'birth_weight' => '2.20',

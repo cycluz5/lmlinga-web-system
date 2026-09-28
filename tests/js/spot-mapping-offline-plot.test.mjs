@@ -148,16 +148,21 @@ describe('spot mapping offline plot source contract', () => {
         assert.doesNotMatch(placeTemp, /markerById/);
     });
 
-    it('plot confirm awaits hp_members persist on the same path as queuePlotNewHousehold', () => {
-        const finish = sliceInclusive(
+    it('Spot Map is online-only: plot confirm never queues on the device', () => {
+        const offlineStop = sliceInclusive(
             spotSource,
-            'const finishLocalQueue = async () => {',
+            'const stopForOffline = () => {',
             'if (isClientOffline())',
         );
-        assert.match(finish, /await queuePlotNewHousehold\(plotPayload/);
-        assert.match(finish, /await persistPlotHouseholdReadModel\(queued\.record\.actor_id, queued\.record\.payload\)/);
-        assert.match(spotSource, /import \{ persistPlotHouseholdReadModel \} from '\.\.\/offline\/offline-hp-store'/);
-        assert.doesNotMatch(finish, /RESIDENT_CREATE/);
+        assert.match(offlineStop, /SPOT_MAP_OFFLINE_MESSAGE/);
+        assert.doesNotMatch(spotSource, /queuePlotNewHousehold/);
+        assert.doesNotMatch(spotSource, /persistPlotHouseholdReadModel/);
+        assert.doesNotMatch(spotSource, /Stored on this device/);
+        assert.match(spotSource, /if \(isNetworkFailure\(error\)\) \{\s*stopForOffline\(\);/);
+        // Page stays the same offline; pressing Plot shows the UM-style notice + toast.
+        assert.match(spotSource, /SPOT_MAP_OFFLINE_MESSAGE = 'Plotting household is not available when offline\.'/);
+        assert.match(spotSource, /OFFLINE_EVENTS\.NOTICE/);
+        assert.match(spotSource, /if \(isClientOffline\(\)\) \{\s*showSpotMapOfflineMessage\(\);\s*return;/);
     });
 
     it('does not change service-worker OSM tile policy', () => {

@@ -70,6 +70,12 @@
             : (filled(data_get($demoMember, 'birth_history.pcab'))
                 ? (string) data_get($demoMember, 'birth_history.pcab')
                 : '');
+        // Pre-select the suggestion only while nothing is saved; staff can change it.
+        $cpabSuggestion = $cpabSuggestion ?? null;
+        $cpabSuggested = $birthPcabForm === '' && is_array($cpabSuggestion);
+        if ($cpabSuggested) {
+            $birthPcabForm = (string) $cpabSuggestion['value'];
+        }
         $birthBfDateForm = filled(data_get($birthHistoryForm ?? null, 'breastfeeding_date'))
             ? (string) data_get($birthHistoryForm, 'breastfeeding_date')
             : (filled(data_get($demoMember, 'birth_history.breastfeeding_date'))
@@ -365,6 +371,7 @@
                                     name="pcab"
                                     class="lml-child-imm__birth-select lml-focus-ring"
                                     data-child-imm-birth-field="pcab"
+                                    @if ($cpabSuggested) aria-describedby="lml-child-imm-bh-pcab-suggestion" @endif
                                 >
                                     <option value="" @selected($birthPcabForm === '')>Select</option>
                                     @foreach ($pcabOptions as $pcabValue => $pcabLabel)
@@ -376,6 +383,19 @@
                                         </option>
                                     @endforeach
                                 </select>
+                                @if ($cpabSuggested)
+                                    <small
+                                        id="lml-child-imm-bh-pcab-suggestion"
+                                        class="text-muted d-block mt-1"
+                                        data-cpab-suggestion="{{ $cpabSuggestion['source'] }}"
+                                    >
+                                        Suggested from
+                                        {{ $cpabSuggestion['mother_name'] !== '' ? $cpabSuggestion['mother_name'] : 'the mother' }}'s
+                                        Td doses before the birth ({{ implode(', ', $cpabSuggestion['dose_dates']) }})
+                                        {{ $cpabSuggestion['source'] === 'delivery' ? '— matched by her Maternal Care delivery date' : '— please confirm she is the mother' }}.
+                                        Not saved until you click Save; you can change it.
+                                    </small>
+                                @endif
                             </div>
                             <div class="lml-child-imm__birth-field lml-child-imm__birth-field--half">
                                 <label class="lml-child-imm__birth-label" for="lml-child-imm-bh-breastfeeding">

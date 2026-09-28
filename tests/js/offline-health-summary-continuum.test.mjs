@@ -473,6 +473,6 @@ describe('staff Health Summary offline continuum', () => {
     });
 
     it('CACHE_VERSION bumped for health shell contract', () => {
-        assert.equal(CACHE_VERSION, 'offline-7-v20');
+        assert.equal(CACHE_VERSION, 'offline-7-v21');
     });
 });

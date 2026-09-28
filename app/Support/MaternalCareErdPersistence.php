@@ -110,8 +110,8 @@ final class MaternalCareErdPersistence
                 'laboratory' => $this->upsertLaboratory($maternalCareId, $payload),
                 'delivery' => $this->upsertDeliveryAndComplete($maternalCareId, $payload),
                 'postnatal' => $this->upsertPostnatal($maternalCareId, $payload),
-                'trans-out' => $this->markTransferredOut($maternalCareId),
-                'immunizations' => null,
+                'trans-out' => $this->saveTransOut($maternalCareId, $payload),
+                'immunizations' => $this->upsertTdImmunizations($residentId, $payload),
                 default => null,
             };
 
@@ -363,8 +363,11 @@ final class MaternalCareErdPersistence
         $raw['laboratory'] = $this->loadLaboratory($id, is_array($raw['laboratory'] ?? null) ? $raw['laboratory'] : []);
         $raw['delivery'] = $this->loadDelivery($id, is_array($raw['delivery'] ?? null) ? $raw['delivery'] : []);
         $raw['postnatal'] = $this->loadPostnatal($id, is_array($raw['postnatal'] ?? null) ? $raw['postnatal'] : []);
-        $raw['immunizations'] = is_array($raw['immunizations'] ?? null) ? $raw['immunizations'] : [];
-        $raw['trans_out'] = is_array($raw['trans_out'] ?? null) ? $raw['trans_out'] : [];
+        $raw['immunizations'] = $this->loadTdImmunizations(
+            $row->resident_id ?? 0,
+            is_array($raw['immunizations'] ?? null) ? $raw['immunizations'] : []
+        );
+        $raw['trans_out'] = $this->loadTransOut($id, is_array($raw['trans_out'] ?? null) ? $raw['trans_out'] : []);
 
         return DemoMaternalCare::present($raw);
     }
@@ -1436,6 +1439,133 @@ final class MaternalCareErdPersistence
                 'date_given' => $date,
                 'updated_at' => now(),
             ]);
+    }
+
+    /**
+     * Td doses belong to the resident, not the pregnancy (the series carries
+     * across pregnancies), so every episode shows the same td1–td5 dates.
+     *
+     * @param  array<string, mixed>  $current
+     * @return array<string, mixed>
+     */
+    private function loadTdImmunizations(int|string $residentId, array $current): array
+    {
+        if (! Schema::hasTable('td_immunization')) {
+            return $current;
+        }
+
+        $rows = DB::table('td_immunization')
+            ->where('resident_id', $residentId)
+            ->whereBetween('dose_number', [1, 5])
+            ->get(['dose_number', 'date_given']);
+
+        foreach ($rows as $row) {
+            $current['td'.(int) $row->dose_number] = $this->dateString($row->date_given ?? null);
+        }
+
+        return $current;
+    }
+
+    /**
+     * Sparse per-dose upsert: omitted keys are untouched, a blank date clears
+     * an existing dose and never inserts an empty row.
+     *
+     * @param  array<string, mixed>  $payload
+     */
+    private function upsertTdImmunizations(int|string $residentId, array $payload): void
+    {
+        if (! Schema::hasTable('td_immunization')) {
+            return;
+        }
+
+        for ($dose = 1; $dose <= 5; $dose++) {
+            $key = 'td'.$dose;
+            if (! array_key_exists($key, $payload)) {
+                continue;
+            }
+
+            $date = $this->nullableDate($payload[$key]);
+            $existing = DB::table('td_immunization')
+                ->where('resident_id', $residentId)
+                ->where('dose_number', $dose)
+                ->first();
+
+            if ($existing === null) {
+                if ($date === null) {
+                    continue;
+                }
+
+                DB::table('td_immunization')->insert([
+                    'resident_id' => $residentId,
+                    'dose_number' => $dose,
+                    'date_given' => $date,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ]);
+
+                continue;
+            }
+
+            DB::table('td_immunization')
+                ->where('td_immunization_id', $existing->td_immunization_id)
+                ->update([
+                    'date_given' => $date,
+                    'updated_at' => now(),
+                ]);
+        }
+    }
+
+    /**
+     * @param  array<string, mixed>  $current
+     * @return array<string, mixed>
+     */
+    private function loadTransOut(int $maternalCareId, array $current): array
+    {
+        if (! Schema::hasTable('maternal_trans_outs')) {
+            return $current;
+        }
+
+        $row = DB::table('maternal_trans_outs')->where('maternal_care_id', $maternalCareId)->first();
+        if ($row === null) {
+            return $current;
+        }
+
+        return array_merge($current, [
+            'to_facility' => (string) ($row->to_facility ?? ''),
+            'occurred_at_stage' => (string) ($row->occurred_at_stage ?? ''),
+            'reason' => (string) ($row->reason ?? ''),
+            'date_transferred_out' => $this->dateString($row->date_transferred_out ?? null),
+        ]);
+    }
+
+    /**
+     * Store the Trans-Out details, then close the pregnancy as Trans-Out.
+     *
+     * @param  array<string, mixed>  $payload
+     */
+    private function saveTransOut(int $maternalCareId, array $payload): void
+    {
+        if (Schema::hasTable('maternal_trans_outs')) {
+            $fields = [
+                'to_facility' => $this->nullableText($payload['to_facility'] ?? null),
+                'occurred_at_stage' => $this->nullableText($payload['occurred_at_stage'] ?? null),
+                'reason' => $this->nullableText($payload['reason'] ?? null),
+                'date_transferred_out' => $this->nullableDate($payload['date_transferred_out'] ?? null),
+                'updated_at' => now(),
+            ];
+
+            $exists = DB::table('maternal_trans_outs')->where('maternal_care_id', $maternalCareId)->exists();
+            if ($exists) {
+                DB::table('maternal_trans_outs')->where('maternal_care_id', $maternalCareId)->update($fields);
+            } else {
+                DB::table('maternal_trans_outs')->insert(array_merge($fields, [
+                    'maternal_care_id' => $maternalCareId,
+                    'created_at' => now(),
+                ]));
+            }
+        }
+
+        $this->markTransferredOut($maternalCareId);
     }
 
     private function markTransferredOut(int $maternalCareId): void

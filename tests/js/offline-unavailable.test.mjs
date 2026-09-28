@@ -104,6 +104,6 @@ describe('offline unavailable in-shell panel', () => {
 
     it('boots the module nav guard from app.js', () => {
         assert.match(appSource, /offline-module-nav-guard/);
-        assert.equal(CACHE_VERSION, 'offline-7-v20');
+        assert.equal(CACHE_VERSION, 'offline-7-v21');
     });
 });

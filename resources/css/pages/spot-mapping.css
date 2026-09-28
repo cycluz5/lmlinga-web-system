@@ -962,6 +962,29 @@
     color: #111827;
 }
 
+/* Toast — same look as User Management (.lml-user-mgmt__toast). */
+.lml-spot-map__toast {
+    margin: 0 0 1rem;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid rgba(var(--lml-primary-rgb), 0.35);
+    border-radius: var(--lml-radius-md);
+    background-color: #f0fdf4;
+    color: var(--lml-deep-green);
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.lml-spot-map__toast[hidden] {
+    display: none !important;
+}
+
+.lml-spot-map__toast--error {
+    color: #991b1b;
+    background-color: #fef2f2;
+    border-color: #fecaca;
+}
+
 .lml-spot-map__panel-note {
     margin: 0;
     padding: 0.65rem 0.75rem;

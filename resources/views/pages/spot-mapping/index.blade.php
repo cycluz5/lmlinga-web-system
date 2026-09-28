@@ -28,6 +28,16 @@
             </div>
         @endif
 
+        {{-- Plotting is online-only: spot-mapping.js shows this toast (same style as User Management)
+             when Plot is pressed while offline. --}}
+        <p
+            class="lml-spot-map__toast lml-spot-map__toast--error"
+            role="alert"
+            aria-live="assertive"
+            data-spot-map-offline-notice
+            hidden
+        ></p>
+
         <div class="lml-spot-map__toolbar">
             <div class="lml-spot-map__stats" role="group" aria-label="Household mapping summary">
                 <article class="lml-spot-map__card">

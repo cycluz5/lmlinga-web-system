@@ -31,6 +31,12 @@
     'canPersist' => false,
     'readOnly' => true,
 ])
+@include('pages.household-profiling.partials.maternal-care-immunizations', [
+    'pregnancy' => $pregnancy,
+    'routeParams' => $routeParams,
+    'canPersist' => false,
+    'readOnly' => true,
+])
 @include('pages.household-profiling.partials.maternal-care-supplementations', [
     'pregnancy' => $pregnancy,
     'routeParams' => $routeParams,
@@ -55,3 +61,11 @@
     'canPersist' => false,
     'readOnly' => true,
 ])
+@if ($status === 'transferred_out')
+    @include('pages.household-profiling.partials.maternal-care-trans-out', [
+        'pregnancy' => $pregnancy,
+        'routeParams' => $routeParams,
+        'canPersist' => false,
+        'readOnly' => true,
+    ])
+@endif

@@ -438,9 +438,10 @@ describe('offline plot → environmental health handoff', () => {
         assert.match(clientSource, /handleEnvironmentalStepQueued/);
         assert.doesNotMatch(formsSource, /handoff_token: /);
         const offlineBranch = spotSource.slice(
-            spotSource.indexOf('const finishLocalQueue'),
+            spotSource.indexOf('const stopForOffline'),
             spotSource.indexOf('const response = await fetch(createUrl'),
         );
+        assert.notEqual(spotSource.indexOf('const stopForOffline'), -1);
         assert.equal(offlineBranch.includes('handoff'), false);
         assert.equal(offlineBranch.includes('location.replace'), false);
         assert.match(spotSource, /fetch\(createUrl/);
@@ -620,9 +621,10 @@ describe('offline plot → environmental health handoff', () => {
 
     it('does not mutate plotted markers when entering the EH wizard', () => {
         const finish = spotSource.slice(
-            spotSource.indexOf('const finishLocalQueue'),
+            spotSource.indexOf('const stopForOffline'),
             spotSource.indexOf('const response = await fetch(createUrl'),
         );
+        assert.notEqual(spotSource.indexOf('const stopForOffline'), -1);
         assert.equal(finish.includes('markerById'), false);
         assert.equal(finish.includes('flyTo'), false);
         assert.equal(finish.includes('setView'), false);

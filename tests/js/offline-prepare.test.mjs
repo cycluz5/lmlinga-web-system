@@ -67,7 +67,7 @@ function memoryStorage() {
 
 describe('offline preparation readiness storage', () => {
     it('gates local prepared state on cache version and actor', () => {
-        assert.equal(CACHE_VERSION, 'offline-7-v20');
+        assert.equal(CACHE_VERSION, 'offline-7-v21');
         const storage = memoryStorage();
         assert.equal(readLocalPrepared(storage, 7, 'bhw'), null);
         writeLocalPrepared(storage, 7, 'bhw', 12);
@@ -77,7 +77,7 @@ describe('offline preparation readiness storage', () => {
         assert.equal(readLocalPrepared(storage, 7, 'admin'), null);
         clearLocalPrepared(storage, 7);
         assert.equal(readLocalPrepared(storage, 7, 'bhw'), null);
-        assert.match(prepareStorageKey(7), /offline-7-v20:7$/);
+        assert.match(prepareStorageKey(7), /offline-7-v21:7$/);
     });
 
     it('stores and matches per-login session readiness separately from durable cache version', () => {
