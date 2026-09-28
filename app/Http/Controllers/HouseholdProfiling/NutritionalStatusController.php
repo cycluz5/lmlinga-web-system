@@ -237,17 +237,9 @@ class NutritionalStatusController extends Controller
 
     private function persist(Resident $resident, StoreTimbangRecordRequest $request): void
     {
-        $rawPayload = $this->service->normalizeValidated($request->validated());
-        $result = $this->assessment->assess($resident, $rawPayload);
-
-        $this->service->createForResident($resident, array_merge($rawPayload, [
-            'weight_for_age' => $result['weight_for_age'],
-            'height_for_age' => $result['height_for_age'],
-            'weight_for_height' => $result['weight_for_height'],
-            'muac_status' => $result['muac_status'],
-            'bmi_value' => $result['bmi_value'],
-            'bmi_status' => $result['bmi_status'],
-            'overall_nutritional_status' => $result['overall_nutritional_status'],
-        ]));
+        $this->service->createAssessedForResident(
+            $resident,
+            $this->service->normalizeValidated($request->validated()),
+        );
     }
 }

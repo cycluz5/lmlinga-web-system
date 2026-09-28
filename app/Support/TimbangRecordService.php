@@ -287,6 +287,28 @@ final class TimbangRecordService
     }
 
     /**
+     * Operation Timbang save shared by the online form and offline sync:
+     * classify the raw measurements with NutritionAssessmentService::assess()
+     * (server-authoritative), then insert the history row.
+     *
+     * @param  array<string, mixed>  $rawPayload  Output of normalizeValidated(); computed keys are ignored.
+     */
+    public function createAssessedForResident(Resident $resident, array $rawPayload): TimbangRecord
+    {
+        $result = $this->assessment->assess($resident, $rawPayload);
+
+        return $this->createForResident($resident, array_merge($rawPayload, [
+            'weight_for_age' => $result['weight_for_age'],
+            'height_for_age' => $result['height_for_age'],
+            'weight_for_height' => $result['weight_for_height'],
+            'muac_status' => $result['muac_status'],
+            'bmi_value' => $result['bmi_value'],
+            'bmi_status' => $result['bmi_status'],
+            'overall_nutritional_status' => $result['overall_nutritional_status'],
+        ]));
+    }
+
+    /**
      * Trusted physical sync. Copies only resident_id, measurement_date,
      * weight_kg, and height_cm. Does not store BMI, MUAC, or classifications.
      */
