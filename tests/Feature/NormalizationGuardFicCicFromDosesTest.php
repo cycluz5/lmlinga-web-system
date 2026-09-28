@@ -7,16 +7,16 @@ use App\Models\Resident;
 use App\Support\ChildImmunizationService;
 use App\Support\StaffRole;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Tests\Support\HybridChildImmunizationSchema;
 use Tests\TestCase;
 
 /**
- * Normalization guard (Phase 1): FIC/CIC shown to users is computed from immunization_doses.
- * fic_cic_status (legacy manual flags) must never override the dose-based result, whether the
- * row is missing or stale. Protects the future removal of fic_cic_status.
+ * Normalization guard: FIC/CIC shown to users is computed from immunization_doses only.
+ * fic_cic_status and child_immunizations.selected_vaccine_types were dropped (3NF), so
+ * posted FIC/CIC checkboxes must never fake or hide completion.
  *
- * Uses the hybrid schema that matches the live database (plural header + fic_cic_status).
+ * Uses the hybrid schema that matches the live database (plural header + dose_number).
  */
 class NormalizationGuardFicCicFromDosesTest extends TestCase
 {
@@ -66,19 +66,6 @@ class NormalizationGuardFicCicFromDosesTest extends TestCase
         ]);
     }
 
-    private function headerId(): int
-    {
-        return (int) DB::table('child_immunizations')->value('id');
-    }
-
-    private function writeStaleStatus(int $fic, int $cic): void
-    {
-        DB::table('fic_cic_status')->updateOrInsert(
-            ['child_immunization_id' => $this->headerId()],
-            ['fic_completed' => $fic, 'cic_completed' => $cic, 'created_at' => now(), 'updated_at' => now()],
-        );
-    }
-
     private function assertDisplayed(Household $household, Resident $resident, bool $fic, bool $cic): void
     {
         $state = $this->service->forResident($resident);
@@ -94,29 +81,36 @@ class NormalizationGuardFicCicFromDosesTest extends TestCase
         $this->assertStringContainsString('data-cic-completed="'.($cic ? 'true' : 'false').'"', $html);
     }
 
-    public function test_complete_doses_show_fic_and_cic_complete_without_a_status_row(): void
+    public function test_derived_status_columns_are_gone(): void
+    {
+        $this->assertFalse(Schema::hasTable('fic_cic_status'));
+        $this->assertFalse(Schema::hasColumn('child_immunizations', 'selected_vaccine_types'));
+    }
+
+    public function test_complete_doses_show_fic_and_cic_complete(): void
     {
         ['household' => $household, 'resident' => $resident] = $this->seedChild();
         $this->saveCompleteDoses($resident);
 
-        $this->assertSame(0, DB::table('fic_cic_status')->count(), 'Dose-only saves do not write fic_cic_status.');
         $this->assertDisplayed($household, $resident, fic: true, cic: true);
     }
 
-    public function test_stale_incomplete_status_row_does_not_hide_dose_based_completion(): void
+    public function test_posted_unchecked_fic_cic_does_not_hide_dose_based_completion(): void
     {
         ['household' => $household, 'resident' => $resident] = $this->seedChild();
         $this->saveCompleteDoses($resident);
-        $this->writeStaleStatus(fic: 0, cic: 0);
+        $this->service->saveForResident($resident->fresh(), ['vaccine_types' => []]);
 
         $this->assertDisplayed($household, $resident, fic: true, cic: true);
     }
 
-    public function test_stale_complete_status_row_does_not_fake_completion(): void
+    public function test_posted_fic_cic_checkboxes_do_not_fake_completion(): void
     {
         ['household' => $household, 'resident' => $resident] = $this->seedChild();
-        $this->service->saveForResident($resident, ['vaccines' => ['bcg' => [0 => '2025-01-01']]]);
-        $this->writeStaleStatus(fic: 1, cic: 1);
+        $this->service->saveForResident($resident, [
+            'vaccines' => ['bcg' => [0 => '2025-01-01']],
+            'vaccine_types' => ['fic', 'cic'],
+        ]);
 
         $this->assertDisplayed($household, $resident, fic: false, cic: false);
     }

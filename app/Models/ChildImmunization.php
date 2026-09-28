@@ -29,7 +29,8 @@ class ChildImmunization extends Model
     ];
 
     /**
-     * Manual Vaccines Type checkbox keys, including FIC/CIC (not dose vaccines).
+     * Vaccines Type checklist keys, including FIC/CIC (not dose vaccines).
+     * The checklist is derived from immunization_doses; nothing is stored per key.
      *
      * @var list<string>
      */
@@ -65,7 +66,6 @@ class ChildImmunization extends Model
      */
     protected $fillable = [
         'resident_id',
-        'selected_vaccine_types',
         'remarks',
     ];
 
@@ -100,20 +100,6 @@ class ChildImmunization extends Model
         }
 
         return $this->attributes[$keyName] ?? null;
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    protected function casts(): array
-    {
-        if (ChildImmunizationErdMode::isActive()) {
-            return [];
-        }
-
-        return [
-            'selected_vaccine_types' => 'array',
-        ];
     }
 
     /**

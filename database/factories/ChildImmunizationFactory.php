@@ -20,7 +20,6 @@ class ChildImmunizationFactory extends Factory
     {
         return [
             'resident_id' => Resident::factory(),
-            'selected_vaccine_types' => ['bcg', 'opv'],
             'remarks' => null,
         ];
     }

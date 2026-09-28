@@ -21,6 +21,7 @@ class StoreChildImmunizationRequest extends FormRequest
     {
         return [
             'vaccines' => ['nullable', 'array'],
+            // Still accepted so queued offline payloads validate; the service ignores it.
             'vaccine_types' => ['nullable', 'array'],
             'vaccine_types.*' => ['string', Rule::in(ChildImmunization::SELECTABLE_TYPE_KEYS)],
             'remarks' => ['nullable', 'string', 'max:2000'],

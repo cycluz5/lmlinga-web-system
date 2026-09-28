@@ -126,7 +126,7 @@ class ChildImmunizationPersistencePhase2Test extends TestCase
 
         $record = ChildImmunization::query()->where('resident_id', $resident->id)->first();
         $this->assertNotNull($record);
-        $this->assertSame(['bcg', 'mmr', 'fic'], $record->selected_vaccine_types);
+        $this->assertSame(['bcg', 'mmr'], $this->service->forResident($resident->fresh())['selected_vaccine_types']);
         $this->assertSame(2, ImmunizationDose::query()->where('child_immunization_id', $record->id)->count());
     }
 
@@ -155,7 +155,7 @@ class ChildImmunizationPersistencePhase2Test extends TestCase
         ]);
 
         $record = ChildImmunization::query()->where('resident_id', $resident->id)->first();
-        $this->assertSame(['opv', 'cic'], $record->selected_vaccine_types);
+        $this->assertSame(['bcg', 'opv', 'mmr'], $this->service->forResident($resident->fresh())['selected_vaccine_types']);
 
         $bcg = ImmunizationDose::query()
             ->where('child_immunization_id', $record->id)
@@ -213,18 +213,21 @@ class ChildImmunizationPersistencePhase2Test extends TestCase
         $this->assertNull($dose->date_given);
     }
 
-    public function test_manual_checkbox_selections_are_persisted(): void
+    public function test_manual_checkbox_selections_are_not_stored(): void
     {
         ['resident' => $resident] = $this->seedPersistedChild();
 
-        $record = $this->service->saveForResident($resident, [
+        $this->service->saveForResident($resident, [
             'vaccine_types' => ['cic', 'bcg', 'fic', 'bcg'],
         ]);
 
-        $this->assertSame(['bcg', 'fic', 'cic'], $record->selected_vaccine_types);
+        $state = $this->service->forResident($resident->fresh());
+        $this->assertSame([], $state['selected_vaccine_types']);
+        $this->assertFalse($state['fic']['completed']);
+        $this->assertFalse($state['cic']['completed']);
     }
 
-    public function test_checkbox_and_date_inputs_remain_independent(): void
+    public function test_checklist_follows_dated_doses_not_posted_checkboxes(): void
     {
         ['resident' => $resident] = $this->seedPersistedChild();
 
@@ -233,7 +236,7 @@ class ChildImmunizationPersistencePhase2Test extends TestCase
             'vaccine_types' => ['mmr', 'fic'],
         ]);
 
-        $this->assertSame(['mmr', 'fic'], $record->selected_vaccine_types);
+        $this->assertSame([], $this->service->forResident($resident->fresh())['selected_vaccine_types']);
         $this->assertSame(0, ImmunizationDose::query()->where('child_immunization_id', $record->id)->count());
 
         $updated = $this->service->saveForResident($resident, [
@@ -241,7 +244,7 @@ class ChildImmunizationPersistencePhase2Test extends TestCase
             'vaccine_types' => [],
         ]);
 
-        $this->assertSame([], $updated->selected_vaccine_types);
+        $this->assertSame(['mmr'], $this->service->forResident($resident->fresh())['selected_vaccine_types']);
         $this->assertSame(1, ImmunizationDose::query()->where('child_immunization_id', $updated->id)->count());
     }
 
@@ -417,7 +420,7 @@ class ChildImmunizationPersistencePhase2Test extends TestCase
         $state = $this->service->forResident($resident->fresh());
 
         $this->assertTrue($state['persisted']);
-        $this->assertSame(['bcg', 'cic'], $state['selected_vaccine_types']);
+        $this->assertSame(['bcg', 'mmr'], $state['selected_vaccine_types']);
         $this->assertSame('Read back', $state['remarks']);
         $this->assertSame('2025-01-01', $state['vaccines']['bcg'][0]);
         $this->assertSame('', $state['vaccines']['bcg'][1]);

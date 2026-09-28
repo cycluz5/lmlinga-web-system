@@ -16,7 +16,7 @@ use Tests\Support\HybridChildImmunizationSchema;
 use Tests\TestCase;
 
 /**
- * Hybrid live schema: plural header + dose_id/dose_number + fic_cic_status.
+ * Hybrid live schema: plural header + dose_id/dose_number (FIC/CIC derived from doses).
  */
 class ChildImmunizationHybridSchemaTest extends TestCase
 {
@@ -61,7 +61,7 @@ class ChildImmunizationHybridSchemaTest extends TestCase
         $this->assertTrue(ChildImmunizationErdMode::usesDoseIdPrimaryKey());
         $this->assertSame('dose_number', ChildImmunizationErdMode::doseSequenceColumn());
         $this->assertSame('dose_id', ChildImmunizationErdMode::dosePrimaryKey());
-        $this->assertTrue(ChildImmunizationErdMode::usesFicCicStatusTable());
+        $this->assertFalse(Schema::hasTable('fic_cic_status'));
         $this->assertTrue(ChildImmunizationErdMode::usesErdVaccineTypeLabels());
         $this->assertFalse(Schema::hasTable('child_immunization'));
         $this->assertFalse(Schema::hasColumn('immunization_doses', 'dose_index'));
@@ -121,7 +121,7 @@ class ChildImmunizationHybridSchemaTest extends TestCase
         $this->assertSame(1, (int) $dose->getAttributes()['dose_number']);
     }
 
-    public function test_fic_cic_status_is_usable_with_plural_header(): void
+    public function test_posted_fic_cic_checkboxes_do_not_mark_completion_with_plural_header(): void
     {
         ['resident' => $resident] = $this->seedChild();
 
@@ -130,18 +130,10 @@ class ChildImmunizationHybridSchemaTest extends TestCase
             'vaccine_types' => ['bcg', 'fic', 'cic'],
         ]);
 
-        $headerId = (int) DB::table('child_immunizations')->value('id');
-        $status = DB::table('fic_cic_status')->first();
-
-        $this->assertNotNull($status);
-        $this->assertSame($headerId, (int) $status->child_immunization_id);
-        $this->assertSame(1, (int) $status->fic_completed);
-        $this->assertSame(1, (int) $status->cic_completed);
-
         $state = $this->service->forResident($resident);
-        $this->assertContains('fic', $state['selected_vaccine_types']);
-        $this->assertContains('cic', $state['selected_vaccine_types']);
-        $this->assertContains('bcg', $state['selected_vaccine_types']);
+        $this->assertFalse($state['fic']['completed']);
+        $this->assertFalse($state['cic']['completed']);
+        $this->assertSame(['bcg'], $state['selected_vaccine_types']);
     }
 
     public function test_http_save_succeeds_without_querying_dose_index(): void

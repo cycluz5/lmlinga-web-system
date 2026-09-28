@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Schema;
  * PHPUnit-only hybrid Child Immunization tables (not a migration).
  *
  * Matches the repaired live ERD-reference shape:
- * plural child_immunizations (id) + immunization_doses (dose_id / dose_number)
- * + fic_cic_status keyed to child_immunizations.id.
+ * plural child_immunizations (id) + immunization_doses (dose_id / dose_number).
+ * FIC/CIC is derived from doses (no fic_cic_status table).
  */
 final class HybridChildImmunizationSchema
 {
@@ -26,7 +26,6 @@ final class HybridChildImmunizationSchema
         Schema::create('child_immunizations', function (Blueprint $table): void {
             $table->id();
             $table->unsignedBigInteger('resident_id')->unique();
-            $table->json('selected_vaccine_types')->nullable();
             $table->text('remarks')->nullable();
             $table->timestamps();
         });
@@ -42,14 +41,6 @@ final class HybridChildImmunizationSchema
                 ['child_immunization_id', 'vaccine_type', 'dose_number'],
                 'uq_hybrid_immdose'
             );
-        });
-
-        Schema::create('fic_cic_status', function (Blueprint $table): void {
-            $table->id('fic_cic_id');
-            $table->unsignedBigInteger('child_immunization_id')->unique();
-            $table->boolean('fic_completed')->default(false);
-            $table->boolean('cic_completed')->default(false);
-            $table->timestamps();
         });
 
         Schema::enableForeignKeyConstraints();

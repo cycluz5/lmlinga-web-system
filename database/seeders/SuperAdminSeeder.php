@@ -48,6 +48,34 @@ class SuperAdminSeeder extends Seeder
 
         $admin = User::query()->updateOrCreate(['username' => 'maria.santos'], $attributes);
 
+        $this->ensureAdminRole($admin);
+
+        $this->command?->info('Super admin account seeded: maria.santos');
+    }
+
+    /**
+     * Creates the account only when missing; an existing password and profile are left untouched.
+     * Runs after every `php artisan migrate` (see AppServiceProvider).
+     */
+    public function ensureExists(): void
+    {
+        if (! Schema::hasTable((new User)->getTable())) {
+            return;
+        }
+
+        $admin = User::query()->where('username', 'maria.santos')->first();
+
+        if ($admin === null) {
+            $this->run();
+
+            return;
+        }
+
+        $this->ensureAdminRole($admin);
+    }
+
+    private function ensureAdminRole(User $admin): void
+    {
         if (StaffRole::normalize($admin->currentAppointment?->role) !== StaffRole::ADMIN) {
             $admin->assignCurrentAppointment([
                 'role' => StaffRole::ADMIN,
@@ -57,7 +85,5 @@ class SuperAdminSeeder extends Seeder
                 'end_of_appointment' => null,
             ]);
         }
-
-        $this->command?->info('Super admin account seeded: maria.santos');
     }
 }

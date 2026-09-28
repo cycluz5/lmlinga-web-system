@@ -11,7 +11,7 @@ use Tests\Support\HybridChildImmunizationSchema;
 use Tests\TestCase;
 
 /**
- * Header ERD mode vs immunization_doses / fic_cic_status capability detection.
+ * Header ERD mode vs immunization_doses capability detection.
  */
 class ChildImmunizationSchemaCapabilityTest extends TestCase
 {
@@ -26,7 +26,7 @@ class ChildImmunizationSchemaCapabilityTest extends TestCase
         $this->assertFalse(ChildImmunizationErdMode::usesDoseIdPrimaryKey());
         $this->assertSame('dose_index', ChildImmunizationErdMode::doseSequenceColumn());
         $this->assertSame('id', ChildImmunizationErdMode::dosePrimaryKey());
-        $this->assertFalse(ChildImmunizationErdMode::usesFicCicStatusTable());
+        $this->assertFalse(Schema::hasTable('fic_cic_status'));
         $this->assertFalse(ChildImmunizationErdMode::usesErdVaccineTypeLabels());
         $this->assertTrue(Schema::hasColumn('immunization_doses', 'dose_index'));
         $this->assertFalse(Schema::hasColumn('immunization_doses', 'dose_number'));
@@ -43,10 +43,10 @@ class ChildImmunizationSchemaCapabilityTest extends TestCase
         $this->assertTrue(ChildImmunizationErdMode::usesDoseIdPrimaryKey());
         $this->assertSame('dose_number', ChildImmunizationErdMode::doseSequenceColumn());
         $this->assertSame('dose_id', ChildImmunizationErdMode::dosePrimaryKey());
-        $this->assertTrue(ChildImmunizationErdMode::usesFicCicStatusTable());
+        $this->assertFalse(Schema::hasTable('fic_cic_status'));
     }
 
-    public function test_hybrid_plural_header_detects_dose_number_and_fic_cic(): void
+    public function test_hybrid_plural_header_detects_dose_number_schema(): void
     {
         HybridChildImmunizationSchema::ensure();
 
@@ -54,7 +54,7 @@ class ChildImmunizationSchemaCapabilityTest extends TestCase
         $this->assertSame('child_immunizations', ChildImmunizationErdMode::headerTable());
         $this->assertSame('dose_number', ChildImmunizationErdMode::doseSequenceColumn());
         $this->assertSame('dose_id', ChildImmunizationErdMode::dosePrimaryKey());
-        $this->assertTrue(ChildImmunizationErdMode::usesFicCicStatusTable());
+        $this->assertFalse(Schema::hasTable('fic_cic_status'));
     }
 
     public function test_dose_number_is_chosen_whenever_that_column_exists(): void

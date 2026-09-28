@@ -10,6 +10,7 @@ use App\Support\ChildImmunizationService;
 use App\Support\StaffRole;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
 /**
@@ -411,7 +412,10 @@ class ChildImmunizationDoseProgressTest extends TestCase
 
         $record = ChildImmunization::query()->where('resident_id', $resident->id)->first();
         $this->assertNotNull($record);
-        $this->assertSame(['dpt-hib-hepb'], $record->selected_vaccine_types);
+        $this->assertSame(
+            ['dpt-hib-hepb'],
+            $this->service->forResident($resident->fresh())['selected_vaccine_types']
+        );
         $this->assertSame('Keep persistence', $record->remarks);
         $this->assertSame(2, ImmunizationDose::query()->where('child_immunization_id', $record->id)->count());
         $this->assertSame(
@@ -434,7 +438,7 @@ class ChildImmunizationDoseProgressTest extends TestCase
         );
     }
 
-    public function test_dose_only_save_preserves_legacy_selected_vaccine_types(): void
+    public function test_posted_vaccine_types_are_ignored_and_checklist_follows_doses(): void
     {
         ['resident' => $resident] = $this->seedPersistedChild();
 
@@ -452,12 +456,11 @@ class ChildImmunizationDoseProgressTest extends TestCase
             ],
         ]);
 
-        $record = ChildImmunization::query()->where('resident_id', $resident->id)->first();
         $state = $this->service->forResident($resident->fresh());
 
-        $this->assertSame(['bcg'], $record->selected_vaccine_types);
+        $this->assertFalse(Schema::hasColumn('child_immunizations', 'selected_vaccine_types'));
         $this->assertTrue($state['progress']['dpt-hib-hepb']['complete']);
-        $this->assertSame(['bcg'], $state['selected_vaccine_types']);
+        $this->assertSame(['dpt-hib-hepb', 'opv'], $state['selected_vaccine_types']);
     }
 
     public function test_vaccine_type_checkboxes_follow_derived_completion_status(): void
@@ -556,20 +559,21 @@ class ChildImmunizationDoseProgressTest extends TestCase
         $this->assertTypeCheckboxChecked($this->typeRowHtml($html, 'cic'));
     }
 
-    public function test_fic_cic_status_persistence_still_follows_manual_checkboxes(): void
+    public function test_fic_cic_follow_doses_not_posted_checkboxes(): void
     {
         ['resident' => $resident] = $this->seedPersistedChild();
 
+        // MMR has one dose: FIC is complete, CIC is not, even though "cic" is posted.
         $this->service->saveForResident($resident, $this->ficCompletePayload([
-            'vaccine_types' => ['fic'],
+            'vaccine_types' => ['cic'],
         ]));
 
         $state = $this->service->forResident($resident->fresh());
-        $record = ChildImmunization::query()->where('resident_id', $resident->id)->first();
 
-        $this->assertSame(['fic'], $record->selected_vaccine_types);
         $this->assertTrue($state['fic']['completed']);
+        $this->assertFalse($state['cic']['completed']);
         $this->assertContains('fic', $state['selected_vaccine_types']);
+        $this->assertNotContains('cic', $state['selected_vaccine_types']);
     }
 
     public function test_duplicate_dose_protection_remains_unchanged(): void
