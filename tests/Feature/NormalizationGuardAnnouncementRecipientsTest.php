@@ -19,10 +19,10 @@ use Tests\TestCase;
 /**
  * Normalization guard (Phase 1): recipient baseline for announcement targeting.
  *
- * Announcements are saved through the real HTTP store (so targeting is persisted in
- * announcements.zones / age_presets / age_min_months / age_max_months / zone_mode), then the
- * recipients are read back from the SAVED announcement. A future normalized storage for
- * zones/age_presets must return exactly the same recipients.
+ * Announcements are saved through the real HTTP store (targeting is persisted in
+ * announcement_zones / announcement_age_presets + age_min_months / age_max_months), then the
+ * recipients are read back from the SAVED announcement. The normalized storage must return
+ * exactly the same recipients as the original JSON columns did.
  *
  * Fixture: one resident per household, each with a linked portal account, so the notified
  * account set equals the matched resident set.
@@ -57,9 +57,7 @@ class NormalizationGuardAnnouncementRecipientsTest extends TestCase
                 $table->string('title', 150);
                 $table->text('message')->nullable();
                 $table->text('recipient_context')->nullable();
-                $table->string('place', 120)->nullable();
-                $table->date('event_date')->nullable();
-                $table->time('event_time')->nullable();
+                $table->unsignedBigInteger('related_announcement_id')->nullable();
                 $table->unsignedBigInteger('related_request_id')->nullable();
                 $table->unsignedBigInteger('related_conversation_id')->nullable();
                 $table->boolean('is_read')->default(false);

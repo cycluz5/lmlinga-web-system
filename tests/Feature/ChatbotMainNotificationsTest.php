@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Announcement;
 use App\Models\RecordRequest;
 use App\Support\ResidentAuthenticator;
 use Illuminate\Database\Schema\Blueprint;
@@ -87,15 +88,22 @@ class ChatbotMainNotificationsTest extends TestCase
         [$accountId] = $this->seedVerifiedResident('context.notif@example.test', '000711');
         $this->ensureNotificationsTable();
 
+        // Place/date/time come from the linked announcement (3NF), not the notification row.
+        $announcement = Announcement::factory()->create([
+            'title' => 'Infant Checkup',
+            'message' => 'Bring vaccination card.',
+            'place' => 'Barangay Health Center',
+            'event_date' => '2026-10-01',
+            'event_time' => '09:30:00',
+        ]);
+
         DB::table('notifications')->insert([
             'account_id' => $accountId,
             'notification_type' => 'System',
             'title' => 'Infant Checkup',
             'message' => 'Bring vaccination card.',
             'recipient_context' => 'Ben C Child',
-            'place' => 'Barangay Health Center',
-            'event_date' => '2026-10-01',
-            'event_time' => '09:30:00',
+            'related_announcement_id' => $announcement->getKey(),
             'related_request_id' => null,
             'related_conversation_id' => null,
             'is_read' => 0,
@@ -413,11 +421,9 @@ class ChatbotMainNotificationsTest extends TestCase
                 $table->string('title', 150);
                 $table->text('message')->nullable();
                 $table->text('recipient_context')->nullable();
-                $table->string('place', 120)->nullable();
-                $table->date('event_date')->nullable();
-                $table->time('event_time')->nullable();
                 $table->unsignedBigInteger('related_request_id')->nullable();
                 $table->unsignedBigInteger('related_conversation_id')->nullable();
+                $table->unsignedBigInteger('related_announcement_id')->nullable();
                 $table->boolean('is_read')->default(false);
                 $table->timestamp('created_at')->useCurrent();
             });
@@ -430,19 +436,9 @@ class ChatbotMainNotificationsTest extends TestCase
                 $table->text('recipient_context')->nullable();
             });
         }
-        if (! Schema::hasColumn('notifications', 'place')) {
+        if (! Schema::hasColumn('notifications', 'related_announcement_id')) {
             Schema::table('notifications', function (Blueprint $table): void {
-                $table->string('place', 120)->nullable();
-            });
-        }
-        if (! Schema::hasColumn('notifications', 'event_date')) {
-            Schema::table('notifications', function (Blueprint $table): void {
-                $table->date('event_date')->nullable();
-            });
-        }
-        if (! Schema::hasColumn('notifications', 'event_time')) {
-            Schema::table('notifications', function (Blueprint $table): void {
-                $table->time('event_time')->nullable();
+                $table->unsignedBigInteger('related_announcement_id')->nullable();
             });
         }
     }

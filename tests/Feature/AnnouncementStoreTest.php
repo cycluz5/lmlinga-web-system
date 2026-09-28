@@ -102,11 +102,12 @@ class AnnouncementStoreTest extends TestCase
             'message' => 'Bring your children for deworming.',
             'place' => 'Barangay Health Center',
             'target_group' => 'all',
-            'zone_mode' => 'all',
         ]);
 
         $announcement = Announcement::query()->first();
         $this->assertNotNull($announcement);
+        $this->assertSame('all', $announcement->zone_mode);
+        $this->assertDatabaseCount('announcement_zones', 0);
         $this->assertSame('2026-08-30', $announcement->event_date->toDateString());
     }
 
@@ -198,9 +199,9 @@ class AnnouncementStoreTest extends TestCase
 
         $this->assertDatabaseHas('announcements', [
             'posted_by_user_id' => $user->id,
-            'posted_by_name' => $user->composeDisplayName(),
             'posted_by_role' => 'admin',
         ]);
+        $this->assertSame($user->composeDisplayName(), Announcement::query()->first()->posted_by_name);
     }
 
     public function test_age_target_persists_presets_and_normalized_months(): void
@@ -240,10 +241,8 @@ class AnnouncementStoreTest extends TestCase
                 ]))
                 ->assertRedirect(route('announcements.index'));
 
-            $this->assertDatabaseHas('announcements', [
-                'target_group' => $target,
-                'audience_label' => $label,
-            ]);
+            $this->assertDatabaseHas('announcements', ['target_group' => $target]);
+            $this->assertSame($label, Announcement::query()->first()->audience_label);
         }
     }
 
@@ -264,6 +263,7 @@ class AnnouncementStoreTest extends TestCase
             ['Zone 1', 'Zone 5', 'North Purok'],
             $announcement->zones,
         );
+        $this->assertDatabaseCount('announcement_zones', 3);
     }
 
     public function test_server_recomputes_estimated_reach_for_active_maternal(): void
@@ -371,7 +371,6 @@ class AnnouncementStoreTest extends TestCase
     {
         Announcement::factory()->create([
             'title' => 'Persisted Index Announcement',
-            'audience_label' => 'All Residents',
             'event_date' => now()->addDay()->toDateString(),
             'posted_at' => now(),
         ]);
@@ -467,7 +466,6 @@ class AnnouncementStoreTest extends TestCase
             'message' => 'Original body.',
             'event_date' => '2026-09-05',
             'target_group' => Announcement::TARGET_ALL,
-            'zone_mode' => Announcement::ZONE_ALL,
             'posted_at' => now(),
         ]);
 

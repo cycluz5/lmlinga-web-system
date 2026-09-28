@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Http\Controllers\Auth\ForgotPasswordController;
+use App\Models\Announcement;
 use App\Models\User;
 use App\Models\WorkerAppointment;
 use App\Models\WorkerAppointmentZone;
@@ -346,10 +347,7 @@ class AdminHealthWorkerDeleteTest extends TestCase
             'message' => 'Posted by worker before deletion.',
             'event_date' => '2026-09-01',
             'target_group' => 'all',
-            'zone_mode' => 'all',
-            'audience_label' => 'All Residents',
             'posted_by_user_id' => $worker->id,
-            'posted_by_name' => 'Maria Reyes',
             'posted_by_role' => 'BHW',
             'posted_at' => now(),
             'created_at' => now(),
@@ -364,6 +362,11 @@ class AdminHealthWorkerDeleteTest extends TestCase
         $this->assertSame(
             $worker->id,
             (int) DB::table('announcements')->where('title', 'Keep authorship')->value('posted_by_user_id')
+        );
+        // posted_by_name is derived from the (archived) poster, so it survives deletion.
+        $this->assertSame(
+            $worker->composeDisplayName(),
+            Announcement::query()->where('title', 'Keep authorship')->firstOrFail()->posted_by_name
         );
     }
 

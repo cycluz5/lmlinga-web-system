@@ -46,7 +46,6 @@ class AnnouncementNotificationServiceTest extends TestCase
 
         $announcement = Announcement::factory()->create([
             'target_group' => Announcement::TARGET_ALL,
-            'zone_mode' => Announcement::ZONE_ALL,
             'zones' => null,
             'age_presets' => null,
             'age_min_months' => null,
@@ -65,7 +64,6 @@ class AnnouncementNotificationServiceTest extends TestCase
     {
         $announcement = Announcement::factory()->create([
             'target_group' => Announcement::TARGET_ACTIVE_MATERNAL,
-            'zone_mode' => Announcement::ZONE_ALL,
         ]);
 
         $ids = $this->service->recipientAccountIds($announcement);
@@ -85,7 +83,6 @@ class AnnouncementNotificationServiceTest extends TestCase
 
         $announcement = Announcement::factory()->create([
             'target_group' => Announcement::TARGET_ALL,
-            'zone_mode' => Announcement::ZONE_ALL,
         ]);
 
         $ids = $this->service->recipientAccountIds($announcement);
@@ -124,7 +121,6 @@ class AnnouncementNotificationServiceTest extends TestCase
             'age_presets' => ['infants_0_6'],
             'age_min_months' => null,
             'age_max_months' => null,
-            'zone_mode' => Announcement::ZONE_ALL,
         ]);
 
         $ids = $this->service->recipientAccountIds($announcement);
@@ -155,7 +151,6 @@ class AnnouncementNotificationServiceTest extends TestCase
         $announcement = Announcement::factory()->create([
             'target_group' => Announcement::TARGET_AGE,
             'age_presets' => ['infants_0_6'],
-            'zone_mode' => Announcement::ZONE_ALL,
         ]);
 
         $ids = $this->service->recipientAccountIds($announcement);
@@ -182,7 +177,6 @@ class AnnouncementNotificationServiceTest extends TestCase
             'title' => 'Barangay Health Day',
             'message' => 'Free BP screening this Saturday.',
             'target_group' => Announcement::TARGET_ALL,
-            'zone_mode' => Announcement::ZONE_ALL,
         ]);
 
         $created = $this->service->fanOut($announcement);
@@ -205,7 +199,6 @@ class AnnouncementNotificationServiceTest extends TestCase
     {
         $announcement = Announcement::factory()->create([
             'target_group' => Announcement::TARGET_ACTIVE_MATERNAL,
-            'zone_mode' => Announcement::ZONE_ALL,
         ]);
 
         $created = $this->service->fanOut($announcement);
@@ -227,7 +220,6 @@ class AnnouncementNotificationServiceTest extends TestCase
             'title' => 'Two Recipients',
             'message' => 'Both linked accounts.',
             'target_group' => Announcement::TARGET_ALL,
-            'zone_mode' => Announcement::ZONE_ALL,
         ]);
 
         $created = $this->service->fanOut($announcement);
@@ -278,7 +270,6 @@ class AnnouncementNotificationServiceTest extends TestCase
             'event_time' => '09:30:00',
             'target_group' => Announcement::TARGET_AGE,
             'age_presets' => ['infants_0_6'],
-            'zone_mode' => Announcement::ZONE_ALL,
         ]);
 
         $created = $this->service->fanOut($announcement);
@@ -292,12 +283,11 @@ class AnnouncementNotificationServiceTest extends TestCase
         $this->assertSame('Ben C Child', $parentRow['recipient_context']);
         $this->assertStringNotContainsString('Ana', (string) $parentRow['recipient_context']);
         $this->assertStringNotContainsString('Outsider', (string) $parentRow['recipient_context']);
-        $this->assertSame('Barangay Health Center', $parentRow['place']);
-        $this->assertSame('2026-10-01', $parentRow['event_date']);
-        $this->assertTrue(
-            str_starts_with((string) $parentRow['event_time'], '09:30'),
-            'Expected event_time to start with 09:30, got: '.$parentRow['event_time']
-        );
+        // Schedule is read from the linked announcement, not copied (3NF).
+        $this->assertSame($announcement->getKey(), (int) $parentRow['related_announcement_id']);
+        $this->assertArrayNotHasKey('place', $parentRow);
+        $this->assertArrayNotHasKey('event_date', $parentRow);
+        $this->assertArrayNotHasKey('event_time', $parentRow);
     }
 
     public function test_fan_out_persists_multiple_matched_member_names_once(): void
@@ -337,7 +327,6 @@ class AnnouncementNotificationServiceTest extends TestCase
             'event_time' => '14:00',
             'target_group' => Announcement::TARGET_AGE,
             'age_presets' => ['infants_0_6'],
-            'zone_mode' => Announcement::ZONE_ALL,
         ]);
 
         $this->assertSame(1, $this->service->fanOut($announcement));
@@ -347,9 +336,7 @@ class AnnouncementNotificationServiceTest extends TestCase
             ->first();
 
         $this->assertSame('Juan Cruz, Maria Cruz', $row['recipient_context']);
-        $this->assertSame('Gym Hall', $row['place']);
-        $this->assertSame('2026-11-15', $row['event_date']);
-        $this->assertTrue(str_starts_with((string) $row['event_time'], '14:00'));
+        $this->assertSame($announcement->getKey(), (int) $row['related_announcement_id']);
         $this->assertSame(1, DB::table('notifications')->count());
     }
 
@@ -363,11 +350,9 @@ class AnnouncementNotificationServiceTest extends TestCase
                 $table->string('title', 150);
                 $table->text('message')->nullable();
                 $table->text('recipient_context')->nullable();
-                $table->string('place', 120)->nullable();
-                $table->date('event_date')->nullable();
-                $table->time('event_time')->nullable();
                 $table->unsignedBigInteger('related_request_id')->nullable();
                 $table->unsignedBigInteger('related_conversation_id')->nullable();
+                $table->unsignedBigInteger('related_announcement_id')->nullable();
                 $table->boolean('is_read')->default(false);
                 $table->timestamp('created_at')->useCurrent();
             });
@@ -380,19 +365,9 @@ class AnnouncementNotificationServiceTest extends TestCase
                 $table->text('recipient_context')->nullable();
             });
         }
-        if (! Schema::hasColumn('notifications', 'place')) {
+        if (! Schema::hasColumn('notifications', 'related_announcement_id')) {
             Schema::table('notifications', function (Blueprint $table): void {
-                $table->string('place', 120)->nullable();
-            });
-        }
-        if (! Schema::hasColumn('notifications', 'event_date')) {
-            Schema::table('notifications', function (Blueprint $table): void {
-                $table->date('event_date')->nullable();
-            });
-        }
-        if (! Schema::hasColumn('notifications', 'event_time')) {
-            Schema::table('notifications', function (Blueprint $table): void {
-                $table->time('event_time')->nullable();
+                $table->unsignedBigInteger('related_announcement_id')->nullable();
             });
         }
     }

@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Models\Announcement;
 use App\Support\AnnouncementAgePreset;
-use App\Support\AnnouncementPresenter;
 use App\Support\UiRole;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -22,16 +21,16 @@ final class AnnouncementStoreService
      */
     public function store(array $input): Announcement
     {
-        $actor = $this->actor();
-        $attributes = array_merge($this->persistableAttributes($input), [
+        $criteria = $this->targetingCriteriaFromInput($input);
+        $attributes = array_merge($this->persistableAttributes($input, $criteria), [
             'posted_by_user_id' => Auth::id(),
-            'posted_by_name' => $actor['name'],
-            'posted_by_role' => $actor['role'],
+            'posted_by_role' => UiRole::current() ?? UiRole::LEAST_PRIVILEGED,
             'posted_at' => now(),
         ]);
 
-        return DB::transaction(function () use ($attributes): Announcement {
+        return DB::transaction(function () use ($attributes, $criteria): Announcement {
             $announcement = Announcement::query()->create($attributes);
+            $announcement->syncAudience($criteria['zones'], $criteria['age_presets']);
             $this->announcementNotificationService->fanOut($announcement);
 
             return $announcement;
@@ -43,8 +42,13 @@ final class AnnouncementStoreService
      */
     public function update(Announcement $announcement, array $input): Announcement
     {
-        $announcement->fill($this->persistableAttributes($input));
-        $announcement->save();
+        $criteria = $this->targetingCriteriaFromInput($input);
+
+        DB::transaction(function () use ($announcement, $input, $criteria): void {
+            $announcement->fill($this->persistableAttributes($input, $criteria));
+            $announcement->save();
+            $announcement->syncAudience($criteria['zones'], $criteria['age_presets']);
+        });
 
         return $announcement->refresh();
     }
@@ -96,39 +100,23 @@ final class AnnouncementStoreService
     }
 
     /**
+     * Announcement columns only; zones and age presets are saved by syncAudience().
+     *
      * @param  array<string, mixed>  $input
+     * @param  array<string, mixed>  $criteria  from targetingCriteriaFromInput()
      * @return array<string, mixed>
      */
-    private function persistableAttributes(array $input): array
+    private function persistableAttributes(array $input, array $criteria): array
     {
-        $criteria = $this->targetingCriteriaFromInput($input);
-        $targetGroup = $criteria['target_group'];
-        $agePresets = $criteria['age_presets'];
-        $ageMinMonths = $criteria['age_range_months']['min'];
-        $ageMaxMonths = $criteria['age_range_months']['max'];
-        $zoneMode = $criteria['zone_mode'];
-        $zones = $criteria['zones'];
-
-        $audienceLabel = AnnouncementPresenter::audienceLabel(
-            $targetGroup,
-            $agePresets,
-            $ageMinMonths,
-            $ageMaxMonths,
-        );
-
         return [
             'title' => trim((string) $input['title']),
             'message' => trim((string) $input['message']),
             'event_date' => (string) $input['date'],
             'event_time' => filled($input['time'] ?? null) ? (string) $input['time'] : null,
             'place' => filled($input['place'] ?? null) ? trim((string) $input['place']) : null,
-            'target_group' => $targetGroup,
-            'age_presets' => $agePresets === [] ? null : $agePresets,
-            'age_min_months' => $ageMinMonths,
-            'age_max_months' => $ageMaxMonths,
-            'zone_mode' => $zoneMode,
-            'zones' => $zones === [] ? null : $zones,
-            'audience_label' => $audienceLabel,
+            'target_group' => $criteria['target_group'],
+            'age_min_months' => $criteria['age_range_months']['min'],
+            'age_max_months' => $criteria['age_range_months']['max'],
             'estimated_reach' => $this->matcher->count($criteria),
         ];
     }
@@ -188,18 +176,5 @@ final class AnnouncementStoreService
             ->all();
 
         return $normalized;
-    }
-
-    /**
-     * @return array{name: string, role: string}
-     */
-    private function actor(): array
-    {
-        $role = UiRole::current() ?? UiRole::LEAST_PRIVILEGED;
-
-        return [
-            'name' => UiRole::displayName($role),
-            'role' => $role,
-        ];
     }
 }

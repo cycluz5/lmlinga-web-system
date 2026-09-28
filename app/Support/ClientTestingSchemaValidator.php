@@ -158,7 +158,7 @@ final class ClientTestingSchemaValidator
 
         if (Schema::hasTable('announcements')) {
             $errors = array_merge($errors, self::requireColumns('announcements', [
-                'title', 'message', 'event_date', 'target_group', 'zone_mode', 'posted_at',
+                'title', 'message', 'event_date', 'target_group', 'posted_at',
             ]));
         }
 

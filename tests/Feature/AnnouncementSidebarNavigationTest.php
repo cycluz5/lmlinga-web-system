@@ -19,8 +19,8 @@ class AnnouncementSidebarNavigationTest extends TestCase
     {
         Announcement::factory()->create([
             'title' => 'Free Deworming Program — August 30',
-            'audience_label' => 'Infants 0–6 months',
             'target_group' => 'age',
+            'age_presets' => ['infants_0_6'],
             'event_date' => now()->addDays(2)->toDateString(),
             'posted_at' => now(),
         ]);

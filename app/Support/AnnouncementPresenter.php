@@ -39,6 +39,7 @@ final class AnnouncementPresenter
         $today = ($today ?? Carbon::today())->toDateString();
 
         return Announcement::query()
+            ->with('agePresetRows')
             ->whereDate('event_date', '>=', $today)
             ->orderBy('event_date')
             ->get()
@@ -54,6 +55,7 @@ final class AnnouncementPresenter
         $todayString = ($today ?? Carbon::today())->toDateString();
 
         return Announcement::query()
+            ->with('agePresetRows')
             ->orderByDesc('posted_at')
             ->orderBy('event_date')
             ->get()
@@ -195,7 +197,7 @@ final class AnnouncementPresenter
      */
     public static function formValues(Announcement $announcement): array
     {
-        $zones = is_array($announcement->zones) ? $announcement->zones : [];
+        $zones = $announcement->zones;
         $presetZones = [];
         $customZones = [];
 
@@ -229,7 +231,7 @@ final class AnnouncementPresenter
             'place' => $announcement->place ?? '',
             'audience_type' => $announcement->target_group,
             'zone_coverage' => $announcement->zone_mode,
-            'age_groups' => is_array($announcement->age_presets) ? $announcement->age_presets : [],
+            'age_groups' => $announcement->age_presets,
             'age_from' => $announcement->age_min_months,
             'age_to' => $announcement->age_max_months,
             'age_from_unit' => 'months',
@@ -245,9 +247,7 @@ final class AnnouncementPresenter
             return 'All Zones';
         }
 
-        $zones = is_array($announcement->zones) ? $announcement->zones : [];
-
-        return $zones === [] ? 'Specific Zones' : implode(', ', $zones);
+        return implode(', ', $announcement->zones);
     }
 
     public static function audienceLabel(
