@@ -1,6 +1,4 @@
 *
 !private/
 !public/
-!health_docs/
-!health_docs/**
 !.gitignore
