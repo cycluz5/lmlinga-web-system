@@ -5,7 +5,6 @@ namespace App\Support;
 use App\Models\DeathRequest;
 use App\Models\Resident;
 use App\Models\ResidentStatus;
-use Illuminate\Support\Facades\Schema;
 
 /**
  * Authoritative current vital status.
@@ -59,23 +58,12 @@ final class ResidentVitalStatus
     public static function markDeceased(DeathRequest $request): ResidentStatus
     {
         if (DeathRecordsErdMode::isActive()) {
-            // Reads stay derived from death_records; this row records the
-            // current status with an FK back to the verified death record.
-            if (! Schema::hasColumn('resident_statuses', 'death_record_id')) {
-                return new ResidentStatus([
-                    'resident_id' => $request->resident_id,
-                    'status' => self::DECEASED,
-                ]);
-            }
-
-            return ResidentStatus::query()->updateOrCreate(
-                ['resident_id' => $request->resident_id],
-                [
-                    'status' => self::DECEASED,
-                    'death_record_id' => $request->getKey(),
-                    'recorded_at' => now(),
-                ]
-            );
+            return new ResidentStatus([
+                'household_no' => $request->household_no,
+                'member_id' => $request->member_id,
+                'resident_id' => $request->resident_id,
+                'status' => ResidentStatus::STATUS_DECEASED,
+            ]);
         }
 
         $householdNo = DemoCatalog::normalizeHouseholdNo($request->household_no);

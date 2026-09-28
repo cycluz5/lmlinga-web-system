@@ -6,8 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 /**
  * Application-infrastructure table for durable offline-sync idempotency.
- * Not part of the authoritative health ERD. In ERD mode, FKs to user_management,
- * households and residents are added by 2026_09_27_100000_erd_schema_integrity_fixes.
+ * Not part of the authoritative health ERD. No FKs to households/residents.
  */
 return new class extends Migration
 {

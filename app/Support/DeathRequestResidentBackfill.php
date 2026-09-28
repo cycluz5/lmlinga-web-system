@@ -28,7 +28,6 @@ final class DeathRequestResidentBackfill
     {
         if (! Schema::hasTable($table)
             || ! Schema::hasColumn($table, 'resident_id')
-            || ! Schema::hasColumn($table, 'household_no')
             || ! Schema::hasTable('households')
             || ! Schema::hasTable('residents')) {
             return 0;

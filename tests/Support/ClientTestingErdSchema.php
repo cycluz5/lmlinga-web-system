@@ -26,7 +26,6 @@ final class ClientTestingErdSchema
         Schema::dropIfExists('users');
         Schema::dropIfExists('death_requests');
         Schema::dropIfExists('child_nutritions');
-        Schema::dropIfExists('resident_statuses');
         Schema::dropIfExists('death_records');
         Schema::dropIfExists('record_requests');
         Schema::dropIfExists('resident_accounts');
@@ -378,15 +377,6 @@ final class ClientTestingErdSchema
             $table->unsignedBigInteger('submitted_by');
             $table->unsignedBigInteger('verified_by')->nullable();
             $table->timestamp('verified_at')->nullable();
-            $table->timestamps();
-        });
-
-        Schema::create('resident_statuses', function (Blueprint $table): void {
-            $table->id('resident_status_id');
-            $table->foreignId('resident_id')->unique('uq_resstatus_resident')->constrained('residents', 'resident_id');
-            $table->string('status', 16)->default('Active')->index('idx_resstatus_status');
-            $table->foreignId('death_record_id')->nullable()->constrained('death_records', 'death_record_id')->nullOnDelete();
-            $table->timestamp('recorded_at')->useCurrent();
             $table->timestamps();
         });
     }
