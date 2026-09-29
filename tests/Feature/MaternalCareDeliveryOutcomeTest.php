@@ -294,7 +294,7 @@ class MaternalCareDeliveryOutcomeTest extends TestCase
             'householdNo' => $household->household_no,
             'memberId' => $resident->member_no,
         ]))->assertOk()->getContent();
-        $this->assertMatchesRegularExpression('/id="lml-mc-birth-weight"[^>]*value="3.2"/', $delivery);
+        $this->assertMatchesRegularExpression('/id="lml-mc-newborn-0-weight"[^>]*value="3.2"/', $delivery);
 
         $this->put($this->updateRoute($household, $resident, 'delivery'), [
             'outcome' => 'AB',
@@ -374,7 +374,7 @@ class MaternalCareDeliveryOutcomeTest extends TestCase
             'memberId' => $resident->member_no,
         ]))->assertOk()->getContent();
         $this->assertStringNotContainsString('name="fetal_death_date"', $deliveryHtml);
-        $this->assertStringContainsString('name="newborn_sex"', $deliveryHtml);
+        $this->assertStringContainsString('name="newborns[0][sex]"', $deliveryHtml);
     }
 
     public function test_fd_and_ab_validation_and_crafted_ids(): void
@@ -531,14 +531,14 @@ class MaternalCareDeliveryOutcomeTest extends TestCase
         ])->assertRedirect();
 
         $row = DB::table('delivery_outcomes')->first();
-        $this->assertSame('Female', $row->newborn_sex);
+        $this->assertSame('Female', $this->babies($row)->first()->sex);
 
         $html = $this->get(route('household-profiling.members.maternal-care.delivery', [
             'householdNo' => $household->household_no,
             'memberId' => $resident->member_no,
         ]))->assertOk()->getContent();
         $this->assertMatchesRegularExpression(
-            '/name="newborn_sex"[^>]*value="Female"[^>]*checked/',
+            '/name="newborns\[0\]\[sex\]"[^>]*value="Female"[^>]*checked/',
             $html
         );
 
@@ -548,7 +548,7 @@ class MaternalCareDeliveryOutcomeTest extends TestCase
             'newborn_sex' => 'Male',
         ])->assertRedirect();
 
-        $this->assertSame('Male', DB::table('delivery_outcomes')->value('newborn_sex'));
+        $this->assertSame('Male', $this->babies(DB::table('delivery_outcomes')->first())->first()->sex);
     }
 
     public function test_invalid_newborn_sex_and_plurality_are_rejected(): void
@@ -602,9 +602,7 @@ class MaternalCareDeliveryOutcomeTest extends TestCase
             'plurality' => 'Single',
             'plurality_number' => 4,
         ])->assertRedirect();
-        $row = DB::table('delivery_outcomes')->first();
-        $this->assertSame('Single', $row->plurality);
-        $this->assertNull($row->plurality_number);
+        $this->assertCount(1, $this->babies(DB::table('delivery_outcomes')->first()));
 
         $this->put($this->updateRoute($household, $resident, 'delivery'), [
             'outcome' => 'FT',
@@ -612,9 +610,7 @@ class MaternalCareDeliveryOutcomeTest extends TestCase
             'plurality' => 'Twins',
             'plurality_number' => 2,
         ])->assertRedirect();
-        $row = DB::table('delivery_outcomes')->first();
-        $this->assertSame('Twins', $row->plurality);
-        $this->assertNull($row->plurality_number);
+        $this->assertCount(2, $this->babies(DB::table('delivery_outcomes')->first()));
 
         $this->put($this->updateRoute($household, $resident, 'delivery'), [
             'outcome' => 'FT',
@@ -622,9 +618,7 @@ class MaternalCareDeliveryOutcomeTest extends TestCase
             'plurality' => 'Multiple',
             'plurality_number' => 4,
         ])->assertRedirect();
-        $row = DB::table('delivery_outcomes')->first();
-        $this->assertSame('Multiple', $row->plurality);
-        $this->assertSame(4, (int) $row->plurality_number);
+        $this->assertCount(4, $this->babies(DB::table('delivery_outcomes')->first()));
 
         $html = $this->get(route('household-profiling.members.maternal-care.delivery', [
             'householdNo' => $household->household_no,
@@ -645,9 +639,7 @@ class MaternalCareDeliveryOutcomeTest extends TestCase
             'plurality' => 'Single',
             'plurality_number' => 4,
         ])->assertRedirect();
-        $row = DB::table('delivery_outcomes')->first();
-        $this->assertSame('Single', $row->plurality);
-        $this->assertNull($row->plurality_number);
+        $this->assertCount(1, $this->babies(DB::table('delivery_outcomes')->first()));
 
         $this->put($this->updateRoute($household, $resident, 'delivery'), [
             'outcome' => 'FT',
@@ -661,9 +653,7 @@ class MaternalCareDeliveryOutcomeTest extends TestCase
             'plurality' => 'Twins',
             'plurality_number' => 5,
         ])->assertRedirect();
-        $row = DB::table('delivery_outcomes')->first();
-        $this->assertSame('Twins', $row->plurality);
-        $this->assertNull($row->plurality_number);
+        $this->assertCount(2, $this->babies(DB::table('delivery_outcomes')->first()));
     }
 
     public function test_history_hydrates_newborn_sex_and_plurality_without_fetal_death_date(): void
@@ -690,7 +680,7 @@ class MaternalCareDeliveryOutcomeTest extends TestCase
         ]))->assertOk()->getContent();
         $this->assertStringNotContainsString('name="fetal_death_date"', $show);
         $this->assertMatchesRegularExpression(
-            '/name="newborn_sex"[^>]*value="Female"[^>]*checked/',
+            '/name="newborns\[0\]\[sex\]"[^>]*value="Female"[^>]*checked/',
             $show
         );
         $this->assertMatchesRegularExpression(
@@ -737,9 +727,10 @@ class MaternalCareDeliveryOutcomeTest extends TestCase
 
         $row = DB::table('delivery_outcomes')->first();
         $this->assertSame('PT', $row->outcome);
-        $this->assertSame('Male', $row->newborn_sex);
-        $this->assertSame('Multiple', $row->plurality);
-        $this->assertSame(4, (int) $row->plurality_number);
+        // Legacy single-baby keys from a queued offline edit fill baby 1.
+        $babies = $this->babies($row);
+        $this->assertCount(4, $babies);
+        $this->assertSame('Male', $babies->first()->sex);
         $this->assertSame(MaternalCareErdMode::STATUS_COMPLETED, DB::table('maternal_care')->value('pregnancy_status'));
     }
 
@@ -778,22 +769,158 @@ class MaternalCareDeliveryOutcomeTest extends TestCase
 
         $firstRow = DB::table('delivery_outcomes')->where('maternal_care_id', $firstCare)->first();
         $secondRow = DB::table('delivery_outcomes')->where('maternal_care_id', $secondCare)->first();
-        $this->assertSame('Female', $firstRow->newborn_sex);
-        $this->assertSame('Single', $firstRow->plurality);
-        $this->assertSame('Male', $secondRow->newborn_sex);
-        $this->assertSame('Twins', $secondRow->plurality);
+        $this->assertSame('Female', $this->babies($firstRow)->first()->sex);
+        $this->assertCount(1, $this->babies($firstRow));
+        $this->assertSame('Male', $this->babies($secondRow)->first()->sex);
+        $this->assertCount(2, $this->babies($secondRow));
 
         $other = $this->get(route('household-profiling.members.maternal-care.delivery', [
             'householdNo' => $secondHh->household_no,
             'memberId' => $second->member_no,
         ]))->assertOk()->getContent();
         $this->assertMatchesRegularExpression(
-            '/name="newborn_sex"[^>]*value="Male"[^>]*checked/',
+            '/name="newborns\[0\]\[sex\]"[^>]*value="Male"[^>]*checked/',
             $other
         );
         $this->assertDoesNotMatchRegularExpression(
-            '/name="newborn_sex"[^>]*value="Female"[^>]*checked/',
+            '/name="newborns\[0\]\[sex\]"[^>]*value="Female"[^>]*checked/',
             $other
         );
+    }
+
+    public function test_twins_store_one_row_per_baby_and_hydrate_each(): void
+    {
+        ['household' => $household, 'resident' => $resident] = $this->seedMember([
+            'household_no' => 'HH-2516',
+            'member_no' => 'MB-2516',
+        ]);
+        $this->registerPregnancy($household, $resident);
+
+        Carbon::setTestNow(Carbon::parse('2026-10-20T08:30'));
+        $this->put($this->updateRoute($household, $resident, 'delivery'), [
+            'outcome' => 'FT',
+            'datetime' => '2026-10-20T08:30',
+            'plurality' => 'Twins',
+            'newborns' => [
+                ['sex' => 'Female', 'birth_weight' => '2.80'],
+                ['sex' => 'Male', 'birth_weight' => '2.65'],
+            ],
+        ])->assertRedirect();
+
+        $babies = $this->babies(DB::table('delivery_outcomes')->first());
+        $this->assertSame([1, 2], $babies->pluck('birth_order')->map(fn ($order) => (int) $order)->all());
+        $this->assertSame(['Female', 'Male'], $babies->pluck('sex')->all());
+        $this->assertSame(['2.80', '2.65'], $babies->pluck('birth_weight_kg')->map(fn ($kg) => number_format((float) $kg, 2))->all());
+
+        $html = $this->get(route('household-profiling.members.maternal-care.delivery', [
+            'householdNo' => $household->household_no,
+            'memberId' => $resident->member_no,
+        ]))->assertOk()->getContent();
+        $this->assertMatchesRegularExpression('/name="newborns\[0\]\[sex\]"[^>]*value="Female"[^>]*checked/', $html);
+        $this->assertMatchesRegularExpression('/name="newborns\[1\]\[sex\]"[^>]*value="Male"[^>]*checked/', $html);
+        $this->assertMatchesRegularExpression('/id="lml-mc-newborn-1-weight"[^>]*value="2.65"/', $html);
+
+        // Back to a single birth: baby 2 is removed.
+        $this->put($this->updateRoute($household, $resident, 'delivery'), [
+            'outcome' => 'FT',
+            'datetime' => '2026-10-20T08:30',
+            'plurality' => 'Single',
+            'newborns' => [['sex' => 'Female', 'birth_weight' => '2.80']],
+        ])->assertRedirect();
+        $this->assertSame(1, DB::table('delivery_newborns')->count());
+    }
+
+    public function test_multiple_birth_must_be_three_to_ten_babies(): void
+    {
+        ['household' => $household, 'resident' => $resident] = $this->seedMember([
+            'household_no' => 'HH-2519',
+            'member_no' => 'MB-2519',
+        ]);
+        $this->registerPregnancy($household, $resident);
+        $from = route('household-profiling.members.maternal-care.delivery', [
+            'householdNo' => $household->household_no,
+            'memberId' => $resident->member_no,
+        ]);
+
+        Carbon::setTestNow(Carbon::parse('2026-10-20T08:30'));
+        foreach ([2, 11] as $invalid) {
+            $this->from($from)->put($this->updateRoute($household, $resident, 'delivery'), [
+                'outcome' => 'FT',
+                'datetime' => '2026-10-20T08:30',
+                'plurality' => 'Multiple',
+                'plurality_number' => $invalid,
+            ])->assertSessionHasErrors('plurality_number');
+        }
+        $this->assertSame(0, DB::table('delivery_outcomes')->count());
+
+        foreach ([3, 10] as $valid) {
+            $this->from($from)->put($this->updateRoute($household, $resident, 'delivery'), [
+                'outcome' => 'FT',
+                'datetime' => '2026-10-20T08:30',
+                'plurality' => 'Multiple',
+                'plurality_number' => $valid,
+            ])->assertSessionDoesntHaveErrors('plurality_number');
+            $this->assertCount($valid, $this->babies(DB::table('delivery_outcomes')->first()));
+        }
+    }
+
+    public function test_facility_is_reused_by_name_and_holds_bemonc_capability(): void
+    {
+        ['household' => $firstHh, 'resident' => $first] = $this->seedMember([
+            'household_no' => 'HH-2517',
+            'member_no' => 'MB-2517',
+        ]);
+        ['household' => $secondHh, 'resident' => $second] = $this->seedMember([
+            'household_no' => 'HH-2518',
+            'member_no' => 'MB-2518',
+        ]);
+        $this->registerPregnancy($firstHh, $first);
+        $this->registerPregnancy($secondHh, $second);
+
+        Carbon::setTestNow(Carbon::parse('2026-10-20T08:30'));
+        $this->put($this->updateRoute($firstHh, $first, 'delivery'), [
+            'outcome' => 'FT',
+            'datetime' => '2026-10-20T08:30',
+            'place' => 'public',
+            'facility_name' => 'Iriga City Hospital',
+            'bemonc_cemonc' => 'No',
+        ])->assertRedirect();
+
+        $this->put($this->updateRoute($secondHh, $second, 'delivery'), [
+            'outcome' => 'FT',
+            'datetime' => '2026-10-20T08:30',
+            'place' => 'public',
+            'facility_name' => '  iriga   city hospital ',
+            'bemonc_cemonc' => 'Yes',
+        ])->assertRedirect();
+
+        $this->assertSame(1, DB::table('health_facilities')->count());
+        $facility = DB::table('health_facilities')->first();
+        $this->assertSame('Iriga City Hospital', $facility->facility_name);
+        $this->assertSame(1, (int) $facility->bemonc_cemonc_capable);
+        $this->assertSame(
+            [(int) $facility->facility_id],
+            DB::table('delivery_outcomes')->pluck('facility_id')->map(fn ($id) => (int) $id)->unique()->values()->all()
+        );
+
+        // The capability belongs to the facility, so the first delivery now shows it too.
+        $html = $this->get(route('household-profiling.members.maternal-care.delivery', [
+            'householdNo' => $firstHh->household_no,
+            'memberId' => $first->member_no,
+        ]))->assertOk()->getContent();
+        $this->assertMatchesRegularExpression('/name="bemonc_cemonc"[^>]*value="Yes"[^>]*checked/', $html);
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection<int, object>
+     */
+    private function babies(?object $delivery): \Illuminate\Support\Collection
+    {
+        $this->assertNotNull($delivery, 'Expected a delivery_outcomes row.');
+
+        return DB::table('delivery_newborns')
+            ->where('delivery_outcome_id', $delivery->delivery_outcome_id)
+            ->orderBy('birth_order')
+            ->get();
     }
 }

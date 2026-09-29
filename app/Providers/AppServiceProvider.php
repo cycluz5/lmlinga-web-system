@@ -3,7 +3,10 @@
 namespace App\Providers;
 
 use App\Support\AtRestEncrypter;
+use Database\Seeders\SuperAdminSeeder;
+use Illuminate\Console\Events\CommandFinished;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -44,7 +47,28 @@ class AppServiceProvider extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->prependMysqlClientToPath();
+
+            if (! $this->app->environment('testing')) {
+                $this->ensureSuperAdminAfterMigrate();
+            }
         }
+    }
+
+    /**
+     * Every successful migrate (even "Nothing to migrate") re-creates the super admin if it is missing.
+     */
+    private function ensureSuperAdminAfterMigrate(): void
+    {
+        Event::listen(CommandFinished::class, function (CommandFinished $event): void {
+            if ($event->exitCode !== 0
+                || ! in_array($event->command, ['migrate', 'migrate:fresh', 'migrate:refresh'], true)
+                || ($event->input->hasOption('pretend') && $event->input->getOption('pretend'))) {
+                return;
+            }
+
+            (new SuperAdminSeeder)->ensureExists();
+            $event->output->writeln('<info>Super admin account ensured: maria.santos</info>');
+        });
     }
 
     /**

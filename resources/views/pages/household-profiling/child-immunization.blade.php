@@ -189,7 +189,6 @@
             : null;
 
         $formVaccines = \App\Support\ChildImmunizationService::emptyVaccineForm();
-        $selectedVaccineTypes = [];
         $ficCompleted = false;
         $cicCompleted = false;
         $ficCounts = array_fill_keys(array_keys(\App\Support\ChildImmunizationService::FIC_DOSE_REQUIREMENTS), 0);
@@ -197,7 +196,6 @@
 
         if (is_array($immunizationState ?? null)) {
             $formVaccines = $immunizationState['vaccines'] ?? $formVaccines;
-            $selectedVaccineTypes = $immunizationState['selected_vaccine_types'] ?? [];
             $ficCompleted = (bool) ($immunizationState['fic']['completed'] ?? false);
             $cicCompleted = (bool) ($immunizationState['cic']['completed'] ?? false);
             $ficCounts = $immunizationState['fic']['counts'] ?? $ficCounts;
@@ -216,12 +214,6 @@
                     }
                 }
             }
-        }
-
-        if (old('vaccine_types') !== null) {
-            $selectedVaccineTypes = \App\Support\ChildImmunizationService::normalizeSelectedVaccineTypes(
-                old('vaccine_types')
-            );
         }
 
         $formDoseSlots = [];

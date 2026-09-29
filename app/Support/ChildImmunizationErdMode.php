@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 /**
  * Detects authoritative ERD child_immunization persistence vs Laravel child_immunizations.
  *
- * Header mode (isActive) is independent of immunization_doses / fic_cic_status shape.
+ * Header mode (isActive) is independent of the immunization_doses shape.
  */
 final class ChildImmunizationErdMode
 {
@@ -26,8 +26,6 @@ final class ChildImmunizationErdMode
 
     /** @var array{dose_number: bool, dose_index: bool, dose_id: bool, id: bool}|null */
     private static ?array $doseColumns = null;
-
-    private static ?bool $usesFicCic = null;
 
     public static function isActive(): bool
     {
@@ -82,18 +80,6 @@ final class ChildImmunizationErdMode
         return 'dose_index';
     }
 
-    public static function usesFicCicStatusTable(): bool
-    {
-        if (self::$usesFicCic === null) {
-            self::$usesFicCic = Schema::hasTable('fic_cic_status')
-                && Schema::hasColumn('fic_cic_status', 'child_immunization_id')
-                && Schema::hasColumn('fic_cic_status', 'fic_completed')
-                && Schema::hasColumn('fic_cic_status', 'cic_completed');
-        }
-
-        return self::$usesFicCic;
-    }
-
     /**
      * Match attributes for immunization_doses upsert using the live dose schema.
      *
@@ -144,7 +130,6 @@ final class ChildImmunizationErdMode
     {
         self::$active = null;
         self::$doseColumns = null;
-        self::$usesFicCic = null;
     }
 
     /**

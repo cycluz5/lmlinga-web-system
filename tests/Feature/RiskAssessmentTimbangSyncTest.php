@@ -69,7 +69,6 @@ class RiskAssessmentTimbangSyncTest extends TestCase
             $table->decimal('waist_circum_cm', 8, 2)->nullable();
             $table->unsignedSmallInteger('systolic_blood_pressure')->nullable();
             $table->unsignedSmallInteger('diastolic_blood_pressure')->nullable();
-            $table->string('blood_pressure_status')->nullable();
             $table->timestamps();
         });
         ErdRiskAssessmentChildSchema::create();

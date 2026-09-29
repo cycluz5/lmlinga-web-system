@@ -14,6 +14,7 @@ use App\Support\UiRole;
 use App\Support\WorkerAssignedZones;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
 
 class AdminHealthWorkerMultipleAssignedZonesTest extends TestCase
@@ -124,25 +125,22 @@ class AdminHealthWorkerMultipleAssignedZonesTest extends TestCase
         ], $overrides);
     }
 
-    public function test_existing_one_zone_appointment_backfills_into_one_pivot_row(): void
+    public function test_primary_zone_is_derived_from_the_zone_rows(): void
     {
         $worker = $this->seedWorker();
         $appointment = $worker->currentAppointment;
         $this->assertNotNull($appointment);
 
+        $this->assertFalse(Schema::hasColumn('worker_appointments', 'assigned_zone'));
+        $this->assertSame('Zone 1', $appointment->assigned_zone);
+
         DB::table('worker_appointment_zones')
             ->where('appointment_id', $appointment->getKey())
             ->delete();
-        $this->assertSame(0, $appointment->assignedZones()->count());
-        $this->assertSame('Zone 1', $appointment->assigned_zone);
 
-        WorkerAssignedZones::backfillPivotFromScalarAppointments();
-
-        $rows = DB::table('worker_appointment_zones')
-            ->where('appointment_id', $appointment->getKey())
-            ->get();
-        $this->assertCount(1, $rows);
-        $this->assertSame('Zone 1', $rows[0]->assigned_zone);
+        // No scalar copy to fall back on or backfill from.
+        $this->assertSame(0, WorkerAssignedZones::backfillPivotFromScalarAppointments());
+        $this->assertNull($appointment->fresh()->assigned_zone);
     }
 
     public function test_two_zones_exist_on_one_current_appointment_without_changing_role(): void

@@ -212,11 +212,23 @@ class ChatbotMainController extends Controller
             return [];
         }
 
-        $rows = DB::table('notifications')
-            ->where('account_id', $accountKey)
-            ->orderByDesc('created_at')
-            ->orderByDesc('notification_id')
-            ->get();
+        $query = DB::table('notifications')
+            ->where('notifications.account_id', $accountKey)
+            ->orderByDesc('notifications.created_at')
+            ->orderByDesc('notifications.notification_id');
+
+        // Announcement schedule lives on announcements (3NF); notifications only link to it.
+        if (Schema::hasColumn('notifications', 'related_announcement_id')) {
+            $query->leftJoin('announcements', 'announcements.id', '=', 'notifications.related_announcement_id')
+                ->select(
+                    'notifications.*',
+                    'announcements.place as place',
+                    'announcements.event_date as event_date',
+                    'announcements.event_time as event_time',
+                );
+        }
+
+        $rows = $query->get();
 
         return $rows->map(fn ($row): array => $this->presentNotificationRow($row))->all();
     }

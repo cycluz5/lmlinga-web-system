@@ -12,11 +12,7 @@ return new class extends Migration
 {
     public function up(): void
     {
-        if (User::query()->where('username', 'maria.santos')->exists()) {
-            return;
-        }
-
-        (new SuperAdminSeeder)->run();
+        (new SuperAdminSeeder)->ensureExists();
     }
 
     public function down(): void

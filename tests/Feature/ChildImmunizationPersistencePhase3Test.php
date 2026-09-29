@@ -159,7 +159,7 @@ class ChildImmunizationPersistencePhase3Test extends TestCase
         $this->assertStringContainsString('value="2025-12-01"', $html);
     }
 
-    public function test_persisted_resident_page_hydrates_manual_checkbox_selections(): void
+    public function test_posted_checkbox_selections_do_not_tick_status_boxes(): void
     {
         ['household' => $household, 'resident' => $resident] = $this->seedPersistedChild();
         $params = $this->routeParams($household, $resident);
@@ -172,18 +172,13 @@ class ChildImmunizationPersistencePhase3Test extends TestCase
             ->assertOk()
             ->getContent();
 
-        $this->assertMatchesRegularExpression(
-            '/id="lml-child-imm-type-bcg"[^>]*\bchecked\b/u',
-            $html
-        );
-        $this->assertMatchesRegularExpression(
-            '/id="lml-child-imm-type-fic"[^>]*\bchecked\b/u',
-            $html
-        );
-        $this->assertMatchesRegularExpression(
-            '/id="lml-child-imm-type-cic"[^>]*\bchecked\b/u',
-            $html
-        );
+        // Status boxes are derived from doses; no doses were saved.
+        foreach (['bcg', 'fic', 'cic'] as $key) {
+            $this->assertDoesNotMatchRegularExpression(
+                '/id="lml-child-imm-type-'.$key.'"[^>]*\bchecked\b/u',
+                $html
+            );
+        }
     }
 
     public function test_empty_persisted_resident_shows_blank_immunization_form(): void
@@ -219,7 +214,7 @@ class ChildImmunizationPersistencePhase3Test extends TestCase
         $this->assertSame(2, ImmunizationDose::query()->where('child_immunization_id', $record->id)->count());
     }
 
-    public function test_save_persists_manual_checkbox_selections(): void
+    public function test_save_ignores_manual_checkbox_selections(): void
     {
         ['household' => $household, 'resident' => $resident] = $this->seedPersistedChild();
         $params = $this->routeParams($household, $resident);
@@ -228,8 +223,8 @@ class ChildImmunizationPersistencePhase3Test extends TestCase
             'vaccine_types' => ['mmr', 'fic'],
         ])->assertRedirect();
 
-        $record = ChildImmunization::query()->where('resident_id', $resident->id)->first();
-        $this->assertSame(['mmr', 'fic'], $record->selected_vaccine_types);
+        $this->assertSame(1, ChildImmunization::query()->where('resident_id', $resident->id)->count());
+        $this->assertSame([], app(ChildImmunizationService::class)->forResident($resident->fresh())['selected_vaccine_types']);
     }
 
     public function test_save_with_empty_optional_dates_succeeds(): void
@@ -269,7 +264,7 @@ class ChildImmunizationPersistencePhase3Test extends TestCase
         $this->assertStringContainsString('value="2025-03-01"', $html);
     }
 
-    public function test_save_reload_preserves_checkbox_states(): void
+    public function test_save_reload_ignores_posted_checkbox_states(): void
     {
         ['household' => $household, 'resident' => $resident] = $this->seedPersistedChild();
         $params = $this->routeParams($household, $resident);
@@ -282,8 +277,8 @@ class ChildImmunizationPersistencePhase3Test extends TestCase
             ->assertOk()
             ->getContent();
 
-        $this->assertMatchesRegularExpression('/id="lml-child-imm-type-opv"[^>]*\bchecked\b/u', $html);
-        $this->assertMatchesRegularExpression('/id="lml-child-imm-type-cic"[^>]*\bchecked\b/u', $html);
+        $this->assertDoesNotMatchRegularExpression('/id="lml-child-imm-type-opv"[^>]*\bchecked\b/u', $html);
+        $this->assertDoesNotMatchRegularExpression('/id="lml-child-imm-type-cic"[^>]*\bchecked\b/u', $html);
     }
 
     public function test_updating_date_persists_change_after_reload(): void
@@ -362,7 +357,7 @@ class ChildImmunizationPersistencePhase3Test extends TestCase
         ]);
 
         $record = ChildImmunization::query()->where('resident_id', $resident->id)->first();
-        $this->assertSame([], $record->selected_vaccine_types);
+        $this->assertSame(['mmr'], app(ChildImmunizationService::class)->forResident($resident->fresh())['selected_vaccine_types']);
         $this->assertSame(
             1,
             ImmunizationDose::query()
@@ -550,8 +545,9 @@ class ChildImmunizationPersistencePhase3Test extends TestCase
 
         $this->assertStringContainsString('value="2025-01-01"', $html);
         $this->assertStringContainsString('value="2025-09-01"', $html);
-        $this->assertMatchesRegularExpression('/id="lml-child-imm-type-bcg"[^>]*\bchecked\b/u', $html);
-        $this->assertMatchesRegularExpression('/id="lml-child-imm-type-fic"[^>]*\bchecked\b/u', $html);
+        // BCG has 1 of 2 doses and FIC is incomplete, so neither status box is ticked.
+        $this->assertDoesNotMatchRegularExpression('/id="lml-child-imm-type-bcg"[^>]*\bchecked\b/u', $html);
+        $this->assertDoesNotMatchRegularExpression('/id="lml-child-imm-type-fic"[^>]*\bchecked\b/u', $html);
         $this->assertStringContainsString('data-saved-message="Child immunization saved."', $html);
     }
 

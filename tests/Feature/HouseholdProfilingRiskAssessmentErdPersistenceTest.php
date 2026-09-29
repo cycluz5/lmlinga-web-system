@@ -64,7 +64,6 @@ class HouseholdProfilingRiskAssessmentErdPersistenceTest extends TestCase
             $table->decimal('waist_circum_cm', 8, 2)->nullable();
             $table->unsignedSmallInteger('systolic_blood_pressure')->nullable();
             $table->unsignedSmallInteger('diastolic_blood_pressure')->nullable();
-            $table->string('blood_pressure_status')->nullable();
             $table->timestamps();
         });
         ErdRiskAssessmentChildSchema::create();
@@ -321,9 +320,16 @@ class HouseholdProfilingRiskAssessmentErdPersistenceTest extends TestCase
             'diastolic' => '85',
         ]));
 
+        // The label is not stored (3NF); it is always calculated from the two readings.
+        $this->assertFalse(Schema::hasColumn('risk_assessment', 'blood_pressure_status'));
         $row = AtRestRecord::openRow('risk_assessment', DB::table('risk_assessment')->first());
         $this->assertNotNull($row);
-        $this->assertSame('Hypertension Stage 2', $row->blood_pressure_status);
+        $this->assertSame(142, (int) $row->systolic_blood_pressure);
+        $this->assertSame(85, (int) $row->diastolic_blood_pressure);
+        $this->assertSame(
+            'Hypertension Stage 2',
+            RiskAssessmentErdMode::bloodPressureStatusLabel($row->systolic_blood_pressure, $row->diastolic_blood_pressure)
+        );
     }
 
     public function test_erd_create_stores_lifestyle_physical_and_history_as_ciphertext(): void
@@ -340,6 +346,10 @@ class HouseholdProfilingRiskAssessmentErdPersistenceTest extends TestCase
 
         $raw = DB::table('risk_assessment')->first();
         foreach (AtRestColumns::columns('risk_assessment') as $column) {
+            // blood_pressure_status stays listed for rollback but is no longer a column (3NF).
+            if (! property_exists($raw, $column)) {
+                continue;
+            }
             $this->assertTrue(AtRestNarrativeField::isSealed($raw->{$column}), "risk_assessment.{$column} should be sealed");
         }
         $this->assertSame((int) $resident->getKey(), (int) $raw->resident_id);

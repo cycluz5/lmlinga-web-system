@@ -89,7 +89,6 @@ final class ChildImmunizationService
      *
      * @param  array{
      *     vaccines?: array<string, array<int|string, mixed>>,
-     *     vaccine_types?: list<mixed>|null,
      *     remarks?: string|null
      * }  $payload
      */
@@ -101,31 +100,21 @@ final class ChildImmunizationService
             abort(404, 'Resident was not found.');
         }
 
-        // Status-only UI no longer posts vaccine_types[]. Preserve legacy
-        // selected_vaccine_types when the key is absent so dose-only saves
-        // do not wipe historical checkbox selections.
-        $updateSelectedTypes = array_key_exists('vaccine_types', $payload);
-        $selectedTypes = $updateSelectedTypes
-            ? self::normalizeSelectedVaccineTypes($payload['vaccine_types'])
-            : null;
+        // vaccine_types[] (legacy manual checklist, possibly still in queued
+        // offline payloads) is ignored: the checklist is derived from doses.
         $remarks = $this->nullableString($payload['remarks'] ?? null);
         $doseSlots = $this->normalizeSubmittedDoseSlots($payload['vaccines'] ?? []);
 
         try {
-            return DB::transaction(function () use ($resident, $updateSelectedTypes, $selectedTypes, $remarks, $doseSlots): ChildImmunization {
+            return DB::transaction(function () use ($resident, $remarks, $doseSlots): ChildImmunization {
                 if (ChildImmunizationErdMode::isActive()) {
                     $record = ChildImmunization::query()->updateOrCreate(
                         ['resident_id' => $resident->id]
                     );
                 } else {
-                    $attributes = ['remarks' => $remarks];
-                    if ($updateSelectedTypes) {
-                        $attributes['selected_vaccine_types'] = $selectedTypes;
-                    }
-
                     $record = ChildImmunization::query()->updateOrCreate(
                         ['resident_id' => $resident->id],
-                        $attributes
+                        ['remarks' => $remarks]
                     );
                 }
 
@@ -136,10 +125,6 @@ final class ChildImmunizationService
                         $slot['dose_index'],
                         $slot['date_given'],
                     );
-                }
-
-                if ($updateSelectedTypes && ChildImmunizationErdMode::usesFicCicStatusTable()) {
-                    $this->syncFicCicStatus($record, $selectedTypes ?? []);
                 }
 
                 return $record->fresh(['doses']);
@@ -335,22 +320,24 @@ final class ChildImmunizationService
         }
 
         $counts = self::countDatedDoses($record->doses);
+        $ficCompleted = self::ficCompleted($counts);
+        $cicCompleted = self::cicCompleted($counts);
 
         return [
             'persisted' => true,
-            'selected_vaccine_types' => $this->selectedVaccineTypesForRead($record),
+            'selected_vaccine_types' => self::selectedVaccineTypesFromDoses($record->doses, $ficCompleted, $cicCompleted),
             'remarks' => ChildImmunizationErdMode::isActive()
                 ? ''
                 : (string) ($record->remarks ?? ''),
             'vaccines' => $vaccines,
             'progress' => self::vaccineProgress($record->doses),
             'fic' => [
-                'completed' => self::ficCompleted($counts),
+                'completed' => $ficCompleted,
                 'requirements' => self::FIC_DOSE_REQUIREMENTS,
                 'counts' => $counts,
             ],
             'cic' => [
-                'completed' => self::cicCompleted($counts),
+                'completed' => $cicCompleted,
                 'requirements' => self::CIC_DOSE_REQUIREMENTS,
                 'counts' => $counts,
             ],
@@ -482,68 +469,23 @@ final class ChildImmunizationService
     }
 
     /**
-     * @param  list<string>  $selectedTypes
-     */
-    private function syncFicCicStatus(ChildImmunization $record, array $selectedTypes): void
-    {
-        if (! ChildImmunizationErdMode::usesFicCicStatusTable()) {
-            return;
-        }
-
-        $now = now();
-        $headerId = $record->getKey();
-        $payload = [
-            'fic_completed' => in_array('fic', $selectedTypes, true) ? 1 : 0,
-            'cic_completed' => in_array('cic', $selectedTypes, true) ? 1 : 0,
-            'updated_at' => $now,
-        ];
-
-        $existing = DB::table('fic_cic_status')
-            ->where('child_immunization_id', $headerId)
-            ->first();
-
-        if ($existing !== null) {
-            DB::table('fic_cic_status')
-                ->where('child_immunization_id', $headerId)
-                ->update($payload);
-
-            return;
-        }
-
-        DB::table('fic_cic_status')->insert($payload + [
-            'child_immunization_id' => $headerId,
-            'created_at' => $now,
-        ]);
-    }
-
-    /**
+     * Vaccines Type checklist derived from dated doses plus FIC/CIC completion.
+     *
+     * @param  iterable<int, ImmunizationDose>  $doses
      * @return list<string>
      */
-    private function selectedVaccineTypesForRead(ChildImmunization $record): array
+    private static function selectedVaccineTypesFromDoses(iterable $doses, bool $ficCompleted, bool $cicCompleted): array
     {
-        $selected = [];
+        $selected = array_map(
+            static fn (array $slot): string => $slot[0],
+            self::datedConfiguredSlots($doses)
+        );
 
-        if (! ChildImmunizationErdMode::isActive()) {
-            $selected = self::normalizeSelectedVaccineTypes($record->selected_vaccine_types ?? []);
-        } else {
-            foreach ($record->doses as $dose) {
-                $selected[] = (string) $dose->vaccine_type;
-            }
+        if ($ficCompleted) {
+            $selected[] = 'fic';
         }
-
-        if (ChildImmunizationErdMode::usesFicCicStatusTable()) {
-            $status = DB::table('fic_cic_status')
-                ->where('child_immunization_id', $record->getKey())
-                ->first();
-
-            if ($status !== null) {
-                if ((int) ($status->fic_completed ?? 0) === 1) {
-                    $selected[] = 'fic';
-                }
-                if ((int) ($status->cic_completed ?? 0) === 1) {
-                    $selected[] = 'cic';
-                }
-            }
+        if ($cicCompleted) {
+            $selected[] = 'cic';
         }
 
         return self::normalizeSelectedVaccineTypes($selected);

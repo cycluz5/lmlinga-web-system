@@ -57,20 +57,18 @@ final class AnnouncementNotificationService
 
         $title = (string) $announcement->title;
         $message = (string) $announcement->message;
-        $place = filled($announcement->place) ? trim((string) $announcement->place) : null;
-        $eventDate = $this->formatEventDate($announcement);
-        $eventTime = $this->formatEventTime($announcement);
+        $announcementId = $announcement->getKey();
         $createdAt = now()->toDateTimeString();
-        $hasContextColumns = Schema::hasColumn('notifications', 'recipient_context');
+        $hasContextColumn = Schema::hasColumn('notifications', 'recipient_context');
+        $hasAnnouncementLink = Schema::hasColumn('notifications', 'related_announcement_id');
 
         $rows = $payloads->map(static function (array $payload) use (
             $title,
             $message,
-            $place,
-            $eventDate,
-            $eventTime,
+            $announcementId,
             $createdAt,
-            $hasContextColumns,
+            $hasContextColumn,
+            $hasAnnouncementLink,
         ): array {
             $row = [
                 'account_id' => $payload['account_id'],
@@ -83,11 +81,13 @@ final class AnnouncementNotificationService
                 'created_at' => $createdAt,
             ];
 
-            if ($hasContextColumns) {
+            if ($hasContextColumn) {
                 $row['recipient_context'] = $payload['recipient_context'];
-                $row['place'] = $place;
-                $row['event_date'] = $eventDate;
-                $row['event_time'] = $eventTime;
+            }
+
+            // Place/date/time are read from the linked announcement (3NF).
+            if ($hasAnnouncementLink) {
+                $row['related_announcement_id'] = $announcementId;
             }
 
             return $row;
@@ -183,44 +183,6 @@ final class AnnouncementNotificationService
             ->values();
     }
 
-    private function formatEventDate(Announcement $announcement): ?string
-    {
-        $value = $announcement->event_date;
-        if ($value === null || $value === '') {
-            return null;
-        }
-
-        if ($value instanceof Carbon) {
-            return $value->toDateString();
-        }
-
-        return Carbon::parse((string) $value)->toDateString();
-    }
-
-    private function formatEventTime(Announcement $announcement): ?string
-    {
-        $value = $announcement->event_time;
-        if ($value === null || $value === '') {
-            return null;
-        }
-
-        if ($value instanceof Carbon) {
-            return $value->format('H:i:s');
-        }
-
-        $raw = trim((string) $value);
-        if ($raw === '') {
-            return null;
-        }
-
-        // Accept "H:i" or "H:i:s" from DB/forms.
-        if (preg_match('/^\d{1,2}:\d{2}(:\d{2})?$/', $raw) === 1) {
-            return strlen($raw) === 5 ? $raw.':00' : $raw;
-        }
-
-        return Carbon::parse($raw)->format('H:i:s');
-    }
-
     /**
      * @return array{
      *     target_group: string,
@@ -235,9 +197,7 @@ final class AnnouncementNotificationService
     {
         return [
             'target_group' => (string) $announcement->target_group,
-            'age_presets' => is_array($announcement->age_presets)
-                ? array_values($announcement->age_presets)
-                : [],
+            'age_presets' => $announcement->age_presets,
             'age_range_months' => [
                 'min' => $announcement->age_min_months !== null
                     ? (int) $announcement->age_min_months
@@ -247,9 +207,7 @@ final class AnnouncementNotificationService
                     : null,
             ],
             'zone_mode' => (string) $announcement->zone_mode,
-            'zones' => is_array($announcement->zones)
-                ? array_values($announcement->zones)
-                : [],
+            'zones' => $announcement->zones,
             'as_of' => Carbon::today()->startOfDay(),
         ];
     }

@@ -18,6 +18,7 @@ final class ErdMaternalCareSchema
         Schema::dropIfExists('postpartum_vitamin_a_supplementation');
         Schema::dropIfExists('postpartum_ifa_supplementation');
         Schema::dropIfExists('postnatal_care_visits');
+        Schema::dropIfExists('delivery_newborns');
         Schema::dropIfExists('delivery_outcomes');
         Schema::dropIfExists('prenatal_visits');
         Schema::dropIfExists('rusf_supplementation');
@@ -37,6 +38,7 @@ final class ErdMaternalCareSchema
         Schema::dropIfExists('maternal_trans_outs');
         Schema::dropIfExists('td_immunization');
         Schema::dropIfExists('maternal_care');
+        Schema::dropIfExists('health_facilities');
 
         DB::statement('CREATE TABLE maternal_care (
             maternal_care_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -191,19 +193,32 @@ final class ErdMaternalCareSchema
             $table->unsignedBigInteger('maternal_care_id');
             $table->string('outcome')->nullable();
             $table->string('delivery_type')->nullable();
-            $table->decimal('birth_weight_kg', 5, 2)->nullable();
             $table->string('status')->nullable();
             $table->dateTime('date_time_of_delivery')->nullable();
             $table->date('date_terminated')->nullable();
             $table->string('birth_attendant')->nullable();
             $table->string('birth_attendant_other')->nullable();
             $table->string('place_of_delivery')->nullable();
-            $table->string('facility_name')->nullable();
-            $table->boolean('bemonc_cemonc_capable')->nullable();
-            $table->string('newborn_sex')->nullable();
-            $table->string('plurality')->nullable();
-            $table->unsignedInteger('plurality_number')->nullable();
+            $table->unsignedBigInteger('facility_id')->nullable();
             $table->timestamps();
+        });
+
+        // 3NF: facility details and one row per baby live in their own tables.
+        Schema::create('health_facilities', function ($table): void {
+            $table->id('facility_id');
+            $table->string('facility_name', 160)->unique();
+            $table->boolean('bemonc_cemonc_capable')->nullable();
+            $table->timestamps();
+        });
+
+        Schema::create('delivery_newborns', function ($table): void {
+            $table->id('newborn_id');
+            $table->unsignedBigInteger('delivery_outcome_id');
+            $table->unsignedTinyInteger('birth_order');
+            $table->string('sex')->nullable();
+            $table->decimal('birth_weight_kg', 5, 2)->nullable();
+            $table->timestamps();
+            $table->unique(['delivery_outcome_id', 'birth_order']);
         });
 
         Schema::create('postnatal_care_visits', function ($table): void {

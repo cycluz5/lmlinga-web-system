@@ -59,9 +59,8 @@ export function calculateBmiStatus(heightCm, weightKg) {
 }
 
 /**
- * Map a numeric BMI to the four specified ranges.
- * <18.5 Underweight, 18.5–24.9 Normal, 25.0–29.9 Overweight, 30.0–34.9 Obesity.
- * >=35 is unspecified (empty); no fifth category is invented.
+ * Map a numeric BMI to the project standard (RiskAssessmentClinicalValues::classifyAdultBmi):
+ * <18.5 Underweight, 18.5–24.9 Normal, 25.0–29.9 Overweight, 30+ Obese.
  *
  * @param {string|number|null|undefined} bmi
  * @returns {string}
@@ -83,10 +82,7 @@ export function bmiStatusFromValue(bmi) {
     if (number < 30.0) {
         return 'Overweight';
     }
-    if (number < 35.0) {
-        return 'Obesity';
-    }
-    return '';
+    return 'Obese';
 }
 
 /**

@@ -44,7 +44,6 @@ final class LaravelChildImmunizationSqliteCompatibility
                 ->unique()
                 ->constrained('residents')
                 ->restrictOnDelete();
-            $table->json('selected_vaccine_types')->nullable();
             $table->text('remarks')->nullable();
             $table->timestamps();
         });

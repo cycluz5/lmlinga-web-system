@@ -475,7 +475,7 @@
     color: #92400e;
 }
 
-.lml-mc__bmi-status[data-bmi-status='obesity'] {
+.lml-mc__bmi-status[data-bmi-status='obese'] {
     color: #991b1b;
 }
 

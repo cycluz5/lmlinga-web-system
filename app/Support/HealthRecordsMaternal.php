@@ -623,7 +623,7 @@ final class HealthRecordsMaternal
         return [
             'delivery_outcome' => $outcome !== '' ? (DemoMaternalCare::OUTCOMES[$outcome] ?? $outcome) : '',
             'delivery_type' => DemoMaternalCare::DELIVERY_TYPES[trim((string) ($delivery['delivery_type'] ?? ''))] ?? '',
-            'delivery_birth_weight' => self::detailText($delivery['birth_weight'] ?? null),
+            'delivery_birth_weight' => self::detailText(self::birthWeights($delivery)),
             'delivery_status' => self::detailText($delivery['status'] ?? null),
             'delivery_datetime' => self::detailDate($delivery['datetime'] ?? null),
             'delivery_date_terminated' => self::detailDate($delivery['date_terminated'] ?? null),
@@ -635,6 +635,26 @@ final class HealthRecordsMaternal
             'delivery_facility_name' => self::detailText($delivery['facility_name'] ?? null),
             'delivery_bemonc_cemonc' => self::detailText($delivery['bemonc_cemonc'] ?? null),
         ];
+    }
+
+    /**
+     * Birth weight(s) for the report cell: one per baby for twins/multiples ("2.80, 2.65").
+     *
+     * @param  array<string, mixed>  $delivery
+     */
+    private static function birthWeights(array $delivery): ?string
+    {
+        $newborns = is_array($delivery['newborns'] ?? null) ? $delivery['newborns'] : [];
+        if ($newborns === []) {
+            return isset($delivery['birth_weight']) ? (string) $delivery['birth_weight'] : null;
+        }
+
+        $weights = array_values(array_filter(
+            array_map(static fn ($baby): string => trim((string) (is_array($baby) ? ($baby['birth_weight'] ?? '') : '')), $newborns),
+            static fn (string $weight): bool => $weight !== ''
+        ));
+
+        return $weights === [] ? null : implode(', ', $weights);
     }
 
     /**

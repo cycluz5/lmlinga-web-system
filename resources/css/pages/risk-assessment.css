@@ -1041,7 +1041,7 @@
     color: #92400e;
 }
 
-.lml-risk-assess__bmi-status-inline[data-bmi-status='obesity'] {
+.lml-risk-assess__bmi-status-inline[data-bmi-status='obese'] {
     color: #991b1b;
 }
 

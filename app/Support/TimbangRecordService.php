@@ -82,7 +82,7 @@ final class TimbangRecordService
             'mode' => $mode,
             'bmi' => $context['bmi_display'] !== null ? $this->formatDecimal($context['bmi_display'], 1) : '—',
             'status' => $mode === 'bmi'
-                ? ($latest->bmi_status ?? '—')
+                ? ($context['bmi_status_display'] ?? '—')
                 : ($latest->overall_nutritional_status ?? '—'),
             'muac_applicable' => $context['muac_applicable'],
             'muac' => $this->formatDecimal($latest->muac_cm, 1),
@@ -142,7 +142,8 @@ final class TimbangRecordService
      *         muac_applicable: bool,
      *         bmi_applicable: bool,
      *         weight_for_age_applicable: bool,
-     *         bmi_display: float|null
+     *         bmi_display: float|null,
+     *         bmi_status_display: string|null
      *     }
      * }>
      */
@@ -284,6 +285,28 @@ final class TimbangRecordService
             'overall_nutritional_status' => $payload['overall_nutritional_status'] ?? null,
             'remarks' => $payload['remarks'] ?? null,
         ]);
+    }
+
+    /**
+     * Operation Timbang save shared by the online form and offline sync:
+     * classify the raw measurements with NutritionAssessmentService::assess()
+     * (server-authoritative), then insert the history row.
+     *
+     * @param  array<string, mixed>  $rawPayload  Output of normalizeValidated(); computed keys are ignored.
+     */
+    public function createAssessedForResident(Resident $resident, array $rawPayload): TimbangRecord
+    {
+        $result = $this->assessment->assess($resident, $rawPayload);
+
+        return $this->createForResident($resident, array_merge($rawPayload, [
+            'weight_for_age' => $result['weight_for_age'],
+            'height_for_age' => $result['height_for_age'],
+            'weight_for_height' => $result['weight_for_height'],
+            'muac_status' => $result['muac_status'],
+            'bmi_value' => $result['bmi_value'],
+            'bmi_status' => $result['bmi_status'],
+            'overall_nutritional_status' => $result['overall_nutritional_status'],
+        ]));
     }
 
     /**

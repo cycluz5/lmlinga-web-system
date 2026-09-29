@@ -70,6 +70,16 @@ final class UserManagementErdMode
     }
 
     /**
+     * Legacy schemas keep a scalar worker_appointments.assigned_zone; the 3NF schema
+     * stores zones only in worker_appointment_zones.
+     */
+    public static function appointmentsStoreScalarZone(): bool
+    {
+        return Schema::hasTable('worker_appointments')
+            && Schema::hasColumn('worker_appointments', 'assigned_zone');
+    }
+
+    /**
      * Persist worker_appointments.role in the shape expected by the active schema.
      */
     public static function appointmentRoleForStorage(string $machineRole): string

@@ -98,7 +98,6 @@ class RiskAssessmentLifestyleYesNoTest extends TestCase
             $table->decimal('waist_circum_cm', 8, 2)->nullable();
             $table->unsignedSmallInteger('systolic_blood_pressure')->nullable();
             $table->unsignedSmallInteger('diastolic_blood_pressure')->nullable();
-            $table->string('blood_pressure_status')->nullable();
             $table->timestamps();
         });
         ErdRiskAssessmentChildSchema::create();
@@ -338,11 +337,12 @@ class RiskAssessmentLifestyleYesNoTest extends TestCase
         $this->assertSame('Normal', RiskAssessmentClinicalValues::bmiStatusFromValue(24.9));
         $this->assertSame('Overweight', RiskAssessmentClinicalValues::bmiStatusFromValue(25.0));
         $this->assertSame('Overweight', RiskAssessmentClinicalValues::bmiStatusFromValue(29.9));
-        $this->assertSame('Obesity', RiskAssessmentClinicalValues::bmiStatusFromValue(30.0));
-        $this->assertSame('Obesity', RiskAssessmentClinicalValues::bmiStatusFromValue(34.9));
-        $this->assertNull(RiskAssessmentClinicalValues::bmiStatusFromValue(35.0));
-        $this->assertNull(RiskAssessmentClinicalValues::bmiStatusFromValue(42.1));
-        $this->assertNotSame('Obese', RiskAssessmentClinicalValues::bmiStatusFromValue(35.0));
+        // One standard with Nutritional Status (classifyAdultBmi): 30+ is Obese, no gap above 35.
+        $this->assertSame('Obese', RiskAssessmentClinicalValues::bmiStatusFromValue(30.0));
+        $this->assertSame('Obese', RiskAssessmentClinicalValues::bmiStatusFromValue(34.9));
+        $this->assertSame('Obese', RiskAssessmentClinicalValues::bmiStatusFromValue(35.0));
+        $this->assertSame('Obese', RiskAssessmentClinicalValues::bmiStatusFromValue(42.1));
+        $this->assertSame(RiskAssessmentClinicalValues::classifyAdultBmi(42.1), RiskAssessmentClinicalValues::bmiStatusFromValue(42.1));
         $this->assertNotSame('Extreme Obesity', RiskAssessmentClinicalValues::bmiStatusFromValue(40));
     }
 

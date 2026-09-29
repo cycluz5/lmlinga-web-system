@@ -39,14 +39,6 @@ final class ErdChildImmunizationSchema
             );
         });
 
-        Schema::create('fic_cic_status', function (Blueprint $table): void {
-            $table->id('fic_cic_id');
-            $table->unsignedBigInteger('child_immunization_id')->unique();
-            $table->boolean('fic_completed')->default(false);
-            $table->boolean('cic_completed')->default(false);
-            $table->timestamps();
-        });
-
         ChildImmunizationErdMode::resetCachedState();
     }
 }

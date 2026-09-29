@@ -141,7 +141,7 @@ class AnnouncementCrudTest extends TestCase
             'title' => 'Original Title',
             'message' => 'Original message.',
             'event_date' => '2026-09-05',
-            'posted_by_name' => 'Original Poster',
+            'posted_by_role' => 'bhw',
             'posted_at' => now(),
         ]);
 
@@ -158,7 +158,7 @@ class AnnouncementCrudTest extends TestCase
             'id' => $announcement->id,
             'title' => 'Updated Title',
             'message' => 'Updated message.',
-            'posted_by_name' => 'Original Poster',
+            'posted_by_role' => 'bhw',
         ]);
 
         $announcement->refresh();

@@ -47,7 +47,7 @@ class ChildImmunizationPersistenceFoundationTest extends TestCase
     {
         $this->assertTrue(Schema::hasTable('child_immunizations'));
         $this->assertTrue(Schema::hasColumn('child_immunizations', 'resident_id'));
-        $this->assertTrue(Schema::hasColumn('child_immunizations', 'selected_vaccine_types'));
+        $this->assertFalse(Schema::hasColumn('child_immunizations', 'selected_vaccine_types'));
         $this->assertTrue(Schema::hasColumn('child_immunizations', 'remarks'));
         $this->assertTrue(Schema::hasColumn('child_immunizations', 'created_at'));
         $this->assertTrue(Schema::hasColumn('child_immunizations', 'updated_at'));
@@ -70,7 +70,6 @@ class ChildImmunizationPersistenceFoundationTest extends TestCase
 
         $record = ChildImmunization::factory()->create([
             'resident_id' => $resident->id,
-            'selected_vaccine_types' => ['bcg', 'fic'],
         ]);
 
         $resident->refresh();
@@ -92,7 +91,6 @@ class ChildImmunizationPersistenceFoundationTest extends TestCase
 
         $record = ChildImmunization::factory()->create([
             'resident_id' => $resident->id,
-            'selected_vaccine_types' => ['mmr', 'cic'],
         ]);
 
         $this->assertDatabaseHas('child_immunizations', [
@@ -214,7 +212,6 @@ class ChildImmunizationPersistenceFoundationTest extends TestCase
 
         $record = ChildImmunization::factory()->create([
             'resident_id' => $residentA->id,
-            'selected_vaccine_types' => ['pcv'],
         ]);
 
         ImmunizationDose::factory()->create([

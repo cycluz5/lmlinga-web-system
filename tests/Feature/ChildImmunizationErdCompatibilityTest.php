@@ -63,7 +63,7 @@ class ChildImmunizationErdCompatibilityTest extends TestCase
         $this->assertTrue(ChildImmunizationErdMode::usesDoseIdPrimaryKey());
         $this->assertSame('dose_number', ChildImmunizationErdMode::doseSequenceColumn());
         $this->assertSame('dose_id', ChildImmunizationErdMode::dosePrimaryKey());
-        $this->assertTrue(ChildImmunizationErdMode::usesFicCicStatusTable());
+        $this->assertFalse(Schema::hasTable('fic_cic_status'));
         $this->assertTrue(Schema::hasTable('child_immunization'));
         $this->assertFalse(Schema::hasTable('child_immunizations'));
         $this->assertTrue(Schema::hasTable('immunization_doses'));
@@ -133,8 +133,8 @@ class ChildImmunizationErdCompatibilityTest extends TestCase
         $this->assertSame(1, ChildImmunization::query()->count());
         $this->assertDatabaseCount('immunization_doses', 1);
         $this->assertSame('2026-08-30', substr((string) DB::table('immunization_doses')->value('date_given'), 0, 10));
-        $this->assertDatabaseCount('fic_cic_status', 1);
-        $this->assertSame(1, (int) DB::table('fic_cic_status')->value('fic_completed'));
+        $this->assertFalse(Schema::hasTable('fic_cic_status'));
+        $this->assertFalse($this->service->forResident($resident)['fic']['completed']);
     }
 
     public function test_read_maps_dose_number_1_to_form_index_0(): void
@@ -231,7 +231,6 @@ class ChildImmunizationErdCompatibilityTest extends TestCase
     public function test_legacy_write_guard_still_rejects_when_neither_header_table_exists(): void
     {
         Schema::dropIfExists('immunization_doses');
-        Schema::dropIfExists('fic_cic_status');
         Schema::dropIfExists('child_immunization');
         ChildImmunizationErdMode::resetCachedState();
 

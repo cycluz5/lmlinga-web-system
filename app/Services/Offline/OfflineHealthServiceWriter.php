@@ -104,7 +104,8 @@ final class OfflineHealthServiceWriter
                 $resident,
                 OfflineInnerRequestValidator::validate(StoreChildNutritionRequest::class, $input, $route),
             ),
-            'timbang_record_store' => $this->timbang->createForResident(
+            // Same server-side classification as the online save (never trusts client values).
+            'timbang_record_store' => $this->timbang->createAssessedForResident(
                 $resident,
                 $this->timbang->normalizeValidated(
                     OfflineInnerRequestValidator::validate(StoreTimbangRecordRequest::class, $input, $route)
