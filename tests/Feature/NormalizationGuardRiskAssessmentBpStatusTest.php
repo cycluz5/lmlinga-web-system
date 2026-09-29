@@ -19,11 +19,11 @@ use Tests\Support\ErdRiskAssessmentChildSchema;
 use Tests\TestCase;
 
 /**
- * Normalization guard (Phase 1): the BP status users see is always
- * RiskAssessmentClinicalValues::calculateBpStatus(systolic, diastolic), never the
- * stored risk_assessment.blood_pressure_status. Protects the future removal of that column.
+ * Normalization guard: the BP status users see is always
+ * RiskAssessmentClinicalValues::calculateBpStatus(systolic, diastolic). The stored
+ * risk_assessment.blood_pressure_status copy was dropped (3NF), so there is nothing to go stale.
  *
- * Uses the ERD risk_assessment table (live schema), which still has blood_pressure_status.
+ * Uses the ERD risk_assessment table in its live (post-migration) shape.
  */
 class NormalizationGuardRiskAssessmentBpStatusTest extends TestCase
 {
@@ -72,7 +72,6 @@ class NormalizationGuardRiskAssessmentBpStatusTest extends TestCase
             $table->decimal('waist_circum_cm', 8, 2)->nullable();
             $table->unsignedSmallInteger('systolic_blood_pressure')->nullable();
             $table->unsignedSmallInteger('diastolic_blood_pressure')->nullable();
-            $table->string('blood_pressure_status')->nullable();
             $table->timestamps();
         });
         ErdRiskAssessmentChildSchema::create();
@@ -170,15 +169,13 @@ class NormalizationGuardRiskAssessmentBpStatusTest extends TestCase
         $this->assertStringContainsString('value="'.e($expected).'"', $match[0], "BP Status field was: {$match[0]}");
     }
 
-    public function test_stale_stored_bp_status_is_not_what_users_see(): void
+    public function test_bp_status_is_not_stored_and_is_calculated_on_read(): void
     {
         ['household' => $household, 'resident' => $resident] = $this->seedMember();
         $assessmentNo = $this->saveAssessment($household, $resident, 185, 125);
 
-        // Simulate a stale/incorrect stored value; reads must still recalculate.
-        DB::table('risk_assessment')->update([
-            'blood_pressure_status' => AtRestRecord::seal('Normal', 'risk_assessment', 'blood_pressure_status'),
-        ]);
+        $this->assertFalse(Schema::hasColumn('risk_assessment', 'blood_pressure_status'));
+        $this->assertFalse(RiskAssessmentErdMode::writesBloodPressureStatus());
 
         $presentation = app(RiskAssessmentService::class)->findPresentationForResident($resident, $assessmentNo);
         $this->assertSame($this->expectedLabel(185, 125), $presentation['bp_status']);
