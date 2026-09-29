@@ -131,6 +131,21 @@ final class NutritionAssessmentService
     }
 
     /**
+     * BMI status for an age band: adults use the shared adult standard; adolescents
+     * (5–19y) have no WHO BMI-for-age reference here; younger bands have no BMI status.
+     */
+    public function bmiStatusForBand(?string $band, ?float $bmi): ?string
+    {
+        if ($bmi === null || $band === null || ! $this->bmiApplicable($band)) {
+            return null;
+        }
+
+        return $band === self::BAND_ADULT
+            ? $this->classifyAdultBmi($bmi)
+            : TimbangRecord::REFERENCE_UNAVAILABLE;
+    }
+
+    /**
      * BMI-for-Age (5-19y). Numeric BMI is always computable, but the project
      * has no approved BMI-for-Age threshold reference yet, so classification
      * is intentionally withheld rather than borrowing adult cutoffs.
@@ -401,11 +416,7 @@ final class NutritionAssessmentService
         $bmiStatus = null;
         if ($band !== null && $this->bmiApplicable($band)) {
             $bmiValue = $this->calculateBmi($measurement['weight_kg'] ?? null, $measurement['height_cm'] ?? null);
-            if ($bmiValue !== null) {
-                $bmiStatus = $band === self::BAND_ADULT
-                    ? $this->classifyAdultBmi($bmiValue)
-                    : TimbangRecord::REFERENCE_UNAVAILABLE;
-            }
+            $bmiStatus = $this->bmiStatusForBand($band, $bmiValue);
         }
 
         $overall = $this->determineOverallStatus([
@@ -480,7 +491,8 @@ final class NutritionAssessmentService
      *     muac_applicable: bool,
      *     bmi_applicable: bool,
      *     weight_for_age_applicable: bool,
-     *     bmi_display: float|null
+     *     bmi_display: float|null,
+     *     bmi_status_display: string|null
      * }
      */
     public function displayContextForRecord(Resident $resident, TimbangRecord $record): array
@@ -509,6 +521,9 @@ final class NutritionAssessmentService
             'bmi_applicable' => $band !== null && $this->bmiApplicable($band),
             'weight_for_age_applicable' => $band !== null && $this->weightForAgeApplicable($band),
             'bmi_display' => $bmiDisplay,
+            // Stored classification first; rows saved without one (e.g. maternal /
+            // risk-assessment physical sync) get it from the displayed BMI.
+            'bmi_status_display' => $record->bmi_status ?? $this->bmiStatusForBand($band, $bmiDisplay),
         ];
     }
 

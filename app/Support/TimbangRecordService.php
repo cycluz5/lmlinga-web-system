@@ -82,7 +82,7 @@ final class TimbangRecordService
             'mode' => $mode,
             'bmi' => $context['bmi_display'] !== null ? $this->formatDecimal($context['bmi_display'], 1) : '—',
             'status' => $mode === 'bmi'
-                ? ($latest->bmi_status ?? '—')
+                ? ($context['bmi_status_display'] ?? '—')
                 : ($latest->overall_nutritional_status ?? '—'),
             'muac_applicable' => $context['muac_applicable'],
             'muac' => $this->formatDecimal($latest->muac_cm, 1),
@@ -142,7 +142,8 @@ final class TimbangRecordService
      *         muac_applicable: bool,
      *         bmi_applicable: bool,
      *         weight_for_age_applicable: bool,
-     *         bmi_display: float|null
+     *         bmi_display: float|null,
+     *         bmi_status_display: string|null
      *     }
      * }>
      */

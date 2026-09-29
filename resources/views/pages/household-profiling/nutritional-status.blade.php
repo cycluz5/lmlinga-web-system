@@ -162,6 +162,7 @@
                                         $wfaApplicable = (bool) ($assessment['weight_for_age_applicable'] ?? false);
                                         $bmiApplicable = (bool) ($assessment['bmi_applicable'] ?? false);
                                         $bmiDisplay = $assessment['bmi_display'] ?? null;
+                                        $bmiStatusDisplay = $assessment['bmi_status_display'] ?? $row->bmi_status;
                                     @endphp
                                     <li class="lml-hr-cc-nr__measure-row" data-timbang-id="{{ $row->timbang_id }}">
                                         <div class="lml-hr-cc-nr__measure-when">
@@ -231,7 +232,7 @@
                                                 </div>
                                                 <div>
                                                     <dt>BMI Status</dt>
-                                                    <dd><span class="{{ $pillClass($row->bmi_status) }}">{{ $row->bmi_status ?? '—' }}</span></dd>
+                                                    <dd><span class="{{ $pillClass($bmiStatusDisplay) }}">{{ $bmiStatusDisplay ?? '—' }}</span></dd>
                                                 </div>
                                             @endif
 

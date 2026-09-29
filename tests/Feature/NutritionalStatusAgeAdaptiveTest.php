@@ -527,6 +527,35 @@ class NutritionalStatusAgeAdaptiveTest extends TestCase
         $this->assertStringContainsString('20.8 (Normal)', $card);
     }
 
+    public function test_bmi_status_shows_beside_bmi_for_a_row_saved_without_classification(): void
+    {
+        $measurementDate = Carbon::parse(self::MEASUREMENT_DATE);
+        ['household' => $household, 'resident' => $resident] = $this->seedResident(
+            'HH-9031',
+            'MB-9031',
+            $measurementDate->copy()->subYears(22),
+        );
+
+        // Physical sync from Maternal Care / Risk Assessment stores weight and height only.
+        TimbangRecord::query()->create([
+            'resident_id' => $resident->getKey(),
+            'measurement_date' => self::MEASUREMENT_DATE,
+            'weight_kg' => '60',
+            'height_cm' => '170',
+        ]);
+        $this->assertNull(TimbangRecord::query()->first()->bmi_status);
+
+        $card = $this->get(route('household-profiling.members.show', [
+            'householdNo' => $household->household_no,
+            'memberId' => $resident->member_no,
+        ]))->assertOk()->getContent();
+        $this->assertStringContainsString('20.8 (Normal)', $card);
+
+        $context = app(NutritionAssessmentService::class)
+            ->displayContextForRecord($resident->fresh(), TimbangRecord::query()->first());
+        $this->assertSame('Normal', $context['bmi_status_display']);
+    }
+
     // History page groups records into age-band cards (mirroring the
     // Health Records -> Child Care -> Non-Residents nutrition page's
     // sectioned layout), one card per band the resident actually has
