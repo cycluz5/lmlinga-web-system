@@ -54,6 +54,35 @@ final class DemoMaternalCare
         'Multiple' => 'Multiple',
     ];
 
+    /** Upper bound for babies recorded on one delivery. */
+    public const MAX_NEWBORNS = 10;
+
+    /**
+     * Number of babies implied by a plurality choice (Multiple = at least 3).
+     */
+    public static function countForPlurality(string $plurality, ?int $pluralityNumber): int
+    {
+        return match ($plurality) {
+            'Single' => 1,
+            'Twins' => 2,
+            'Multiple' => min(self::MAX_NEWBORNS, max(3, (int) $pluralityNumber)),
+            default => 0,
+        };
+    }
+
+    /**
+     * Plurality label for a number of recorded babies ('' when none).
+     */
+    public static function pluralityForCount(int $count): string
+    {
+        return match (true) {
+            $count <= 0 => '',
+            $count === 1 => 'Single',
+            $count === 2 => 'Twins',
+            default => 'Multiple',
+        };
+    }
+
     public static function isTerminalOutcome(?string $outcome): bool
     {
         $code = strtoupper(trim((string) $outcome));
@@ -1517,6 +1546,13 @@ final class DemoMaternalCare
      */
     private static function mergeDelivery(array $current, array $payload): array
     {
+        // Demo storage keeps a single baby: baby 1 of the per-baby form fills the legacy keys.
+        if (is_array($payload['newborns'] ?? null)) {
+            $first = array_values($payload['newborns'])[0] ?? [];
+            $payload['newborn_sex'] = is_array($first) ? ($first['sex'] ?? null) : null;
+            $payload['birth_weight'] = is_array($first) ? ($first['birth_weight'] ?? null) : null;
+        }
+
         unset($current['fetal_death_date']);
 
         $outcome = array_key_exists('outcome', $payload)

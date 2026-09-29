@@ -754,10 +754,19 @@ class MaternalCareErdHistoryTest extends TestCase
         $row = DB::table('delivery_outcomes')->first();
         $this->assertSame('FT', $row->outcome);
         $this->assertSame('VD', $row->delivery_type);
-        $this->assertEqualsWithDelta(3.2, (float) $row->birth_weight_kg, 0.01);
+        // Weight lives on baby 1 and the name on the linked facility (3NF); both survive
+        // a later update that only sends facility_name.
+        $this->assertEqualsWithDelta(
+            3.2,
+            (float) DB::table('delivery_newborns')->where('delivery_outcome_id', $row->delivery_outcome_id)->value('birth_weight_kg'),
+            0.01
+        );
         $this->assertSame('Live birth', $row->status);
         $this->assertSame('Public Health Facility', $row->place_of_delivery);
-        $this->assertSame('RHU La Medalla', $row->facility_name);
+        $this->assertSame(
+            'RHU La Medalla',
+            DB::table('health_facilities')->where('facility_id', $row->facility_id)->value('facility_name')
+        );
     }
 
     public function test_get_register_redirects_when_an_active_pregnancy_exists(): void

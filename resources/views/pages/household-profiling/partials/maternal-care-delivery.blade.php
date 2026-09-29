@@ -9,8 +9,21 @@
     $delivery = is_array($pregnancy['delivery'] ?? null) ? $pregnancy['delivery'] : [];
     $outcome = (string) ($delivery['outcome'] ?? '');
     $attendant = (string) ($delivery['birth_attendant'] ?? '');
-    $newbornSex = (string) ($delivery['newborn_sex'] ?? '');
     $plurality = (string) ($delivery['plurality'] ?? '');
+
+    // One entry per baby (delivery_newborns). Demo/legacy data only has baby 1.
+    $newborns = is_array($delivery['newborns'] ?? null) ? array_values($delivery['newborns']) : [];
+    if ($newborns === [] && (($delivery['newborn_sex'] ?? '') !== '' || ($delivery['birth_weight'] ?? '') !== '')) {
+        $newborns = [[
+            'sex' => (string) ($delivery['newborn_sex'] ?? ''),
+            'birth_weight' => (string) ($delivery['birth_weight'] ?? ''),
+        ]];
+    }
+    $newbornCount = max(
+        1,
+        count($newborns),
+        DemoMaternalCare::countForPlurality($plurality, (int) ($delivery['plurality_number'] ?? 0)),
+    );
 @endphp
 
 <section class="lml-mc__panel" aria-labelledby="lml-mc-delivery-title" data-mc-delivery>
@@ -108,20 +121,6 @@
                         </select>
                     </div>
                     <div class="lml-mc__field">
-                        <label for="lml-mc-birth-weight" class="lml-mc__label">Birth Weight (kg)</label>
-                        <input
-                            type="number"
-                            id="lml-mc-birth-weight"
-                            name="birth_weight"
-                            min="0"
-                            step="0.01"
-                            class="lml-mc__input lml-focus-ring"
-                            value="{{ $delivery['birth_weight'] ?? '' }}"
-                            data-mc-field
-                            disabled
-                        >
-                    </div>
-                    <div class="lml-mc__field">
                         <label for="lml-mc-delivery-status" class="lml-mc__label">Status</label>
                         <input
                             type="text"
@@ -134,27 +133,6 @@
                             autocomplete="off"
                         >
                     </div>
-                    <fieldset class="lml-mc__nested-fieldset">
-                        <legend class="lml-mc__legend lml-mc__legend--sub">Newborn Sex</legend>
-                        <div class="lml-mc__radio-list lml-mc__radio-list--inline" role="radiogroup" aria-label="Newborn sex">
-                            @foreach (DemoMaternalCare::NEWBORN_SEXES as $code => $label)
-                                <label class="lml-mc__radio{{ $newbornSex === $code ? ' is-selected' : '' }}">
-                                    <input
-                                        type="radio"
-                                        name="newborn_sex"
-                                        value="{{ $code }}"
-                                        class="lml-focus-ring"
-                                        data-mc-field
-                                        data-mc-newborn-sex="{{ $code }}"
-                                        @checked($newbornSex === $code)
-                                        disabled
-                                    >
-                                    <span>{{ $label }}</span>
-                                </label>
-                            @endforeach
-                        </div>
-                    </fieldset>
-
                     <fieldset class="lml-mc__nested-fieldset">
                         <legend class="lml-mc__legend lml-mc__legend--sub">Plurality</legend>
                         <div class="lml-mc__radio-list lml-mc__radio-list--inline" role="radiogroup" aria-label="Plurality">
@@ -190,9 +168,60 @@
                             value="{{ $delivery['plurality_number'] ?? '' }}"
                             data-mc-field
                             data-mc-plurality-number
+                            min="3"
+                            max="{{ DemoMaternalCare::MAX_NEWBORNS }}"
                             disabled
                         >
                     </div>
+
+                    {{-- One row per baby; the number shown follows Plurality (see maternal-care.js). --}}
+                    @for ($baby = 0; $baby < DemoMaternalCare::MAX_NEWBORNS; $baby++)
+                        @php
+                            $babySex = (string) ($newborns[$baby]['sex'] ?? '');
+                            $babyWeight = (string) ($newborns[$baby]['birth_weight'] ?? '');
+                            $babyLabel = $newbornCount > 1 ? 'Baby '.($baby + 1) : 'Newborn';
+                        @endphp
+                        <fieldset
+                            class="lml-mc__nested-fieldset lml-mc__conditional"
+                            data-mc-conditional="newborn"
+                            data-mc-newborn="{{ $baby }}"
+                            @if ($baby >= $newbornCount) hidden @endif
+                        >
+                            <legend class="lml-mc__legend lml-mc__legend--sub" data-mc-newborn-label>{{ $babyLabel }}</legend>
+                            <div class="lml-mc__field">
+                                <label for="lml-mc-newborn-{{ $baby }}-weight" class="lml-mc__label">Birth Weight (kg)</label>
+                                <input
+                                    type="number"
+                                    id="lml-mc-newborn-{{ $baby }}-weight"
+                                    name="newborns[{{ $baby }}][birth_weight]"
+                                    min="0"
+                                    step="0.01"
+                                    class="lml-mc__input lml-focus-ring"
+                                    value="{{ $babyWeight }}"
+                                    data-mc-field
+                                    disabled
+                                >
+                            </div>
+                            <span class="lml-mc__label" id="lml-mc-newborn-{{ $baby }}-sex-label">Newborn Sex</span>
+                            <div class="lml-mc__radio-list lml-mc__radio-list--inline" role="radiogroup" aria-labelledby="lml-mc-newborn-{{ $baby }}-sex-label">
+                                @foreach (DemoMaternalCare::NEWBORN_SEXES as $code => $label)
+                                    <label class="lml-mc__radio{{ $babySex === $code ? ' is-selected' : '' }}">
+                                        <input
+                                            type="radio"
+                                            name="newborns[{{ $baby }}][sex]"
+                                            value="{{ $code }}"
+                                            class="lml-focus-ring"
+                                            data-mc-field
+                                            data-mc-newborn-sex="{{ $code }}"
+                                            @checked($babySex === $code)
+                                            disabled
+                                        >
+                                        <span>{{ $label }}</span>
+                                    </label>
+                                @endforeach
+                            </div>
+                        </fieldset>
+                    @endfor
 
                     <div class="lml-mc__field">
                         <label for="lml-mc-delivery-datetime" class="lml-mc__label">Date &amp; Time of Delivery</label>

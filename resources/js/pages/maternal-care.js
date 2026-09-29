@@ -258,7 +258,60 @@ function initDeliveryConditionals(root) {
         });
     });
 
+    form.querySelector('[data-mc-plurality-number]')?.addEventListener('input', () => {
+        syncDeliveryConditionals(root);
+    });
+
+    form.querySelectorAll('[data-mc-newborn-sex]').forEach((input) => {
+        input.addEventListener('change', () => {
+            input.closest('[role="radiogroup"]')?.querySelectorAll('.lml-mc__radio').forEach((label) => {
+                label.classList.toggle('is-selected', Boolean(label.querySelector('input')?.checked));
+            });
+        });
+    });
+
     syncDeliveryConditionals(root);
+}
+
+/**
+ * Babies to show for the chosen plurality: Single 1, Twins 2, Multiple = number (3–max).
+ * With no plurality chosen, one row stays visible (plus any rows that already hold data).
+ */
+function newbornCount(form, plurality) {
+    const rows = form.querySelectorAll('[data-mc-newborn]');
+    const max = rows.length || 1;
+    let count = 1;
+    if (plurality === 'Twins') {
+        count = 2;
+    } else if (plurality === 'Multiple') {
+        const raw = parseInt(form.querySelector('[data-mc-plurality-number]')?.value || '', 10);
+        count = Number.isNaN(raw) ? 3 : Math.min(max, Math.max(3, raw));
+    }
+
+    if (plurality === '') {
+        rows.forEach((row, index) => {
+            const hasData = Array.from(row.querySelectorAll('input')).some(
+                (input) => (input.type === 'radio' ? input.checked : input.value !== '')
+            );
+            if (hasData) {
+                count = Math.max(count, index + 1);
+            }
+        });
+    }
+
+    return Math.min(max, count);
+}
+
+function syncNewbornRows(form, plurality, editing) {
+    const count = newbornCount(form, plurality);
+    form.querySelectorAll('[data-mc-newborn]').forEach((row) => {
+        const index = parseInt(row.getAttribute('data-mc-newborn') || '0', 10);
+        setConditional(row, index < count, editing);
+        const label = row.querySelector('[data-mc-newborn-label]');
+        if (label) {
+            label.textContent = count > 1 ? `Baby ${index + 1}` : 'Newborn';
+        }
+    });
 }
 
 function syncDeliveryConditionals(root) {
@@ -299,6 +352,8 @@ function syncDeliveryConditionals(root) {
     if (pluralityNumber && editing && !showMultiple) {
         pluralityNumber.value = '';
     }
+
+    syncNewbornRows(form, plurality, editing);
 }
 
 function setConditional(block, visible, editing) {

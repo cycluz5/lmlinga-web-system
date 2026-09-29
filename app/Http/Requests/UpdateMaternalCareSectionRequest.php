@@ -262,6 +262,9 @@ class UpdateMaternalCareSectionRequest extends FormRequest
             'newborn_sex' => ['nullable', 'string', Rule::in(array_merge([''], array_keys(DemoMaternalCare::NEWBORN_SEXES)))],
             'plurality' => ['nullable', 'string', Rule::in(array_merge([''], array_keys(DemoMaternalCare::PLURALITIES)))],
             'plurality_number' => ['nullable', 'integer'],
+            'newborns' => ['nullable', 'array', 'max:'.DemoMaternalCare::MAX_NEWBORNS],
+            'newborns.*.sex' => ['nullable', 'string', Rule::in(array_merge([''], array_keys(DemoMaternalCare::NEWBORN_SEXES)))],
+            'newborns.*.birth_weight' => ['nullable', 'numeric', 'min:0'],
             'delivery_type' => ['nullable', 'string', Rule::in(array_merge([''], array_keys(DemoMaternalCare::DELIVERY_TYPES)))],
             'birth_weight' => ['nullable', 'numeric', 'min:0'],
             'delivery_status' => ['nullable', 'string', 'max:120'],
@@ -386,6 +389,12 @@ class UpdateMaternalCareSectionRequest extends FormRequest
                 $validator->errors()->add(
                     'plurality_number',
                     'Plurality number is required for a multiple birth.'
+                );
+            } elseif ($plurality === 'Multiple'
+                && ((int) $pluralityNumber < 3 || (int) $pluralityNumber > DemoMaternalCare::MAX_NEWBORNS)) {
+                $validator->errors()->add(
+                    'plurality_number',
+                    'A multiple birth must be between 3 and '.DemoMaternalCare::MAX_NEWBORNS.' babies.'
                 );
             }
         });

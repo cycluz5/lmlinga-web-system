@@ -321,7 +321,8 @@ class HouseholdProfilingMaternalCareTest extends TestCase
         $this->assertStringNotContainsString('Date of Abortion', $html);
         $this->assertStringNotContainsString('id="lml-mc-abortion-date"', $html);
         $this->assertStringContainsString('Newborn Sex', $html);
-        $this->assertStringContainsString('name="newborn_sex"', $html);
+        $this->assertStringContainsString('name="newborns[0][sex]"', $html);
+        $this->assertStringContainsString('name="newborns[0][birth_weight]"', $html);
         $this->assertStringContainsString('name="plurality"', $html);
         $this->assertStringContainsString('data-mc-conditional="plurality-multiple"', $html);
         $this->assertStringContainsString('name="plurality_number"', $html);

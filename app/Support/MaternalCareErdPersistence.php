@@ -576,25 +576,28 @@ final class MaternalCareErdPersistence
         }
 
         $datetime = $this->dateTimeLocal($row->date_time_of_delivery ?? null);
-        $bemonc = $row->bemonc_cemonc_capable ?? null;
 
         $outcome = (string) ($row->outcome ?? '');
         $terminated = $this->dateString($row->date_terminated ?? null);
 
         $current['outcome'] = $outcome;
         $current['delivery_type'] = (string) ($row->delivery_type ?? '');
-        $current['birth_weight'] = $this->decimalDisplay($row->birth_weight_kg ?? null);
         $current['status'] = (string) ($row->status ?? '');
         $current['datetime'] = $datetime;
         $current['date_terminated'] = $terminated;
         $current['birth_attendant'] = (string) ($row->birth_attendant ?? '');
         $current['birth_attendant_other'] = (string) ($row->birth_attendant_other ?? '');
         $current['place'] = self::PLACE_FROM_ERD[(string) ($row->place_of_delivery ?? '')] ?? '';
-        $current['facility_name'] = (string) ($row->facility_name ?? '');
-        $current['bemonc_cemonc'] = $bemonc === null || $bemonc === ''
-            ? ''
-            : ((int) $bemonc === 1 ? 'Yes' : 'No');
         unset($current['fetal_death_date'], $current['abortion_date']);
+
+        if (self::usesNormalizedDelivery()) {
+            return $this->loadNormalizedDeliveryDetails($row, $current);
+        }
+
+        $bemonc = $row->bemonc_cemonc_capable ?? null;
+        $current['birth_weight'] = $this->decimalDisplay($row->birth_weight_kg ?? null);
+        $current['facility_name'] = (string) ($row->facility_name ?? '');
+        $current['bemonc_cemonc'] = self::bemoncDisplay($bemonc);
         if (Schema::hasColumn('delivery_outcomes', 'newborn_sex')) {
             $current['newborn_sex'] = (string) ($row->newborn_sex ?? '');
         }
@@ -607,6 +610,58 @@ final class MaternalCareErdPersistence
         }
 
         return $current;
+    }
+
+    /**
+     * 3NF delivery: facility from health_facilities, one row per baby in delivery_newborns.
+     * Plurality is the number of newborn rows; baby 1 also fills the legacy single keys.
+     *
+     * @param  array<string, mixed>  $current
+     * @return array<string, mixed>
+     */
+    private function loadNormalizedDeliveryDetails(object $row, array $current): array
+    {
+        $facility = $row->facility_id !== null
+            ? DB::table('health_facilities')->where('facility_id', $row->facility_id)->first()
+            : null;
+        $current['facility_name'] = (string) ($facility->facility_name ?? '');
+        $current['bemonc_cemonc'] = self::bemoncDisplay($facility->bemonc_cemonc_capable ?? null);
+
+        $newborns = DB::table('delivery_newborns')
+            ->where('delivery_outcome_id', $row->delivery_outcome_id)
+            ->orderBy('birth_order')
+            ->get()
+            ->map(fn (object $baby): array => [
+                'sex' => (string) ($baby->sex ?? ''),
+                'birth_weight' => $this->decimalDisplay($baby->birth_weight_kg ?? null),
+            ])
+            ->values()
+            ->all();
+
+        $count = count($newborns);
+        $current['newborns'] = $newborns;
+        $current['plurality'] = DemoMaternalCare::pluralityForCount($count);
+        $current['plurality_number'] = $count >= 3 ? (string) $count : '';
+        $current['newborn_sex'] = $newborns[0]['sex'] ?? '';
+        $current['birth_weight'] = $newborns[0]['birth_weight'] ?? '';
+
+        return $current;
+    }
+
+    private static function usesNormalizedDelivery(): bool
+    {
+        return Schema::hasTable('delivery_newborns')
+            && Schema::hasTable('health_facilities')
+            && Schema::hasColumn('delivery_outcomes', 'facility_id');
+    }
+
+    private static function bemoncDisplay(mixed $value): string
+    {
+        if ($value === null || $value === '') {
+            return '';
+        }
+
+        return (int) $value === 1 ? 'Yes' : 'No';
     }
 
     /**
@@ -1159,29 +1214,193 @@ final class MaternalCareErdPersistence
         }
 
         $fields = $this->deliveryFieldsFromPayload($payload);
-        if ($fields === []) {
+        $normalized = self::usesNormalizedDelivery();
+        $newborns = $normalized ? $this->newbornsFromPayload($payload) : null;
+        $facility = $normalized ? $this->facilityFromPayload($payload) : null;
+
+        if ($fields === [] && $newborns === null && $facility === null) {
             return;
         }
 
         $existing = $this->deliveryRow($maternalCareId);
-        if ($existing === null && ! self::deliveryFieldsHaveContent($fields)) {
+        $hasContent = self::deliveryFieldsHaveContent($fields)
+            || self::newbornsHaveContent($newborns ?? [])
+            || (($facility['name'] ?? '') !== '');
+        if ($existing === null && ! $hasContent) {
             return;
         }
         $fields['updated_at'] = now();
 
         if ($existing === null) {
-            DB::table('delivery_outcomes')->insert(array_merge([
+            $deliveryId = (int) DB::table('delivery_outcomes')->insertGetId(array_merge([
                 'maternal_care_id' => $maternalCareId,
                 'created_at' => now(),
                 'updated_at' => now(),
-            ], $fields));
-
-            return;
+            ], $fields), 'delivery_outcome_id');
+            $facilityId = null;
+        } else {
+            $deliveryId = (int) $existing->delivery_outcome_id;
+            DB::table('delivery_outcomes')
+                ->where('delivery_outcome_id', $deliveryId)
+                ->update($fields);
+            $facilityId = $normalized && $existing->facility_id !== null ? (int) $existing->facility_id : null;
         }
 
-        DB::table('delivery_outcomes')
-            ->where('delivery_outcome_id', $existing->delivery_outcome_id)
-            ->update($fields);
+        if ($facility !== null) {
+            $this->syncDeliveryFacility($deliveryId, $facilityId, $facility);
+        }
+        if ($newborns !== null) {
+            $this->syncDeliveryNewborns($deliveryId, $newborns);
+        }
+    }
+
+    /**
+     * Babies to store for this delivery, or null when the payload does not touch them.
+     * The count follows plurality (Single 1, Twins 2, Multiple = plurality_number) and is
+     * never lower than the number of babies with data. Legacy single-baby keys
+     * (newborn_sex / birth_weight, e.g. queued offline edits) fill baby 1.
+     *
+     * @param  array<string, mixed>  $payload
+     * @return list<array{sex: ?string, birth_weight_kg: ?string}>|null
+     */
+    private function newbornsFromPayload(array $payload): ?array
+    {
+        $hasPlurality = array_key_exists('plurality', $payload);
+        $hasNewborns = is_array($payload['newborns'] ?? null);
+        $hasLegacy = array_key_exists('newborn_sex', $payload) || array_key_exists('birth_weight', $payload);
+
+        if (! $hasPlurality && ! $hasNewborns && ! $hasLegacy) {
+            return null;
+        }
+
+        $entries = $hasNewborns
+            ? array_values($payload['newborns'])
+            : [['sex' => $payload['newborn_sex'] ?? null, 'birth_weight' => $payload['birth_weight'] ?? null]];
+
+        $babies = [];
+        foreach ($entries as $entry) {
+            $entry = is_array($entry) ? $entry : [];
+            $sex = trim((string) ($entry['sex'] ?? ''));
+            $babies[] = [
+                'sex' => array_key_exists($sex, DemoMaternalCare::NEWBORN_SEXES) ? $sex : null,
+                'birth_weight_kg' => $this->nullableDecimal($entry['birth_weight'] ?? null),
+            ];
+        }
+
+        $withData = 0;
+        foreach ($babies as $index => $baby) {
+            if ($baby['sex'] !== null || $baby['birth_weight_kg'] !== null) {
+                $withData = $index + 1;
+            }
+        }
+
+        $count = $hasPlurality
+            ? DemoMaternalCare::countForPlurality(
+                trim((string) $payload['plurality']),
+                $this->nullableInt($payload['plurality_number'] ?? null),
+            )
+            : 0;
+        $count = min(DemoMaternalCare::MAX_NEWBORNS, max($count, $withData));
+
+        $result = [];
+        for ($index = 0; $index < $count; $index++) {
+            $result[] = $babies[$index] ?? ['sex' => null, 'birth_weight_kg' => null];
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param  list<array{sex: ?string, birth_weight_kg: ?string}>  $newborns
+     */
+    private static function newbornsHaveContent(array $newborns): bool
+    {
+        return $newborns !== [];
+    }
+
+    /**
+     * @param  list<array{sex: ?string, birth_weight_kg: ?string}>  $newborns
+     */
+    private function syncDeliveryNewborns(int $deliveryId, array $newborns): void
+    {
+        DB::table('delivery_newborns')
+            ->where('delivery_outcome_id', $deliveryId)
+            ->where('birth_order', '>', count($newborns))
+            ->delete();
+
+        foreach ($newborns as $index => $baby) {
+            $match = ['delivery_outcome_id' => $deliveryId, 'birth_order' => $index + 1];
+            $values = ['sex' => $baby['sex'], 'birth_weight_kg' => $baby['birth_weight_kg'], 'updated_at' => now()];
+
+            if (DB::table('delivery_newborns')->where($match)->exists()) {
+                DB::table('delivery_newborns')->where($match)->update($values);
+            } else {
+                DB::table('delivery_newborns')->insert($match + $values + ['created_at' => now()]);
+            }
+        }
+    }
+
+    /**
+     * @param  array<string, mixed>  $payload
+     * @return array{name?: string, bemonc?: ?int}|null
+     */
+    private function facilityFromPayload(array $payload): ?array
+    {
+        $facility = [];
+
+        if (array_key_exists('facility_name', $payload)) {
+            $facility['name'] = self::normalizeFacilityName($payload['facility_name']);
+        }
+        if (array_key_exists('bemonc_cemonc', $payload)) {
+            $raw = trim((string) $payload['bemonc_cemonc']);
+            $facility['bemonc'] = $raw === 'Yes' ? 1 : ($raw === 'No' ? 0 : null);
+        }
+
+        return $facility === [] ? null : $facility;
+    }
+
+    /**
+     * Link the delivery to a facility reused by name (case/space-insensitive). A Yes/No
+     * BEmONC answer updates that facility for all of its deliveries; blank leaves it.
+     *
+     * @param  array{name?: string, bemonc?: ?int}  $facility
+     */
+    private function syncDeliveryFacility(int $deliveryId, ?int $facilityId, array $facility): void
+    {
+        if (array_key_exists('name', $facility)) {
+            $facilityId = $facility['name'] === '' ? null : $this->facilityIdForName($facility['name']);
+            DB::table('delivery_outcomes')
+                ->where('delivery_outcome_id', $deliveryId)
+                ->update(['facility_id' => $facilityId]);
+        }
+
+        if ($facilityId !== null && ($facility['bemonc'] ?? null) !== null) {
+            DB::table('health_facilities')
+                ->where('facility_id', $facilityId)
+                ->update(['bemonc_cemonc_capable' => $facility['bemonc'], 'updated_at' => now()]);
+        }
+    }
+
+    private function facilityIdForName(string $name): int
+    {
+        $existing = DB::table('health_facilities')
+            ->whereRaw('LOWER(facility_name) = ?', [mb_strtolower($name)])
+            ->value('facility_id');
+
+        if ($existing !== null) {
+            return (int) $existing;
+        }
+
+        return (int) DB::table('health_facilities')->insertGetId([
+            'facility_name' => mb_substr($name, 0, 160),
+            'created_at' => now(),
+            'updated_at' => now(),
+        ], 'facility_id');
+    }
+
+    private static function normalizeFacilityName(mixed $name): string
+    {
+        return trim((string) preg_replace('/\s+/u', ' ', (string) ($name ?? '')));
     }
 
     /**
@@ -1191,6 +1410,15 @@ final class MaternalCareErdPersistence
     private function deliveryFieldsFromPayload(array $payload): array
     {
         $fields = [];
+        // Newborn and facility details live in their own tables on the 3NF schema.
+        $legacyColumns = ! self::usesNormalizedDelivery();
+
+        // Before the migration runs, baby 1 of the per-baby form fills the single columns.
+        if ($legacyColumns && is_array($payload['newborns'] ?? null)) {
+            $first = array_values($payload['newborns'])[0] ?? [];
+            $payload['newborn_sex'] = is_array($first) ? ($first['sex'] ?? null) : null;
+            $payload['birth_weight'] = is_array($first) ? ($first['birth_weight'] ?? null) : null;
+        }
 
         $outcome = null;
         if (array_key_exists('outcome', $payload)) {
@@ -1202,7 +1430,7 @@ final class MaternalCareErdPersistence
             $type = trim((string) $payload['delivery_type']);
             $fields['delivery_type'] = array_key_exists($type, DemoMaternalCare::DELIVERY_TYPES) ? $type : null;
         }
-        if (array_key_exists('birth_weight', $payload)) {
+        if ($legacyColumns && array_key_exists('birth_weight', $payload)) {
             $fields['birth_weight_kg'] = $this->nullableDecimal($payload['birth_weight']);
         }
         if (array_key_exists('status', $payload)) {
@@ -1227,10 +1455,10 @@ final class MaternalCareErdPersistence
             $place = trim((string) $payload['place']);
             $fields['place_of_delivery'] = self::PLACE_TO_ERD[$place] ?? null;
         }
-        if (array_key_exists('facility_name', $payload)) {
+        if ($legacyColumns && array_key_exists('facility_name', $payload)) {
             $fields['facility_name'] = $this->nullableText($payload['facility_name']);
         }
-        if (array_key_exists('bemonc_cemonc', $payload)) {
+        if ($legacyColumns && array_key_exists('bemonc_cemonc', $payload)) {
             $raw = trim((string) $payload['bemonc_cemonc']);
             $fields['bemonc_cemonc_capable'] = $raw === 'Yes' ? 1 : ($raw === 'No' ? 0 : null);
         }
