@@ -161,6 +161,69 @@ class MaternalCareErdHistoryTest extends TestCase
         $this->assertStringContainsString('data-mc-register-cta', $index);
     }
 
+    /**
+     * 3NF guard: pregnancy_status is kept as a workflow state (first closing event
+     * wins), so it must always agree with the rows it summarises — Trans-Out only
+     * with a maternal_trans_outs row, Completed only with a delivery outcome, and
+     * Active with neither.
+     */
+    public function test_pregnancy_status_always_agrees_with_trans_out_and_delivery_rows(): void
+    {
+        // Pregnancy A stays active.
+        ['household' => $hhA, 'resident' => $a] = $this->seedPersistedResident(['household_no' => 'HH-981', 'member_no' => 'MB-981']);
+        $this->registerPregnancy($hhA, $a);
+        $this->assertPregnancyStatusMatchesRows();
+
+        // Pregnancy B is transferred out.
+        ['household' => $hhB, 'resident' => $b] = $this->seedPersistedResident(['household_no' => 'HH-982', 'member_no' => 'MB-982']);
+        $this->registerPregnancy($hhB, $b);
+        $this->put($this->updateRoute($hhB, $b, 'trans-out'), [
+            'to_facility' => 'RHU La Medalla',
+            'occurred_at_stage' => 'Prenatal',
+            'reason' => 'Moved',
+            'date_transferred_out' => '2026-06-01',
+        ])->assertRedirect();
+        $this->assertPregnancyStatusMatchesRows();
+
+        // Pregnancy C delivers; a later trans-out attempt must not leave it inconsistent.
+        ['household' => $hhC, 'resident' => $c] = $this->seedPersistedResident(['household_no' => 'HH-983', 'member_no' => 'MB-983']);
+        $this->registerPregnancy($hhC, $c);
+        $this->put($this->updateRoute($hhC, $c, 'delivery'), [
+            'outcome' => 'FT',
+            'datetime' => '2026-09-01T08:00',
+        ])->assertRedirect();
+        $this->put($this->updateRoute($hhC, $c, 'trans-out'), [
+            'to_facility' => 'RHU La Medalla',
+            'occurred_at_stage' => 'Postnatal',
+            'date_transferred_out' => '2026-09-05',
+        ]);
+        $this->assertPregnancyStatusMatchesRows();
+
+        $statuses = DB::table('maternal_care')->orderBy('maternal_care_id')->pluck('pregnancy_status')->all();
+        $this->assertSame([
+            MaternalCareErdMode::STATUS_ACTIVE,
+            MaternalCareErdMode::STATUS_TRANS_OUT,
+            MaternalCareErdMode::STATUS_COMPLETED,
+        ], $statuses);
+    }
+
+    private function assertPregnancyStatusMatchesRows(): void
+    {
+        foreach (DB::table('maternal_care')->get(['maternal_care_id', 'pregnancy_status']) as $care) {
+            $hasTransOut = DB::table('maternal_trans_outs')->where('maternal_care_id', $care->maternal_care_id)->exists();
+            $hasOutcome = DB::table('delivery_outcomes')
+                ->where('maternal_care_id', $care->maternal_care_id)
+                ->whereIn('outcome', array_keys(\App\Support\DemoMaternalCare::OUTCOMES))
+                ->exists();
+
+            match ($care->pregnancy_status) {
+                MaternalCareErdMode::STATUS_TRANS_OUT => $this->assertTrue($hasTransOut, "Care {$care->maternal_care_id}: Trans-Out without a trans-out row."),
+                MaternalCareErdMode::STATUS_COMPLETED => $this->assertTrue($hasOutcome, "Care {$care->maternal_care_id}: Completed without a delivery outcome."),
+                default => $this->assertFalse($hasTransOut || $hasOutcome, "Care {$care->maternal_care_id}: Active but already closed by its rows."),
+            };
+        }
+    }
+
     public function test_trans_out_appears_in_history_and_stays_distinct_from_completed(): void
     {
         ['household' => $household, 'resident' => $resident] = $this->seedPersistedResident();
