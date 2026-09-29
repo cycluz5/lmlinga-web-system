@@ -830,6 +830,40 @@ class MaternalCareDeliveryOutcomeTest extends TestCase
         $this->assertSame(1, DB::table('delivery_newborns')->count());
     }
 
+    public function test_multiple_birth_must_be_three_to_ten_babies(): void
+    {
+        ['household' => $household, 'resident' => $resident] = $this->seedMember([
+            'household_no' => 'HH-2519',
+            'member_no' => 'MB-2519',
+        ]);
+        $this->registerPregnancy($household, $resident);
+        $from = route('household-profiling.members.maternal-care.delivery', [
+            'householdNo' => $household->household_no,
+            'memberId' => $resident->member_no,
+        ]);
+
+        Carbon::setTestNow(Carbon::parse('2026-10-20T08:30'));
+        foreach ([2, 11] as $invalid) {
+            $this->from($from)->put($this->updateRoute($household, $resident, 'delivery'), [
+                'outcome' => 'FT',
+                'datetime' => '2026-10-20T08:30',
+                'plurality' => 'Multiple',
+                'plurality_number' => $invalid,
+            ])->assertSessionHasErrors('plurality_number');
+        }
+        $this->assertSame(0, DB::table('delivery_outcomes')->count());
+
+        foreach ([3, 10] as $valid) {
+            $this->from($from)->put($this->updateRoute($household, $resident, 'delivery'), [
+                'outcome' => 'FT',
+                'datetime' => '2026-10-20T08:30',
+                'plurality' => 'Multiple',
+                'plurality_number' => $valid,
+            ])->assertSessionDoesntHaveErrors('plurality_number');
+            $this->assertCount($valid, $this->babies(DB::table('delivery_outcomes')->first()));
+        }
+    }
+
     public function test_facility_is_reused_by_name_and_holds_bemonc_capability(): void
     {
         ['household' => $firstHh, 'resident' => $first] = $this->seedMember([

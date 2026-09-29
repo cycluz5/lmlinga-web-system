@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Facades\Schema;
 
 class TimbangRecord extends Model
 {
@@ -132,6 +133,42 @@ class TimbangRecord extends Model
         'overall_nutritional_status',
         'remarks',
     ];
+
+    /** @var array<string, bool> connection name => bmi_value is database-generated */
+    private static array $bmiGenerated = [];
+
+    protected static function booted(): void
+    {
+        // On the 3NF schema bmi_value is calculated by the database from weight and
+        // height; MySQL rejects writes to a generated column, so never send it.
+        static::saving(function (TimbangRecord $record): void {
+            if (self::bmiIsGenerated($record->getConnectionName())) {
+                unset($record->attributes['bmi_value']);
+            }
+        });
+    }
+
+    public static function bmiIsGenerated(?string $connection = null): bool
+    {
+        $key = $connection ?? 'default';
+
+        if (! array_key_exists($key, self::$bmiGenerated)) {
+            $generated = false;
+            foreach (Schema::connection($connection)->getColumns('timbang_records') as $column) {
+                if ($column['name'] === 'bmi_value') {
+                    $generated = ! empty($column['generation']);
+                }
+            }
+            self::$bmiGenerated[$key] = $generated;
+        }
+
+        return self::$bmiGenerated[$key];
+    }
+
+    public static function resetSchemaCache(): void
+    {
+        self::$bmiGenerated = [];
+    }
 
     /**
      * @return array<string, string>

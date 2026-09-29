@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Household;
 use App\Models\Resident;
 use App\Models\TimbangRecord;
+use App\Services\NutritionAssessmentService;
 use App\Support\RiskAssessmentClinicalValues;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -299,7 +300,12 @@ class NutritionalStatusAgeAdaptiveTest extends TestCase
         $this->assertNotNull($row->weight_for_age);
         $this->assertNotNull($row->muac_status);
         $this->assertNotSame('N/A', $row->muac_status);
-        $this->assertNull($row->bmi_value);
+        // bmi_value is database-generated from weight/height (3NF); BMI is still not
+        // classified or shown for a child's measurement.
+        $this->assertNull($row->bmi_status);
+        $context = app(NutritionAssessmentService::class)->displayContextForRecord($resident->fresh(), $row);
+        $this->assertFalse($context['bmi_applicable']);
+        $this->assertNull($context['bmi_display']);
     }
 
     // TEST I — URL: canonical resident route works; legacy member route still works.

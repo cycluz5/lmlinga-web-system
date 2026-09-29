@@ -493,9 +493,13 @@ final class NutritionAssessmentService
         $ageYears = $this->ageInYearsAtMeasurement($resident->birthday, $measurementDate);
         $band = $this->ageBand($resident->birthday, $measurementDate);
 
-        $bmiDisplay = $record->bmi_value !== null ? (float) $record->bmi_value : null;
-        if ($bmiDisplay === null && $band !== null && $this->bmiApplicable($band)) {
-            $bmiDisplay = $this->calculateBmi($record->weight_kg, $record->height_cm);
+        // bmi_value is database-generated for every measurement with weight and height;
+        // show it only for the age groups BMI applies to.
+        $bmiDisplay = null;
+        if ($band !== null && $this->bmiApplicable($band)) {
+            $bmiDisplay = $record->bmi_value !== null
+                ? (float) $record->bmi_value
+                : $this->calculateBmi($record->weight_kg, $record->height_cm);
         }
 
         return [

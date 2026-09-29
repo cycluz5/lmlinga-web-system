@@ -207,6 +207,22 @@ CREATE TABLE `death_records` (
   CONSTRAINT `fk_death_verified_by` FOREIGN KEY (`verified_by`) REFERENCES `user_management` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `delivery_newborns`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `delivery_newborns` (
+  `newborn_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `delivery_outcome_id` bigint(20) unsigned NOT NULL,
+  `birth_order` tinyint(3) unsigned NOT NULL,
+  `sex` enum('Female','Male') DEFAULT NULL,
+  `birth_weight_kg` decimal(5,2) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`newborn_id`),
+  UNIQUE KEY `uq_delivery_newborn_order` (`delivery_outcome_id`,`birth_order`),
+  CONSTRAINT `fk_newborn_delivery` FOREIGN KEY (`delivery_outcome_id`) REFERENCES `delivery_outcomes` (`delivery_outcome_id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `delivery_outcomes`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
@@ -215,22 +231,19 @@ CREATE TABLE `delivery_outcomes` (
   `maternal_care_id` bigint(20) unsigned NOT NULL,
   `outcome` enum('FT','PT','FD','AB') DEFAULT NULL,
   `delivery_type` enum('CS','VD','CVCD') DEFAULT NULL,
-  `birth_weight_kg` decimal(5,2) DEFAULT NULL,
   `status` varchar(100) DEFAULT NULL,
   `date_time_of_delivery` datetime DEFAULT NULL,
   `date_terminated` date DEFAULT NULL,
   `birth_attendant` enum('MD','RN','MW','Others') DEFAULT NULL,
   `birth_attendant_other` varchar(150) DEFAULT NULL,
   `place_of_delivery` enum('Public Health Facility','Private Health Facility','Non-Health Facility') DEFAULT NULL,
-  `facility_name` varchar(150) DEFAULT NULL,
-  `bemonc_cemonc_capable` tinyint(1) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `newborn_sex` enum('Female','Male') DEFAULT NULL,
-  `plurality` enum('Single','Twins','Multiple') DEFAULT NULL,
-  `plurality_number` int(10) unsigned DEFAULT NULL,
+  `facility_id` bigint(20) unsigned DEFAULT NULL,
   PRIMARY KEY (`delivery_outcome_id`),
   UNIQUE KEY `uq_delivery_matcare` (`maternal_care_id`),
+  KEY `fk_delivery_facility` (`facility_id`),
+  CONSTRAINT `fk_delivery_facility` FOREIGN KEY (`facility_id`) REFERENCES `health_facilities` (`facility_id`) ON DELETE SET NULL,
   CONSTRAINT `fk_delivery_matcare` FOREIGN KEY (`maternal_care_id`) REFERENCES `maternal_care` (`maternal_care_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -412,6 +425,19 @@ CREATE TABLE `health_chunks` (
   KEY `health_chunks_language_index` (`language`),
   KEY `health_chunks_category_index` (`category`),
   KEY `health_chunks_lang_cat_source_index` (`language`,`category`,`source_file`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `health_facilities`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `health_facilities` (
+  `facility_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `facility_name` varchar(160) NOT NULL,
+  `bemonc_cemonc_capable` tinyint(1) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`facility_id`),
+  UNIQUE KEY `uq_health_facility_name` (`facility_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `hepatitis_b_screening`;
@@ -1310,3 +1336,4 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (59,'2026_09_29_110
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (60,'2026_09_29_120000_link_notifications_to_announcements',6);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (61,'2026_09_29_130000_add_record_request_otps_request_foreign_key',7);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (62,'2026_09_29_140000_drop_worker_appointments_assigned_zone',7);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (63,'2026_09_29_150000_normalize_delivery_newborns_and_facilities',8);
