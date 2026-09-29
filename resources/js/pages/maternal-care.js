@@ -191,10 +191,7 @@ function derivedBmiStatus(bmiValue) {
     if (bmi < 30) {
         return 'Overweight';
     }
-    if (bmi < 35) {
-        return 'Obesity';
-    }
-    return '';
+    return 'Obese';
 }
 
 function renderBmiDisplay(container, bmiValue) {

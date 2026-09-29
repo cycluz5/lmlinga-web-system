@@ -219,16 +219,16 @@ describe('calculateBpStatus', () => {
 });
 
 describe('bmiStatusFromValue', () => {
-    it('maps the specified BMI ranges and leaves >=35 unspecified', () => {
+    it('maps BMI to the project standard, with 30+ Obese (no gap above 35)', () => {
         assert.equal(bmiStatusFromValue('18.4'), 'Underweight');
         assert.equal(bmiStatusFromValue('18.5'), 'Normal');
         assert.equal(bmiStatusFromValue('24.9'), 'Normal');
         assert.equal(bmiStatusFromValue('25.0'), 'Overweight');
         assert.equal(bmiStatusFromValue('29.9'), 'Overweight');
-        assert.equal(bmiStatusFromValue('30.0'), 'Obesity');
-        assert.equal(bmiStatusFromValue('34.9'), 'Obesity');
-        assert.equal(bmiStatusFromValue('35.0'), '');
-        assert.equal(bmiStatusFromValue('40'), '');
+        assert.equal(bmiStatusFromValue('30.0'), 'Obese');
+        assert.equal(bmiStatusFromValue('34.9'), 'Obese');
+        assert.equal(bmiStatusFromValue('35.0'), 'Obese');
+        assert.equal(bmiStatusFromValue('40'), 'Obese');
         assert.equal(bmiStatusFromValue(''), '');
     });
 });

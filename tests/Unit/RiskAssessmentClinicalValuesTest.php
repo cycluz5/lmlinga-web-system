@@ -56,10 +56,10 @@ class RiskAssessmentClinicalValuesTest extends TestCase
         $this->assertSame('Normal', RiskAssessmentClinicalValues::bmiStatusFromValue('24.9'));
         $this->assertSame('Overweight', RiskAssessmentClinicalValues::bmiStatusFromValue('25.0'));
         $this->assertSame('Overweight', RiskAssessmentClinicalValues::bmiStatusFromValue('29.9'));
-        $this->assertSame('Obesity', RiskAssessmentClinicalValues::bmiStatusFromValue('30.0'));
-        $this->assertSame('Obesity', RiskAssessmentClinicalValues::bmiStatusFromValue('34.9'));
-        $this->assertNull(RiskAssessmentClinicalValues::bmiStatusFromValue('35.0'));
-        $this->assertNull(RiskAssessmentClinicalValues::bmiStatusFromValue('40.0'));
+        $this->assertSame('Obese', RiskAssessmentClinicalValues::bmiStatusFromValue('30.0'));
+        $this->assertSame('Obese', RiskAssessmentClinicalValues::bmiStatusFromValue('34.9'));
+        $this->assertSame('Obese', RiskAssessmentClinicalValues::bmiStatusFromValue('35.0'));
+        $this->assertSame('Obese', RiskAssessmentClinicalValues::bmiStatusFromValue('436.1'));
         $this->assertSame(
             'Underweight',
             RiskAssessmentClinicalValues::calculateBmiStatus(178, 55)

@@ -24,7 +24,7 @@ final class RiskAssessmentClinicalValues
 
     public const BMI_OVERWEIGHT = 'Overweight';
 
-    public const BMI_OBESITY = 'Obesity';
+    public const BMI_OBESE = 'Obese';
 
     /**
      * BMI = weight_kg / (height_m^2), rounded to 1 decimal.
@@ -57,16 +57,16 @@ final class RiskAssessmentClinicalValues
     public static function classifyAdultBmi(float $bmi): string
     {
         return match (true) {
-            $bmi < 18.5 => 'Underweight',
-            $bmi < 25 => 'Normal',
-            $bmi < 30 => 'Overweight',
-            default => 'Obese',
+            $bmi < 18.5 => self::BMI_UNDERWEIGHT,
+            $bmi < 25 => self::BMI_NORMAL,
+            $bmi < 30 => self::BMI_OVERWEIGHT,
+            default => self::BMI_OBESE,
         };
     }
 
     /**
      * BMI status from the same height/weight inputs used for BMI.
-     * >=35 is unspecified (null); no fifth category is invented.
+     * Calculated on read, never stored (3NF).
      */
     public static function calculateBmiStatus(mixed $heightCm, mixed $weightKg): ?string
     {
@@ -74,9 +74,9 @@ final class RiskAssessmentClinicalValues
     }
 
     /**
-     * Map a numeric BMI to the four specified ranges.
-     * <18.5 Underweight, 18.5–24.9 Normal, 25.0–29.9 Overweight, 30.0–34.9 Obesity.
-     * >=35 returns null.
+     * Map a numeric BMI to the project standard (same as classifyAdultBmi):
+     * <18.5 Underweight, 18.5–24.9 Normal, 25.0–29.9 Overweight, 30+ Obese.
+     * Returns null only when the value is missing or not a number.
      */
     public static function bmiStatusFromValue(mixed $bmi): ?string
     {
@@ -89,21 +89,7 @@ final class RiskAssessmentClinicalValues
             return null;
         }
 
-        $number = (float) $scalar;
-        if ($number < 18.5) {
-            return self::BMI_UNDERWEIGHT;
-        }
-        if ($number < 25.0) {
-            return self::BMI_NORMAL;
-        }
-        if ($number < 30.0) {
-            return self::BMI_OVERWEIGHT;
-        }
-        if ($number < 35.0) {
-            return self::BMI_OBESITY;
-        }
-
-        return null;
+        return self::classifyAdultBmi((float) $scalar);
     }
 
     /**
