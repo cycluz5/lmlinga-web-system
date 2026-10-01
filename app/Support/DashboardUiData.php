@@ -19,10 +19,12 @@ final class DashboardUiData
      *     nhts: int,
      *     nonNhts: int
      * }
+     *
+     * @param  array<string, int>|null  $stats  {@see DashboardStatistics::summary()}, when the caller already has it
      */
-    public static function summaryCounts(): array
+    public static function summaryCounts(?array $stats = null): array
     {
-        $stats = DashboardStatistics::summary();
+        $stats ??= DashboardStatistics::summary();
 
         return [
             'totalHouseholds' => $stats['totalHouseholds'],
@@ -35,11 +37,12 @@ final class DashboardUiData
     /**
      * Primary (top) summary cards.
      *
+     * @param  array<string, int>|null  $stats  {@see DashboardStatistics::summary()}, when the caller already has it
      * @return list<array{key: string, label: string, value: int, icon: string}>
      */
-    public static function primaryCards(): array
+    public static function primaryCards(?array $stats = null): array
     {
-        $counts = self::summaryCounts();
+        $counts = self::summaryCounts($stats);
 
         return [
             [
@@ -117,11 +120,12 @@ final class DashboardUiData
      * resident/household records (see DashboardStatistics); none are
      * placeholder/unavailable markers.
      *
+     * @param  array<string, int>|null  $stats  {@see DashboardStatistics::summary()}, when the caller already has it
      * @return list<array{key: string, label: string, value: int, icon: string, tone: string}>
      */
-    public static function healthIndicators(): array
+    public static function healthIndicators(?array $stats = null): array
     {
-        $stats = DashboardStatistics::summary();
+        $stats ??= DashboardStatistics::summary();
 
         return [
             ['key' => 'teenage-pregnant', 'label' => 'Teenage Pregnant', 'value' => $stats['teenagePregnant'], 'icon' => 'lml-pregnant', 'tone' => 'maternal'],

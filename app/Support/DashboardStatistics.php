@@ -173,7 +173,13 @@ final class DashboardStatistics
             ->get();
 
         foreach ($residents as $resident) {
-            $member = HouseholdProfilingPresenter::memberFromModel($resident);
+            // Same birthday/age shape as HouseholdProfilingPresenter::memberFromModel(),
+            // without presenting every other member field.
+            $birthday = $resident->birthday;
+            $member = [
+                'birthday' => $birthday instanceof Carbon ? $birthday->format('Y-m-d') : (string) $birthday,
+                'age' => $birthday instanceof Carbon ? $birthday->age : null,
+            ];
             if (! HealthRecordsChildCare::isChildCarePopulation($member)) {
                 continue;
             }
