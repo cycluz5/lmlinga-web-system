@@ -8,11 +8,14 @@
 @section('title', 'Dashboard - LMLinga')
 
 @php
+    use App\Support\DashboardStatistics;
     use App\Support\DashboardUiData;
 
-    $primaryCards = DashboardUiData::primaryCards();
+    // Cards and indicators share one statistics pass.
+    $stats = DashboardStatistics::summary();
+    $primaryCards = DashboardUiData::primaryCards($stats);
     $zoneCards = DashboardUiData::zoneSummaryCards();
-    $statusIndicators = DashboardUiData::healthIndicators();
+    $statusIndicators = DashboardUiData::healthIndicators($stats);
     $markers = $markers ?? [];
 @endphp
 

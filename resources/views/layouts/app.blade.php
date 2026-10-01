@@ -11,10 +11,7 @@
     <link rel="icon" type="image/png" href="{{ asset('assets/images/logo/favicon.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('assets/images/logo/favicon.png') }}">
 
-  {{-- Google Fonts: Poppins (app) + Protest Riot (branding) --}}
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Protest+Riot&display=swap" rel="stylesheet">
+    {{-- Poppins (app) + Protest Riot (branding) are bundled through resources/css/app.css. --}}
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 

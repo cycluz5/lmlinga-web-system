@@ -3,8 +3,16 @@
 namespace App\Providers;
 
 use App\Support\AtRestEncrypter;
+use App\Support\Database\CachingSchemaBuilder;
+use App\Support\Database\SchemaLookupCache;
 use Database\Seeders\SuperAdminSeeder;
 use Illuminate\Console\Events\CommandFinished;
+use Illuminate\Database\Events\DatabaseRefreshed;
+use Illuminate\Database\Events\MigrationsEnded;
+use Illuminate\Database\Events\MigrationsStarted;
+use Illuminate\Database\Events\QueryExecuted;
+use Illuminate\Database\Events\SchemaLoaded;
+use Illuminate\Database\Events\TransactionRolledBack;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\ServiceProvider;
@@ -36,6 +44,15 @@ class AppServiceProvider extends ServiceProvider
                 (string) $app['config']->get('app.key', ''),
             );
         });
+
+        // Schema facade answers hasTable / hasColumn from a memo (see SchemaLookupCache).
+        $this->app->singleton(SchemaLookupCache::class);
+        $this->app->bind('db.schema', function ($app): CachingSchemaBuilder {
+            return new CachingSchemaBuilder(
+                $app['db']->connection()->getSchemaBuilder(),
+                $app->make(SchemaLookupCache::class),
+            );
+        });
     }
 
     /**
@@ -44,6 +61,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Paginator::useBootstrapFive();
+        $this->flushSchemaLookupsOnSchemaChange();
 
         if ($this->app->runningInConsole()) {
             $this->prependMysqlClientToPath();
@@ -52,6 +70,28 @@ class AppServiceProvider extends ServiceProvider
                 $this->ensureSuperAdminAfterMigrate();
             }
         }
+    }
+
+    /**
+     * DDL, rolled-back transactions (SQLite DDL is transactional) and migration
+     * runs can change which tables and columns exist.
+     */
+    private function flushSchemaLookupsOnSchemaChange(): void
+    {
+        $flush = fn () => $this->app->make(SchemaLookupCache::class)->flush();
+
+        Event::listen(QueryExecuted::class, function (QueryExecuted $event) use ($flush): void {
+            if (SchemaLookupCache::changesSchema($event->sql)) {
+                $flush();
+            }
+        });
+        Event::listen([
+            TransactionRolledBack::class,
+            MigrationsStarted::class,
+            MigrationsEnded::class,
+            SchemaLoaded::class,
+            DatabaseRefreshed::class,
+        ], $flush);
     }
 
     /**

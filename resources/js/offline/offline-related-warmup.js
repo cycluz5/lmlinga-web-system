@@ -8,6 +8,7 @@
  */
 
 import { publicPath } from './offline-url-keys.js';
+import { whenIdle } from './offline-yield.js';
 import {
     CACHE_VERSION,
     MESSAGE_WARMUP_RELATED,
@@ -65,6 +66,9 @@ function pathFromHref(raw, origin) {
         return '';
     }
 }
+
+/** Most related pages one page view may warm in the background. */
+const RELATED_WARM_LIMIT = 12;
 
 export function discoverRelatedWarmPaths(root, options = {}) {
     const origin = pageOrigin(options);
@@ -227,7 +231,11 @@ function boot() {
     if (typeof navigator !== 'undefined' && navigator.onLine === false) {
         return;
     }
-    void warmRelatedPages({ root: document });
+    // Capped and idle-scheduled so it never queues ahead of the user's own clicks.
+    whenIdle(() => {
+        const paths = discoverRelatedWarmPaths(document, { origin: pageOrigin({}) }).slice(0, RELATED_WARM_LIMIT);
+        void warmRelatedPages({ root: document, paths });
+    });
 }
 
 if (typeof document !== 'undefined') {

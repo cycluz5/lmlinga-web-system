@@ -1,5 +1,6 @@
 /**
- * Post-login offline preparation UI — blocking overlay with REAL warmup progress.
+ * Post-login offline preparation UI — non-blocking corner panel with REAL warmup progress.
+ * Staff keep using the online interface while preparation runs.
  *
  * Extends offline-7 actor-scoped core warmup. Does not invent a second cache system.
  */
@@ -36,6 +37,9 @@ const SHELL_PROGRESS_WEIGHT = 20;
 
 /** TEMP: count concurrent/duplicate prep boots for diagnostics. */
 let prepPerfRunSeq = 0;
+
+/** The preparation already running in this tab, if any. */
+let activePreparation = null;
 
 /**
  * Map shell warmup (0–100) into the first segment of overall preparation.
@@ -275,39 +279,31 @@ function ensureModal(doc) {
     overlay.setAttribute('data-lml-offline-prepare', '');
     overlay.setAttribute('hidden', '');
     overlay.innerHTML = `
-<div class="lml-offline-prepare__backdrop" data-lml-offline-prepare-backdrop></div>
-<div
-    class="lml-offline-prepare__dialog"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="lml-offline-prepare-title"
-    aria-describedby="lml-offline-prepare-desc"
-    tabindex="-1"
-    data-lml-offline-prepare-dialog
->
-    <h2 id="lml-offline-prepare-title" class="lml-offline-prepare__title">Preparing Offline Access</h2>
-    <p id="lml-offline-prepare-desc" class="lml-offline-prepare__lead">
-        Preparing your authorized pages and data for unexpected connection loss.
-    </p>
+<div class="lml-offline-prepare__panel" role="region" aria-labelledby="lml-offline-prepare-title" data-lml-offline-prepare-dialog>
+    <div class="lml-offline-prepare__head">
+        <h2 id="lml-offline-prepare-title" class="lml-offline-prepare__title">Preparing Offline Access</h2>
+        <button type="button" class="lml-offline-prepare__dismiss lml-focus-ring" aria-label="Hide offline preparation" data-lml-offline-prepare-continue>&times;</button>
+    </div>
     <div class="lml-offline-prepare__status" data-lml-offline-prepare-status role="status" aria-live="polite">
         Starting offline preparation…
     </div>
-    <div
-        class="lml-offline-prepare__bar"
-        role="progressbar"
-        aria-valuemin="0"
-        aria-valuemax="100"
-        aria-valuenow="0"
-        aria-labelledby="lml-offline-prepare-title"
-        data-lml-offline-prepare-bar
-    >
-        <div class="lml-offline-prepare__bar-fill" data-lml-offline-prepare-fill style="width: 0%"></div>
+    <div class="lml-offline-prepare__meter">
+        <div
+            class="lml-offline-prepare__bar"
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+            aria-labelledby="lml-offline-prepare-title"
+            data-lml-offline-prepare-bar
+        >
+            <div class="lml-offline-prepare__bar-fill" data-lml-offline-prepare-fill style="width: 0%"></div>
+        </div>
+        <p class="lml-offline-prepare__percent" data-lml-offline-prepare-percent>0%</p>
     </div>
-    <p class="lml-offline-prepare__percent" data-lml-offline-prepare-percent>0% Complete</p>
-    <p class="lml-offline-prepare__hint" data-lml-offline-prepare-hint>Please keep this page open.</p>
+    <p class="lml-offline-prepare__hint" data-lml-offline-prepare-hint>You can keep working while this runs.</p>
     <div class="lml-offline-prepare__actions" data-lml-offline-prepare-actions hidden>
-        <button type="button" class="btn btn-primary lml-focus-ring" data-lml-offline-prepare-retry>Retry Preparation</button>
-        <button type="button" class="btn btn-outline-primary lml-focus-ring" data-lml-offline-prepare-continue hidden>Continue with Available Offline Data</button>
+        <button type="button" class="btn btn-primary lml-focus-ring" data-lml-offline-prepare-retry>Retry</button>
     </div>
 </div>`;
     (doc.body || doc.documentElement).appendChild(overlay);
@@ -327,85 +323,56 @@ function setProgress(overlay, percentage, label) {
         bar.setAttribute('aria-valuenow', String(pct));
     }
     if (percent) {
-        percent.textContent = `${pct}% Complete`;
+        percent.textContent = `${pct}%`;
     }
     if (status && label) {
         status.textContent = label;
     }
 }
 
-function showFailure(overlay, message, { allowContinue = false } = {}) {
+function showFailure(overlay, message) {
+    const title = overlay.querySelector('#lml-offline-prepare-title');
     const status = overlay.querySelector('[data-lml-offline-prepare-status]');
     const hint = overlay.querySelector('[data-lml-offline-prepare-hint]');
     const actions = overlay.querySelector('[data-lml-offline-prepare-actions]');
-    const continueBtn = overlay.querySelector('[data-lml-offline-prepare-continue]');
+    if (title) {
+        title.textContent = 'Offline Not Ready';
+    }
     if (status) {
         status.textContent = message;
     }
     if (hint) {
-        hint.textContent = 'You can retry when your connection is stable.';
+        hint.textContent = 'Online features still work. Retry when your connection is stable.';
     }
     if (actions) {
         actions.hidden = false;
     }
-    if (continueBtn) {
-        continueBtn.hidden = !allowContinue;
-    }
 }
 
 function hideActions(overlay) {
+    const title = overlay.querySelector('#lml-offline-prepare-title');
+    const hint = overlay.querySelector('[data-lml-offline-prepare-hint]');
     const actions = overlay.querySelector('[data-lml-offline-prepare-actions]');
+    if (title) {
+        title.textContent = 'Preparing Offline Access';
+    }
+    if (hint) {
+        hint.textContent = 'You can keep working while this runs.';
+    }
     if (actions) {
         actions.hidden = true;
     }
 }
 
-function openOverlay(overlay, doc) {
+function openOverlay(overlay) {
     overlay.hidden = false;
     overlay.setAttribute('data-open', '1');
-    doc.documentElement?.classList?.add('lml-offline-prepare-active');
-    doc.body?.classList?.add('lml-offline-prepare-active');
-    const dialog = overlay.querySelector('[data-lml-offline-prepare-dialog]');
-    dialog?.focus?.();
 }
 
-function closeOverlay(overlay, doc) {
+function closeOverlay(overlay) {
     overlay.hidden = true;
     overlay.removeAttribute('data-open');
-    doc.documentElement?.classList?.remove('lml-offline-prepare-active');
-    doc.body?.classList?.remove('lml-offline-prepare-active');
     hideActions(overlay);
-}
-
-function trapFocus(overlay, event) {
-    if (event.key !== 'Tab' || overlay.hidden) {
-        return;
-    }
-    const dialog = overlay.querySelector('[data-lml-offline-prepare-dialog]');
-    if (!dialog) {
-        return;
-    }
-    const focusable = Array.from(
-        dialog.querySelectorAll('button:not([hidden]), [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'),
-    ).filter((el) => !el.hasAttribute('disabled') && el.offsetParent !== null);
-    if (!focusable.length) {
-        event.preventDefault();
-        dialog.focus();
-        return;
-    }
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-    if (event.shiftKey && docActive(overlay) === first) {
-        event.preventDefault();
-        last.focus();
-    } else if (!event.shiftKey && docActive(overlay) === last) {
-        event.preventDefault();
-        first.focus();
-    }
-}
-
-function docActive(overlay) {
-    return overlay.ownerDocument?.activeElement;
 }
 
 /**
@@ -799,7 +766,7 @@ export async function runOfflinePreparation(options = {}) {
 
     const overlay = ensureModal(doc);
     if (!silent) {
-        openOverlay(overlay, doc);
+        openOverlay(overlay);
     }
     hideActions(overlay);
     setProgress(overlay, 0, 'Starting offline preparation…');
@@ -810,27 +777,8 @@ export async function runOfflinePreparation(options = {}) {
     console.log('[PREP PERF] preparation start', { runId: prepRunId, actorId, role });
     console.time(totalLabel);
 
-    const onKeydown = (event) => {
-        if (overlay.hidden) {
-            return;
-        }
-        if (event.key === 'Escape') {
-            event.preventDefault();
-            event.stopPropagation();
-            return;
-        }
-        trapFocus(overlay, event);
-    };
-    if (!silent) {
-        doc.addEventListener('keydown', onKeydown, true);
-    }
-
-    const backdrop = overlay.querySelector('[data-lml-offline-prepare-backdrop]');
-    const stopBackdrop = (event) => {
-        event.preventDefault();
-        event.stopPropagation();
-    };
-    backdrop?.addEventListener('click', stopBackdrop);
+    const dismiss = overlay.querySelector('[data-lml-offline-prepare-continue]');
+    dismiss?.addEventListener('click', () => closeOverlay(overlay), { once: true });
 
     const corePathResults = [];
     const runShellWarmup = () => {
@@ -967,10 +915,7 @@ export async function runOfflinePreparation(options = {}) {
                 void finishFromResult(next);
             });
         }, { once: true });
-        cont?.addEventListener('click', () => {
-            doc.removeEventListener('keydown', onKeydown, true);
-            closeOverlay(overlay, doc);
-        }, { once: true });
+        cont?.addEventListener('click', () => closeOverlay(overlay), { once: true });
     };
 
     const finishFromResult = async (next) => {
@@ -988,17 +933,12 @@ export async function runOfflinePreparation(options = {}) {
             }
             setProgress(overlay, 100, 'Offline access is ready.');
             const closer = typeof win?.setTimeout === 'function' ? win.setTimeout.bind(win) : setTimeout;
-            closer(() => {
-                doc.removeEventListener('keydown', onKeydown, true);
-                closeOverlay(overlay, doc);
-            }, 450);
+            closer(() => closeOverlay(overlay), 2500);
             return true;
         }
 
         const lost = nav?.onLine === false || next?.shell?.reason === 'timeout';
         const partialShells = next?.shell?.ok === true || (Array.isArray(next?.shell?.warmed) && next.shell.warmed.length > 0);
-        const partialDataset = next?.dataset?.bootstrap?.ready > 0 || next?.dataset?.verified?.householdCount > 0;
-        const partial = partialShells || partialDataset;
 
         if (next?.stage === 'assets') {
             setProgress(overlay, 5, 'Offline styles and scripts failed');
@@ -1024,7 +964,6 @@ export async function runOfflinePreparation(options = {}) {
             lost
                 ? 'Connection lost during offline preparation.'
                 : 'Offline preparation is incomplete.',
-            { allowContinue: partial || sessionOk },
         );
         clearLocalPrepared(storage, actorId);
         bindRecovery();
@@ -1071,5 +1010,28 @@ export async function runOfflinePreparation(options = {}) {
  */
 export function bootOfflinePreparation(options = {}) {
     console.log('[PREP PERF] bootOfflinePreparation called', { seq: prepPerfRunSeq + 1 });
-    return runOfflinePreparation(options);
+    // ready, controllerchange and online can all fire during one run. Overlapping
+    // runs overwrite each other's snapshots and fail verification (stuck at 45%).
+    if (activePreparation) {
+        return activePreparation;
+    }
+    activePreparation = runInExclusiveLock(options, () => runOfflinePreparation(options))
+        .finally(() => {
+            activePreparation = null;
+        });
+    return activePreparation;
+}
+
+/**
+ * Two tabs of the same browser share IndexedDB/caches; only one prepares at a time.
+ */
+function runInExclusiveLock(options, task) {
+    const locks = (options.navigator || options.window?.navigator
+        || (typeof navigator !== 'undefined' ? navigator : null))?.locks;
+    if (!locks || typeof locks.request !== 'function') {
+        return task();
+    }
+    return locks.request('lmlinga-offline-preparation', { ifAvailable: true }, (lock) => (
+        lock ? task() : { ok: false, reason: 'other-tab', blocked: false }
+    ));
 }
