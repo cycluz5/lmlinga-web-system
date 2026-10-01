@@ -54,6 +54,10 @@ import {
 
 const FALLBACK_URL_PATH = '/__lmlinga/offline-unavailable';
 
+/** Longest a navigation waits on the network when a saved copy exists. */
+export const NAVIGATION_TIMEOUT_MS = 3000;
+const SLOW_NAVIGATION = Symbol('slow-navigation');
+
 export function createServiceWorkerRuntime(env = {}) {
     const origin = env.origin || 'http://localhost';
     const cachesApi = env.caches;
@@ -964,9 +968,43 @@ export function createServiceWorkerRuntime(env = {}) {
             || isLocalMemberHealthPath(pathname);
     }
 
+    /**
+     * Weak Wi-Fi often stalls instead of failing. When this page is already
+     * saved, wait at most NAVIGATION_TIMEOUT_MS for the server, then show the
+     * saved copy; the live response still refreshes the cache in the background.
+     */
+    async function fetchNavigation(request, url) {
+        const live = fetchImpl(request);
+        // Failures are handled by the callers below; avoid an unhandled-rejection report meanwhile.
+        live.catch(() => {});
+        const cached = await matchNavigation(url).catch(() => null);
+        if (!cached || typeof setTimeout !== 'function') {
+            return { response: await live, fromCache: false };
+        }
+        let timer;
+        const slow = new Promise((resolve) => {
+            timer = setTimeout(() => resolve(SLOW_NAVIGATION), NAVIGATION_TIMEOUT_MS);
+        });
+        const first = await Promise.race([live, slow]).finally(() => clearTimeout(timer));
+        if (first !== SLOW_NAVIGATION) {
+            return { response: first, fromCache: false };
+        }
+        live.then((response) => {
+            const finalUrl = response?.url || url.href;
+            if (shouldCacheNavigationResponse(response, finalUrl, origin) && isCacheableNavigationRequest(request, url, origin)) {
+                return storeNavigation(url, response);
+            }
+            return null;
+        }).catch(() => {});
+        return { response: cached, fromCache: true };
+    }
+
     async function handleNavigation(request, url) {
         try {
-            const response = await fetchImpl(request);
+            const { response, fromCache } = await fetchNavigation(request, url);
+            if (fromCache) {
+                return response;
+            }
             // A member created offline (MB-L-…) does not exist on the server until it syncs:
             // keep showing the prepared local page instead of the server's 404.
             if (response && response.status === 404 && isLocalMemberPath(url.pathname)) {

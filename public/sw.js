@@ -746,6 +746,8 @@
 
   // resources/js/offline/offline-sw-runtime.js
   var FALLBACK_URL_PATH = "/__lmlinga/offline-unavailable";
+  var NAVIGATION_TIMEOUT_MS = 3e3;
+  var SLOW_NAVIGATION = Symbol("slow-navigation");
   function createServiceWorkerRuntime(env = {}) {
     const origin = env.origin || "http://localhost";
     const cachesApi = env.caches;
@@ -1549,9 +1551,38 @@
     function isLocalMemberPath(pathname) {
       return isLocalMemberViewPath(pathname) || isLocalMemberEditPath(pathname) || isLocalMemberHealthPath(pathname);
     }
+    async function fetchNavigation(request, url) {
+      const live = fetchImpl(request);
+      live.catch(() => {
+      });
+      const cached = await matchNavigation(url).catch(() => null);
+      if (!cached || typeof setTimeout !== "function") {
+        return { response: await live, fromCache: false };
+      }
+      let timer;
+      const slow = new Promise((resolve) => {
+        timer = setTimeout(() => resolve(SLOW_NAVIGATION), NAVIGATION_TIMEOUT_MS);
+      });
+      const first = await Promise.race([live, slow]).finally(() => clearTimeout(timer));
+      if (first !== SLOW_NAVIGATION) {
+        return { response: first, fromCache: false };
+      }
+      live.then((response) => {
+        const finalUrl = response?.url || url.href;
+        if (shouldCacheNavigationResponse(response, finalUrl, origin) && isCacheableNavigationRequest(request, url, origin)) {
+          return storeNavigation(url, response);
+        }
+        return null;
+      }).catch(() => {
+      });
+      return { response: cached, fromCache: true };
+    }
     async function handleNavigation(request, url) {
       try {
-        const response = await fetchImpl(request);
+        const { response, fromCache } = await fetchNavigation(request, url);
+        if (fromCache) {
+          return response;
+        }
         if (response && response.status === 404 && isLocalMemberPath(url.pathname)) {
           const local = await matchNavigation(url);
           if (local) {

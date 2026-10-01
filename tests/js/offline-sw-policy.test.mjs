@@ -60,7 +60,7 @@ const {
     warmupPathsForRole,
 } = await import(policyUrl);
 
-const { createServiceWorkerRuntime } = await import(runtimeUrl);
+const { createServiceWorkerRuntime, NAVIGATION_TIMEOUT_MS } = await import(runtimeUrl);
 
 const ORIGIN = 'https://lmlinga.test';
 
@@ -386,6 +386,41 @@ describe('offline service worker runtime', () => {
         assert.equal(cached.includes('live-csrf'), false);
         assert.match(cached, /lmlinga-offline-cache/);
         assert.equal(offline.headers.get('X-Lmlinga-Offline-Cache'), '1');
+    });
+
+    it('shows the saved page when the network stalls, then refreshes it from the late response', async () => {
+        const { network, runtime } = setup();
+        await runtime.setActor(7);
+        network.set('GET https://lmlinga.test/household-profiling/create', () => htmlResponse('<html><body>Old copy</body></html>'));
+        await (await runtime.handleFetch(navRequest('/household-profiling/create'))).text();
+
+        let finishLive;
+        network.set('GET https://lmlinga.test/household-profiling/create', () => new Promise((resolve) => {
+            finishLive = () => resolve(htmlResponse('<html><body>Fresh copy</body></html>'));
+        }));
+        const started = Date.now();
+        const slow = await runtime.handleFetch(navRequest('/household-profiling/create'));
+        const waited = Date.now() - started;
+
+        assert.match(await slow.text(), /Old copy/);
+        assert.ok(waited >= NAVIGATION_TIMEOUT_MS - 50 && waited < NAVIGATION_TIMEOUT_MS + 1500, `waited ${waited}ms`);
+
+        finishLive();
+        await new Promise((resolve) => setTimeout(resolve, 50));
+        network.clear();
+        const offline = await runtime.handleFetch(navRequest('/household-profiling/create'));
+        assert.match(await offline.text(), /Fresh copy/);
+    });
+
+    it('waits for the network as long as needed when nothing is saved yet', async () => {
+        const { network, runtime } = setup();
+        await runtime.setActor(7);
+        network.set('GET https://lmlinga.test/household-profiling/create', () => new Promise((resolve) => {
+            setTimeout(() => resolve(htmlResponse('<html><body>Live only</body></html>')), NAVIGATION_TIMEOUT_MS + 300);
+        }));
+
+        const response = await runtime.handleFetch(navRequest('/household-profiling/create'));
+        assert.match(await response.text(), /Live only/);
     });
 
     it('returns the controlled fallback for unsupported uncached navigation', async () => {

@@ -3,6 +3,7 @@
  */
 
 import { OFFLINE_EVENTS } from './offline-status.js';
+import { waitForQuietUser } from './offline-yield.js';
 import { publicPath, registerUrlKeysFromSnapshots } from './offline-url-keys.js';
 import { readPageActorId } from './offline-nav-guard.js';
 import {
@@ -88,6 +89,7 @@ function updateStatusNode(doc, detail, options = {}) {
 }
 
 async function fetchHtml(fetchImpl, url) {
+    await waitForQuietUser();
     const response = await fetchImpl(url, {
         credentials: 'same-origin',
         headers: { Accept: 'text/html' },
