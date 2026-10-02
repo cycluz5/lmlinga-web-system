@@ -27,10 +27,59 @@ use Illuminate\Support\Facades\Schema;
  */
 final class OfflineHealthSummaryCompiler
 {
+    /**
+     * Batched lookups for the current bootstrap run (see preload()). Null = per-resident queries.
+     *
+     * @var array{has: array<string, array<int, true>>, maternal: array<int, true>, birth: array<int, true>, timbang: array<int, \App\Models\TimbangRecord>}|null
+     */
+    private ?array $preloaded = null;
+
     public function __construct(
         private readonly TimbangRecordService $timbang,
         private readonly MaternalPregnancyService $maternal,
     ) {}
+
+    /**
+     * Resolve every per-resident "has records" lookup in a constant number of queries,
+     * so forResident() does no database work per member. Call clearPreload() when done.
+     *
+     * @param  iterable<Resident>  $residents
+     */
+    public function preload(iterable $residents): void
+    {
+        $ids = [];
+        foreach ($residents as $resident) {
+            $ids[] = (int) $resident->getKey();
+        }
+
+        $has = [];
+        foreach (self::RECORD_MODELS as $module => $modelClass) {
+            $has[$module] = $this->residentIdsWithRecords($modelClass, $ids);
+        }
+
+        $this->preloaded = [
+            'has' => $has,
+            'maternal' => $this->maternal->residentIdsWithAnyEpisode($ids),
+            'birth' => ChildBirthHistoryService::residentIdsWithPresentation($ids),
+            'timbang' => $this->timbang->latestForResidents($ids),
+        ];
+    }
+
+    public function clearPreload(): void
+    {
+        $this->preloaded = null;
+    }
+
+    private const RECORD_MODELS = [
+        'child-immunization' => ChildImmunization::class,
+        'school-based-immunization' => SchoolImmunization::class,
+        'child-nutrition' => ChildNutrition::class,
+        'nutritional-status' => TimbangRecord::class,
+        'deworming' => DewormingRecord::class,
+        'risk-assessment' => RiskAssessment::class,
+        'family-planning' => FamilyPlanningVisit::class,
+        'maternal-pregnancy' => MaternalPregnancy::class,
+    ];
 
     /**
      * @param  array<string, mixed>  $memberPresentation
@@ -49,20 +98,28 @@ final class OfflineHealthSummaryCompiler
         $fpEligible = FamilyPlanningEligibility::allows($sex, $birthday);
         $maternalSex = MaternalCareEligibility::allows($sex);
         $maternalWorkflow = MaternalCareEligibility::allowsWorkflow($sex, $birthday);
-        $maternalHistory = $this->maternal->hasAnyEpisode($resident);
+        $rid = (int) $resident->getKey();
+        $pre = $this->preloaded;
+        $maternalHistory = $pre !== null ? isset($pre['maternal'][$rid]) : $this->maternal->hasAnyEpisode($resident);
         $adultImmEligible = AdultImmunizationEligibility::allows($sex, $birthday);
         $sbiEligible = SchoolImmunizationService::isEligibleForSchoolImmunization($resident);
 
+        $recordExists = fn (string $module): bool => $pre !== null
+            ? isset($pre['has'][$module][$rid])
+            : $this->exists(self::RECORD_MODELS[$module], $resident);
+
         $has = [
-            'child-immunization' => $this->exists(ChildImmunization::class, $resident),
-            'birth-history' => ChildBirthHistoryService::presentationForResident($resident) !== null,
-            'school-based-immunization' => $this->exists(SchoolImmunization::class, $resident),
-            'child-nutrition' => $this->exists(ChildNutrition::class, $resident),
-            'nutritional-status' => $this->exists(TimbangRecord::class, $resident),
-            'deworming' => $this->exists(DewormingRecord::class, $resident),
-            'risk-assessment' => $this->exists(RiskAssessment::class, $resident),
-            'family-planning' => $this->exists(FamilyPlanningVisit::class, $resident),
-            'maternal-care' => $maternalHistory || $this->exists(MaternalPregnancy::class, $resident),
+            'child-immunization' => $recordExists('child-immunization'),
+            'birth-history' => $pre !== null
+                ? isset($pre['birth'][$rid])
+                : ChildBirthHistoryService::presentationForResident($resident) !== null,
+            'school-based-immunization' => $recordExists('school-based-immunization'),
+            'child-nutrition' => $recordExists('child-nutrition'),
+            'nutritional-status' => $recordExists('nutritional-status'),
+            'deworming' => $recordExists('deworming'),
+            'risk-assessment' => $recordExists('risk-assessment'),
+            'family-planning' => $recordExists('family-planning'),
+            'maternal-care' => $maternalHistory || $recordExists('maternal-pregnancy'),
         ];
 
         $warm = [];
@@ -88,7 +145,9 @@ final class OfflineHealthSummaryCompiler
             ],
             'has_records' => $has,
             'warm_modules' => $warm,
-            'nutrition_card' => $this->timbang->cardStateForResident($resident),
+            'nutrition_card' => $pre !== null
+                ? $this->timbang->cardStateForResident($resident, $pre['timbang'][$rid] ?? null, true)
+                : $this->timbang->cardStateForResident($resident),
             'maternal_care_has_history' => $maternalHistory,
             'member_age' => $payload['age'] ?? null,
             'member_sex' => $sex,
@@ -139,6 +198,27 @@ final class OfflineHealthSummaryCompiler
             'member_age' => $memberPresentation['age'] ?? null,
             'member_sex' => $sex,
         ];
+    }
+
+    /**
+     * @param  class-string  $modelClass
+     * @param  list<int>  $ids
+     * @return array<int, true>
+     */
+    private function residentIdsWithRecords(string $modelClass, array $ids): array
+    {
+        if (! class_exists($modelClass) || ! Schema::hasTable((new $modelClass)->getTable())) {
+            return [];
+        }
+
+        $found = [];
+        foreach (array_chunk($ids, 1000) as $chunk) {
+            foreach ($modelClass::query()->whereIn('resident_id', $chunk)->distinct()->pluck('resident_id') as $id) {
+                $found[(int) $id] = true;
+            }
+        }
+
+        return $found;
     }
 
     /**

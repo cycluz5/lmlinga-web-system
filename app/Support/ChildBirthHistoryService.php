@@ -102,6 +102,43 @@ final class ChildBirthHistoryService
     }
 
     /**
+     * Set-based `presentationForResident() !== null`: resident ids (from $residentIds)
+     * with a nutrition birth row, a legacy birth history row, or a CPAB header value.
+     *
+     * @param  list<int|string>  $residentIds
+     * @return array<int, true>
+     */
+    public static function residentIdsWithPresentation(array $residentIds): array
+    {
+        if (! self::persistenceAvailable()) {
+            return [];
+        }
+
+        $sources = [];
+        if (self::nutritionPersistenceAvailable() && Schema::hasTable(ChildNutritionErdMode::nutritionTable())) {
+            $sources[] = DB::table(ChildNutritionErdMode::nutritionTable());
+        }
+        if (self::legacyBirthHistoryTableAvailable()) {
+            $sources[] = DB::table((new ChildBirthHistory)->getTable());
+        }
+        if (self::immunizationHeaderHasCpab()) {
+            $sources[] = DB::table(ChildImmunizationErdMode::headerTable())
+                ->whereNotNull('cpab')->where('cpab', '!=', '');
+        }
+
+        $found = [];
+        foreach (array_chunk($residentIds, 1000) as $chunk) {
+            foreach ($sources as $source) {
+                foreach ((clone $source)->whereIn('resident_id', $chunk)->distinct()->pluck('resident_id') as $id) {
+                    $found[(int) $id] = true;
+                }
+            }
+        }
+
+        return $found;
+    }
+
+    /**
      * @return array{weight: string, length: string, status: string, pcab: string, breastfeeding_date: string, breastfeeding_date_display: string}|null
      */
     public static function presentationForResident(Resident $resident): ?array

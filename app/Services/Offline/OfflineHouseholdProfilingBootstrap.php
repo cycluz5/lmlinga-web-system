@@ -38,6 +38,8 @@ final class OfflineHouseholdProfilingBootstrap
                 ->orderBy('household_no')
                 ->get();
 
+            $this->healthSummary->preload($models->flatMap(fn ($household) => $household->residents));
+
             foreach ($models as $household) {
                 $presentation = HouseholdProfilingPresenter::fromModel($household);
                 $householdNo = (string) $presentation['householdNo'];
@@ -105,6 +107,8 @@ final class OfflineHouseholdProfilingBootstrap
                 }
             }
         }
+
+        $this->healthSummary->clearPreload();
 
         return [
             'households' => $households,

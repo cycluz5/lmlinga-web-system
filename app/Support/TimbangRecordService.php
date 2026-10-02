@@ -59,13 +59,13 @@ final class TimbangRecordService
      *
      * @return array{weight: string, height: string, mode: 'bmi'|'status', bmi: string, status: string, muac_applicable: bool, muac: string, muac_status: string}
      */
-    public function cardStateForResident(?Resident $resident): array
+    public function cardStateForResident(?Resident $resident, ?TimbangRecord $preloadedLatest = null, bool $usePreloaded = false): array
     {
         if ($resident === null || (int) $resident->getKey() <= 0) {
             return $this->emptyCardState();
         }
 
-        $latest = $this->latestForResident($resident);
+        $latest = $usePreloaded ? $preloadedLatest : $this->latestForResident($resident);
         if ($latest === null) {
             $band = $this->assessment->ageBand($resident->birthday, Carbon::now());
             $mode = $band !== null && $this->assessment->bmiApplicable($band) ? 'bmi' : 'status';
@@ -101,6 +101,33 @@ final class TimbangRecordService
             ->orderByDesc('measurement_date')
             ->orderByDesc('timbang_id')
             ->first();
+    }
+
+    /**
+     * Latest record per resident in one query per chunk (same ordering as latestForResident()).
+     *
+     * @param  list<int|string>  $residentIds
+     * @return array<int, TimbangRecord>  keyed by resident_id
+     */
+    public function latestForResidents(array $residentIds): array
+    {
+        if (! self::persistenceAvailable()) {
+            return [];
+        }
+
+        $latest = [];
+        foreach (array_chunk($residentIds, 1000) as $chunk) {
+            $rows = TimbangRecord::query()
+                ->whereIn('resident_id', $chunk)
+                ->orderByDesc('measurement_date')
+                ->orderByDesc('timbang_id')
+                ->get();
+            foreach ($rows as $row) {
+                $latest[(int) $row->resident_id] ??= $row;
+            }
+        }
+
+        return $latest;
     }
 
     /**

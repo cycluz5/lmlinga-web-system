@@ -161,6 +161,33 @@ final class MaternalPregnancyService
         return false;
     }
 
+    /**
+     * Set-based hasAnyEpisode(): resident ids (from $residentIds) that have any episode.
+     *
+     * @param  list<int|string>  $residentIds
+     * @return array<int, true>
+     */
+    public function residentIdsWithAnyEpisode(array $residentIds): array
+    {
+        $table = match (true) {
+            MaternalCareErdMode::isPersistenceActive(), ! Schema::hasTable('maternal_pregnancies') && Schema::hasTable('maternal_care') => 'maternal_care',
+            Schema::hasTable('maternal_pregnancies') => 'maternal_pregnancies',
+            default => null,
+        };
+        if ($table === null) {
+            return [];
+        }
+
+        $found = [];
+        foreach (array_chunk($residentIds, 1000) as $chunk) {
+            foreach (DB::table($table)->whereIn('resident_id', $chunk)->distinct()->pluck('resident_id') as $id) {
+                $found[(int) $id] = true;
+            }
+        }
+
+        return $found;
+    }
+
     public function hasClosedEpisodeForResident(Resident $resident): bool
     {
         if (MaternalCareErdMode::isPersistenceActive()) {
