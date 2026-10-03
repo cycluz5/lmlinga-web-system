@@ -17,7 +17,7 @@ final class HouseholdProfilingPresenter
     /**
      * @return array<string, mixed>
      */
-    public static function fromModel(Household $household): array
+    public static function fromModel(Household $household, bool $withMembers = true): array
     {
         // Member blades may still call lml_demo_* helpers; ensure they exist on DB-only paths.
         DemoCatalog::ensureHouseholdHelpers();
@@ -42,10 +42,13 @@ final class HouseholdProfilingPresenter
             static fn (Resident $r): bool => strcasecmp((string) $r->relation, 'Head') === 0
         );
 
-        $memberList = $residents
-            ->map(static fn (Resident $r): array => self::memberFromModel($r))
-            ->values()
-            ->all();
+        // Callers that only need household-level fields (offline bootstrap) skip the per-member build.
+        $memberList = $withMembers
+            ? $residents
+                ->map(static fn (Resident $r): array => self::memberFromModel($r))
+                ->values()
+                ->all()
+            : [];
 
         $householdNo = (string) $household->household_no;
         $displayNo = preg_replace('/^HH-/i', 'HH ', $householdNo) ?: $householdNo;
@@ -61,7 +64,7 @@ final class HouseholdProfilingPresenter
             'street' => $street,
             'address' => self::addressLabel($household, $street),
             'purok' => self::rawLocationValue($household),
-            'members' => count($memberList),
+            'members' => $residents->count(),
             'lat' => $household->latitude !== null ? (float) $household->latitude : null,
             'lng' => $household->longitude !== null ? (float) $household->longitude : null,
             'mapStatus' => 'plotted',
@@ -563,7 +566,7 @@ final class HouseholdProfilingPresenter
     /**
      * @return array<string, mixed>
      */
-    public static function memberFromModel(Resident $resident): array
+    public static function memberFromModel(Resident $resident, bool $withBirthHistory = true): array
     {
         DemoCatalog::ensureHouseholdHelpers();
 
@@ -602,9 +605,11 @@ final class HouseholdProfilingPresenter
             'medical_others' => $health['medical_others'],
         ];
 
-        $birthHistory = ChildBirthHistoryService::presentationForResident($resident);
-        if ($birthHistory !== null) {
-            $data['birth_history'] = $birthHistory;
+        if ($withBirthHistory) {
+            $birthHistory = ChildBirthHistoryService::presentationForResident($resident);
+            if ($birthHistory !== null) {
+                $data['birth_history'] = $birthHistory;
+            }
         }
 
         return $data;

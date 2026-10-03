@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Support\AtRestEncrypter;
 use App\Support\Database\CachingSchemaBuilder;
 use App\Support\Database\SchemaLookupCache;
+use App\Support\EnvironmentalSanitationReadService;
 use Database\Seeders\SuperAdminSeeder;
 use Illuminate\Console\Events\CommandFinished;
 use Illuminate\Database\Events\DatabaseRefreshed;
@@ -44,6 +45,9 @@ class AppServiceProvider extends ServiceProvider
                 (string) $app['config']->get('app.key', ''),
             );
         });
+
+        // Singleton so a bulk preload (offline bootstrap) is visible to app()-resolved callers.
+        $this->app->singleton(EnvironmentalSanitationReadService::class);
 
         // Schema facade answers hasTable / hasColumn from a memo (see SchemaLookupCache).
         $this->app->singleton(SchemaLookupCache::class);

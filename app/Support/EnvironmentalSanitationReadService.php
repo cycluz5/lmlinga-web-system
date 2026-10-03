@@ -12,6 +12,56 @@ use Illuminate\Support\Facades\DB;
 final class EnvironmentalSanitationReadService
 {
     /**
+     * Batched rows for the current bulk run (see preloadForHouseholds()). Null = per-household queries.
+     *
+     * @var array{env: array<int, object>, waste: array<int, object>}|null
+     */
+    private ?array $preloaded = null;
+
+    /**
+     * Resolve sanitation and waste rows for many households in a constant number of queries,
+     * so findPresentationForHousehold() does no database work per household. Call clearPreload() when done.
+     *
+     * @param  list<int|string>  $householdIds
+     */
+    public function preloadForHouseholds(array $householdIds): void
+    {
+        $env = [];
+        $waste = [];
+
+        if (EnvironmentalSanitationErdMode::isActive()) {
+            $primaryKey = EnvironmentalSanitationErdMode::primaryKey();
+            foreach (array_chunk($householdIds, 1000) as $chunk) {
+                foreach (DB::table('environmental_sanitation')->whereIn('household_id', $chunk)->get() as $row) {
+                    $householdId = (int) ($row->household_id ?? 0);
+                    if ($householdId > 0) {
+                        $env[$householdId] ??= $row;
+                    }
+                }
+            }
+
+            if (EnvironmentalSanitationErdMode::wasteManagementTableActive()) {
+                $assessmentIds = [];
+                foreach ($env as $row) {
+                    $assessmentIds[] = (int) ($row->{$primaryKey} ?? 0);
+                }
+                foreach (array_chunk(array_filter($assessmentIds), 1000) as $chunk) {
+                    foreach (DB::table('waste_management_practices')->whereIn('env_assessment_id', $chunk)->get() as $row) {
+                        $waste[(int) $row->env_assessment_id] ??= $row;
+                    }
+                }
+            }
+        }
+
+        $this->preloaded = ['env' => $env, 'waste' => $waste];
+    }
+
+    public function clearPreload(): void
+    {
+        $this->preloaded = null;
+    }
+
+    /**
      * @return array<int, object>
      */
     public function rowsIndexedByHouseholdId(): array
@@ -107,9 +157,11 @@ final class EnvironmentalSanitationReadService
             return null;
         }
 
-        $row = DB::table('environmental_sanitation')
-            ->where('household_id', $household->getKey())
-            ->first();
+        $row = $this->preloaded !== null
+            ? ($this->preloaded['env'][(int) $household->getKey()] ?? null)
+            : DB::table('environmental_sanitation')
+                ->where('household_id', $household->getKey())
+                ->first();
 
         if ($row === null) {
             return null;
@@ -154,6 +206,10 @@ final class EnvironmentalSanitationReadService
         $envAssessmentId = (int) ($environmentalRow->{EnvironmentalSanitationErdMode::primaryKey()} ?? 0);
         if ($envAssessmentId <= 0) {
             return null;
+        }
+
+        if ($this->preloaded !== null) {
+            return $this->preloaded['waste'][$envAssessmentId] ?? null;
         }
 
         return DB::table('waste_management_practices')

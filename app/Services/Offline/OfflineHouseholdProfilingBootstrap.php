@@ -4,9 +4,12 @@ namespace App\Services\Offline;
 
 use App\Models\Household;
 use App\Models\Resident;
+use App\Services\HouseholdEnvironmentalProfileService;
+use App\Support\EnvironmentalSanitationReadService;
 use App\Support\HouseholdProfilingPresenter;
 use App\Support\Offline\OfflineFieldHasher;
 use App\Support\OpaqueId;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
 
 /**
@@ -16,6 +19,7 @@ final class OfflineHouseholdProfilingBootstrap
 {
     public function __construct(
         private readonly OfflineHealthSummaryCompiler $healthSummary,
+        private readonly EnvironmentalSanitationReadService $sanitation,
     ) {}
 
     /**
@@ -28,87 +32,102 @@ final class OfflineHouseholdProfilingBootstrap
      */
     public function payload(): array
     {
+        $startedAt = hrtime(true);
         $households = [];
         $members = [];
 
-        if (Schema::hasTable('households')) {
-            $models = Household::query()
-                ->excludingNonResidentSentinel()
-                ->with(['residents' => fn ($q) => Resident::eagerLoadForProfiling($q)])
-                ->orderBy('household_no')
-                ->get();
+        try {
+            if (Schema::hasTable('households')) {
+                $with = ['residents' => fn ($q) => Resident::eagerLoadForProfiling($q)];
+                if (HouseholdEnvironmentalProfileService::persistenceAvailable()) {
+                    $with[] = 'environmentalProfile.solidWastePractices';
+                }
 
-            $this->healthSummary->preload($models->flatMap(fn ($household) => $household->residents));
+                $models = Household::query()
+                    ->excludingNonResidentSentinel()
+                    ->with($with)
+                    ->orderBy('household_no')
+                    ->get();
 
-            foreach ($models as $household) {
-                $presentation = HouseholdProfilingPresenter::fromModel($household);
-                $householdNo = (string) $presentation['householdNo'];
-                $households[] = [
-                    'household_id' => (int) $household->getKey(),
-                    'household_no' => $householdNo,
-                    'url_key' => OpaqueId::forUrl('h', $householdNo),
-                    'display_no' => (string) ($presentation['displayNo'] ?? $householdNo),
-                    'house_head' => (string) ($presentation['houseHead'] ?? '—'),
-                    'zone' => (string) ($presentation['zone'] ?? ''),
-                    'street' => (string) ($presentation['street'] ?? ''),
-                    'address' => (string) ($presentation['address'] ?? ''),
-                    'accomplished_date' => (string) ($presentation['accomplishedDate'] ?? '—'),
-                    'member_count' => count($presentation['memberList'] ?? []),
-                    'water' => $presentation['water'] ?? [
-                        'title' => 'Access to Safe Water',
-                        'level' => '—',
-                        'status' => 'Not recorded',
-                    ],
-                    'sanitation' => $presentation['sanitation'] ?? [
-                        'title' => 'Sanitation Services',
-                        'facility' => '—',
-                        'status' => 'Not recorded',
-                    ],
-                ];
+                $this->healthSummary->preload($models->flatMap(fn ($household) => $household->residents));
+                $this->sanitation->preloadForHouseholds($models->modelKeys());
 
-                foreach ($household->residents as $resident) {
-                    $row = HouseholdProfilingPresenter::memberFromModel($resident);
-                    unset($row['birth_history']);
-                    $members[] = [
+                foreach ($models as $household) {
+                    $presentation = HouseholdProfilingPresenter::fromModel($household, withMembers: false);
+                    $householdNo = (string) $presentation['householdNo'];
+                    $households[] = [
                         'household_id' => (int) $household->getKey(),
                         'household_no' => $householdNo,
-                        'resident_id' => (int) $resident->getKey(),
-                        'member_no' => (string) $resident->member_no,
-                        'url_key' => OpaqueId::forUrl('m', (string) $resident->member_no),
-                        'resident_url_key' => OpaqueId::forUrl('r', (string) $resident->getKey()),
-                        // Base hash for offline RESIDENT_UPDATE conflict detection (same value the live edit page emits).
-                        'field_hash' => OfflineFieldHasher::resident($resident),
-                        'name' => (string) ($row['name'] ?? ''),
-                        'relationship' => (string) ($row['relationship'] ?? ''),
-                        'age' => $row['age'] ?? null,
-                        'sex' => (string) ($row['sex'] ?? ''),
-                        'occupation' => (string) ($row['occupation'] ?? ''),
-                        'last_name' => (string) ($row['last_name'] ?? ''),
-                        'first_name' => (string) ($row['first_name'] ?? ''),
-                        'middle_name' => (string) ($row['middle_name'] ?? ''),
-                        'relation' => (string) ($row['relation'] ?? ''),
-                        'birthday' => (string) ($row['birthday'] ?? ''),
-                        'relationship_status' => (string) ($row['relationship_status'] ?? ''),
-                        'monthly_income' => (string) ($row['monthly_income'] ?? ''),
-                        'religion' => (string) ($row['religion'] ?? ''),
-                        'education' => (string) ($row['education'] ?? ''),
-                        'philhealth' => (string) ($row['philhealth'] ?? ''),
-                        'fp_user' => (string) ($row['fp_user'] ?? ''),
-                        'occupation_select' => (string) ($row['occupation_select'] ?? ''),
-                        'occupation_other' => (string) ($row['occupation_other'] ?? ''),
-                        'religion_select' => (string) ($row['religion_select'] ?? ''),
-                        'religion_other' => (string) ($row['religion_other'] ?? ''),
-                        'disability' => $row['disability'] ?? [],
-                        'disability_others' => (string) ($row['disability_others'] ?? ''),
-                        'medical_history' => $row['medical_history'] ?? [],
-                        'medical_others' => (string) ($row['medical_others'] ?? ''),
-                        'health' => $this->healthSummary->forResident($resident, $row),
+                        'url_key' => OpaqueId::forUrl('h', $householdNo),
+                        'display_no' => (string) ($presentation['displayNo'] ?? $householdNo),
+                        'house_head' => (string) ($presentation['houseHead'] ?? '—'),
+                        'zone' => (string) ($presentation['zone'] ?? ''),
+                        'street' => (string) ($presentation['street'] ?? ''),
+                        'address' => (string) ($presentation['address'] ?? ''),
+                        'accomplished_date' => (string) ($presentation['accomplishedDate'] ?? '—'),
+                        'member_count' => $household->residents->count(),
+                        'water' => $presentation['water'] ?? [
+                            'title' => 'Access to Safe Water',
+                            'level' => '—',
+                            'status' => 'Not recorded',
+                        ],
+                        'sanitation' => $presentation['sanitation'] ?? [
+                            'title' => 'Sanitation Services',
+                            'facility' => '—',
+                            'status' => 'Not recorded',
+                        ],
                     ];
+
+                    foreach ($household->residents as $resident) {
+                        $row = HouseholdProfilingPresenter::memberFromModel($resident, withBirthHistory: false);
+                        $members[] = [
+                            'household_id' => (int) $household->getKey(),
+                            'household_no' => $householdNo,
+                            'resident_id' => (int) $resident->getKey(),
+                            'member_no' => (string) $resident->member_no,
+                            'url_key' => OpaqueId::forUrl('m', (string) $resident->member_no),
+                            'resident_url_key' => OpaqueId::forUrl('r', (string) $resident->getKey()),
+                            // Base hash for offline RESIDENT_UPDATE conflict detection (same value the live edit page emits).
+                            'field_hash' => OfflineFieldHasher::resident($resident),
+                            'name' => (string) ($row['name'] ?? ''),
+                            'relationship' => (string) ($row['relationship'] ?? ''),
+                            'age' => $row['age'] ?? null,
+                            'sex' => (string) ($row['sex'] ?? ''),
+                            'occupation' => (string) ($row['occupation'] ?? ''),
+                            'last_name' => (string) ($row['last_name'] ?? ''),
+                            'first_name' => (string) ($row['first_name'] ?? ''),
+                            'middle_name' => (string) ($row['middle_name'] ?? ''),
+                            'relation' => (string) ($row['relation'] ?? ''),
+                            'birthday' => (string) ($row['birthday'] ?? ''),
+                            'relationship_status' => (string) ($row['relationship_status'] ?? ''),
+                            'monthly_income' => (string) ($row['monthly_income'] ?? ''),
+                            'religion' => (string) ($row['religion'] ?? ''),
+                            'education' => (string) ($row['education'] ?? ''),
+                            'philhealth' => (string) ($row['philhealth'] ?? ''),
+                            'fp_user' => (string) ($row['fp_user'] ?? ''),
+                            'occupation_select' => (string) ($row['occupation_select'] ?? ''),
+                            'occupation_other' => (string) ($row['occupation_other'] ?? ''),
+                            'religion_select' => (string) ($row['religion_select'] ?? ''),
+                            'religion_other' => (string) ($row['religion_other'] ?? ''),
+                            'disability' => $row['disability'] ?? [],
+                            'disability_others' => (string) ($row['disability_others'] ?? ''),
+                            'medical_history' => $row['medical_history'] ?? [],
+                            'medical_others' => (string) ($row['medical_others'] ?? ''),
+                            'health' => $this->healthSummary->forResident($resident, $row),
+                        ];
+                    }
                 }
             }
+        } finally {
+            $this->healthSummary->clearPreload();
+            $this->sanitation->clearPreload();
         }
 
-        $this->healthSummary->clearPreload();
+        Log::info('offline.hp_bootstrap', [
+            'households' => count($households),
+            'members' => count($members),
+            'elapsed_ms' => (int) ((hrtime(true) - $startedAt) / 1e6),
+        ]);
 
         return [
             'households' => $households,

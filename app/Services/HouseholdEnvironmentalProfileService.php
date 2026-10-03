@@ -33,9 +33,12 @@ final class HouseholdEnvironmentalProfileService
     public function findPresentation(Household $household): ?array
     {
         if (self::persistenceAvailable()) {
-            $profile = $household->environmentalProfile()
-                ->with('solidWastePractices')
-                ->first();
+            // Bulk callers (offline bootstrap) eager load the profile for all households at once.
+            $profile = $household->relationLoaded('environmentalProfile')
+                ? $household->environmentalProfile
+                : $household->environmentalProfile()
+                    ->with('solidWastePractices')
+                    ->first();
 
             return $profile !== null ? $this->toPresentation($household, $profile) : null;
         }
