@@ -1,0 +1,10 @@
+La Medalla offline basemap (Spot Mapping, offline fallback only)
+
+Map data © OpenStreetMap contributors, available under the Open Database License (ODbL 1.0):
+https://www.openstreetmap.org/copyright
+Tiles cut from the Protomaps daily build 20261030.pmtiles (basemap schema 4.15.2): https://protomaps.com
+Renderer: protomaps-leaflet 5.1.0 (BSD-3-Clause).
+
+Coverage: lon 123.4110 to 123.4567, lat 13.3520 to 13.3959 (La Medalla, Iriga City, plus about 1 km), zoom 10-15.
+The attribution "© OpenStreetMap contributors · Protomaps" must stay visible whenever this map is shown.
+Regenerate with scripts/offline-map/extract-la-medalla.mjs into a NEW version folder; never edit tiles by hand.

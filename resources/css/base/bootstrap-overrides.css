@@ -1,0 +1,126 @@
+/**
+ * LMLinga Design System — Bootstrap 5 Theme Overrides
+ * Maps Bootstrap CSS variables to the LMLinga palette.
+ */
+
+:root,
+[data-bs-theme="light"] {
+    --bs-primary: var(--lml-primary);
+    --bs-primary-rgb: var(--lml-primary-rgb);
+    --bs-secondary: var(--lml-secondary);
+    --bs-secondary-rgb: var(--lml-secondary-rgb);
+    --bs-success: var(--lml-accent);
+    --bs-success-rgb: var(--lml-accent-rgb);
+    --bs-body-bg: var(--lml-background);
+    --bs-body-color: var(--lml-dark-green);
+    --bs-body-font-family: var(--lml-font-sans);
+    --bs-link-color: var(--lml-text-green);
+    --bs-link-hover-color: var(--lml-accent);
+    --bs-border-color: var(--lml-soft-green);
+    --bs-border-radius: var(--lml-radius-md);
+    --bs-border-radius-sm: var(--lml-radius-sm);
+    --bs-border-radius-lg: var(--lml-radius-lg);
+    --bs-border-radius-xl: var(--lml-radius-xl);
+}
+
+.btn-primary {
+    --bs-btn-bg: var(--lml-primary);
+    --bs-btn-border-color: var(--lml-primary);
+    --bs-btn-hover-bg: var(--lml-secondary);
+    --bs-btn-hover-border-color: var(--lml-secondary);
+    --bs-btn-active-bg: var(--lml-deep-green);
+    --bs-btn-active-border-color: var(--lml-deep-green);
+    --bs-btn-focus-shadow-rgb: var(--lml-primary-rgb);
+}
+
+.btn-secondary {
+    --bs-btn-bg: var(--lml-secondary);
+    --bs-btn-border-color: var(--lml-secondary);
+    --bs-btn-hover-bg: var(--lml-deep-green);
+    --bs-btn-hover-border-color: var(--lml-deep-green);
+    --bs-btn-active-bg: var(--lml-dark-green);
+    --bs-btn-active-border-color: var(--lml-dark-green);
+    --bs-btn-focus-shadow-rgb: var(--lml-secondary-rgb);
+}
+
+.btn-outline-primary {
+    --bs-btn-color: var(--lml-primary);
+    --bs-btn-border-color: var(--lml-primary);
+    --bs-btn-hover-bg: var(--lml-primary);
+    --bs-btn-hover-border-color: var(--lml-primary);
+    --bs-btn-active-bg: var(--lml-secondary);
+    --bs-btn-active-border-color: var(--lml-secondary);
+    --bs-btn-focus-shadow-rgb: var(--lml-primary-rgb);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--lml-light-green);
+    box-shadow: 0 0 0 0.25rem rgba(var(--lml-primary-rgb), 0.25);
+}
+
+.form-check-input:checked {
+    background-color: var(--lml-primary);
+    border-color: var(--lml-primary);
+}
+
+.form-check-input:focus {
+    border-color: var(--lml-light-green);
+    box-shadow: 0 0 0 0.25rem rgba(var(--lml-primary-rgb), 0.25);
+}
+
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+    background-color: var(--lml-primary);
+}
+
+.pagination .page-link {
+    color: var(--lml-text-green);
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--lml-primary);
+    border-color: var(--lml-primary);
+}
+
+.table {
+    --bs-table-striped-bg: rgba(var(--lml-soft-green-rgb), 0.35);
+    --bs-table-hover-bg: rgba(var(--lml-soft-green-rgb), 0.55);
+}
+
+.modal-header {
+    background-color: var(--lml-soft-green);
+    border-bottom-color: var(--lml-light-green);
+}
+
+.alert-primary {
+    --bs-alert-color: var(--lml-deep-green);
+    --bs-alert-bg: var(--lml-soft-green);
+    --bs-alert-border-color: var(--lml-light-green);
+}
+
+.alert-success {
+    --bs-alert-color: var(--lml-dark-green);
+    --bs-alert-bg: rgba(var(--lml-soft-green-rgb), 0.6);
+    --bs-alert-border-color: var(--lml-light-green);
+}
+
+/* Bootstrap .bg-primary / .bg-secondary utilities already read --bs-primary
+   and --bs-secondary from :root (set above). No !important overrides needed. */
+
+.progress-bar {
+    background-color: var(--lml-primary);
+}
+
+/*
+ * Tailwind v4 also generates a `.collapse` utility (`visibility: collapse`).
+ * That class name collides with Bootstrap Collapse and makes open panels
+ * inherit visibility:collapse (content appears to open then vanish).
+ * Restore Bootstrap's expected visibility for collapse/collapsing panels.
+ * Do not change display here — closed Bootstrap panels still use :not(.show).
+ */
+.collapse,
+.collapsing {
+    visibility: visible;
+}
+

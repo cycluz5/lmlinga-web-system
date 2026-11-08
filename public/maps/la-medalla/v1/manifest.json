@@ -1,0 +1,227 @@
+{
+  "name": "La Medalla offline basemap",
+  "source": "https://build.protomaps.com/20261030.pmtiles",
+  "build": "20261030.pmtiles",
+  "basemapVersion": "4.15.2",
+  "license": "ODbL 1.0 (OpenStreetMap data); Protomaps basemap schema",
+  "attribution": "© OpenStreetMap contributors · Protomaps",
+  "extractedAt": "2026-10-31T12:05:09.086Z",
+  "bbox": {
+    "west": 123.411,
+    "south": 13.352,
+    "east": 123.4567,
+    "north": 13.3959
+  },
+  "minZoom": 10,
+  "maxDataZoom": 15,
+  "tileCount": 41,
+  "missing": [],
+  "totalBytes": 320371,
+  "tiles": [
+    {
+      "path": "10/863/473.mvt",
+      "bytes": 44865,
+      "sha256": "c0d31cda09ce5556abb75f93a510a2d124efdb0b09164f3a009015c3742c5762"
+    },
+    {
+      "path": "11/1726/947.mvt",
+      "bytes": 34670,
+      "sha256": "9a7c7983e623b7402f89cd0395c95ea451d29e47d8a0eea5fe81a3daa9d410e0"
+    },
+    {
+      "path": "12/3452/1894.mvt",
+      "bytes": 33852,
+      "sha256": "d7283d09d0b1185a46dce304a9341944a7fa9335e37fdc5698d23a91cf4b3542"
+    },
+    {
+      "path": "13/6904/3788.mvt",
+      "bytes": 20103,
+      "sha256": "d46afa896951caa113eda03682449d4975d6802e2067548c64c2066c634044eb"
+    },
+    {
+      "path": "13/6904/3789.mvt",
+      "bytes": 12015,
+      "sha256": "72eb9374276d4c2d2f33cab239b6fe8cb9de3ca5c5d61bfc74e11447bf4aa834"
+    },
+    {
+      "path": "13/6905/3788.mvt",
+      "bytes": 18460,
+      "sha256": "f13670efce2e5706b6da0a79e3d2c87b2959093c19139b0df5a60197621dbdfb"
+    },
+    {
+      "path": "13/6905/3789.mvt",
+      "bytes": 5342,
+      "sha256": "1a05f571350dd987677bbc076d5e6b0bdb800ee81582be23176db73deb9ef1a2"
+    },
+    {
+      "path": "14/13808/7576.mvt",
+      "bytes": 10186,
+      "sha256": "340ceafae4779ec345a9d23c70703ecf7b3ec7ef32097724886577996dcb6937"
+    },
+    {
+      "path": "14/13808/7577.mvt",
+      "bytes": 6196,
+      "sha256": "e2bb8408cb50b4b041fe48d02e25e4c8ed1c4462ddd6b62e2d3112729e134a99"
+    },
+    {
+      "path": "14/13808/7578.mvt",
+      "bytes": 4589,
+      "sha256": "6a9decf3ae178494b7485d39c46d2bb78a97e834f57de4c3cb6c514bc0aa6a91"
+    },
+    {
+      "path": "14/13809/7576.mvt",
+      "bytes": 9366,
+      "sha256": "7e15eb16b08448f4859ce908dbd6b3a1b1444288afe733de1edf60fdc2faa4e5"
+    },
+    {
+      "path": "14/13809/7577.mvt",
+      "bytes": 5542,
+      "sha256": "65b8a7f15b493b80bed6642dbf82becbb79dbfaad427d2256b2c96f1dad19ca7"
+    },
+    {
+      "path": "14/13809/7578.mvt",
+      "bytes": 5310,
+      "sha256": "4673e0c64dd42d1bcd87104e0ac40f21e48b0ea99d5e8fd132ad6714853bfe79"
+    },
+    {
+      "path": "14/13810/7576.mvt",
+      "bytes": 9632,
+      "sha256": "8d00dd0a0ebf27423e8ee68486c53d9dd12d14522c59ee93c9c294bda947b89d"
+    },
+    {
+      "path": "14/13810/7577.mvt",
+      "bytes": 6162,
+      "sha256": "08c3613d0229bdcff528090f02559ff6f067a66a03565653f468c0a0de655dbb"
+    },
+    {
+      "path": "14/13810/7578.mvt",
+      "bytes": 3152,
+      "sha256": "245e6690663f75e670c37904664f1ff491a58f47e8e3404d87afbddda82b811a"
+    },
+    {
+      "path": "15/27617/15153.mvt",
+      "bytes": 2788,
+      "sha256": "887510a92007efb9bebcd1b1ac1f0bb6ef90932385d14aa49141cfc86f60e6af"
+    },
+    {
+      "path": "15/27617/15154.mvt",
+      "bytes": 3024,
+      "sha256": "b3b794ca99e14c5349fdec472a7cba08c29e2b5e83c1a27465279b57d68ea777"
+    },
+    {
+      "path": "15/27617/15155.mvt",
+      "bytes": 3077,
+      "sha256": "ba545b44d70b502c09a0d59d925429171e4475325cc4bb488fc1a989eb8a32fc"
+    },
+    {
+      "path": "15/27617/15156.mvt",
+      "bytes": 2527,
+      "sha256": "7803084caa34565ab9df491da91f3e210c801b00ace752ec987e4873103f57fb"
+    },
+    {
+      "path": "15/27617/15157.mvt",
+      "bytes": 2781,
+      "sha256": "a32db201b92a27073d6e24c960c3f6d53a9bb058c74f25116155e882be3b3e7d"
+    },
+    {
+      "path": "15/27618/15153.mvt",
+      "bytes": 4811,
+      "sha256": "e45c2bc10f7fe9fc39b5b6078cf5016bd9738e9ca444da172298d1eacbaead06"
+    },
+    {
+      "path": "15/27618/15154.mvt",
+      "bytes": 2183,
+      "sha256": "0ff1babc3f04f40ac75a8babeed6800652b7072ed1d555c8bfdc0111b4eb051e"
+    },
+    {
+      "path": "15/27618/15155.mvt",
+      "bytes": 1749,
+      "sha256": "14742d71ec3ae4e5902076dea106e728b1d903b89117debca233db4b5a71ae65"
+    },
+    {
+      "path": "15/27618/15156.mvt",
+      "bytes": 4292,
+      "sha256": "9db75083ca264316fe59de03f2df87e4dd728514592571b84c96ebb3847c8bb1"
+    },
+    {
+      "path": "15/27618/15157.mvt",
+      "bytes": 7891,
+      "sha256": "96923fb95f9a024205eff508d3f73fca7515ca3eefd32cdf7a909189e52189f9"
+    },
+    {
+      "path": "15/27619/15153.mvt",
+      "bytes": 3342,
+      "sha256": "24544a9faac4f26d7e65c7b12a333bc176dc59848f14c01669d4ca6e914bf32b"
+    },
+    {
+      "path": "15/27619/15154.mvt",
+      "bytes": 3410,
+      "sha256": "429791a0254ab73aa337b4db08cea9dac3a7a880fc21997c2465aaaf34b5b6c8"
+    },
+    {
+      "path": "15/27619/15155.mvt",
+      "bytes": 2091,
+      "sha256": "ac88694b0e6321d93fdb1d0e0b219a14bf2b6453e0ea4828868592cc0ea9097d"
+    },
+    {
+      "path": "15/27619/15156.mvt",
+      "bytes": 7297,
+      "sha256": "c8b05af2217eb073b97efc9c014477888584a15a94e5bc0cc1f421497a4dbaa8"
+    },
+    {
+      "path": "15/27619/15157.mvt",
+      "bytes": 5623,
+      "sha256": "532e5b54f650dc8757e89b04ac85bf75ec51a028a27ae761c91dd65e3969c4ff"
+    },
+    {
+      "path": "15/27620/15153.mvt",
+      "bytes": 2622,
+      "sha256": "b5effcb19dd86fe42f0adf2b1df88eca316c682014503f3b282bba78961863a2"
+    },
+    {
+      "path": "15/27620/15154.mvt",
+      "bytes": 2438,
+      "sha256": "dd2ca5c047de94c69df45b30d0a5a6433ca71c9319cf1b85b8acb94d677153e6"
+    },
+    {
+      "path": "15/27620/15155.mvt",
+      "bytes": 2598,
+      "sha256": "89a99b02323ad1e0627610001064c55a50a91c64f1078ada5258abee1aca89b4"
+    },
+    {
+      "path": "15/27620/15156.mvt",
+      "bytes": 7543,
+      "sha256": "814283048a08401111cb42c612c03dd7d5a97f1ad5623c31eb95fedeedf42b3e"
+    },
+    {
+      "path": "15/27620/15157.mvt",
+      "bytes": 3642,
+      "sha256": "3bfc572af6e4f649dc77f746aae08c9ac913dcfcffae2d751314745fa5308758"
+    },
+    {
+      "path": "15/27621/15153.mvt",
+      "bytes": 3205,
+      "sha256": "30ddbb98efc972ddf8f99aa198ae7acfbb094d7d8ce6c35b22c3aa5db3f9e014"
+    },
+    {
+      "path": "15/27621/15154.mvt",
+      "bytes": 2079,
+      "sha256": "0540b654a7b067bc153f7e9843cbf9ca4f05bd7e3a8fddd52589e0f607d62d2b"
+    },
+    {
+      "path": "15/27621/15155.mvt",
+      "bytes": 2563,
+      "sha256": "38bcd7ec61001cbe8ffca7674b417281e4b007cab392198c2446fc0e7aa9d924"
+    },
+    {
+      "path": "15/27621/15156.mvt",
+      "bytes": 4392,
+      "sha256": "d20cfb4e7b0c56d8430d70edaf2a7f456bf6c5beab399fae598f2b8fc1f450c7"
+    },
+    {
+      "path": "15/27621/15157.mvt",
+      "bytes": 2961,
+      "sha256": "9ab7e7d74b542007b6b756ae7c475933f15730e443a7a2af3e6686a347992e50"
+    }
+  ]
+}

@@ -1,0 +1,1075 @@
+/**
+ * Post-login offline preparation UI — non-blocking corner panel with REAL warmup progress.
+ * Staff keep using the online interface while preparation runs.
+ *
+ * Extends offline-7 actor-scoped core warmup. Does not invent a second cache system.
+ */
+
+import {
+    CACHE_VERSION,
+    MESSAGE_ENSURE_BUILD_ASSETS,
+    MESSAGE_ENSURE_BUILD_ASSETS_RESULT,
+    MESSAGE_WARMUP_COMPLETE,
+    MESSAGE_WARMUP_CORE,
+    MESSAGE_WARMUP_PROGRESS,
+    MESSAGE_WARMUP_READY_QUERY,
+    MESSAGE_WARMUP_READY_RESULT,
+    documentUsesViteDevAssets,
+    htmlCacheNameForActor,
+    htmlUsesViteDevAssets,
+    navigationCacheUrl,
+    prepareStorageKey,
+    warmupPathsForRole,
+} from './offline-sw-policy.js';
+import { OFFLINE_DB_VERSION } from './offline-db.js';
+import { prepareOfflineMap } from '../maps/la-medalla-offline-map.js';
+import { listOperationsForActor } from './offline-queue.js';
+import { canWarmCoreFieldPages, confirmSessionAndWarmCorePages } from './offline-sw-warmup.js';
+import {
+    prepareStaffOfflineDataset,
+    readHouseholdBootstrapUrl,
+    verifyStaffOfflineDataset,
+} from './offline-staff-dataset-prepare.js';
+
+const PREPARE_TIMEOUT_MS = 300000;
+
+/** Shell warmup contributes up to this share of the overall preparation bar. */
+const SHELL_PROGRESS_WEIGHT = 20;
+
+/** TEMP: count concurrent/duplicate prep boots for diagnostics. */
+let prepPerfRunSeq = 0;
+
+/** The preparation already running in this tab, if any. */
+let activePreparation = null;
+
+/**
+ * Map shell warmup (0–100) into the first segment of overall preparation.
+ * @param {number} shellPercent
+ */
+export function mapShellProgressToOverall(shellPercent) {
+    const pct = Math.max(0, Math.min(100, Number(shellPercent) || 0));
+    return Math.round((pct / 100) * SHELL_PROGRESS_WEIGHT);
+}
+
+/**
+ * Map staff dataset phases into 20–100% of overall preparation.
+ * @param {{ phase?: string, ready?: number, total?: number }} detail
+ */
+export function mapDatasetProgressToOverall(detail = {}) {
+    const phase = detail.phase || '';
+    if (phase === 'dataset-fetch') {
+        return SHELL_PROGRESS_WEIGHT + 2;
+    }
+    if (phase === 'households') {
+        const total = Number(detail.total) || 0;
+        const ready = Number(detail.ready) || 0;
+        if (total <= 0) {
+            return SHELL_PROGRESS_WEIGHT + 25;
+        }
+        return SHELL_PROGRESS_WEIGHT + Math.round((ready / total) * 35);
+    }
+    if (phase === 'members') {
+        return SHELL_PROGRESS_WEIGHT + 62;
+    }
+    if (phase === 'eh') {
+        return SHELL_PROGRESS_WEIGHT + 68;
+    }
+    if (phase === 'health') {
+        return SHELL_PROGRESS_WEIGHT + 74;
+    }
+    if (phase === 'views') {
+        return SHELL_PROGRESS_WEIGHT + 78;
+    }
+    if (phase === 'verify') {
+        return 98;
+    }
+    return SHELL_PROGRESS_WEIGHT + 20;
+}
+
+/**
+ * Page-side verification that every role warmup path exists in the actor HTML
+ * cache (same URL contract as SW storeNavigation / module nav guard).
+ *
+ * @param {number} actorId
+ * @param {string} role
+ * @param {{ caches?: CacheStorage, origin?: string, window?: Window }} [options]
+ * @returns {Promise<{ ok: boolean, total: number, present: number, missing: string[], version: string, actorId: number|null }>}
+ */
+export async function verifyCoreNavigationCached(actorId, role, options = {}) {
+    const paths = warmupPathsForRole(role);
+    const id = Number(actorId);
+    const empty = {
+        ok: false,
+        total: paths.length,
+        present: 0,
+        missing: paths.slice(),
+        version: CACHE_VERSION,
+        actorId: Number.isInteger(id) && id > 0 ? id : null,
+    };
+    if (!Number.isInteger(id) || id <= 0 || !paths.length) {
+        return empty;
+    }
+    const cachesApi = options.caches || (typeof caches !== 'undefined' ? caches : null);
+    if (!cachesApi || typeof cachesApi.open !== 'function') {
+        return empty;
+    }
+    const cacheName = htmlCacheNameForActor(id);
+    if (!cacheName) {
+        return empty;
+    }
+    const win = options.window || (typeof window !== 'undefined' ? window : null);
+    const origin = options.origin || win?.location?.origin || '';
+    if (!origin) {
+        return empty;
+    }
+
+    try {
+        const cache = await cachesApi.open(cacheName);
+        const missing = [];
+        let present = 0;
+        for (const path of paths) {
+            const hit = await cache.match(new Request(navigationCacheUrl(origin, path)));
+            // Stale DEV-generated HTML is not offline-ready in BUILD mode.
+            if (hit && !htmlUsesViteDevAssets(await hit.text())) {
+                present += 1;
+            } else {
+                missing.push(path);
+            }
+        }
+        return {
+            ok: missing.length === 0 && present === paths.length,
+            total: paths.length,
+            present,
+            missing,
+            version: CACHE_VERSION,
+            actorId: id,
+            cacheName,
+        };
+    } catch {
+        return empty;
+    }
+}
+
+/**
+ * @param {Storage|null|undefined} storage
+ * @param {number} actorId
+ * @param {string} role
+ */
+export function readLocalPrepared(storage, actorId, role) {
+    const key = prepareStorageKey(actorId);
+    if (!key || !storage || typeof storage.getItem !== 'function') {
+        return null;
+    }
+    try {
+        const raw = storage.getItem(key);
+        if (!raw) {
+            return null;
+        }
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== 'object') {
+            return null;
+        }
+        if (parsed.version !== CACHE_VERSION) {
+            // Stale prepared marker from a previous cache generation.
+            try {
+                storage.removeItem(key);
+            } catch {
+                // Ignore.
+            }
+            return null;
+        }
+        if (role && parsed.role && parsed.role !== role) {
+            return null;
+        }
+        return parsed;
+    } catch {
+        return null;
+    }
+}
+
+/**
+ * True when the durable prepared marker belongs to this authenticated login session.
+ * Missing/mismatched loginSessionId → treat as not prepared for this login (force refresh).
+ *
+ * @param {object|null|undefined} local
+ * @param {string|null|undefined} loginSessionId
+ */
+export function isPreparedForLoginSession(local, loginSessionId) {
+    if (!local || typeof local !== 'object') {
+        return false;
+    }
+    const expected = String(loginSessionId || '').trim();
+    if (!expected) {
+        // Offline / no status payload: allow legacy skip based on durable marker alone.
+        return true;
+    }
+    const stored = String(local.loginSessionId || '').trim();
+    return Boolean(stored) && stored === expected;
+}
+
+export function writeLocalPrepared(storage, actorId, role, meta = {}) {
+    const key = prepareStorageKey(actorId);
+    if (!key || !storage || typeof storage.setItem !== 'function') {
+        return false;
+    }
+    const normalized = typeof meta === 'number'
+        ? { pathCount: meta }
+        : (meta && typeof meta === 'object' ? meta : {});
+    try {
+        storage.setItem(
+            key,
+            JSON.stringify({
+                version: CACHE_VERSION,
+                role: role || null,
+                pathCount: Number(normalized.pathCount) || 0,
+                preparedAt: new Date().toISOString(),
+                generated_at: normalized.generated_at || null,
+                householdCount: Number.isFinite(Number(normalized.householdCount))
+                    ? Number(normalized.householdCount)
+                    : null,
+                memberCount: Number.isFinite(Number(normalized.memberCount))
+                    ? Number(normalized.memberCount)
+                    : null,
+                dbVersion: OFFLINE_DB_VERSION,
+                loginSessionId: typeof normalized.loginSessionId === 'string'
+                    && normalized.loginSessionId.trim()
+                    ? normalized.loginSessionId.trim()
+                    : null,
+            }),
+        );
+        return true;
+    } catch {
+        return false;
+    }
+}
+
+export function clearLocalPrepared(storage, actorId) {
+    const key = prepareStorageKey(actorId);
+    if (!key || !storage || typeof storage.removeItem !== 'function') {
+        return;
+    }
+    try {
+        storage.removeItem(key);
+    } catch {
+        // Ignore.
+    }
+}
+
+function readActor(doc) {
+    const root = doc?.querySelector?.('[data-lml-offline-root]');
+    const id = Number(root?.getAttribute?.('data-offline-actor-id') || 0);
+    return Number.isInteger(id) && id > 0 ? id : null;
+}
+
+function readAvatarUrl(doc) {
+    return doc?.querySelector?.('[data-lml-offline-root]')?.getAttribute?.('data-offline-actor-avatar') || '';
+}
+
+function readStatusUrl(doc) {
+    return doc?.querySelector?.('[data-lml-offline-root]')?.getAttribute?.('data-offline-status-url') || '/offline/status';
+}
+
+function ensureModal(doc) {
+    let overlay = doc.querySelector('[data-lml-offline-prepare]');
+    if (overlay) {
+        return overlay;
+    }
+
+    overlay = doc.createElement('div');
+    overlay.className = 'lml-offline-prepare';
+    overlay.setAttribute('data-lml-offline-prepare', '');
+    overlay.setAttribute('hidden', '');
+    overlay.innerHTML = `
+<div class="lml-offline-prepare__panel" role="region" aria-labelledby="lml-offline-prepare-title" data-lml-offline-prepare-dialog>
+    <div class="lml-offline-prepare__head">
+        <h2 id="lml-offline-prepare-title" class="lml-offline-prepare__title">Preparing Offline Access</h2>
+        <button type="button" class="lml-offline-prepare__dismiss lml-focus-ring" aria-label="Hide offline preparation" data-lml-offline-prepare-continue>&times;</button>
+    </div>
+    <div class="lml-offline-prepare__status" data-lml-offline-prepare-status role="status" aria-live="polite">
+        Starting offline preparation…
+    </div>
+    <div class="lml-offline-prepare__meter">
+        <div
+            class="lml-offline-prepare__bar"
+            role="progressbar"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            aria-valuenow="0"
+            aria-labelledby="lml-offline-prepare-title"
+            data-lml-offline-prepare-bar
+        >
+            <div class="lml-offline-prepare__bar-fill" data-lml-offline-prepare-fill style="width: 0%"></div>
+        </div>
+        <p class="lml-offline-prepare__percent" data-lml-offline-prepare-percent>0%</p>
+    </div>
+    <p class="lml-offline-prepare__hint" data-lml-offline-prepare-hint>You can keep working while this runs.</p>
+    <div class="lml-offline-prepare__actions" data-lml-offline-prepare-actions hidden>
+        <button type="button" class="btn btn-primary lml-focus-ring" data-lml-offline-prepare-retry>Retry</button>
+    </div>
+</div>`;
+    (doc.body || doc.documentElement).appendChild(overlay);
+    return overlay;
+}
+
+function setProgress(overlay, percentage, label) {
+    const pct = Math.max(0, Math.min(100, Number(percentage) || 0));
+    const fill = overlay.querySelector('[data-lml-offline-prepare-fill]');
+    const bar = overlay.querySelector('[data-lml-offline-prepare-bar]');
+    const percent = overlay.querySelector('[data-lml-offline-prepare-percent]');
+    const status = overlay.querySelector('[data-lml-offline-prepare-status]');
+    if (fill) {
+        fill.style.width = `${pct}%`;
+    }
+    if (bar) {
+        bar.setAttribute('aria-valuenow', String(pct));
+    }
+    if (percent) {
+        percent.textContent = `${pct}%`;
+    }
+    if (status && label) {
+        status.textContent = label;
+    }
+}
+
+function showFailure(overlay, message) {
+    const title = overlay.querySelector('#lml-offline-prepare-title');
+    const status = overlay.querySelector('[data-lml-offline-prepare-status]');
+    const hint = overlay.querySelector('[data-lml-offline-prepare-hint]');
+    const actions = overlay.querySelector('[data-lml-offline-prepare-actions]');
+    if (title) {
+        title.textContent = 'Offline Not Ready';
+    }
+    if (status) {
+        status.textContent = message;
+    }
+    if (hint) {
+        hint.textContent = 'Online features still work. Retry when your connection is stable.';
+    }
+    if (actions) {
+        actions.hidden = false;
+    }
+}
+
+function hideActions(overlay) {
+    const title = overlay.querySelector('#lml-offline-prepare-title');
+    const hint = overlay.querySelector('[data-lml-offline-prepare-hint]');
+    const actions = overlay.querySelector('[data-lml-offline-prepare-actions]');
+    if (title) {
+        title.textContent = 'Preparing Offline Access';
+    }
+    if (hint) {
+        hint.textContent = 'You can keep working while this runs.';
+    }
+    if (actions) {
+        actions.hidden = true;
+    }
+}
+
+function openOverlay(overlay) {
+    overlay.hidden = false;
+    overlay.setAttribute('data-open', '1');
+}
+
+function closeOverlay(overlay) {
+    overlay.hidden = true;
+    overlay.removeAttribute('data-open');
+    hideActions(overlay);
+}
+
+/**
+ * Ask the controlling SW to precache + verify CURRENT /build/manifest.json assets.
+ * Awaits MessageChannel (or broadcast) completion. Idempotent for existing ASSETS_CACHE.
+ *
+ * @param {ServiceWorker|null|undefined} worker
+ * @param {{ window?: Window, timeoutMs?: number }} [options]
+ * @returns {Promise<{ ok: boolean, reason?: string, checked?: string[], missing?: string[], version?: string }>}
+ */
+export function requestEnsureBuildAssets(worker, options = {}) {
+    return new Promise((resolve) => {
+        if (!worker || typeof worker.postMessage !== 'function') {
+            resolve({ ok: false, reason: 'no-worker', checked: [], missing: [] });
+            return;
+        }
+        const timeoutMs = options.timeoutMs || 60000;
+        let settled = false;
+        const channel = typeof MessageChannel === 'function' ? new MessageChannel() : null;
+        const finish = (payload) => {
+            if (settled) {
+                return;
+            }
+            settled = true;
+            resolve(payload && typeof payload === 'object'
+                ? payload
+                : { ok: false, reason: 'invalid-response', checked: [], missing: [] });
+        };
+        const timer = setTimeout(() => finish({ ok: false, reason: 'timeout', checked: [], missing: [] }), timeoutMs);
+        const onMessage = (event) => {
+            const data = event?.data;
+            if (!data || typeof data !== 'object') {
+                return;
+            }
+            const isResult = data.type === MESSAGE_ENSURE_BUILD_ASSETS_RESULT
+                || (Array.isArray(data.checked) && Object.prototype.hasOwnProperty.call(data, 'missing'));
+            if (!isResult) {
+                return;
+            }
+            clearTimeout(timer);
+            if (channel) {
+                channel.port1.onmessage = null;
+            }
+            finish(data);
+        };
+        if (channel) {
+            channel.port1.onmessage = onMessage;
+            try {
+                worker.postMessage({ type: MESSAGE_ENSURE_BUILD_ASSETS, version: CACHE_VERSION }, [channel.port2]);
+                return;
+            } catch {
+                // Fall through to broadcast listener.
+            }
+        }
+        const win = options.window || (typeof window !== 'undefined' ? window : null);
+        const sw = win?.navigator?.serviceWorker;
+        if (sw && typeof sw.addEventListener === 'function') {
+            const handler = (event) => {
+                onMessage(event);
+                if (settled) {
+                    sw.removeEventListener('message', handler);
+                }
+            };
+            sw.addEventListener('message', handler);
+            try {
+                worker.postMessage({ type: MESSAGE_ENSURE_BUILD_ASSETS, version: CACHE_VERSION });
+            } catch {
+                clearTimeout(timer);
+                sw.removeEventListener('message', handler);
+                finish({ ok: false, reason: 'post-failed', checked: [], missing: [] });
+            }
+            return;
+        }
+        clearTimeout(timer);
+        finish({ ok: false, reason: 'no-channel', checked: [], missing: [] });
+    });
+}
+
+/**
+ * Ask the SW whether all authorized core paths are present for this actor/role.
+ */
+export function queryWarmupReady(worker, actorId, role, options = {}) {
+    return new Promise((resolve) => {
+        if (!worker || typeof worker.postMessage !== 'function') {
+            resolve({ ready: false, reason: 'no-worker' });
+            return;
+        }
+        const timeoutMs = options.timeoutMs || 8000;
+        let settled = false;
+        const channel = typeof MessageChannel === 'function' ? new MessageChannel() : null;
+        const finish = (payload) => {
+            if (settled) {
+                return;
+            }
+            settled = true;
+            resolve(payload);
+        };
+        const timer = setTimeout(() => finish({ ready: false, reason: 'timeout' }), timeoutMs);
+        const onMessage = (event) => {
+            const data = event?.data;
+            if (!data || data.type !== MESSAGE_WARMUP_READY_RESULT) {
+                return;
+            }
+            // Controlling SW must agree on CACHE_VERSION or prepared is stale.
+            if (data.version && data.version !== CACHE_VERSION) {
+                clearTimeout(timer);
+                if (channel) {
+                    channel.port1.onmessage = null;
+                }
+                finish({ ready: false, reason: 'version-mismatch', ...data, expectedVersion: CACHE_VERSION });
+                return;
+            }
+            clearTimeout(timer);
+            if (channel) {
+                channel.port1.onmessage = null;
+            }
+            finish(data);
+        };
+        if (channel) {
+            channel.port1.onmessage = onMessage;
+            try {
+                worker.postMessage(
+                    { type: MESSAGE_WARMUP_READY_QUERY, actorId, role, version: CACHE_VERSION },
+                    [channel.port2],
+                );
+                return;
+            } catch {
+                // Fall through to broadcast listener.
+            }
+        }
+        const win = options.window || (typeof window !== 'undefined' ? window : null);
+        const sw = win?.navigator?.serviceWorker;
+        if (sw && typeof sw.addEventListener === 'function') {
+            const handler = (event) => {
+                onMessage(event);
+                if (settled) {
+                    sw.removeEventListener('message', handler);
+                }
+            };
+            sw.addEventListener('message', handler);
+            try {
+                worker.postMessage({ type: MESSAGE_WARMUP_READY_QUERY, actorId, role, version: CACHE_VERSION });
+            } catch {
+                clearTimeout(timer);
+                sw.removeEventListener('message', handler);
+                finish({ ready: false, reason: 'post-failed' });
+            }
+            return;
+        }
+        clearTimeout(timer);
+        finish({ ready: false, reason: 'no-channel' });
+    });
+}
+
+/**
+ * Run core warmup and stream progress events to onProgress / onComplete.
+ */
+export function requestWarmupWithProgress(options = {}) {
+    const {
+        worker,
+        actorId,
+        role,
+        avatarUrl = '',
+        window: win = typeof window !== 'undefined' ? window : null,
+        onProgress,
+        onComplete,
+    } = options;
+
+    return new Promise((resolve) => {
+        if (!worker || typeof worker.postMessage !== 'function') {
+            const fail = { ok: false, reason: 'no-worker', completed: 0, total: 0, percentage: 0 };
+            onComplete?.(fail);
+            resolve(fail);
+            return;
+        }
+
+        let settled = false;
+        const finish = (payload) => {
+            if (settled) {
+                return;
+            }
+            settled = true;
+            clearTimeout(timer);
+            sw?.removeEventListener?.('message', onSwMessage);
+            if (channel) {
+                channel.port1.onmessage = null;
+            }
+            onComplete?.(payload);
+            resolve(payload);
+        };
+
+        const onData = (data) => {
+            if (!data || typeof data !== 'object') {
+                return;
+            }
+            if (data.type === MESSAGE_WARMUP_PROGRESS) {
+                onProgress?.(data);
+                return;
+            }
+            if (data.type === MESSAGE_WARMUP_COMPLETE) {
+                finish(data);
+            }
+        };
+
+        const channel = typeof MessageChannel === 'function' ? new MessageChannel() : null;
+        const sw = win?.navigator?.serviceWorker;
+        const onSwMessage = (event) => onData(event.data);
+        if (sw && typeof sw.addEventListener === 'function') {
+            sw.addEventListener('message', onSwMessage);
+        }
+        if (channel) {
+            channel.port1.onmessage = (event) => onData(event.data);
+        }
+
+        const timer = setTimeout(() => {
+            finish({ ok: false, reason: 'timeout', completed: 0, total: 0, percentage: 0 });
+        }, options.timeoutMs || PREPARE_TIMEOUT_MS);
+
+        try {
+            const payload = {
+                type: MESSAGE_WARMUP_CORE,
+                actorId,
+                role,
+                version: CACHE_VERSION,
+            };
+            if (avatarUrl) {
+                payload.avatarUrl = avatarUrl;
+            }
+            if (channel) {
+                worker.postMessage(payload, [channel.port2]);
+            } else {
+                worker.postMessage(payload);
+            }
+        } catch {
+            finish({ ok: false, reason: 'post-failed', completed: 0, total: 0, percentage: 0 });
+        }
+    });
+}
+
+/**
+ * Blocking preparation for the current dashboard actor when not yet ready.
+ */
+export async function runOfflinePreparation(options = {}) {
+    const win = options.window || (typeof window !== 'undefined' ? window : null);
+    const doc = options.document || (typeof document !== 'undefined' ? document : null);
+    const nav = options.navigator || win?.navigator || null;
+    const storage = options.storage || win?.localStorage || null;
+    const fetchImpl = options.fetch || (typeof win?.fetch === 'function' ? win.fetch.bind(win) : null);
+    const actorId = Number(options.actorId || readActor(doc) || 0);
+    const worker = options.worker || nav?.serviceWorker?.controller || null;
+
+    if (!doc || !Number.isInteger(actorId) || actorId <= 0) {
+        return { ok: false, reason: 'no-actor', blocked: false };
+    }
+
+    // Non-PROD / no SW: never trap the user behind a modal.
+    if (!canWarmCoreFieldPages({ window: win, navigator: nav, actorId, worker }) && !options.force) {
+        return { ok: false, reason: 'preconditions', blocked: false };
+    }
+
+    // Vite DEV HTML cannot be production-offline-ready (cross-origin /resources CSS).
+    if (documentUsesViteDevAssets(doc) && !options.allowViteDevAssets) {
+        return { ok: false, reason: 'vite-dev-assets', blocked: false, role: options.role || null, actorId };
+    }
+
+    const statusUrl = options.statusUrl || readStatusUrl(doc);
+    let role = options.role || null;
+    let sessionOk = false;
+    let loginSessionId = typeof options.loginSessionId === 'string'
+        ? options.loginSessionId.trim()
+        : '';
+
+    if (typeof fetchImpl === 'function' && nav?.onLine !== false) {
+        try {
+            const response = await fetchImpl(statusUrl, {
+                method: 'GET',
+                credentials: 'same-origin',
+                headers: {
+                    Accept: 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            });
+            const payload = await response.json();
+            if (response.ok && payload?.ok === true) {
+                sessionOk = true;
+                role = payload.role || role;
+                if (typeof payload.login_session_id === 'string' && payload.login_session_id.trim()) {
+                    loginSessionId = payload.login_session_id.trim();
+                }
+                if (Number(payload.user_id) > 0 && Number(payload.user_id) !== actorId) {
+                    return { ok: false, reason: 'actor-mismatch', blocked: false };
+                }
+            }
+        } catch {
+            sessionOk = false;
+        }
+    }
+
+    if (!role || !warmupPathsForRole(role).length) {
+        return { ok: false, reason: 'no-role', blocked: false };
+    }
+
+    const local = readLocalPrepared(storage, actorId, role);
+    // Preparing (and its blocking modal) belongs to a fresh login. A device already prepared for
+    // THIS login session never re-prompts: any repair runs silently and keeps the marker.
+    const silent = Boolean(
+        local
+        && !options.force
+        && (!loginSessionId || isPreparedForLoginSession(local, loginSessionId)),
+    );
+    const dropMarker = () => {
+        if (!silent) {
+            clearLocalPrepared(storage, actorId);
+        }
+    };
+    if (local && !options.force) {
+        // Fresh login (new session id) must refresh the staff dataset even if
+        // durable caches/markers still look ready from a previous login.
+        if (loginSessionId && !isPreparedForLoginSession(local, loginSessionId)) {
+            clearLocalPrepared(storage, actorId);
+        } else {
+            const ready = await queryWarmupReady(worker, actorId, role, { window: win, timeoutMs: 5000 });
+            const versionOk = !ready?.version || ready.version === CACHE_VERSION;
+            const dbVersionOk = !local.dbVersion || local.dbVersion === OFFLINE_DB_VERSION;
+            if (ready?.ready === true && versionOk && dbVersionOk) {
+                const verifiedAssets = await requestEnsureBuildAssets(worker, {
+                    window: win,
+                    timeoutMs: options.assetTimeoutMs || options.timeoutMs || 60000,
+                });
+                if (!verifiedAssets?.ok) {
+                    dropMarker();
+                } else {
+                    const verifiedShells = await verifyCoreNavigationCached(actorId, role, {
+                        window: win,
+                        caches: options.caches,
+                        origin: options.origin || win?.location?.origin,
+                    });
+                    const verifiedDataset = await verifyStaffOfflineDataset(actorId, {
+                        caches: options.caches,
+                        origin: options.origin || win?.location?.origin,
+                    });
+                    if (verifiedShells.ok && verifiedDataset.ok) {
+                        void confirmSessionAndWarmCorePages({
+                            window: win,
+                            document: doc,
+                            worker,
+                            navigator: nav,
+                            fetch: fetchImpl,
+                            actorId,
+                            avatarUrl: readAvatarUrl(doc),
+                            statusUrl,
+                        });
+                        return {
+                            ok: true,
+                            reason: 'already-prepared',
+                            blocked: false,
+                            role,
+                            actorId,
+                            assets: verifiedAssets,
+                        };
+                    }
+                    dropMarker();
+                }
+            } else {
+                dropMarker();
+            }
+        }
+    }
+
+    if (nav?.onLine === false) {
+        return { ok: false, reason: 'offline', blocked: false };
+    }
+    if (!sessionOk) {
+        return { ok: false, reason: 'session', blocked: false };
+    }
+    if (!worker) {
+        return { ok: false, reason: 'no-worker', blocked: false };
+    }
+
+    if (silent) {
+        // Refreshing snapshots would overwrite edits that are still waiting to sync.
+        try {
+            const queued = await listOperationsForActor(actorId);
+            if (queued.length > 0) {
+                return { ok: true, reason: 'pending-sync', blocked: false, role, actorId };
+            }
+        } catch {
+            return { ok: true, reason: 'pending-sync', blocked: false, role, actorId };
+        }
+    }
+
+    const overlay = ensureModal(doc);
+    if (!silent) {
+        openOverlay(overlay);
+    }
+    hideActions(overlay);
+    setProgress(overlay, 0, 'Starting offline preparation…');
+
+    const prepRunId = ++prepPerfRunSeq;
+    const totalLabel = `[PREP PERF] TOTAL#${prepRunId}`;
+    const shellsLabel = `[PREP PERF] core-shells#${prepRunId}`;
+    console.log('[PREP PERF] preparation start', { runId: prepRunId, actorId, role });
+    console.time(totalLabel);
+
+    const dismiss = overlay.querySelector('[data-lml-offline-prepare-continue]');
+    dismiss?.addEventListener('click', () => closeOverlay(overlay), { once: true });
+
+    const corePathResults = [];
+    const runShellWarmup = () => {
+        console.time(shellsLabel);
+        return requestWarmupWithProgress({
+            worker,
+            actorId,
+            role,
+            avatarUrl: readAvatarUrl(doc),
+            window: win,
+            timeoutMs: options.timeoutMs || PREPARE_TIMEOUT_MS,
+            onProgress: (data) => {
+                if (data?.diag && data.url) {
+                    corePathResults.push(data.diag);
+                    console.log('[PREP PERF] core-path', data.diag);
+                }
+                const warmed = Number(data.completed) || 0;
+                const total = Number(data.total) || 0;
+                const failed = Number(data.failed) || 0;
+                let label = data.label || 'Offline pages…';
+                if (failed > 0 && total > 0) {
+                    label = `Offline pages ${warmed} / ${total}`;
+                }
+                const shellPct = failed > 0 && Number(data.percentage) === 100
+                    ? Math.min(99, Math.round((warmed / total) * 100))
+                    : Number(data.percentage) || 0;
+                setProgress(overlay, mapShellProgressToOverall(shellPct), label);
+            },
+        }).finally(() => {
+            console.timeEnd(shellsLabel);
+            console.log('[PREP PERF] core-shells summary', {
+                runId: prepRunId,
+                paths: corePathResults.length,
+                failed: corePathResults.filter((row) => !row.success).map((row) => row.pathname),
+            });
+        });
+    };
+
+    const runStaffDataset = () => prepareStaffOfflineDataset({
+        window: win,
+        document: doc,
+        navigator: nav,
+        fetch: fetchImpl,
+        actorId,
+        origin: options.origin || win?.location?.origin,
+        caches: options.caches,
+        bootstrapUrl: options.bootstrapUrl || readHouseholdBootstrapUrl(doc),
+        updatePageStatus: false,
+        prepPerfRunId: prepRunId,
+        onProgress: (detail) => {
+            setProgress(
+                overlay,
+                mapDatasetProgressToOverall(detail),
+                detail.label || 'Preparing household data…',
+            );
+        },
+    });
+
+    // Phase 2B: Spot Mapping saved offline map (about 0.3 MB of verified OpenStreetMap tiles). Non-blocking:
+    // a failure never fails preparation (Spot Mapping falls back to the plain offline view and retries the
+    // download the next time it is opened online). Skipped where Cache Storage is unavailable (Node tests).
+    const offlineMapStep = options.prepareOfflineMap !== undefined
+        ? options.prepareOfflineMap
+        : (typeof globalThis.caches !== 'undefined' && win && win === globalThis.window ? prepareOfflineMap : null);
+    const runOfflineMapStep = async () => {
+        if (typeof offlineMapStep !== 'function') {
+            return { ok: false, reason: 'skipped' };
+        }
+        setProgress(overlay, mapDatasetProgressToOverall({ phase: 'verify' }), 'Saving the offline map…');
+        try {
+            return await offlineMapStep({
+                caches: options.caches,
+                origin: options.origin || win?.location?.origin,
+                navigator: nav || undefined,
+                onProgress: ({ done, total }) => setProgress(
+                    overlay,
+                    mapDatasetProgressToOverall({ phase: 'verify' }),
+                    `Saving the offline map… ${done} / ${total}`,
+                ),
+            });
+        } catch {
+            return { ok: false, reason: 'error' };
+        }
+    };
+
+    const runFullPreparation = async () => {
+        setProgress(overlay, 2, 'Preparing offline styles and scripts…');
+        const assets = await requestEnsureBuildAssets(worker, {
+            window: win,
+            timeoutMs: options.assetTimeoutMs || options.timeoutMs || 60000,
+        });
+        if (!assets?.ok) {
+            return { ok: false, stage: 'assets', assets, shell: null, dataset: null };
+        }
+
+        const shell = await runShellWarmup();
+        const shellOk = shell?.ok === true
+            && Number(shell.percentage) === 100
+            && (!Array.isArray(shell.failed) || shell.failed.length === 0);
+        if (!shellOk) {
+            return { ok: false, stage: 'shells', assets, shell, dataset: null };
+        }
+
+        setProgress(overlay, mapShellProgressToOverall(100), 'Offline pages ready.');
+        const dataset = await runStaffDataset();
+        if (!dataset?.ok) {
+            return { ok: false, stage: 'dataset', assets, shell, dataset };
+        }
+
+        const offlineMap = await runOfflineMapStep();
+
+        const verifyLabel = `[PREP PERF] verification#${prepRunId}`;
+        console.time(verifyLabel);
+        const verifiedShells = await verifyCoreNavigationCached(actorId, role, {
+            window: win,
+            caches: options.caches,
+            origin: options.origin || win?.location?.origin,
+        });
+        const verifiedDataset = await verifyStaffOfflineDataset(actorId, {
+            expectedGeneratedAt: dataset.generated_at || null,
+            caches: options.caches,
+            origin: options.origin || win?.location?.origin,
+        });
+        // Re-verify assets after shells/dataset so a concurrent build cannot leave Ready stale.
+        const verifiedAssets = await requestEnsureBuildAssets(worker, {
+            window: win,
+            timeoutMs: options.assetTimeoutMs || options.timeoutMs || 60000,
+        });
+        console.timeEnd(verifyLabel);
+        if (!verifiedShells.ok || !verifiedDataset.ok || !verifiedAssets?.ok) {
+            return {
+                ok: false,
+                stage: !verifiedAssets?.ok ? 'assets' : 'verify',
+                assets: verifiedAssets,
+                shell,
+                dataset,
+                verifiedShells,
+                verifiedDataset,
+            };
+        }
+
+        return {
+            ok: true,
+            stage: 'complete',
+            assets: verifiedAssets,
+            shell,
+            dataset,
+            verifiedShells,
+            verifiedDataset,
+            offlineMap,
+        };
+    };
+
+    let result = await runFullPreparation();
+
+    const bindRecovery = () => {
+        const retry = overlay.querySelector('[data-lml-offline-prepare-retry]');
+        const cont = overlay.querySelector('[data-lml-offline-prepare-continue]');
+        retry?.addEventListener('click', () => {
+            hideActions(overlay);
+            setProgress(overlay, 0, 'Retrying offline preparation…');
+            void runFullPreparation().then((next) => {
+                result = next;
+                void finishFromResult(next);
+            });
+        }, { once: true });
+        cont?.addEventListener('click', () => closeOverlay(overlay), { once: true });
+    };
+
+    const finishFromResult = async (next) => {
+        if (next?.ok === true) {
+            const shellTotal = next.shell?.total || warmupPathsForRole(role).length;
+            writeLocalPrepared(storage, actorId, role, {
+                pathCount: shellTotal,
+                generated_at: next.dataset?.generated_at || next.verifiedDataset?.generated_at || null,
+                householdCount: next.verifiedDataset?.householdCount ?? next.dataset?.householdCount,
+                memberCount: next.verifiedDataset?.memberCount ?? next.dataset?.memberCount,
+                loginSessionId: loginSessionId || null,
+            });
+            if (silent) {
+                return true;
+            }
+            const mapMissed = next.offlineMap && next.offlineMap.ok !== true && next.offlineMap.reason !== 'skipped';
+            setProgress(
+                overlay,
+                100,
+                mapMissed
+                    ? 'Offline access is ready. The offline map was not saved; Spot Mapping will try again when online.'
+                    : 'Offline access is ready.',
+            );
+            const closer = typeof win?.setTimeout === 'function' ? win.setTimeout.bind(win) : setTimeout;
+            closer(() => closeOverlay(overlay), 2500);
+            return true;
+        }
+
+        const lost = nav?.onLine === false || next?.shell?.reason === 'timeout';
+        const partialShells = next?.shell?.ok === true || (Array.isArray(next?.shell?.warmed) && next.shell.warmed.length > 0);
+
+        if (next?.stage === 'assets') {
+            setProgress(overlay, 5, 'Offline styles and scripts failed');
+        } else if (next?.stage === 'dataset') {
+            setProgress(overlay, mapDatasetProgressToOverall({ phase: 'households', ready: 0, total: 0 }), 'Households failed');
+        } else if (next?.stage === 'verify') {
+            setProgress(overlay, 95, 'Verifying local data…');
+        } else if (partialShells && next?.shell?.total > 0) {
+            const warmedCount = Array.isArray(next.shell.warmed) ? next.shell.warmed.length : Number(next.shell.completed) || 0;
+            setProgress(
+                overlay,
+                mapShellProgressToOverall(Math.round((warmedCount / next.shell.total) * 100)),
+                `Offline pages ${warmedCount} / ${next.shell.total}`,
+            );
+        }
+
+        if (silent) {
+            // Background repair failed: keep working, try again on the next page load.
+            return false;
+        }
+        showFailure(
+            overlay,
+            lost
+                ? 'Connection lost during offline preparation.'
+                : 'Offline preparation is incomplete.',
+        );
+        clearLocalPrepared(storage, actorId);
+        bindRecovery();
+        return false;
+    };
+
+    const preparedOk = await finishFromResult(result);
+    const failureReason = preparedOk
+        ? null
+        : (result?.stage || result?.dataset?.reason || result?.shell?.reason || 'incomplete');
+    if (!preparedOk) {
+        const fill = overlay.querySelector('[data-lml-offline-prepare-percent]');
+        const progressText = fill?.textContent || null;
+        console.log('[PREP PERF] FAILURE', {
+            runId: prepRunId,
+            stage: result?.stage || null,
+            reason: failureReason,
+            shellReason: result?.shell?.reason || null,
+            datasetReason: result?.dataset?.reason || null,
+            progress: progressText,
+            corePaths: corePathResults,
+            firstFailedCore: corePathResults.find((row) => !row.success) || null,
+        });
+    }
+    console.timeEnd(totalLabel);
+    console.log('[PREP PERF] preparation end', {
+        runId: prepRunId,
+        ok: preparedOk,
+        stage: result?.stage || null,
+    });
+
+    return {
+        ok: preparedOk,
+        reason: preparedOk ? 'complete' : failureReason,
+        blocked: !silent,
+        result,
+        role,
+        actorId,
+    };
+}
+
+/**
+ * Dashboard boot entry — call after SW is ready and actor is synced.
+ */
+export function bootOfflinePreparation(options = {}) {
+    console.log('[PREP PERF] bootOfflinePreparation called', { seq: prepPerfRunSeq + 1 });
+    // ready, controllerchange and online can all fire during one run. Overlapping
+    // runs overwrite each other's snapshots and fail verification (stuck at 45%).
+    if (activePreparation) {
+        return activePreparation;
+    }
+    activePreparation = runInExclusiveLock(options, () => runOfflinePreparation(options))
+        .finally(() => {
+            activePreparation = null;
+        });
+    return activePreparation;
+}
+
+/**
+ * Two tabs of the same browser share IndexedDB/caches; only one prepares at a time.
+ */
+function runInExclusiveLock(options, task) {
+    const locks = (options.navigator || options.window?.navigator
+        || (typeof navigator !== 'undefined' ? navigator : null))?.locks;
+    if (!locks || typeof locks.request !== 'function') {
+        return task();
+    }
+    return locks.request('lmlinga-offline-preparation', { ifAvailable: true }, (lock) => (
+        lock ? task() : { ok: false, reason: 'other-tab', blocked: false }
+    ));
+}

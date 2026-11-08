@@ -1,0 +1,504 @@
+/* BHW/BNS/BSPO public landing page only — Figma 366:160 */
+
+.lml-landing-main {
+    overflow-x: hidden;
+    background-color: #fff;
+}
+
+/* ── Header ───────────────────────────────────────────────── */
+
+.lml-public-header {
+    background-color: #fff;
+    border-bottom-color: rgba(11, 61, 11, 0.08) !important;
+}
+
+.lml-header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 96px;
+    padding: 12px 40px 12px 20px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    color: #00820e;
+    font-family: var(--lml-font-sans);
+    font-weight: 700;
+    font-size: 1.875rem; /* 30px — Figma logo wordmark */
+    line-height: 1;
+}
+
+.logo img {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    margin-right: 8px;
+}
+
+/* Both Login + Register: soft green pills (Figma 501:601 / 501:602) */
+.lml-header-actions {
+    gap: 1.25rem !important; /* ~40px between buttons at 1280 */
+}
+
+.lml-header-actions .btn,
+.lml-header-actions .btn-primary,
+.lml-header-actions .btn-outline-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 140px;
+    height: 44px;
+    padding: 0 1.5rem;
+    border: 0 !important;
+    border-radius: 13px !important;
+    background-color: rgba(81, 194, 105, 0.6) !important;
+    color: #000 !important;
+    font-family: var(--lml-font-sans);
+    font-size: 1.05rem;
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.lml-header-actions .btn:last-child {
+    background-color: rgba(81, 194, 105, 0.5) !important;
+}
+
+.lml-header-actions .btn:hover,
+.lml-header-actions .btn:focus-visible,
+.lml-header-actions .btn-primary:hover,
+.lml-header-actions .btn-outline-primary:hover {
+    background-color: rgba(81, 194, 105, 0.75) !important;
+    color: #000 !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.28);
+}
+
+/* ── Hero ─────────────────────────────────────────────────── */
+
+.hero {
+    display: grid;
+    grid-template-columns: minmax(280px, 38%) minmax(0, 62%);
+    align-items: center;
+    column-gap: 1.5rem;
+    min-height: 260px;
+    padding: 8px 40px 28px 56px;
+    overflow: hidden;
+    background: linear-gradient(90deg, #f7fff8 0%, #eef9f0 45%, #e4f6e7 100%);
+}
+
+.hero-content {
+    max-width: 420px;
+    position: relative;
+    z-index: 2;
+    padding-top: 0.25rem;
+}
+
+.hero-illustration {
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-end;
+    width: 100%;
+    min-height: 220px;
+}
+
+.hero-illustration img {
+    display: block;
+    width: 100%;
+    max-width: 980px;
+    min-width: 0;
+    height: auto;
+    max-height: 280px;
+    object-fit: contain;
+    object-position: right bottom;
+    transform: translateX(12px) translateY(8px);
+}
+
+.lml-hero-kicker {
+    margin-bottom: 0.15rem !important;
+    color: #000 !important;
+    font-size: 1.55rem; /* ~25px */
+    font-weight: 700;
+    line-height: 1.25;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.lml-hero-title {
+    margin-bottom: 0.65rem !important;
+    color: #00820e !important;
+    font-size: clamp(2rem, 3.5vw, 2.5rem); /* 40px desktop */
+    font-weight: 700;
+    line-height: 1.15;
+}
+
+.lml-hero-description {
+    max-width: 34rem;
+    color: #000 !important;
+    font-size: 1.25rem; /* 20px */
+    font-weight: 400;
+    line-height: 1.75; /* ~35px at 20px */
+}
+
+/* ── Team section ─────────────────────────────────────────── */
+
+.lml-team-section {
+    padding-top: 2.75rem; /* gap between hero and team title */
+    padding-bottom: 3.5rem;
+}
+
+.lml-team-heading {
+    margin-bottom: 2rem;
+}
+
+.lml-team-heading__title {
+    margin-bottom: 0.35rem !important;
+    color: #000 !important;
+    font-size: 1.55rem; /* 25px SemiBold */
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+.lml-team-heading__subtitle {
+    margin-bottom: 0;
+    color: #000 !important;
+    font-size: 1.125rem; /* 18px */
+    font-weight: 400;
+    line-height: 1.55;
+}
+
+/* ── Role info cards — Figma-matched accents ──────────────── */
+
+.lml-role-card {
+    --lml-role-color: #00820e;
+    --lml-role-color-rgb: 0, 130, 14;
+    --lml-role-badge-bg: rgba(81, 194, 105, 0.3);
+    --lml-role-shadow: 0 4px 12px rgba(31, 122, 31, 0.45);
+
+    border: 1px solid rgba(var(--lml-role-color-rgb), 0.28) !important;
+    border-radius: 25px !important;
+    background-color: #fff;
+    box-shadow: var(--lml-role-shadow);
+}
+
+.lml-role-card--bhw {
+    --lml-role-color: #00820e;
+    --lml-role-color-rgb: 0, 130, 14;
+    --lml-role-badge-bg: rgba(81, 194, 105, 0.3);
+    --lml-role-shadow: 0 4px 12px rgba(31, 122, 31, 0.45);
+}
+
+.lml-role-card--bns {
+    --lml-role-color: #0f7eae;
+    --lml-role-color-rgb: 15, 126, 174;
+    --lml-role-badge-bg: rgba(15, 126, 174, 0.18);
+    --lml-role-shadow: 0 4px 12px rgba(15, 126, 174, 0.45);
+}
+
+.lml-role-card--bspo {
+    --lml-role-color: #ffa500;
+    --lml-role-color-rgb: 255, 165, 0;
+    --lml-role-badge-bg: rgba(255, 165, 0, 0.22);
+    --lml-role-shadow: 0 4px 12px rgba(255, 165, 0, 0.45);
+}
+
+.lml-role-card__body {
+    padding: 1.35rem 1.4rem 1.5rem !important;
+}
+
+.lml-role-card__header {
+    margin-bottom: 0.85rem;
+}
+
+.lml-role-card__badge {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 72px;
+    height: 72px;
+    border-radius: 999px;
+    background-color: var(--lml-role-badge-bg);
+    color: var(--lml-role-color);
+    font-size: 1.85rem;
+    line-height: 1;
+}
+
+.lml-role-card__title {
+    color: var(--lml-role-color);
+    font-size: 2rem; /* 32px */
+    font-weight: 600;
+    line-height: 1.15;
+}
+
+.lml-role-card__subtitle {
+    color: var(--lml-role-color);
+    font-size: 1.05rem; /* ~18–20px */
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.lml-role-card__description {
+    margin-bottom: 0;
+    color: #000;
+    font-size: 0.9375rem; /* 15px */
+    line-height: 1.35; /* ~20px */
+}
+
+.lml-role-card__divider {
+    margin: 0.85rem 0 0.9rem;
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.18);
+    opacity: 1;
+}
+
+.lml-role-card__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem; /* ~27px row pitch with 15px text */
+}
+
+.lml-role-card__item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.55rem;
+    color: #000;
+    font-size: 0.9375rem; /* 15px */
+    line-height: 1.4;
+}
+
+.lml-role-card__check {
+    flex-shrink: 0;
+    margin-top: 0.12rem;
+    color: var(--lml-role-color);
+    font-size: 1.05rem;
+}
+
+/* ── Desktop refinements ──────────────────────────────────── */
+
+@media (min-width: 1200px) {
+    .lml-header-inner {
+        padding: 12px 40px 12px 16px;
+    }
+
+    .logo img {
+        width: 80px;
+        height: 80px;
+    }
+
+    .lml-header-actions .btn,
+    .lml-header-actions .btn-primary,
+    .lml-header-actions .btn-outline-primary {
+        min-width: 180px;
+        font-size: 1.25rem; /* closer to Figma 25px */
+    }
+
+    .hero {
+        grid-template-columns: 36% 64%;
+        padding: 4px 40px 32px 56px;
+        min-height: 280px;
+    }
+
+    .hero-illustration img {
+        max-width: 1040px;
+        max-height: 300px;
+        transform: translateX(18px) translateY(10px);
+    }
+}
+
+/* ── Tablet ───────────────────────────────────────────────── */
+
+@media (min-width: 768px) and (max-width: 1199.98px) {
+    .lml-header-inner {
+        min-height: 84px;
+        padding: 12px 28px;
+    }
+
+    .logo {
+        font-size: 1.6rem;
+    }
+
+    .logo img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .lml-header-actions {
+        gap: 0.85rem !important;
+    }
+
+    .lml-header-actions .btn,
+    .lml-header-actions .btn-primary,
+    .lml-header-actions .btn-outline-primary {
+        min-width: 120px;
+        height: 40px;
+        font-size: 0.95rem;
+        padding: 0 1.1rem;
+    }
+
+    .hero {
+        grid-template-columns: 42% 58%;
+        padding: 16px 28px 24px;
+        min-height: 240px;
+        column-gap: 1rem;
+    }
+
+    .lml-hero-kicker {
+        font-size: 1.35rem;
+    }
+
+    .lml-hero-title {
+        font-size: 2.1rem;
+    }
+
+    .lml-hero-description {
+        font-size: 1.05rem;
+        line-height: 1.65;
+    }
+
+    .hero-illustration {
+        min-height: 180px;
+    }
+
+    .hero-illustration img {
+        max-height: 240px;
+        transform: translateX(8px);
+    }
+
+    .lml-team-section {
+        padding-top: 2.25rem;
+    }
+
+    .lml-role-card__badge {
+        width: 64px;
+        height: 64px;
+        font-size: 1.6rem;
+    }
+
+    .lml-role-card__title {
+        font-size: 1.65rem;
+    }
+}
+
+/* ── Mobile header ────────────────────────────────────────── */
+
+@media (max-width: 991.98px) {
+    .lml-header-inner {
+        min-height: 72px;
+        padding: 12px 20px;
+    }
+
+    .logo {
+        font-size: 1.5rem;
+    }
+
+    .logo img {
+        width: 52px;
+        height: 52px;
+        margin-right: 8px;
+    }
+}
+
+/* ── Mobile stacked layout ────────────────────────────────── */
+
+@media (max-width: 767.98px) {
+    .lml-header-inner {
+        flex-wrap: wrap;
+        gap: 0.75rem;
+        padding: 12px 16px;
+    }
+
+    .lml-header-actions {
+        width: 100%;
+        justify-content: stretch;
+        gap: 0.65rem !important;
+    }
+
+    .lml-header-actions .btn,
+    .lml-header-actions .btn-primary,
+    .lml-header-actions .btn-outline-primary {
+        flex: 1 1 0;
+        min-width: 0;
+        height: 42px;
+        font-size: 0.9rem;
+    }
+
+    .hero {
+        display: grid;
+        grid-template-columns: 1fr;
+        padding: 24px 20px 20px;
+        gap: 1rem;
+        min-height: auto;
+        text-align: center;
+    }
+
+    .hero-content {
+        max-width: 100%;
+        margin-inline: auto;
+    }
+
+    .lml-hero-kicker {
+        font-size: 1.25rem;
+    }
+
+    .lml-hero-title {
+        font-size: 2rem;
+    }
+
+    .lml-hero-description {
+        margin-inline: auto;
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+
+    .hero-illustration {
+        justify-content: center;
+        min-height: 0;
+    }
+
+    .hero-illustration img {
+        width: 100%;
+        max-width: 480px;
+        max-height: none;
+        margin-inline: auto;
+        transform: none;
+        object-position: center bottom;
+    }
+
+    .lml-team-section {
+        padding-top: 2rem;
+        padding-bottom: 2.5rem;
+    }
+
+    .lml-team-heading {
+        margin-bottom: 1.5rem;
+    }
+
+    .lml-team-heading__title {
+        font-size: 1.35rem;
+    }
+
+    .lml-team-heading__subtitle {
+        font-size: 1rem;
+    }
+
+    .lml-role-card__body {
+        padding: 1.25rem !important;
+    }
+
+    .lml-role-card__badge {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
+
+    .lml-role-card__title {
+        font-size: 1.75rem;
+    }
+
+    .lml-role-card__subtitle {
+        font-size: 1rem;
+    }
+}

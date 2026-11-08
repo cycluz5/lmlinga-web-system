@@ -1,0 +1,13 @@
+{
+  "_comment": "SR-10 Demo Location Mode points. Used only for the DEMO / SIMULATED LOCATION preview (never saved). A point is shown as verified only if \"verified\" is true.",
+  "points": [
+    {
+      "key": "la-medalla-es-candidate",
+      "label": "La Medalla Elementary School (candidate, UNVERIFIED)",
+      "lat": 13.3812723,
+      "lng": 123.4313442,
+      "verified": false,
+      "source": "UNVERIFIED candidate: centre of OpenStreetMap way 878482737 'La Medalla Elementary School' (tags: amenity=school, ref=114447 DepEd School ID, source=Department of Education, Philippines 2012), © OpenStreetMap contributors, ODbL; retrieved 2026-10-30. Inside the indicative NAMRIA/PSA boundary (about 272 m from its edge). Not yet confirmed on site or by the barangay/DepEd."
+    }
+  ]
+}

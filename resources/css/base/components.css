@@ -1,0 +1,242 @@
+/**
+ * LMLinga Design System — Reusable Component Classes
+ * Use alongside Bootstrap layout/components and Tailwind utilities.
+ */
+
+/* ── Surface / Card ─────────────────────────────────────────── */
+.lml-surface {
+    background-color: #fff;
+    border: 1px solid var(--lml-soft-green);
+    border-radius: var(--lml-radius-lg);
+    box-shadow: var(--lml-shadow-sm);
+}
+
+.lml-surface--elevated {
+    box-shadow: var(--lml-shadow-md);
+}
+
+.lml-surface--flat {
+    box-shadow: none;
+}
+
+/* ── Buttons (extends Bootstrap) ────────────────────────────── */
+.lml-btn-accent {
+    background-color: var(--lml-accent);
+    border-color: var(--lml-accent);
+    color: #fff;
+}
+
+.lml-btn-accent:hover,
+.lml-btn-accent:focus {
+    background-color: var(--lml-deep-green);
+    border-color: var(--lml-deep-green);
+    color: #fff;
+}
+
+/* ── Badges ─────────────────────────────────────────────────── */
+.lml-badge {
+    --bs-badge-padding-x: 0.65em;
+    --bs-badge-padding-y: 0.25em;
+    --bs-badge-font-size: 0.75rem;
+    --bs-badge-font-weight: 600;
+    --bs-badge-border-radius: var(--lml-radius-sm);
+    display: inline-flex;
+    align-items: center;
+    padding: var(--bs-badge-padding-y) var(--bs-badge-padding-x);
+    font-size: var(--bs-badge-font-size);
+    font-weight: var(--bs-badge-font-weight);
+    border-radius: var(--bs-badge-border-radius);
+    line-height: 1;
+}
+
+.lml-badge--primary {
+    --bs-badge-color: #fff;
+    background-color: var(--bs-primary);
+    color: var(--bs-badge-color);
+}
+
+.lml-badge--secondary {
+    --bs-badge-color: #fff;
+    background-color: var(--bs-secondary);
+    color: var(--bs-badge-color);
+}
+
+.lml-badge--soft {
+    background-color: var(--lml-soft-green);
+    color: var(--lml-deep-green);
+}
+
+.lml-badge--outline {
+    background-color: transparent;
+    border: 1px solid var(--bs-primary);
+    color: var(--bs-primary);
+}
+
+/* ── Dividers ───────────────────────────────────────────────── */
+.lml-divider {
+    border: 0;
+    border-top: 1px solid var(--lml-soft-green);
+    margin: 1.5rem 0;
+}
+
+/* ── Page shell ─────────────────────────────────────────────── */
+.lml-page {
+    min-height: 100vh;
+    background-color: var(--lml-background);
+}
+
+.lml-page-header {
+    background-color: #fff;
+    border-bottom: 1px solid var(--lml-soft-green);
+    box-shadow: var(--lml-shadow-sm);
+}
+
+.lml-page-content {
+    flex: 1;
+}
+
+/* ── Status indicators ──────────────────────────────────────── */
+.lml-dot {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background-color: var(--lml-primary);
+}
+
+.lml-dot--accent { background-color: var(--lml-accent); }
+.lml-dot--muted { background-color: var(--lml-light-green); }
+
+/* ── Focus ring (accessibility) ─────────────────────────────── */
+.lml-focus-ring:focus-visible {
+    outline: 2px solid var(--lml-primary);
+    outline-offset: 2px;
+}
+
+/* ── Skip to main content (keyboard a11y) ───────────────────── */
+.lml-skip-link {
+    position: absolute;
+    left: 0.75rem;
+    top: 0.75rem;
+    z-index: 1100;
+    display: inline-flex;
+    align-items: center;
+    padding: 0.625rem 1rem;
+    border-radius: var(--lml-radius-md);
+    background-color: var(--lml-deep-green);
+    color: #fff;
+    font-family: var(--lml-font-sans);
+    font-size: 0.9375rem;
+    font-weight: 600;
+    line-height: 1.25;
+    text-decoration: none;
+    box-shadow: var(--lml-shadow-md);
+    transform: translateY(-160%);
+    transition: transform 0.15s ease;
+}
+
+.lml-skip-link:focus,
+.lml-skip-link:focus-visible {
+    color: #fff;
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+    transform: translateY(0);
+}
+
+/* ── Form fields ────────────────────────────────────────────── */
+.lml-form-control {
+    border-color: var(--lml-soft-green);
+    border-radius: var(--lml-radius-md);
+    color: var(--lml-dark-green);
+    padding: 0.625rem 0.875rem;
+}
+
+.lml-form-control::placeholder {
+    color: var(--lml-text-green);
+    opacity: 0.5;
+}
+
+.lml-form-control:focus {
+    border-color: var(--lml-light-green);
+    box-shadow: 0 0 0 0.25rem rgba(var(--lml-primary-rgb), 0.2);
+}
+
+.lml-form-control.is-invalid {
+    border-color: var(--bs-danger);
+}
+
+.lml-form-label {
+    color: var(--lml-deep-green);
+    font-weight: 500;
+    margin-bottom: 0.375rem;
+}
+
+.lml-form-label--required::after {
+    content: ' *';
+    color: var(--bs-danger);
+}
+
+.lml-form-label--with-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.lml-form-label--with-icon > .bi {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.lml-form-label__optional {
+    font-weight: 400;
+    opacity: 0.75;
+}
+
+.lml-form-help {
+    color: var(--lml-text-green);
+    font-size: 0.8125rem;
+    margin-top: 0.25rem;
+    opacity: 0.85;
+}
+
+.lml-form-error {
+    color: var(--bs-danger);
+    font-size: 0.8125rem;
+    margin-top: 0.25rem;
+}
+
+/* ── Page container ───────────────────────────────────────────── */
+.lml-page-container {
+    width: 100%;
+    max-width: 72rem;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+@media (min-width: 768px) {
+    .lml-page-container {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+/* ── Section header ───────────────────────────────────────────── */
+.lml-section-header {
+    margin-bottom: 1.5rem;
+}
+
+.lml-section-header__title {
+    color: var(--lml-deep-green);
+    font-weight: 600;
+    margin-bottom: 0;
+}
+
+.lml-section-header__subtitle {
+    color: var(--lml-text-green);
+    font-size: 0.9375rem;
+    margin-bottom: 0;
+    margin-top: 0.25rem;
+    opacity: 0.85;
+}
