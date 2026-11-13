@@ -191,9 +191,9 @@ function createMarkerIcon(data, selected = false, accessibleName = '', count = 1
     return L.divIcon({
         className: 'lml-spot-map__marker-wrap',
         html: `<span class="lml-spot-map__marker ${zoneClass} ${statusClass}${selectedClass}" aria-label="${escapeAttr(label)}">${countBadge}<i class="bi ${iconClass}" aria-hidden="true"></i></span>`,
-        iconSize: [24, 24],
-        iconAnchor: [12, 12],
-        popupAnchor: [0, -12],
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
+        popupAnchor: [0, -16],
     });
 }
 
@@ -1257,9 +1257,9 @@ function initSpotMapping() {
             items.push(data);
         });
 
-        const groups = buildOverlapGroups(items, {
-            getLayerPoint: (lat, lng) => map.latLngToLayerPoint(L.latLng(lat, lng)),
-        });
+        // Like the Dashboard map, nearby houses are drawn separately. Only houses at exactly the
+        // same coordinates are grouped (count badge), because one would otherwise hide the other.
+        const groups = buildOverlapGroups(items);
         const plan = planOverlapVisuals(groups);
         const layers = applyOverlapLayerPlan(plan, {
             householdLayers: new Set(markerById.keys()),

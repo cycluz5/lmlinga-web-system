@@ -15,9 +15,9 @@
     --lml-spot-zone-5: #8b5cf6;
     --lml-spot-zone-unset: #9ca3af;
     --lml-spot-indicator-size: 0.6875rem; /* 11px — legend + panel zone dots */
-    --lml-spot-marker-size: 1.5rem; /* 24px — 25% smaller than prior 2rem / 32px */
-    --lml-spot-marker-glyph: 0.65rem;
-    --lml-spot-marker-border: 2px;
+    --lml-spot-marker-size: 2rem; /* 32px — same as the Dashboard map markers */
+    --lml-spot-marker-glyph: 0.85rem;
+    --lml-spot-marker-border: 2.5px;
     --lml-spot-panel-width: 20rem;
     display: flex;
     flex-direction: column;
@@ -625,7 +625,7 @@
 .lml-spot-map__legend-swatch--zone-4 { background-color: var(--lml-spot-zone-4); }
 .lml-spot-map__legend-swatch--zone-5 { background-color: var(--lml-spot-zone-5); }
 
-/* Custom Leaflet markers — fill = Zone; border = Household Status */
+/* Custom Leaflet markers — fill = Zone; white border (same look as the Dashboard map) */
 .lml-spot-map__marker-wrap.leaflet-div-icon {
     background: transparent;
     border: none;
@@ -670,15 +670,6 @@
 .lml-spot-map__marker--zone-3 { background-color: var(--lml-spot-zone-3); }
 .lml-spot-map__marker--zone-4 { background-color: var(--lml-spot-zone-4); }
 .lml-spot-map__marker--zone-5 { background-color: var(--lml-spot-zone-5); }
-
-.lml-spot-map__marker--status-plotted {
-    border-color: var(--lml-spot-plotted);
-}
-
-.lml-spot-map__marker--status-pending,
-.lml-spot-map__marker--status-new {
-    border-color: var(--lml-spot-pending);
-}
 
 .lml-spot-map__marker.is-selected {
     box-shadow: 0 0 0 2px rgba(var(--lml-deep-green-rgb), 0.45), 0 2px 6px rgba(0, 0, 0, 0.28);
