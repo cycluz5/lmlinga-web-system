@@ -6,6 +6,7 @@ use App\Support\StaffRole;
 
 use App\Models\Household;
 use App\Models\Resident;
+use App\Rules\WithinLaMedallaBoundary;
 use App\Services\SpotMappingService;
 use App\Support\UiRole;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -126,8 +127,8 @@ class SpotMappingErdPlotPersistenceTest extends TestCase
             'house_head' => 'Pedro L. Castillo',
             'household_type' => 'NHTS',
             'zone' => '5',
-            'lat' => 13.3855,
-            'lng' => 123.4345,
+            'lat' => 13.3790,
+            'lng' => 123.4330,
             'consent' => true,
         ];
     }
@@ -157,8 +158,38 @@ class SpotMappingErdPlotPersistenceTest extends TestCase
         ]));
 
         $after = DB::table('households')->where('household_id', $this->erdHouseholdId)->first();
-        $this->assertEqualsWithDelta(13.3855, (float) $after->latitude, 0.0000001);
-        $this->assertEqualsWithDelta(123.4345, (float) $after->longitude, 0.0000001);
+        $this->assertEqualsWithDelta(13.3790, (float) $after->latitude, 0.0000001);
+        $this->assertEqualsWithDelta(123.4330, (float) $after->longitude, 0.0000001);
+    }
+
+    public function test_plot_handoff_outside_la_medalla_boundary_is_rejected(): void
+    {
+        $payload = array_merge($this->validHandoffPayload(), ['lat' => 13.3900, 'lng' => 123.4400]);
+
+        $this->postJson(route('spot-mapping.plot-handoff'), $payload)
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['lat' => WithinLaMedallaBoundary::MESSAGE]);
+
+        $after = DB::table('households')->where('household_id', $this->erdHouseholdId)->first();
+        $this->assertNull($after->latitude);
+        $this->assertNull($after->longitude);
+    }
+
+    public function test_coordinate_update_outside_la_medalla_boundary_is_rejected(): void
+    {
+        $this->postJson(route('spot-mapping.plot'), [
+            'household_no' => 'HH-006',
+            'lat' => 13.3900,
+            'lng' => 123.4400,
+            'consent' => true,
+            'confirm_replot' => true,
+        ])
+            ->assertStatus(422)
+            ->assertJsonValidationErrors(['lat' => WithinLaMedallaBoundary::MESSAGE]);
+
+        $after = DB::table('households')->where('household_no', 'HH-006')->first();
+        $this->assertEqualsWithDelta(13.382, (float) $after->latitude, 0.0000001);
+        $this->assertEqualsWithDelta(123.4315, (float) $after->longitude, 0.0000001);
     }
 
     public function test_household_no_resolves_to_authoritative_household_id_for_coordinate_update(): void
