@@ -1327,3 +1327,69 @@
         min-width: 11rem;
     }
 }
+
+/* GPS permission dialog (asked once per session before using device location) */
+.lml-spot-map__geo-consent {
+    width: min(24rem, calc(100vw - 2rem));
+    padding: 1.5rem 1.25rem 1.25rem;
+    border: 1px solid rgba(var(--lml-primary-rgb), 0.35);
+    border-radius: var(--lml-radius-lg);
+    background-color: #fff;
+    color: #0f172a;
+    text-align: center;
+    box-shadow: var(--lml-shadow-md);
+}
+
+.lml-spot-map__geo-consent::backdrop {
+    background-color: rgba(15, 23, 42, 0.55);
+}
+
+.lml-spot-map__geo-consent-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    margin-bottom: 0.75rem;
+    border-radius: 50%;
+    background-color: rgba(var(--lml-primary-rgb), 0.12);
+    color: var(--lml-primary);
+    font-size: 1.4rem;
+}
+
+.lml-spot-map__geo-consent-title {
+    margin: 0 0 0.5rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+}
+
+.lml-spot-map__geo-consent-text {
+    margin: 0 0 1.25rem;
+    color: #475569;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.lml-spot-map__geo-consent-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.lml-spot-map__geo-consent-actions .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+}
+
+@media (max-width: 479.98px) {
+    .lml-spot-map__geo-consent-actions {
+        flex-direction: column-reverse;
+    }
+
+    .lml-spot-map__geo-consent-actions .btn {
+        width: 100%;
+    }
+}

@@ -217,6 +217,31 @@
                     <span data-spot-map-overlay-text>Getting your current location…</span>
                 </div>
 
+                <dialog
+                    class="lml-spot-map__geo-consent"
+                    data-spot-map-geo-consent
+                    aria-labelledby="spot-map-geo-consent-title"
+                    aria-describedby="spot-map-geo-consent-text"
+                >
+                    <div class="lml-spot-map__geo-consent-icon" aria-hidden="true">
+                        <i class="bi bi-geo-alt-fill"></i>
+                    </div>
+                    <h2 class="lml-spot-map__geo-consent-title" id="spot-map-geo-consent-title">Allow location access?</h2>
+                    <p class="lml-spot-map__geo-consent-text" id="spot-map-geo-consent-text">
+                        LMLinga will use your device's GPS to place this household on the map.
+                        Your location is used only for this plot. Your browser may also ask you to allow location.
+                    </p>
+                    <div class="lml-spot-map__geo-consent-actions">
+                        <button type="button" class="btn btn-outline-secondary" data-spot-map-geo-consent-manual>
+                            Place manually instead
+                        </button>
+                        <button type="button" class="btn btn-primary" data-spot-map-geo-consent-allow>
+                            <i class="bi bi-crosshair" aria-hidden="true"></i>
+                            Allow location
+                        </button>
+                    </div>
+                </dialog>
+
                 <div class="lml-spot-map__legend" aria-label="Map legend">
                     <p class="lml-spot-map__legend-title">Map Legend</p>
 

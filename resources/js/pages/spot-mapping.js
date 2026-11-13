@@ -12,6 +12,14 @@ import {
     LA_MEDALLA_ZOOM,
 } from '../maps/la-medalla-base';
 import { isPointInBoundary } from '../maps/la-medalla-boundary';
+import {
+    currentSessionToken,
+    GEO_CONSENT_CONFIRM_TEXT,
+    GEO_CONSENT_MANUAL_MESSAGE,
+    hasGeoConsent,
+    rememberGeoConsent,
+    sessionStore,
+} from './spot-mapping-geo-consent';
 import { isClientOffline, isNetworkFailure } from '../offline/offline-forms';
 import { OFFLINE_EVENTS } from '../offline/offline-status.js';
 import { initSpotMappingExport } from './spot-mapping-export';
@@ -474,6 +482,9 @@ function initSpotMapping() {
     const overlay = root.querySelector('[data-spot-map-overlay]');
     const overlayIcon = root.querySelector('[data-spot-map-overlay-icon]');
     const overlayText = root.querySelector('[data-spot-map-overlay-text]');
+    const geoConsentDialog = root.querySelector('[data-spot-map-geo-consent]');
+    const geoConsentAllowBtn = root.querySelector('[data-spot-map-geo-consent-allow]');
+    const geoConsentManualBtn = root.querySelector('[data-spot-map-geo-consent-manual]');
     const panel = root.querySelector('[data-spot-map-panel]');
     const noteEl = root.querySelector('[data-spot-map-note]');
     const closeBtn = root.querySelector('[data-spot-map-close]');
@@ -1548,6 +1559,67 @@ function initSpotMapping() {
             return;
         }
 
+        // Ask in-app before touching the device GPS (once per login session).
+        if (hasGeoConsent(sessionStore(), currentSessionToken())) {
+            requestGpsLocation(requestId, plan);
+            return;
+        }
+
+        askGeoConsent(requestId, plan);
+    }
+
+    function askGeoConsent(requestId, plan) {
+        const allow = () => {
+            if (requestId !== locateRequestId) {
+                return;
+            }
+            rememberGeoConsent(sessionStore(), currentSessionToken());
+            requestGpsLocation(requestId, plan);
+        };
+        const placeManually = () => {
+            if (requestId !== locateRequestId) {
+                return;
+            }
+            enterManualFallback(GEO_CONSENT_MANUAL_MESSAGE, 'info');
+        };
+
+        if (!geoConsentDialog || typeof geoConsentDialog.showModal !== 'function') {
+            if (window.confirm(GEO_CONSENT_CONFIRM_TEXT)) {
+                allow();
+            } else {
+                placeManually();
+            }
+            return;
+        }
+
+        let choice = 'manual';
+        const onAllow = () => {
+            choice = 'allow';
+            geoConsentDialog.close();
+        };
+        const onManual = () => {
+            choice = 'manual';
+            geoConsentDialog.close();
+        };
+        // Esc, the Manual button and Allow all end in 'close'; decide there exactly once.
+        const onClose = () => {
+            geoConsentAllowBtn?.removeEventListener('click', onAllow);
+            geoConsentManualBtn?.removeEventListener('click', onManual);
+            if (choice === 'allow') {
+                allow();
+            } else {
+                placeManually();
+            }
+        };
+
+        geoConsentAllowBtn?.addEventListener('click', onAllow);
+        geoConsentManualBtn?.addEventListener('click', onManual);
+        geoConsentDialog.addEventListener('close', onClose, { once: true });
+        geoConsentDialog.showModal();
+        geoConsentAllowBtn?.focus();
+    }
+
+    function requestGpsLocation(requestId, plan) {
         setLocating(true);
         showOverlay(plan.overlay, {
             mode: plan.overlayMode,
