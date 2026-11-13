@@ -254,15 +254,15 @@ class HouseholdProfilingCoordinatePreservationTest extends TestCase
 
         $this->postJson(route('spot-mapping.plot'), [
             'household_no' => 'HH-860',
-            'lat' => 13.39110000,
-            'lng' => 123.44110000,
+            'lat' => 13.37910000,
+            'lng' => 123.43310000,
             'consent' => true,
             'confirm_replot' => true,
         ])->assertOk();
 
         $household->refresh();
-        $this->assertSame('13.39110000', (string) $household->latitude);
-        $this->assertSame('123.44110000', (string) $household->longitude);
+        $this->assertSame('13.37910000', (string) $household->latitude);
+        $this->assertSame('123.43310000', (string) $household->longitude);
     }
 
     public function test_r01c_pending_create_then_spot_mapping_plot_still_works(): void

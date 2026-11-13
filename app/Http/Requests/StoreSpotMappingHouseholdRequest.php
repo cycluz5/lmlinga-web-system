@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\WithinLaMedallaBoundary;
 use App\Support\DemoHouseholdWaterSupply;
 use App\Support\HouseholdNumber;
 use App\Support\HouseholdZoneResolver;
@@ -90,7 +91,7 @@ class StoreSpotMappingHouseholdRequest extends FormRequest
                 DemoHouseholdWaterSupply::HOUSEHOLD_TYPE_NON_NHTS,
             ])],
             'date_registered' => ['required', 'date', 'date_format:Y-m-d', 'before_or_equal:today'],
-            'lat' => ['required', 'numeric', 'between:-90,90'],
+            'lat' => ['required', 'numeric', 'between:-90,90', new WithinLaMedallaBoundary],
             'lng' => ['required', 'numeric', 'between:-180,180'],
             'consent' => ['required', 'accepted'],
             'client_marker_id' => ['nullable', 'string', 'max:128'],

@@ -5,7 +5,13 @@
  */
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { createLaMedallaBaseMap, LA_MEDALLA_CENTER, LA_MEDALLA_ZOOM } from '../maps/la-medalla-base';
+import {
+    createLaMedallaBaseMap,
+    LA_MEDALLA_BOUNDARY,
+    LA_MEDALLA_CENTER,
+    LA_MEDALLA_ZOOM,
+} from '../maps/la-medalla-base';
+import { isPointInBoundary } from '../maps/la-medalla-boundary';
 import { isClientOffline, isNetworkFailure } from '../offline/offline-forms';
 import { OFFLINE_EVENTS } from '../offline/offline-status.js';
 import { initSpotMappingExport } from './spot-mapping-export';
@@ -28,8 +34,7 @@ const DEMO_ZOOM = LA_MEDALLA_ZOOM;
 const GPS_ZOOM = 17;
 const DEMO_SCOPE_RADIUS_METERS = 2000;
 
-const OUTSIDE_SCOPE_MESSAGE =
-    'You appear to be outside Barangay La Medalla. Household plotting is limited to Barangay La Medalla.';
+const OUTSIDE_SCOPE_MESSAGE = 'You cannot plot outside the Barangay La Medalla boundary.';
 
 const GENERIC_PLOT_FAILURE =
     'Unable to register this household. Check the details and try again.';
@@ -241,11 +246,16 @@ function distanceMeters(lat1, lng1, lat2, lng2) {
 }
 
 /**
- * UI-only demo scope check against DEMO_CENTER + DEMO_SCOPE_RADIUS_METERS.
- * Swap this helper later for polygon / GIS / backend geofencing without
- * changing the GPS success / manual fallback workflow.
+ * Plot scope check against the (indicative) Barangay La Medalla boundary polygon.
+ * The server enforces the same boundary (App\Rules\WithinLaMedallaBoundary).
+ * Falls back to DEMO_CENTER + DEMO_SCOPE_RADIUS_METERS only if the boundary cannot be read.
  */
 function isWithinDemoScope(lat, lng) {
+    const inBoundary = isPointInBoundary(LA_MEDALLA_BOUNDARY, lat, lng);
+    if (inBoundary !== null) {
+        return inBoundary;
+    }
+
     const [centerLat, centerLng] = DEMO_CENTER;
     return distanceMeters(centerLat, centerLng, lat, lng) <= DEMO_SCOPE_RADIUS_METERS;
 }
@@ -1690,6 +1700,15 @@ function initSpotMapping() {
         }
 
         const { lat, lng } = event.latlng;
+        if (!isWithinDemoScope(lat, lng)) {
+            // Stay in placing mode so the user can click again inside the boundary.
+            showOverlay(OUTSIDE_SCOPE_MESSAGE, {
+                mode: 'error',
+                icon: 'bi-exclamation-triangle-fill',
+            });
+            return;
+        }
+
         const tempData = placeTemporaryMarker(lat, lng, { source: 'manual' });
         setPlacing(false);
         openPanel(tempData, selectedPendingHousehold ? plotExistingBtn : plotBtn);

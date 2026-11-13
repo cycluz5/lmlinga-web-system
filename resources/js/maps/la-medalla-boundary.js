@@ -48,6 +48,32 @@ function outerRings(feature) {
     return rings;
 }
 
+/** Ray-casting test of one [longitude, latitude] ring. */
+function ringContains(ring, lat, lng) {
+    let inside = false;
+    for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+        const [xi, yi] = ring[i];
+        const [xj, yj] = ring[j];
+        if ((yi > lat) !== (yj > lat) && lng < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) {
+            inside = !inside;
+        }
+    }
+    return inside;
+}
+
+/**
+ * True when (lat, lng) is inside any outer ring of the boundary, false when outside,
+ * null when the boundary or the point cannot be read (callers decide the fallback).
+ */
+export function isPointInBoundary(feature, lat, lng) {
+    const rings = outerRings(feature);
+    if (!rings || !Number.isFinite(lat) || !Number.isFinite(lng)) {
+        return null;
+    }
+
+    return rings.some((ring) => ringContains(ring, lat, lng));
+}
+
 /**
  * Mask rings for the area outside the barangay: a world ring, then each outer boundary ring as a hole.
  * Rings are [latitude, longitude] for L.polygon. Returns null when the geometry cannot be read.

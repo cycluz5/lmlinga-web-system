@@ -7,6 +7,7 @@ import {
     BOUNDARY_STYLE,
     OUTSIDE_MASK_STYLE,
     drawBarangayBoundary,
+    isPointInBoundary,
     outsideMaskLatLngs,
 } from '../../resources/js/maps/la-medalla-boundary.js';
 
@@ -80,6 +81,33 @@ describe('outsideMaskLatLngs', () => {
         assert.equal(outsideMaskLatLngs(null), null);
         assert.equal(outsideMaskLatLngs({ type: 'Feature', geometry: { type: 'Point', coordinates: [1, 2] } }), null);
         assert.equal(outsideMaskLatLngs({ type: 'Feature', geometry: { type: 'Polygon', coordinates: [[[1, 2]]] } }), null);
+    });
+});
+
+describe('isPointInBoundary', () => {
+    it('is true inside La Medalla and false outside', () => {
+        assert.equal(isPointInBoundary(feature, 13.3806, 123.4312), true);
+        assert.equal(isPointInBoundary(feature, 13.379, 123.433), true);
+        assert.equal(isPointInBoundary(feature, 13.39, 123.44), false);
+        assert.equal(isPointInBoundary(feature, 14.5995, 120.9842), false);
+    });
+
+    it('returns null when the boundary or point cannot be read', () => {
+        assert.equal(isPointInBoundary(null, 13.3806, 123.4312), null);
+        assert.equal(isPointInBoundary(feature, Number.NaN, 123.4312), null);
+    });
+});
+
+describe('spot mapping plot guard', () => {
+    const spot = readFileSync(path.resolve('resources/js/pages/spot-mapping.js'), 'utf8');
+
+    it('uses the boundary for the scope check and blocks outside map clicks', () => {
+        assert.match(spot, /isPointInBoundary\(LA_MEDALLA_BOUNDARY, lat, lng\)/);
+        assert.match(spot, /OUTSIDE_SCOPE_MESSAGE = 'You cannot plot outside the Barangay La Medalla boundary\.'/);
+        assert.match(
+            spot,
+            /if \(!isWithinDemoScope\(lat, lng\)\) \{[\s\S]*?showOverlay\(OUTSIDE_SCOPE_MESSAGE[\s\S]*?return;\s*\}\s*const tempData = placeTemporaryMarker\(lat, lng, \{ source: 'manual' \}\)/,
+        );
     });
 });
 
