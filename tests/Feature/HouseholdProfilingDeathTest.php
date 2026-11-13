@@ -45,15 +45,15 @@ class HouseholdProfilingDeathTest extends TestCase
         $params = $this->memberParams();
 
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-002/death'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-002').'/death'),
             route('household-profiling.members.death.index', $params)
         );
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-002/death/create'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-002').'/death/create'),
             route('household-profiling.members.death.create', $params)
         );
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-002/death/edit'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-002').'/death/edit'),
             route('household-profiling.members.death.edit', $params)
         );
     }

@@ -424,6 +424,7 @@ class DeathRecordsErdModeTest extends TestCase
     {
         $user = $user->fresh(['currentAppointment']);
         $this->actingAs($user);
+        $this->alignSessionLoginWith($user);
         $user->syncUiRoleSession();
     }
 

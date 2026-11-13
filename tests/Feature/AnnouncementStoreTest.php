@@ -67,7 +67,7 @@ class AnnouncementStoreTest extends TestCase
 
     public function test_supported_roles_can_post(): void
     {
-        foreach (UiRole::ALLOWED as $role) {
+        foreach (UiRole::HEALTH_WORKER_ROLES as $role) {
             $this->actingAsStaffRole($role)
                 ->post(route('announcements.store'), $this->validPayload([
                     'title' => "Announcement for {$role}",

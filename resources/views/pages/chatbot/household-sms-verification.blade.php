@@ -178,26 +178,29 @@
                         </p>
                     </form>
 
-                    <div class="lml-chatbot-sms-verify__divider">
-                        <span class="lml-chatbot-sms-verify__divider-line" aria-hidden="true"></span>
-                        <span class="lml-chatbot-sms-verify__divider-label">OR</span>
-                        <span class="lml-chatbot-sms-verify__divider-line" aria-hidden="true"></span>
-                    </div>
+                    {{-- Email OTP is not offered for household linking in staff_verified mode (account emails are unverified). --}}
+                    @if (\App\Support\HouseholdLinkingPolicy::emailOtpAllowed())
+                        <div class="lml-chatbot-sms-verify__divider">
+                            <span class="lml-chatbot-sms-verify__divider-line" aria-hidden="true"></span>
+                            <span class="lml-chatbot-sms-verify__divider-label">OR</span>
+                            <span class="lml-chatbot-sms-verify__divider-line" aria-hidden="true"></span>
+                        </div>
 
-                    <form
-                        method="post"
-                        action="{{ route('chatbot.household.verification.email.send') }}"
-                        class="lml-chatbot-sms-verify__alt-form"
-                    >
-                        @csrf
-                        <button
-                            type="submit"
-                            class="lml-chatbot-sms-verify__alt-btn lml-focus-ring"
+                        <form
+                            method="post"
+                            action="{{ route('chatbot.household.verification.email.send') }}"
+                            class="lml-chatbot-sms-verify__alt-form"
                         >
-                            <i class="bi bi-envelope-fill" aria-hidden="true"></i>
-                            <span>Try Other Way (Send via Email)</span>
-                        </button>
-                    </form>
+                            @csrf
+                            <button
+                                type="submit"
+                                class="lml-chatbot-sms-verify__alt-btn lml-focus-ring"
+                            >
+                                <i class="bi bi-envelope-fill" aria-hidden="true"></i>
+                                <span>Try Other Way (Send via Email)</span>
+                            </button>
+                        </form>
+                    @endif
                 </section>
             </main>
         </div>

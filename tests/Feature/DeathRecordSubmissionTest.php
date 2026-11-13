@@ -30,7 +30,7 @@ class DeathRecordSubmissionTest extends TestCase
     public function test_death_form_requires_selected_resident_context(): void
     {
         $this->actingAsStaff(StaffRole::BHW);
-        $missing = $this->get('/health-records/death/HH-999/MB-001');
+        $missing = $this->get(route('health-records.death.show', ['householdNo' => 'HH-999', 'memberId' => 'MB-001']));
 
         $missing->assertOk();
         $missing->assertSee('Resident not found', false);

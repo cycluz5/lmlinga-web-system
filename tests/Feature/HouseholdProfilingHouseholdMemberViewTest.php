@@ -179,28 +179,28 @@ class HouseholdProfilingHouseholdMemberViewTest extends TestCase
     public function test_child_care_named_routes_remain_resolvable(): void
     {
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-001/child-immunization'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-001').'/child-immunization'),
             route('household-profiling.members.child-immunization', [
                 'householdNo' => 'HH-151',
                 'memberId' => 'MB-001',
             ])
         );
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-001/school-based-immunization'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-001').'/school-based-immunization'),
             route('household-profiling.members.school-based-immunization', [
                 'householdNo' => 'HH-151',
                 'memberId' => 'MB-001',
             ])
         );
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-001/child-nutrition'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-001').'/child-nutrition'),
             route('household-profiling.members.child-nutrition', [
                 'householdNo' => 'HH-151',
                 'memberId' => 'MB-001',
             ])
         );
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-001/deworming'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-001').'/deworming'),
             route('household-profiling.members.deworming', [
                 'householdNo' => 'HH-151',
                 'memberId' => 'MB-001',

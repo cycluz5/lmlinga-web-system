@@ -2,7 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use App\Support\AtRestEncrypter;
+use App\Support\ResidentAuthenticator;
+use App\Support\StaffRole;
 use App\Support\Database\CachingSchemaBuilder;
 use App\Support\Database\SchemaLookupCache;
 use Database\Seeders\SuperAdminSeeder;
@@ -13,8 +16,12 @@ use Illuminate\Database\Events\MigrationsStarted;
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Database\Events\SchemaLoaded;
 use Illuminate\Database\Events\TransactionRolledBack;
+use Illuminate\Cache\RateLimiting\Limit;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -62,6 +69,12 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrapFive();
         $this->flushSchemaLookupsOnSchemaChange();
+        $this->registerResidentRateLimiters();
+
+        // SR-06: only an active Linguist may approve/reject chatbot terms or datasets (never Admin — D-7).
+        // Used by the SR-05 / SR-07 review actions.
+        Gate::define('review-language-content', static fn (User $user): bool => $user->isActive()
+            && StaffRole::isLinguist($user->role));
 
         if ($this->app->runningInConsole()) {
             $this->prependMysqlClientToPath();
@@ -70,6 +83,55 @@ class AppServiceProvider extends ServiceProvider
                 $this->ensureSuperAdminAfterMigrate();
             }
         }
+    }
+
+    /**
+     * Named limiters for resident household linking. Plain throttle:N,M keys every route by IP
+     * alone, so all such routes (including forgot-password) would share one counter per IP;
+     * named limiters get their own key. Residents are not default-guard users, so resident
+     * limits are keyed by the session's resident account, falling back to IP before login.
+     */
+    private function registerResidentRateLimiters(): void
+    {
+        $residentKey = static function (Request $request): string {
+            $accountId = $request->hasSession()
+                ? $request->session()->get(ResidentAuthenticator::SESSION_ACCOUNT_ID)
+                : null;
+
+            return $accountId !== null && $accountId !== ''
+                ? 'account:'.$accountId
+                : 'ip:'.$request->ip();
+        };
+
+        // SR-07: dataset uploads/replacements per signed-in Admin.
+        RateLimiter::for('lmlinga-dataset-upload', static fn (Request $request): Limit => Limit::perHour(
+            max(1, (int) config('lmlinga.chatbot_datasets.uploads_per_hour', 20))
+        )->by('staff:'.($request->user()?->getAuthIdentifier() ?? $request->ip())));
+
+        RateLimiter::for('lmlinga-household-submit', static fn (Request $request): Limit => Limit::perHour(
+            max(1, (int) config('lmlinga.household_linking.submit_per_hour', 10))
+        )->by($residentKey($request)));
+
+        RateLimiter::for('lmlinga-household-sms-send', static fn (Request $request): Limit => Limit::perMinutes(
+            10,
+            max(1, (int) config('lmlinga.household_linking.sms_send_per_10_minutes', 5))
+        )->by($residentKey($request)));
+
+        RateLimiter::for('lmlinga-resident-register', static fn (Request $request): Limit => Limit::perHour(
+            max(1, (int) config('lmlinga.household_linking.register_per_hour_per_ip', 5))
+        )->by('ip:'.$request->ip()));
+
+        // Email OTP (SR-03): registration resend/verify are keyed by IP (no account yet), existing-account
+        // send/verify by resident account. Per-address limits live in ResidentEmailOtpService.
+        RateLimiter::for('lmlinga-resident-email-otp-send', static fn (Request $request): Limit => Limit::perMinutes(
+            10,
+            max(1, (int) config('lmlinga.resident_email_verification.send_per_10_minutes', 5))
+        )->by($residentKey($request)));
+
+        RateLimiter::for('lmlinga-resident-email-otp-verify', static fn (Request $request): Limit => Limit::perMinutes(
+            10,
+            max(1, (int) config('lmlinga.resident_email_verification.verify_per_10_minutes', 10))
+        )->by($residentKey($request)));
     }
 
     /**

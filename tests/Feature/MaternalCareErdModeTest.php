@@ -14,6 +14,12 @@ class MaternalCareErdModeTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        \Illuminate\Support\Facades\Storage::fake('death_certificates');
+    }
+
     public function test_without_maternal_care_table_bmi_is_not_treated_as_generated(): void
     {
         MaternalCareErdMode::resetCachedState();

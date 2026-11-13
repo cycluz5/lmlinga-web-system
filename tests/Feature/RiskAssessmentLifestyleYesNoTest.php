@@ -119,6 +119,7 @@ class RiskAssessmentLifestyleYesNoTest extends TestCase
         /** @var User $user */
         $user = User::query()->findOrFail($userId);
         $this->actingAs($user);
+        $this->alignSessionLoginWith($user);
 
         return $user;
     }

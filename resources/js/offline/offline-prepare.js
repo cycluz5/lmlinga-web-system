@@ -22,6 +22,7 @@ import {
     warmupPathsForRole,
 } from './offline-sw-policy.js';
 import { OFFLINE_DB_VERSION } from './offline-db.js';
+import { prepareOfflineMap } from '../maps/la-medalla-offline-map.js';
 import { listOperationsForActor } from './offline-queue.js';
 import { canWarmCoreFieldPages, confirmSessionAndWarmCorePages } from './offline-sw-warmup.js';
 import {
@@ -837,6 +838,33 @@ export async function runOfflinePreparation(options = {}) {
         },
     });
 
+    // Phase 2B: Spot Mapping saved offline map (about 0.3 MB of verified OpenStreetMap tiles). Non-blocking:
+    // a failure never fails preparation (Spot Mapping falls back to the plain offline view and retries the
+    // download the next time it is opened online). Skipped where Cache Storage is unavailable (Node tests).
+    const offlineMapStep = options.prepareOfflineMap !== undefined
+        ? options.prepareOfflineMap
+        : (typeof globalThis.caches !== 'undefined' && win && win === globalThis.window ? prepareOfflineMap : null);
+    const runOfflineMapStep = async () => {
+        if (typeof offlineMapStep !== 'function') {
+            return { ok: false, reason: 'skipped' };
+        }
+        setProgress(overlay, mapDatasetProgressToOverall({ phase: 'verify' }), 'Saving the offline map…');
+        try {
+            return await offlineMapStep({
+                caches: options.caches,
+                origin: options.origin || win?.location?.origin,
+                navigator: nav || undefined,
+                onProgress: ({ done, total }) => setProgress(
+                    overlay,
+                    mapDatasetProgressToOverall({ phase: 'verify' }),
+                    `Saving the offline map… ${done} / ${total}`,
+                ),
+            });
+        } catch {
+            return { ok: false, reason: 'error' };
+        }
+    };
+
     const runFullPreparation = async () => {
         setProgress(overlay, 2, 'Preparing offline styles and scripts…');
         const assets = await requestEnsureBuildAssets(worker, {
@@ -860,6 +888,8 @@ export async function runOfflinePreparation(options = {}) {
         if (!dataset?.ok) {
             return { ok: false, stage: 'dataset', assets, shell, dataset };
         }
+
+        const offlineMap = await runOfflineMapStep();
 
         const verifyLabel = `[PREP PERF] verification#${prepRunId}`;
         console.time(verifyLabel);
@@ -899,6 +929,7 @@ export async function runOfflinePreparation(options = {}) {
             dataset,
             verifiedShells,
             verifiedDataset,
+            offlineMap,
         };
     };
 
@@ -931,7 +962,14 @@ export async function runOfflinePreparation(options = {}) {
             if (silent) {
                 return true;
             }
-            setProgress(overlay, 100, 'Offline access is ready.');
+            const mapMissed = next.offlineMap && next.offlineMap.ok !== true && next.offlineMap.reason !== 'skipped';
+            setProgress(
+                overlay,
+                100,
+                mapMissed
+                    ? 'Offline access is ready. The offline map was not saved; Spot Mapping will try again when online.'
+                    : 'Offline access is ready.',
+            );
             const closer = typeof win?.setTimeout === 'function' ? win.setTimeout.bind(win) : setTimeout;
             closer(() => closeOverlay(overlay), 2500);
             return true;

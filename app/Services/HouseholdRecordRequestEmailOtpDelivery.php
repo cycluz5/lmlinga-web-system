@@ -31,7 +31,7 @@ final class HouseholdRecordRequestEmailOtpDelivery
             return HouseholdOtpEmailDeliveryResult::failed('unauthorized');
         }
 
-        if (! HouseholdRecordVerifiedAccess::allowsOtpInterface($record)) {
+        if (! HouseholdRecordVerifiedAccess::allowsEmailOtpInterface($record)) {
             return HouseholdOtpEmailDeliveryResult::failed('invalid_status');
         }
 

@@ -445,9 +445,9 @@ class AdminHealthWorkerDeleteTest extends TestCase
             ->assertOk()
             ->getContent();
 
-        $this->assertStringContainsString('data-hw-deactivate-id="'.$worker->id.'"', $index);
+        $this->assertStringContainsString('data-hw-deactivate-id="'.$this->opaqueId('w', (string) $worker->id).'"', $index);
         $this->assertStringContainsString('Deactivate Account', $index);
-        $this->assertStringContainsString('data-hw-delete-id="'.$worker->id.'"', $index);
+        $this->assertStringContainsString('data-hw-delete-id="'.$this->opaqueId('w', (string) $worker->id).'"', $index);
         $this->assertStringContainsString('Delete Account', $index);
         $this->assertStringContainsString('data-hw-delete-modal', $index);
         $this->assertStringContainsString('data-hw-deactivate-modal', $index);
@@ -458,17 +458,17 @@ class AdminHealthWorkerDeleteTest extends TestCase
         $this->assertStringContainsString('data-hw-action="delete"', $index);
         $this->assertStringContainsString('data-hw-delete-base="'.url('/user-management/health-workers').'"', $index);
         $this->assertStringNotContainsString('data-hw-delete-base="'.url('/user-management/health-workers').'/deactivate"', $index);
-        $this->assertStringNotContainsString('data-hw-deactivate-id="'.$inactive->id.'"', $index);
-        $this->assertStringContainsString('data-hw-delete-id="'.$inactive->id.'"', $index);
-        $this->assertStringNotContainsString('data-hw-delete-id="'.$admin->id.'"', $index);
+        $this->assertStringNotContainsString('data-hw-deactivate-id="'.$this->opaqueId('w', (string) $inactive->id).'"', $index);
+        $this->assertStringContainsString('data-hw-delete-id="'.$this->opaqueId('w', (string) $inactive->id).'"', $index);
+        $this->assertStringNotContainsString('data-hw-delete-id="'.$this->opaqueId('w', (string) $admin->id).'"', $index);
         $this->assertStringContainsString('This is different from deactivating', $index);
 
         $view = $this->actingAsAdminSession()
             ->get(route('user-management.health-workers.view', ['id' => (string) $worker->id]))
             ->assertOk()
             ->getContent();
-        $this->assertStringContainsString('data-hw-deactivate-id="'.$worker->id.'"', $view);
-        $this->assertStringContainsString('data-hw-delete-id="'.$worker->id.'"', $view);
+        $this->assertStringContainsString('data-hw-deactivate-id="'.$this->opaqueId('w', (string) $worker->id).'"', $view);
+        $this->assertStringContainsString('data-hw-delete-id="'.$this->opaqueId('w', (string) $worker->id).'"', $view);
     }
 
     public function test_unauthenticated_delete_redirects_to_login(): void
@@ -615,6 +615,7 @@ class AdminHealthWorkerDeleteTest extends TestCase
         }
 
         $this->actingAs($admin);
+        $this->alignSessionLoginWith($admin);
         $this->withSession([
             UiRole::SESSION_KEY => StaffRole::ADMIN,
             DemoStaffLogin::SESSION_LOGIN_ESTABLISHED => true,
@@ -631,6 +632,7 @@ class AdminHealthWorkerDeleteTest extends TestCase
     private function actingAsWorkerSession(User $worker): void
     {
         $this->actingAs($worker);
+        $this->alignSessionLoginWith($worker);
         $this->withSession([
             UiRole::SESSION_KEY => StaffRole::normalize($worker->role) ?? StaffRole::BHW,
             DemoStaffLogin::SESSION_LOGIN_ESTABLISHED => true,
@@ -731,6 +733,7 @@ class AdminHealthWorkerDeleteTest extends TestCase
         ], $overrides), ['role' => StaffRole::BHW]);
 
         $this->actingAs($worker);
+        $this->alignSessionLoginWith($worker);
         $this->withSession([
             UiRole::SESSION_KEY => StaffRole::BHW,
             DemoStaffLogin::SESSION_LOGIN_ESTABLISHED => true,

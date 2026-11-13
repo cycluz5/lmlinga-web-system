@@ -351,7 +351,7 @@ class ChildImmunizationPersistencePhase2Test extends TestCase
             'vaccines' => ['bcg' => [0 => '2025-01-01']],
         ]);
 
-        $household->update(['street' => 'Changed Street']);
+        $household->update(['accomplished_by' => 'Changed BHW']);
         $resident->update(['member_no' => 'MB-899']);
 
         $record = ChildImmunization::query()->where('resident_id', $resident->id)->first();

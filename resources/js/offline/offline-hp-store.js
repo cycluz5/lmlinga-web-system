@@ -631,6 +631,7 @@ export function memberFromPayload(household, payload, memberNo, existing = null)
             payload?.philhealth ?? payload?.philhealth_number,
             base.philhealth,
         ) || '').replace(/\s+/g, ''),
+        philhealth_membership_type: String(pick(payload?.philhealth_membership_type, base.philhealth_membership_type) || ''),
         fp_user: String(pick(payload?.fp_user, base.fp_user) || ''),
         occupation_select: String(occupation || ''),
         occupation_other: String(pick(payload?.occupation_other, base.occupation_other) || ''),

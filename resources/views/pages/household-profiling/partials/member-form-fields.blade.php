@@ -256,6 +256,28 @@
             <p class="lml-hh-member-form__error" id="err-philhealth" hidden></p>
         </div>
 
+        @if (\App\Support\PhilhealthMembershipTypes::available())
+        <div class="lml-hh-member-form__field" data-field="philhealth_membership_type">
+            <label for="lml-hh-philhealth-membership-type">
+                PhilHealth Membership Type
+            </label>
+            <div class="lml-hh-member-form__select-wrap">
+                <select id="lml-hh-philhealth-membership-type" name="philhealth_membership_type" class="lml-hh-member-form__control lml-focus-ring">
+                    <option value="">Select</option>
+                    @foreach (\App\Support\PhilhealthMembershipTypes::grouped() as $group => $types)
+                        <optgroup label="{{ $group }}">
+                            @foreach ($types as $code => $label)
+                                <option value="{{ $code }}" @selected(old('philhealth_membership_type', $v['philhealth_membership_type'] ?? '') === $code)>{{ $label }}</option>
+                            @endforeach
+                        </optgroup>
+                    @endforeach
+                </select>
+                <i class="bi bi-chevron-down" aria-hidden="true"></i>
+            </div>
+            <p class="lml-hh-member-form__error" id="err-philhealth_membership_type" hidden></p>
+        </div>
+        @endif
+
         <div class="lml-hh-member-form__field" data-field="fp_user">
             <label for="lml-hh-fp-user">
                 Family Planning (FP) User <span class="lml-hh-member-form__req" aria-hidden="true">*</span>

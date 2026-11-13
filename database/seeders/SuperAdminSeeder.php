@@ -19,10 +19,21 @@ class SuperAdminSeeder extends Seeder
     public function run(): void
     {
         // Plaintext — User model hashes via the `hashed` cast. Never log this value.
-        $password = (string) env('SUPER_ADMIN_PASSWORD', 'LMLinga@Admin2026!');
+        $password = (string) env('SUPER_ADMIN_PASSWORD', '');
+
+        // No built-in default password: without SUPER_ADMIN_PASSWORD the account is not created.
+        if ($password === '') {
+            $message = 'Super admin not created: set SUPER_ADMIN_PASSWORD in .env, then run `php artisan db:seed --class=SuperAdminSeeder`.';
+            $this->command?->warn($message);
+            if ($this->command === null) {
+                \Illuminate\Support\Facades\Log::warning($message);
+            }
+
+            return;
+        }
 
         $attributes = [
-            'email' => 'maria.santos@lmlinga.test',
+            'email' => (string) env('SUPER_ADMIN_EMAIL', 'superadmin@example.invalid'),
             'name' => 'Maria Santos',
             'first_name' => 'Maria',
             'last_name' => 'Santos',

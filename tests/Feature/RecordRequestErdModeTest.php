@@ -13,6 +13,12 @@ class RecordRequestErdModeTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        \Illuminate\Support\Facades\Storage::fake('death_certificates');
+    }
+
     public function test_fixture_requires_account_id_for_record_requests(): void
     {
         ClientTestingErdSchema::ensure();

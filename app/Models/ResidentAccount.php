@@ -54,7 +54,20 @@ class ResidentAccount extends Authenticatable
     {
         return [
             'password' => 'hashed',
+            'email_verified_at' => 'datetime',
         ];
+    }
+
+    /** False until the email_verified_at migration has run (pre-migration databases keep working). */
+    public static function supportsEmailVerification(): bool
+    {
+        return Schema::hasColumn((new static)->getTable(), 'email_verified_at');
+    }
+
+    /** Set only by the email OTP flow (never mass assignable). */
+    public function hasVerifiedEmail(): bool
+    {
+        return ($this->attributes['email_verified_at'] ?? null) !== null;
     }
 
     public function getZoneAttribute(mixed $value): ?string

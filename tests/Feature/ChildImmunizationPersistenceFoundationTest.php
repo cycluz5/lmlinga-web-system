@@ -222,7 +222,7 @@ class ChildImmunizationPersistenceFoundationTest extends TestCase
         ]);
 
         // Unrelated household update must not reassign immunization ownership.
-        $householdA->update(['street' => 'Changed Street']);
+        $householdA->update(['accomplished_by' => 'Changed BHW']);
         $residentA->update(['member_no' => 'MB-899']);
 
         $record->refresh();

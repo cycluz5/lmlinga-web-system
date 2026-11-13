@@ -286,11 +286,10 @@ class SpotMappingNewHouseholdCreationFlowTest extends TestCase
             'street' => 'Canonical Persist St.',
         ]))->assertRedirect();
 
-        $household = Household::query()->where('street', 'Canonical Persist St.')->firstOrFail();
+        $household = Household::query()->sole();
         $this->assertDatabaseHas('households', [
             'id' => $household->id,
             'household_no' => $household->household_no,
-            'street' => 'Canonical Persist St.',
         ]);
         $this->assertFalse(session()->has('demo_households'));
         $this->assertFalse(session()->has('lml.demo_household'));

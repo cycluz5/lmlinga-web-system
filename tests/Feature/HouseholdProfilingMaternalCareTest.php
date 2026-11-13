@@ -39,43 +39,43 @@ class HouseholdProfilingMaternalCareTest extends TestCase
         $params = $this->memberParams();
 
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-002/maternal-care'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-002').'/maternal-care'),
             route('household-profiling.members.maternal-care.index', $params)
         );
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-002/maternal-care/register'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-002').'/maternal-care/register'),
             route('household-profiling.members.maternal-care.register', $params)
         );
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-002/maternal-care/history'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-002').'/maternal-care/history'),
             route('household-profiling.members.maternal-care.history', $params)
         );
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-002/maternal-care/prenatal'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-002').'/maternal-care/prenatal'),
             route('household-profiling.members.maternal-care.prenatal', $params)
         );
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-002/maternal-care/immunizations'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-002').'/maternal-care/immunizations'),
             route('household-profiling.members.maternal-care.immunizations', $params)
         );
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-002/maternal-care/supplementations'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-002').'/maternal-care/supplementations'),
             route('household-profiling.members.maternal-care.supplementations', $params)
         );
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-002/maternal-care/laboratory'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-002').'/maternal-care/laboratory'),
             route('household-profiling.members.maternal-care.laboratory', $params)
         );
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-002/maternal-care/delivery'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-002').'/maternal-care/delivery'),
             route('household-profiling.members.maternal-care.delivery', $params)
         );
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-002/maternal-care/postnatal'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-002').'/maternal-care/postnatal'),
             route('household-profiling.members.maternal-care.postnatal', $params)
         );
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-002/maternal-care/trans-out'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-002').'/maternal-care/trans-out'),
             route('household-profiling.members.maternal-care.trans-out', $params)
         );
     }

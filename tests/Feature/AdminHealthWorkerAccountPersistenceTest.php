@@ -949,6 +949,8 @@ class AdminHealthWorkerAccountPersistenceTest extends TestCase
 
     public function test_last_active_admin_cannot_be_demoted_or_deactivated(): void
     {
+        $this->deactivateSeededSuperAdmin();
+
         // Do not use seedWorker() — it creates an extra creator.admin Active Admin.
         $admin = User::factory()->create([
             'first_name' => 'Sole',

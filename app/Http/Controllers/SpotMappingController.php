@@ -10,6 +10,8 @@ use App\Services\HouseholdService;
 use App\Services\ResidentService;
 use App\Services\SpotMappingHandoffService;
 use App\Services\SpotMappingService;
+use App\Support\Geo\BarangayBoundary;
+use App\Support\Geo\DemoLocation;
 use Illuminate\Http\JsonResponse;
 use Illuminate\View\View;
 
@@ -26,14 +28,21 @@ class SpotMappingController extends Controller
     public function index(): View
     {
         $payload = $this->spotMapping->indexPayload();
+        $boundary = BarangayBoundary::load();
 
         return view('pages.spot-mapping.index', [
+            // SR-11 / SM-01: outline only; coordinates are not checked against it yet (SM-03).
+            'boundaryGeoJson' => $boundary->toGeoJson(),
+            'boundaryState' => $boundary->state(),
+            'boundaryReason' => $boundary->reason(),
             'active' => 'spot-mapping',
             'pageTitle' => 'Spot Mapping',
             'pageSubtitle' => 'Real-Time Visualization and Status Tracking for Households in the Barangay.',
             'stats' => $payload['stats'],
             'markers' => $payload['markers'],
             'pendingCandidates' => $payload['pendingCandidates'],
+            // SR-10: Demo Location Mode (Admin, gated deployment, own session only); empty for everyone else.
+            'demoLocation' => DemoLocation::viewState(request()->session(), request()->user()),
         ]);
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Support\ResidentMemberFieldMap;
+use App\Support\PhilhealthMembershipTypes;
 use Illuminate\Validation\Rule;
 
 trait ValidatesHouseholdResidentMember
@@ -151,6 +152,7 @@ trait ValidatesHouseholdResidentMember
             'education' => ['required', 'string', Rule::in(self::educations())],
             'fp_user' => ['required', 'string', Rule::in(['Yes', 'No', 'N/A'])],
             'philhealth' => ['nullable', 'regex:/^\d{12}$/'],
+            'philhealth_membership_type' => ['nullable', 'string', Rule::in(PhilhealthMembershipTypes::codes())],
             'disability' => ['required', 'array', 'min:1'],
             'disability.*' => ['string', Rule::in(self::disabilityOptions())],
             'disability_others' => ['nullable', 'string', 'max:255'],
@@ -170,7 +172,7 @@ trait ValidatesHouseholdResidentMember
             ]);
         }
 
-        foreach (['middle_name', 'disability_others', 'medical_others', 'occupation_other', 'religion_other'] as $field) {
+        foreach (['middle_name', 'disability_others', 'medical_others', 'occupation_other', 'religion_other', 'philhealth_membership_type'] as $field) {
             $value = $this->input($field);
             if (is_string($value) && trim($value) === '') {
                 $this->merge([$field => null]);

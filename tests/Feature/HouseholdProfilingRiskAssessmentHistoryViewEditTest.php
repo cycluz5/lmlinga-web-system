@@ -453,11 +453,11 @@ class HouseholdProfilingRiskAssessmentHistoryViewEditTest extends TestCase
         ];
 
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-001/risk-assessment/RA-001/physical'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-001').'/risk-assessment/'.$this->opaqueId('s', 'RA-001').'/physical'),
             route('household-profiling.members.risk-assessment.section', $params)
         );
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-001/risk-assessment/RA-001/physical/edit'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-001').'/risk-assessment/'.$this->opaqueId('s', 'RA-001').'/physical/edit'),
             route('household-profiling.members.risk-assessment.section.edit', $params)
         );
 

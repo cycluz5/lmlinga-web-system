@@ -654,7 +654,7 @@ class HealthRecordsNonResidentChildCareTest extends TestCase
             'childKey' => 'andrei-b-malaya',
         ]);
 
-        $this->assertStringContainsString('/non-residents/andrei-b-malaya/immunization', $immUrl);
+        $this->assertStringContainsString('/non-residents/'.$this->opaqueId('c', 'andrei-b-malaya').'/immunization', $immUrl);
         $this->assertStringNotContainsString('household-profiling', $immUrl);
 
         $this->actingAsStaff(StaffRole::BHW);
@@ -726,7 +726,7 @@ class HealthRecordsNonResidentChildCareTest extends TestCase
 
         foreach (['immunization', 'school-based-immunization', 'child-nutrition'] as $suffix) {
             $this->actingAsStaff(StaffRole::BHW);
-        $resident = $this->get('/health-records/child-care/non-residents/kristine-b-reyes/'.$suffix);
+        $resident = $this->get('/health-records/child-care/non-residents/'.$this->opaqueId('c', 'kristine-b-reyes').'/'.$suffix);
             $resident->assertOk();
             $this->assertStringContainsString('Record not found', $resident->getContent());
             $this->assertStringNotContainsString('id="lml-hr-cc-nr-child-name"', $resident->getContent());
@@ -742,7 +742,7 @@ class HealthRecordsNonResidentChildCareTest extends TestCase
             'childKey' => 'gabriel-allan-s-chua',
         ]);
 
-        $this->assertStringContainsString('/non-residents/gabriel-allan-s-chua/deworming', $indexUrl);
+        $this->assertStringContainsString('/non-residents/'.$this->opaqueId('c', 'gabriel-allan-s-chua').'/deworming', $indexUrl);
         $this->assertStringNotContainsString('household-profiling', $indexUrl);
 
         $this->actingAsStaff(StaffRole::BHW);
@@ -834,7 +834,7 @@ class HealthRecordsNonResidentChildCareTest extends TestCase
             'childKey' => 'crisley-f-fernando',
         ]);
 
-        $this->assertStringContainsString('/non-residents/crisley-f-fernando/edit', $editUrl);
+        $this->assertStringContainsString('/non-residents/'.$this->opaqueId('c', 'crisley-f-fernando').'/edit', $editUrl);
         $this->assertSame(
             'health-records/child-care/non-residents/{childKey}/edit',
             Route::getRoutes()->getByName('health-records.child-care.non-residents.edit')?->uri()

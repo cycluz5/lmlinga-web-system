@@ -74,7 +74,25 @@ final class HouseholdRecordRequestMatcher
             return;
         }
 
+        // A name + household-number match is not proof of identity: in staff_verified mode
+        // the request waits for an Admin before any OTP can be issued.
+        if (HouseholdLinkingPolicy::requiresStaffVerification()) {
+            $this->markAwaitingStaff($record, $matches[0]);
+
+            return;
+        }
+
         $this->markAwaitingOtp($record, $matches[0]);
+    }
+
+    private function markAwaitingStaff(RecordRequest $record, mixed $residentId): void
+    {
+        $record->status = RecordRequest::STATUS_PENDING;
+        $record->matched_resident_id = $residentId;
+        $record->decision_reason = HouseholdLinkingPolicy::REASON_AWAITING_STAFF;
+        $record->evaluated_at = now();
+        $record->approved_at = null;
+        $record->save();
     }
 
     /**

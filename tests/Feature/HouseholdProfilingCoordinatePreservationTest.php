@@ -71,10 +71,9 @@ class HouseholdProfilingCoordinatePreservationTest extends TestCase
         )->assertRedirect(route('household-profiling.view', ['householdNo' => 'HH-851']));
 
         $household->refresh();
+        // households.street / address were dropped (2026_09_28_140000); remaining shell fields still update.
         $this->assertSame('Zone 5', $household->zone);
-        $this->assertSame('Updated St.', $household->street);
         $this->assertSame('After', $household->accomplished_by);
-        $this->assertSame('After Edit', $household->address);
         $this->assertSame('13.38220000', (string) $household->latitude);
         $this->assertSame('123.43120000', (string) $household->longitude);
     }
@@ -90,7 +89,6 @@ class HouseholdProfilingCoordinatePreservationTest extends TestCase
 
         $household->refresh();
         $this->assertSame('Zone 3', $household->zone);
-        $this->assertSame('Service St.', $household->street);
         $this->assertSame('13.38220000', (string) $household->latitude);
         $this->assertSame('123.43120000', (string) $household->longitude);
     }
@@ -230,7 +228,7 @@ class HouseholdProfilingCoordinatePreservationTest extends TestCase
             'street' => 'Create Pending St.',
         ]))->assertRedirect();
 
-        $household = Household::query()->where('street', 'Create Pending St.')->firstOrFail();
+        $household = Household::query()->sole();
         $this->assertEquals(0.0, (float) $household->latitude);
         $this->assertEquals(0.0, (float) $household->longitude);
     }
@@ -243,7 +241,7 @@ class HouseholdProfilingCoordinatePreservationTest extends TestCase
             'longitude' => '123.43060000',
         ]))->assertRedirect();
 
-        $household = Household::query()->where('street', 'Create Plotted St.')->firstOrFail();
+        $household = Household::query()->sole();
         $this->assertSame('13.38110000', (string) $household->latitude);
         $this->assertSame('123.43060000', (string) $household->longitude);
     }
@@ -274,7 +272,7 @@ class HouseholdProfilingCoordinatePreservationTest extends TestCase
             ['from' => 'spot-mapping']
         ));
 
-        $household = Household::query()->where('street', 'R01C Pending St.')->firstOrFail();
+        $household = Household::query()->sole();
         $this->assertEquals(0.0, (float) $household->latitude);
         $this->assertEquals(0.0, (float) $household->longitude);
 

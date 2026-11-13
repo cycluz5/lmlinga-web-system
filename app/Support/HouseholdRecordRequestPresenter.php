@@ -3,6 +3,7 @@
 namespace App\Support;
 
 use App\Models\RecordRequest;
+use App\Models\ResidentAccount;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Schema;
 
@@ -76,7 +77,7 @@ final class HouseholdRecordRequestPresenter
 
         $request = RecordRequest::query()->find($requestId);
 
-        return $request !== null ? self::present($request) : null;
+        return $request !== null ? self::present($request) + self::staffActions($request) : null;
     }
 
     public static function publicId(int $requestId): string
@@ -145,6 +146,40 @@ final class HouseholdRecordRequestPresenter
                 ])),
             'matched_resident_id' => $request->matched_resident_id,
         ];
+    }
+
+    /**
+     * Detail-page only (avoids per-row queries on the listing): which staff-verified linking
+     * actions apply right now. The server re-checks every action when it is submitted.
+     *
+     * @return array{can_staff_verify: bool, can_staff_decline: bool, can_revoke_link: bool}
+     */
+    public static function staffActions(RecordRequest $request): array
+    {
+        return [
+            'can_staff_verify' => HouseholdLinkingPolicy::canStaffVerify($request),
+            'can_staff_decline' => HouseholdLinkingPolicy::canStaffDecline($request),
+            'can_revoke_link' => self::isActiveLink($request),
+        ];
+    }
+
+    private static function isActiveLink(RecordRequest $request): bool
+    {
+        // Older / partial schemas (no OTP table or no account link column) cannot hold an active link.
+        if (
+            ! Schema::hasTable('record_request_otps')
+            || ! Schema::hasTable('resident_accounts')
+            || ! Schema::hasColumn('resident_accounts', 'resident_id')
+            || ! HouseholdRecordVerifiedAccess::isVerifiedApproval($request)
+        ) {
+            return false;
+        }
+
+        $account = ResidentAccount::query()->whereKey($request->account_id)->first();
+
+        return $account instanceof ResidentAccount
+            && $account->resident_id !== null
+            && (string) $account->resident_id === (string) $request->matched_resident_id;
     }
 
     public static function displayStatus(?string $status): string

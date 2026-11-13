@@ -22,7 +22,10 @@ final class UiRole
     public const LEAST_PRIVILEGED = 'bspo';
 
     /** @var list<string> */
-    public const ALLOWED = ['admin', 'bhw', 'bns', 'bspo'];
+    public const ALLOWED = ['admin', 'bhw', 'bns', 'bspo', 'linguist'];
+
+    /** Shell roles that may use health-worker features (e.g. announcements); excludes Linguist (SR-06). */
+    public const HEALTH_WORKER_ROLES = ['admin', 'bhw', 'bns', 'bspo'];
 
     public static function normalize(?string $role): ?string
     {
@@ -84,7 +87,11 @@ final class UiRole
             return 'Guest';
         }
 
-        return $resolved === 'admin' ? 'Admin' : strtoupper($resolved);
+        return match ($resolved) {
+            'admin' => 'Admin',
+            'linguist' => 'Linguist',
+            default => strtoupper($resolved),
+        };
     }
 
     public static function displayName(?string $role = null): string
@@ -143,6 +150,9 @@ final class UiRole
             'environmental-health' => ['environmental-health', 'environmental-health.*'],
             'dashboard' => ['dashboard'],
             'profile' => ['profile', 'profile.*'],
+            'language-review' => ['language-review', 'language-review.*'],
+            'language-management' => ['language-management', 'language-management.*'],
+            'chatbot-datasets' => ['chatbot-datasets', 'chatbot-datasets.*'],
         ];
 
         foreach ($patterns as $key => $routePatterns) {

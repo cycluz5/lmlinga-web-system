@@ -336,6 +336,8 @@ class OfflineSyncHealthWorkerUpdateTest extends TestCase
 
     public function test_last_active_admin_invariant_remains_enforced(): void
     {
+        $this->deactivateSeededSuperAdmin();
+
         $admin = $this->actingAsStaff(StaffRole::ADMIN, [
             'first_name' => 'Sole',
             'middle_name' => 'A',

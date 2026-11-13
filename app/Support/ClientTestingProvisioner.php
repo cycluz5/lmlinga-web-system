@@ -17,9 +17,26 @@ use Illuminate\Support\Facades\Schema;
  */
 final class ClientTestingProvisioner
 {
-    private const STAFF_PASSWORD = 'LMLinga@2026';
+    /** Client-testing passwords come from the environment; there is deliberately no built-in default. */
+    private static function staffPassword(): string
+    {
+        return self::requiredEnv('CLIENT_TESTING_STAFF_PASSWORD');
+    }
 
-    private const RESIDENT_ACCOUNT_PASSWORD = 'LMLinga@2026';
+    private static function residentAccountPassword(): string
+    {
+        return self::requiredEnv('CLIENT_TESTING_RESIDENT_PASSWORD');
+    }
+
+    private static function requiredEnv(string $name): string
+    {
+        $value = (string) env($name, '');
+        if ($value === '') {
+            throw new \RuntimeException("Set {$name} in .env before provisioning client-testing data.");
+        }
+
+        return $value;
+    }
 
     private const HOUSEHOLD_REQUEST_ACCOUNT_EMAIL = 'juan.delacruz@example.local';
 
@@ -341,7 +358,7 @@ final class ClientTestingProvisioner
                     'username' => $spec['username'],
                     'email' => $spec['email'],
                     'mobile_number' => '09171234567',
-                    'password' => self::STAFF_PASSWORD,
+                    'password' => self::staffPassword(),
                     'status' => StaffAccountStatus::ACTIVE,
                     'must_change_password' => false,
                 ]);
@@ -909,7 +926,7 @@ final class ClientTestingProvisioner
             'last_name' => 'Dela Cruz',
             'zone' => '1',
             'email' => self::HOUSEHOLD_REQUEST_ACCOUNT_EMAIL,
-            'password' => self::RESIDENT_ACCOUNT_PASSWORD,
+            'password' => self::residentAccountPassword(),
         ]);
         $account->save();
 

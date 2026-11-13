@@ -175,6 +175,7 @@
                             name="email"
                             :required="true"
                             icon="bi-envelope"
+                            help="Use your Gmail address (…@gmail.com). We will send a 6-digit verification code to it."
                             class="lml-chatbot-register__field"
                         >
                             <input
@@ -187,9 +188,12 @@
                                 autocomplete="email"
                                 inputmode="email"
                                 placeholder="Email"
+                                data-lml-register-email
                                 @if ($errors->has('email')) aria-invalid="true" aria-describedby="email-error" @endif
                                 class="form-control lml-form-control lml-chatbot-register__control w-100{{ $errors->has('email') ? ' is-invalid' : '' }}"
                             >
+                            {{-- Shown by chatbot-register.js when the address is not a valid Gmail address (server enforces the same rule). --}}
+                            <div id="email-gmail-error" class="lml-form-error" role="alert" data-lml-register-email-error hidden></div>
                         </x-lml.form-group>
 
                         <x-lml.form-group

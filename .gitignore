@@ -1,31 +1,67 @@
-/.phpunit.cache
-/node_modules
-/public/build
+# --- Dependencies and build output (regenerate with composer install / npm ci / npm run build) ---
+/vendor/
+/node_modules/
+/public/build/
 /public/hot
 /public/storage
+
+# --- Laravel runtime files ---
 /storage/*.key
 /storage/pail
-/vendor
-.env
-.env.backup
-.env.production
+/storage/app/*
+!/storage/app/.gitignore
+!/storage/app/private/
+!/storage/app/public/
+/storage/logs/*
+!/storage/logs/.gitignore
+/bootstrap/cache/*.php
+.phpunit.cache/
+.phpunit.result.cache
 
-# Local-only demo credential fixture (must not be committed)
+# --- Environment files: NEVER commit real configuration ---
+.env
+.env.*
+!.env.example
+
+# --- Databases, dumps, backups ---
+*.sql
+!database/schema/mysql-schema.sql
+*.sqlite
+*.sqlite3
+*.db
+*.dump
+*.bak
+*.backup
+*.zip
+*.7z
+*.rar
+
+# --- Keys and credentials ---
+*.pem
+*.key
+*.p12
+*.pfx
+auth.json
 /resources/demo/staff-login.php
 
-# Local Claude / review packaging artifacts
-/LMLinga_*_Review/
-/LMLinga_*_Review.zip
-
-.phpactor.json
-.phpunit.result.cache
-Homestead.json
-Homestead.yaml
+# --- Logs and local artifacts ---
+*.log
 npm-debug.log
 yarn-error.log
-/auth.json
-/.fleet
-/.idea
-/.nova
-/.vscode
-/.zed
+write_test.txt
+php_creation_test.php
+
+# --- Internal review material kept out of this repository ---
+/docs/qa/
+/docs/review-packages/
+/docs/refinement-reports/
+
+# --- Editors / local tooling ---
+.idea/
+.vscode/
+.fleet/
+.zed/
+.nova/
+.phpactor.json
+Homestead.json
+Homestead.yaml

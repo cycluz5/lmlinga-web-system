@@ -51,6 +51,8 @@ class UpdateHealthWorkerRequest extends FormRequest
     public function rules(): array
     {
         $userId = $this->route('id');
+        // SR-06: Linguists have no assigned zones; other roles keep the existing zone rules.
+        $isLinguist = StaffRole::isLinguist((string) $this->input('hw_role'));
 
         return [
             'sex' => ['required', 'string', Rule::in(['Male', 'Female'])],
@@ -75,9 +77,9 @@ class UpdateHealthWorkerRequest extends FormRequest
             'hw_municipality' => ['required', 'string', 'max:100'],
             'hw_province' => ['required', 'string', 'max:100'],
             'hw_zip' => ['required', 'string', 'max:10'],
-            'hw_role' => ['required', 'string', Rule::in(['BHW', 'BNS', 'BSPO', 'Admin', ...StaffRole::ALL])],
+            'hw_role' => ['required', 'string', Rule::in(['BHW', 'BNS', 'BSPO', 'Admin', 'Linguist', ...StaffRole::ALL])],
             'hw_assigned_barangay' => ['required', 'string', 'max:100'],
-            'hw_assigned_zone' => ['required', 'array', 'min:1'],
+            'hw_assigned_zone' => $isLinguist ? ['nullable', 'array'] : ['required', 'array', 'min:1'],
             'hw_assigned_zone.*' => ['required', 'string', 'distinct', Rule::in(WorkerAssignedZones::ALLOWED)],
             'hw_date_appointed' => ['required', 'date', 'before_or_equal:today'],
             'hw_end_appointment' => ['nullable', 'date'],

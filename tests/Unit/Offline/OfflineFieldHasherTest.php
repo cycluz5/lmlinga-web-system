@@ -60,12 +60,12 @@ class OfflineFieldHasherTest extends TestCase
     {
         $household = Household::factory()->create([
             'zone' => 'Zone 1',
-            'street' => 'Layuan St.',
             'date_registered' => '2026-01-15',
+            'accomplished_by' => 'Original BHW',
         ]);
 
         $before = OfflineFieldHasher::household($household);
-        $household->forceFill(['street' => 'Cateel Bay St.'])->save();
+        $household->forceFill(['accomplished_by' => 'Changed BHW'])->save();
 
         $this->assertNotSame($before, OfflineFieldHasher::household($household->fresh()));
     }

@@ -34,7 +34,7 @@ class StoreHealthWorkerRequest extends FormRequest
             'middle_name' => ['nullable', 'string', 'max:100'],
             'email' => ['required', 'email', 'max:255', Rule::unique($userTable, 'email')],
             'mobile' => ['required', 'string', 'max:20'],
-            'role' => ['required', 'string', Rule::in(['BHW', 'BNS', 'BSPO', 'Admin', ...StaffRole::ALL])],
+            'role' => ['required', 'string', Rule::in(['BHW', 'BNS', 'BSPO', 'Admin', 'Linguist', ...StaffRole::ALL])],
             'status' => ['required', 'string', Rule::in(StaffAccountStatus::ALL)],
             'password' => StrongPassword::laravelRules(),
         ];

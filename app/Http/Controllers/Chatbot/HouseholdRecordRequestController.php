@@ -19,6 +19,7 @@ use App\Services\HouseholdRecordRequestEmailOtpVerifier;
 use App\Services\HouseholdRecordRequestOtpDelivery;
 use App\Services\HouseholdRecordRequestOtpIssuer;
 use App\Services\HouseholdRecordRequestSmsOtpVerifier;
+use App\Support\HouseholdLinkingPolicy;
 use App\Support\HouseholdRecordRequestMatcher;
 use App\Support\HouseholdRecordVerifiedAccess;
 use Illuminate\Http\RedirectResponse;
@@ -42,7 +43,25 @@ class HouseholdRecordRequestController extends Controller
             return redirect()->route('chatbot.main');
         }
 
-        return view('pages.chatbot.household-request');
+        return view('pages.chatbot.household-request', [
+            'prefill' => $this->namePrefill($account),
+        ]);
+    }
+
+    /**
+     * SR-01 (autofill, scope A): the signed-in resident's own account names as editable defaults.
+     * Never another resident's data; old() input always wins in the view; matching and staff
+     * verification are unchanged (the submitted values are still what gets checked).
+     *
+     * @return array{firstName: string, middleName: string, lastName: string}
+     */
+    private function namePrefill(ResidentAccount $account): array
+    {
+        return [
+            'firstName' => trim((string) ($account->first_name ?? '')),
+            'middleName' => trim((string) ($account->middle_name ?? '')),
+            'lastName' => trim((string) ($account->last_name ?? '')),
+        ];
     }
 
     public function store(StoreHouseholdRecordRequest $request): RedirectResponse
@@ -51,15 +70,27 @@ class HouseholdRecordRequestController extends Controller
 
         abort_unless($account instanceof ResidentAccount, 403);
 
+        // Repeated-attempt guards (configurable): per account, and per named household across accounts.
+        if (
+            HouseholdLinkingPolicy::accountLimitReached((int) $account->account_id)
+            || HouseholdLinkingPolicy::householdLimitReached((string) $request->validated('householdNo'))
+        ) {
+            return redirect()
+                ->route('chatbot.household.verification')
+                ->with('household_request_limit_reached', true);
+        }
+
         $record = DB::transaction(function () use ($request, $account) {
             ResidentAccount::query()
                 ->whereKey($account->account_id)
                 ->lockForUpdate()
                 ->firstOrFail();
 
+            // One open request per account (staff_verified also counts Awaiting OTP, so a new
+            // submission can never displace a staff-verified request).
             $existingPending = RecordRequest::query()
                 ->where('account_id', $account->account_id)
-                ->where('status', RecordRequest::STATUS_PENDING)
+                ->whereIn('status', HouseholdLinkingPolicy::openRequestStatuses())
                 ->orderBy('request_id')
                 ->lockForUpdate()
                 ->first();
@@ -146,6 +177,10 @@ class HouseholdRecordRequestController extends Controller
             'recordRequest' => $record,
             'uiState' => $this->uiStateFor($record),
             'grantHouseholdAccess' => false,
+            // Staff verified identity + mobile; the resident's next step is the SMS code.
+            'otpStepOpen' => HouseholdRecordVerifiedAccess::allowsOtpInterface($record),
+            // Legacy Approved-without-OTP: never granted access; resident resubmits for staff verification.
+            'needsResubmission' => HouseholdLinkingPolicy::needsResubmission($record),
         ]);
     }
 
@@ -275,7 +310,7 @@ class HouseholdRecordRequestController extends Controller
         if (
             $record === null
             || (int) $record->account_id !== (int) $account->account_id
-            || ! $this->canOpenOtpInterface($record)
+            || ! HouseholdRecordVerifiedAccess::allowsEmailOtpInterface($record)
         ) {
             return redirect()->route('chatbot.main');
         }
@@ -309,7 +344,7 @@ class HouseholdRecordRequestController extends Controller
         if (
             $record === null
             || (int) $record->account_id !== (int) $account->account_id
-            || ! HouseholdRecordVerifiedAccess::allowsOtpInterface($record)
+            || ! HouseholdRecordVerifiedAccess::allowsEmailOtpInterface($record)
         ) {
             return redirect()->route('chatbot.main');
         }
@@ -399,17 +434,18 @@ class HouseholdRecordRequestController extends Controller
     {
         return RecordRequest::query()
             ->where('account_id', $account->account_id)
-            ->where('status', RecordRequest::STATUS_PENDING)
+            ->whereIn('status', HouseholdLinkingPolicy::openRequestStatuses())
             ->exists();
     }
 
+    /** True only when the OTP step is actually open (staff_verified: after staff verification). */
     private function hasVerificationPendingRequest(ResidentAccount $account): bool
     {
         $record = RecordRequest::latestForAccount($account->account_id);
 
         return $record instanceof RecordRequest
             && (int) $record->account_id === (int) $account->account_id
-            && HouseholdRecordVerifiedAccess::requiresOtpVerification($record);
+            && HouseholdRecordVerifiedAccess::allowsOtpInterface($record);
     }
 
     private function canOpenOtpInterface(RecordRequest $record): bool

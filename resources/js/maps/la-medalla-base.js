@@ -13,9 +13,22 @@ export const LA_MEDALLA_MAX_ZOOM = 22;
 /** Highest zoom with real OSM tiles; levels above this scale z19 imagery. */
 export const LA_MEDALLA_MAX_NATIVE_ZOOM = 19;
 
+/** Online OSM layer per map, so Spot Mapping can swap in the saved offline map (Phase 2B) and back. */
+const onlineBaseLayers = new WeakMap();
+
+/**
+ * @param {import('leaflet').Map} map
+ * @returns {import('leaflet').TileLayer|null}
+ */
+export function onlineBaseLayerFor(map) {
+    return onlineBaseLayers.get(map) || null;
+}
+
 /**
  * @param {HTMLElement} el
- * @param {{ zoom?: number }} [options]
+ * @param {{ zoom?: number, addOnlineLayer?: boolean }} [options]
+ *   addOnlineLayer: false creates the online layer without adding it (Spot Mapping adds it once it knows
+ *   whether the saved offline map is used instead). Default true.
  * @returns {import('leaflet').Map}
  */
 export function createLaMedallaBaseMap(el, options = {}) {
@@ -26,12 +39,16 @@ export function createLaMedallaBaseMap(el, options = {}) {
         maxZoom: LA_MEDALLA_MAX_ZOOM,
     }).setView(LA_MEDALLA_CENTER, zoom);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    const onlineLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: LA_MEDALLA_MAX_ZOOM,
         maxNativeZoom: LA_MEDALLA_MAX_NATIVE_ZOOM,
         crossOrigin: 'anonymous',
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    }).addTo(map);
+    });
+    if (options.addOnlineLayer !== false) {
+        onlineLayer.addTo(map);
+    }
+    onlineBaseLayers.set(map, onlineLayer);
 
     requestAnimationFrame(() => {
         map.invalidateSize();

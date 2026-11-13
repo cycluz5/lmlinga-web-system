@@ -1020,6 +1020,16 @@
     color: #166534;
 }
 
+/* SR-11 / SM-01: barangay boundary missing or invalid. */
+.lml-spot-map__server-alert--warning {
+    border-color: #fcd34d;
+    background-color: #fffbeb;
+}
+
+.lml-spot-map__server-alert--warning .lml-spot-map__server-alert-text {
+    color: #92400e;
+}
+
 .lml-spot-map__fields {
     display: flex;
     flex-direction: column;
@@ -1326,4 +1336,420 @@
     .lml-spot-map__export-btn {
         min-width: 11rem;
     }
+}
+
+/* SR-10 Demo Location Mode */
+.lml-spot-map__demo-banner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.75rem;
+    padding: 0.65rem 0.9rem;
+    border: 2px dashed #b45309;
+    border-radius: var(--lml-radius-md, 0.5rem);
+    background-color: #fffbeb;
+    color: #78350f;
+}
+
+.lml-spot-map__demo-banner .bi {
+    font-size: 1.25rem;
+}
+
+.lml-spot-map__demo-banner-text {
+    flex: 1 1 16rem;
+    margin: 0;
+    font-size: 0.875rem;
+    overflow-wrap: anywhere;
+}
+
+.lml-spot-map__demo-banner form {
+    margin: 0;
+}
+
+.lml-spot-map__demo-panel {
+    margin-bottom: 0.75rem;
+    padding: 0.65rem 0.9rem;
+    border: 1px solid var(--lml-border, #e5e7eb);
+    border-radius: var(--lml-radius-md, 0.5rem);
+    background-color: #fff;
+}
+
+.lml-spot-map__demo-panel-title {
+    margin: 0 0 0.4rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.lml-spot-map__demo-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.lml-spot-map__demo-form .form-select {
+    width: auto;
+    min-width: 12rem;
+    max-width: 100%;
+}
+
+.lml-spot-map__demo-panel-note {
+    margin: 0.4rem 0 0;
+    color: #4b5563;
+    font-size: 0.85rem;
+}
+
+/* Simulated (demo) temporary marker: dashed amber ring so it is never mistaken for a real GPS fix. */
+.lml-spot-map__marker--simulated {
+    outline: 3px dashed #b45309;
+    outline-offset: 2px;
+    border-radius: 50%;
+}
+
+/* SR-10 Phase B: indicative boundary note */
+.lml-spot-map__boundary-note {
+    margin: 0 0 0.6rem;
+    color: #4b5563;
+    font-size: 0.8rem;
+    overflow-wrap: anywhere;
+}
+
+/* SR-10 Demo Location indicator: display-only (never clickable, never saved). */
+.lml-spot-map__demo-indicator-wrap,
+.lml-spot-map__demo-indicator-wrap * {
+    pointer-events: none;
+}
+
+.lml-spot-map__demo-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: 3px dashed #b45309;
+    border-radius: 50%;
+    background-color: rgba(251, 191, 36, 0.35);
+    color: #78350f;
+    font-size: 0.95rem;
+}
+
+.leaflet-tooltip.lml-spot-map__demo-indicator-label {
+    pointer-events: none;
+    border: 1px solid #b45309;
+    background-color: #fffbeb;
+    color: #78350f;
+    font-size: 0.72rem;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* Offline view (Option 3, Phase 1): neutral background when map imagery is unavailable. The boundary and
+   plotted households (Leaflet overlay/marker panes) stay on top; nothing here affects plotting rules. */
+.lml-spot-map__offline-notice {
+    margin: 0 0 0.6rem;
+    padding: 0.55rem 0.8rem;
+    border: 1px solid #94a3b8;
+    border-left-width: 4px;
+    border-radius: var(--lml-radius-md, 0.5rem);
+    background-color: #f1f5f9;
+    color: #1e293b;
+    font-size: 0.85rem;
+    overflow-wrap: anywhere;
+}
+
+.lml-spot-map--offline .lml-spot-map__offline-notice {
+    border-color: #b45309;
+    background-color: #fff7ed;
+    color: #7c2d12;
+}
+
+.lml-spot-map--imagery-missing .leaflet-container {
+    background-color: #eef2f5;
+    background-image:
+        linear-gradient(rgba(100, 116, 139, 0.14) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(100, 116, 139, 0.14) 1px, transparent 1px);
+    background-size: 32px 32px;
+}
+
+.lml-spot-map--imagery-missing .leaflet-container::before {
+    content: 'Map pictures not loading';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 1;
+    transform: translate(-50%, -50%);
+    color: rgba(71, 85, 105, 0.35);
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    pointer-events: none;
+}
+
+/* Phase 2B: saved offline map. Outside the saved area the map stays a plain neutral colour. */
+.lml-spot-map--saved-map .leaflet-container {
+    background-color: #eef2f5;
+}
+
+.lml-spot-map__offline-map-status {
+    margin: 0 0 0.6rem;
+    color: #475569;
+    font-size: 0.78rem;
+    overflow-wrap: anywhere;
+}
+
+/* Really offline (not just failing map pictures): say so. */
+.lml-spot-map--offline.lml-spot-map--imagery-missing .leaflet-container::before {
+    content: 'No internet: map pictures unavailable';
+}
+
+.lml-spot-map__legend-asof {
+    margin: 0.35rem 0 0;
+    color: #64748b;
+    font-size: 0.72rem;
+}
+
+/* ------------------------------------------------------------------
+   Phase 3A: marker readability, location kinds, household labels,
+   GPS accuracy circle and the panel location check.
+   Spot Mapping page only (dashboard markers do not use these classes).
+   ------------------------------------------------------------------ */
+
+/* Zone number inside the marker (dark text; approved zone palette unchanged). */
+.lml-spot-map__marker-zone {
+    color: #111827;
+    /* Thin white halo: keeps the number crisp on every zone colour (zone 5 is the lowest at 4.2:1). */
+    text-shadow: 0 0 2px rgba(255, 255, 255, 0.85);
+    font-size: 0.78rem;
+    font-weight: 800;
+    line-height: 1;
+}
+
+/* Saved markers: thicker green ring so "saved" reads at a glance on both base maps. */
+.lml-spot-map__marker--kind-saved.lml-spot-map__marker--status-plotted {
+    border-width: 3px;
+}
+
+/* Placed by hand (unverified): dashed ring + "?" badge. */
+.lml-spot-map__marker--kind-manual {
+    border-style: dashed;
+    border-width: 3px;
+}
+
+/* GPS with a weak signal: dotted ring. */
+.lml-spot-map__marker--kind-gps-weak {
+    border-style: dotted;
+    border-width: 3px;
+}
+
+.lml-spot-map__marker-badge {
+    position: absolute;
+    bottom: -0.45rem;
+    right: -0.45rem;
+    min-width: 0.95rem;
+    height: 0.95rem;
+    padding: 0 0.15rem;
+    border: 1px solid #fff;
+    border-radius: 999px;
+    background: #111827;
+    color: #fff;
+    font-size: 0.62rem;
+    font-weight: 800;
+    line-height: 0.95rem;
+    text-align: center;
+}
+
+.lml-spot-map__marker-badge--demo {
+    bottom: -0.7rem;
+    right: 50%;
+    transform: translateX(50%);
+    background: #b45309;
+    font-size: 0.5rem;
+    letter-spacing: 0.04em;
+}
+
+/* Household-number labels (Leaflet permanent tooltips): white tag, dark text, readable on any base map. */
+.leaflet-tooltip.lml-spot-map__hh-label {
+    padding: 0.05rem 0.35rem;
+    border: 1px solid #334155;
+    border-radius: 0.35rem;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    color: #111827;
+    font-size: 0.7rem;
+    font-weight: 700;
+    line-height: 1.25;
+    white-space: nowrap;
+}
+
+.leaflet-tooltip.lml-spot-map__hh-label::before {
+    display: none;
+}
+
+/* GPS uncertainty circle around an unsaved GPS pin. */
+.lml-spot-map__accuracy-circle {
+    pointer-events: none;
+}
+
+/* Panel: location check. */
+.lml-spot-map__location-check {
+    margin: 0 0 0.75rem;
+    padding: 0.55rem 0.7rem;
+    border: 1px solid #cbd5e1;
+    border-left-width: 4px;
+    border-radius: var(--lml-radius-md, 0.5rem);
+    background: #f8fafc;
+    color: #1e293b;
+    font-size: 0.82rem;
+}
+
+.lml-spot-map__location-check[data-level='note'] {
+    border-color: #ca8a04;
+    background: #fefce8;
+}
+
+.lml-spot-map__location-check[data-level='warn'] {
+    border-color: #b45309;
+    background: #fff7ed;
+    color: #7c2d12;
+}
+
+.lml-spot-map__location-kind {
+    margin: 0 0 0.25rem;
+    font-weight: 700;
+}
+
+.lml-spot-map__location-lines {
+    margin: 0;
+    padding-left: 1.1rem;
+}
+
+.lml-spot-map__boundary-confirm {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-start;
+    margin-top: 0.5rem;
+    font-weight: 600;
+}
+
+/* Legend swatches for the new kinds. */
+.lml-spot-map__legend-swatch--manual {
+    border: 2px dashed var(--lml-spot-pending);
+    background: #fff;
+}
+
+.lml-spot-map__legend-swatch--demo {
+    outline: 2px dashed #b45309;
+    outline-offset: 1px;
+    background: #fff;
+}
+
+/* ------------------------------------------------------------------
+   Phase 3B: marker size by zoom band, "location to check" flag,
+   household popup card. Spot Mapping page only.
+   ------------------------------------------------------------------ */
+
+/* Far out (zoom < 16): small dots so markers do not cover the map; zone number hidden, flags kept. */
+.lml-spot-map[data-zoom-band='low'] .lml-spot-map__marker {
+    scale: 0.6;
+}
+
+.lml-spot-map[data-zoom-band='low'] .lml-spot-map__marker-zone,
+.lml-spot-map[data-zoom-band='low'] .lml-spot-map__marker-badge {
+    visibility: hidden;
+}
+
+/* Close in (zoom >= 18): larger markers that are easier to tap. */
+.lml-spot-map[data-zoom-band='high'] .lml-spot-map__marker {
+    scale: 1.25;
+}
+
+/* Saved location clearly outside the indicative boundary: amber "!" badge. */
+.lml-spot-map__marker-flag {
+    position: absolute;
+    top: -0.5rem;
+    left: -0.5rem;
+    width: 1rem;
+    height: 1rem;
+    border: 1px solid #fff;
+    border-radius: 50%;
+    background: #b45309;
+    color: #fff;
+    font-size: 0.68rem;
+    font-weight: 800;
+    line-height: 1rem;
+    text-align: center;
+}
+
+.lml-spot-map__marker--check {
+    box-shadow: 0 0 0 2px #b45309, 0 2px 6px rgba(0, 0, 0, 0.28);
+}
+
+/* Household popup card. */
+.lml-spot-map__popup .leaflet-popup-content {
+    margin: 0.6rem 0.75rem;
+    color: #1e293b;
+    font-size: 0.8rem;
+    line-height: 1.35;
+}
+
+.lml-spot-map__popup-title {
+    margin: 0 0 0.35rem;
+    font-size: 0.95rem;
+    font-weight: 800;
+}
+
+.lml-spot-map__popup-fields {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.1rem 0.6rem;
+    margin: 0 0 0.35rem;
+}
+
+.lml-spot-map__popup-fields dt {
+    color: #64748b;
+    font-weight: 600;
+}
+
+.lml-spot-map__popup-fields dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
+
+.lml-spot-map__popup-location {
+    margin: 0 0 0.3rem;
+    color: #475569;
+    font-size: 0.74rem;
+}
+
+.lml-spot-map__popup-flag {
+    margin: 0 0 0.35rem;
+    padding: 0.25rem 0.4rem;
+    border-left: 3px solid #b45309;
+    background: #fff7ed;
+    color: #7c2d12;
+    font-size: 0.74rem;
+    font-weight: 600;
+}
+
+.lml-spot-map__popup-link {
+    font-weight: 700;
+}
+
+.lml-spot-map__legend-swatch--check {
+    background: #b45309;
+}
+
+/* Phase 3B: "Try GPS again" button inside the location check. */
+.lml-spot-map__regps {
+    display: inline-flex;
+    gap: 0.35rem;
+    align-items: center;
+    margin-top: 0.45rem;
+    padding: 0.3rem 0.65rem;
+    font-size: 0.78rem;
+}
+
+.lml-spot-map__regps[hidden] {
+    display: none;
 }

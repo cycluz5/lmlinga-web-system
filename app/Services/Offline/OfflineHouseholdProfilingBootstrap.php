@@ -91,6 +91,7 @@ final class OfflineHouseholdProfilingBootstrap
                         'religion' => (string) ($row['religion'] ?? ''),
                         'education' => (string) ($row['education'] ?? ''),
                         'philhealth' => (string) ($row['philhealth'] ?? ''),
+                        'philhealth_membership_type' => (string) ($row['philhealth_membership_type'] ?? ''),
                         'fp_user' => (string) ($row['fp_user'] ?? ''),
                         'occupation_select' => (string) ($row['occupation_select'] ?? ''),
                         'occupation_other' => (string) ($row['occupation_other'] ?? ''),

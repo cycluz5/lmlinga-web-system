@@ -287,6 +287,12 @@
                                 <dt>PhilHealth Number</dt>
                                 <dd data-offline-local-field="philhealth">{{ filled($demoMember['philhealth'] ?? null) ? $demoMember['philhealth'] : '—' }}</dd>
                             </div>
+                            @if (\App\Support\PhilhealthMembershipTypes::available())
+                            <div class="lml-hh-member-view__item">
+                                <dt>PhilHealth Membership Type</dt>
+                                <dd data-offline-local-field="philhealth_membership_type">{{ filled($demoMember['philhealth_membership_type_label'] ?? null) ? $demoMember['philhealth_membership_type_label'] : 'Not recorded' }}</dd>
+                            </div>
+                            @endif
                             <div class="lml-hh-member-view__item">
                                 <dt>Family Planning</dt>
                                 <dd data-offline-local-field="fp_user">{{ filled($demoMember['fp_user'] ?? null) ? $demoMember['fp_user'] : '—' }}</dd>

@@ -365,7 +365,8 @@ class DashboardStatisticsPersistenceTest extends TestCase
         $this->assertSame('Tie Breaker', $rows[0]['hhHead']);
         $this->assertSame(DashboardStatistics::UNAVAILABLE, $rows[1]['hhHead']);
         $this->assertSame('Zone E', $rows[2]['zone']);
-        $this->assertSame('Epsilon St.', $rows[2]['street']);
+        // households.street was dropped; the snapshot reports the column as unavailable.
+        $this->assertSame(DashboardStatistics::UNAVAILABLE, $rows[2]['street']);
         $this->assertSame(2, $rows[2]['members']);
         $this->assertSame('Five Head', $rows[2]['hhHead']);
     }
@@ -399,7 +400,7 @@ class DashboardStatisticsPersistenceTest extends TestCase
         $expected = DashboardUiData::summaryCounts();
         $indicatorValues = array_column(DashboardUiData::healthIndicators(), 'value');
 
-        foreach (UiRole::ALLOWED as $role) {
+        foreach (UiRole::HEALTH_WORKER_ROLES as $role) {
             $this->actingAsStaff($role);
         $html = $this->get(route('dashboard'))
                 ->assertOk()

@@ -88,6 +88,7 @@ export async function rememberLocalMember(localMemberId, fields, options = {}) {
         education: String(fields.education || ''),
         monthly_income: String(fields.monthly_income || ''),
         philhealth: String(fields.philhealth || ''),
+        philhealth_membership_type: String(fields.philhealth_membership_type || ''),
         fp_user: String(fields.fp_user || ''),
     };
     return writeMemberIdentityMap(map, options);

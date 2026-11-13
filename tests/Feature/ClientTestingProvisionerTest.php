@@ -17,6 +17,7 @@ class ClientTestingProvisionerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        \Illuminate\Support\Facades\Storage::fake('death_certificates');
 
         ClientTestingErdSchema::ensure();
     }

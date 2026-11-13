@@ -36,6 +36,7 @@ import './pages/household-requests';
 import './pages/chatbot-main';
 import './pages/chatbot-household-request';
 import './pages/chatbot-household-sms';
+import './pages/chatbot-register';
 import './pages/chatbot-household-information';
 import './pages/auth-change-password';
 import './pages/household-water-supply';

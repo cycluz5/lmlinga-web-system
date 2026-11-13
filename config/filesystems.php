@@ -47,6 +47,16 @@ return [
             'report' => false,
         ],
 
+        // SR-08 chatbot evaluation CSVs (checklist questions and model answers only; never served).
+        'chatbot_evaluations' => [
+            'driver' => 'local',
+            'root' => storage_path('app/private/chatbot-evaluations'),
+            'serve' => false,
+            'visibility' => 'private',
+            'throw' => true,
+            'report' => false,
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

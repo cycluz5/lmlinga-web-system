@@ -72,6 +72,7 @@ class Resident extends Model
         'is_fp_user',
         'philhealth',
         'philhealth_number',
+        'philhealth_membership_type_id',
         'disability',
         'disability_others',
         'medical_history',

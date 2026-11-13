@@ -57,15 +57,15 @@ class HouseholdProfilingRiskAssessmentTest extends TestCase
         $params = $this->memberWithHistory();
 
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-001/risk-assessment'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-001').'/risk-assessment'),
             route('household-profiling.members.risk-assessment', $params)
         );
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-001/risk-assessment/create'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-001').'/risk-assessment/create'),
             route('household-profiling.members.risk-assessment.create', $params)
         );
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-001/risk-assessment/RA-001'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-001').'/risk-assessment/'.$this->opaqueId('s', 'RA-001')),
             route('household-profiling.members.risk-assessment.show', $params + ['assessmentId' => 'RA-001'])
         );
     }

@@ -127,6 +127,13 @@ final class ResidentShellWriteAdapter
         self::mapEducation($guard, $table, $validated, $payload);
         self::mapFpUser($guard, $table, $validated, $payload);
 
+        // S-02: only a submitted field is written, so older forms and offline drafts leave the type unchanged.
+        if (array_key_exists('philhealth_membership_type', $validated) && PhilhealthMembershipTypes::available()) {
+            $payload[PhilhealthMembershipTypes::COLUMN] = PhilhealthMembershipTypes::idForCode(
+                $validated['philhealth_membership_type']
+            );
+        }
+
         $philhealthValue = null;
         $hasPhilhealth = false;
         if (array_key_exists('philhealth', $validated) || array_key_exists('philhealth_number', $validated)) {

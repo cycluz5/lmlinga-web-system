@@ -3,6 +3,7 @@
 @section('title', 'Household verification status - LMLinga')
 
 @php
+    $staffVerified = \App\Support\HouseholdLinkingPolicy::requiresStaffVerification();
     $allowed = ['verifying', 'approved', 'rejected', 'failed-1', 'failed-2', 'failed-3', 'daily-limit'];
     $state = in_array((string) ($uiState ?? 'verifying'), $allowed, true)
         ? (string) $uiState
@@ -46,6 +47,49 @@
         ],
     };
 
+    // Staff-verified linking: nothing is approved automatically, so the copy must say so.
+    if ($staffVerified) {
+        $copy = match ($state) {
+            'verifying' => [
+                'title' => 'Verification in progress',
+                'text' => 'Your details were compared with barangay household records. Barangay staff must verify your identity before household access is granted. Please visit your Barangay Health Station with a valid ID, or contact your Barangay Health Worker.',
+                'status' => 'Awaiting staff verification',
+            ],
+            'approved' => [
+                'title' => 'Match found',
+                'text' => 'Your identity was verified by barangay staff and your household access is active.',
+                'status' => 'Verified',
+            ],
+            'rejected' => [
+                'title' => 'No match found',
+                'text' => 'This request could not be verified. Please visit your Barangay Health Station with a valid ID, or contact your Barangay Health Worker.',
+                'status' => 'Not verified',
+            ],
+            default => $copy,
+        };
+
+        // Staff already verified identity + mobile: the remaining step is the SMS code.
+        if ($state === 'verifying' && ($otpStepOpen ?? false)) {
+            $copy = [
+                'title' => 'Identity verified',
+                'text' => 'Barangay staff verified your identity and mobile number. Enter the verification code sent by SMS to your verified mobile number to finish linking your household record.',
+                'status' => 'Awaiting SMS code',
+            ];
+        }
+
+        // Legacy Approved-without-OTP: no household access was ever granted; re-verify with staff.
+        if ($needsResubmission ?? false) {
+            $state = 'rejected';
+            $copy = [
+                'title' => 'Verification required',
+                'text' => 'Your household record access has not been verified. Submit a new request, then barangay staff will verify your identity before access is granted. Please bring a valid ID to your Barangay Health Station or contact your Barangay Health Worker.',
+                'status' => 'Verification required',
+            ];
+        }
+    }
+
+    $otpStepOpen = (bool) ($otpStepOpen ?? false);
+
     $canRetry = in_array($state, ['rejected', 'failed-1', 'failed-2'], true);
     $isBlocked = in_array($state, ['failed-3', 'daily-limit'], true);
     $grantHouseholdAccess = false;
@@ -84,14 +128,26 @@
                         {{ $copy['text'] }}
                     </p>
                     <p class="lml-hh-status__note">
-                        This is an automatic verification result. Admin does not manually approve or reject Household Requests.
+                        @if ($staffVerified)
+                            Household access is granted only after barangay staff verify your identity and you confirm the code sent by SMS to your verified mobile number.
+                        @else
+                            This is an automatic verification result. Admin does not manually approve or reject Household Requests.
+                        @endif
                     </p>
 
                     <div class="lml-chatbot-household-request__actions">
-                        @if ($isPending)
+                        @if ($isPending && ! ($staffVerified && $otpStepOpen))
                             <span class="lml-hh-status__pending" aria-hidden="true"></span>
                         @endif
-                        @if ($isSuccess)
+                        @if ($staffVerified && $otpStepOpen)
+                            <a
+                                href="{{ route('chatbot.household.verification.sms') }}"
+                                class="lml-chatbot-household-request__btn lml-chatbot-household-request__btn--submit lml-focus-ring"
+                                data-hh-continue-otp
+                            >
+                                Enter SMS code
+                            </a>
+                        @elseif ($isSuccess)
                             <a
                                 href="{{ route('chatbot.household.information') }}"
                                 data-lml-page-loader="Loading household information…"

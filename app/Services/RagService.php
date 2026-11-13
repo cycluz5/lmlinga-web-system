@@ -6,6 +6,7 @@ use App\Models\HealthChunk;
 use App\Services\Prompts\BikolPrompts;
 use App\Services\Prompts\TagalogPrompts;
 use App\Services\Prompts\EnglishPrompts;
+use App\Support\OllamaChatEndpoint;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
@@ -16,33 +17,77 @@ class RagService
     protected ?string $ollamaApiKey;
     protected string $ollamaCloudUrl = 'https://ollama.com';
 
+    /** SR-08: auto (default, existing rule) | local | cloud — see OllamaChatEndpoint. */
+    protected string $chatProvider = OllamaChatEndpoint::AUTO;
+    protected int $chatTimeout = 180;
+    protected int $embeddingTimeout = 60;
+    protected string $keepAlive = '30m';
+
     public function __construct()
     {
         $this->ollamaBaseUrl = config('services.ollama.base_url', 'http://127.0.0.1:11434');
         $this->ollamaApiKey = config('services.ollama.api_key');
+        // SR-08: settings from config; the defaults equal the former hard-coded values.
+        $this->ollamaCloudUrl = (string) config('services.ollama.cloud_url', 'https://ollama.com');
+        $this->chatProvider = (string) config('services.ollama.chat_provider', OllamaChatEndpoint::AUTO);
+        $this->chatModel = (string) config('services.ollama.chat_model', 'gemma4:31b-cloud');
+        $this->embeddingModel = (string) config('services.ollama.embedding_model', 'nomic-embed-text');
+        $this->chatTimeout = OllamaChatEndpoint::boundedTimeout((int) config('services.ollama.chat_timeout', 180), 180);
+        $this->embeddingTimeout = OllamaChatEndpoint::boundedTimeout((int) config('services.ollama.embedding_timeout', 60), 60);
+        $this->keepAlive = (string) config('services.ollama.keep_alive', '30m');
+    }
+
+    /**
+     * SR-08 evaluation only: a copy using another provider/model. The shared instance is not changed.
+     */
+    public function withChatSettings(?string $provider, ?string $model): static
+    {
+        $copy = clone $this;
+        if ($provider !== null && $provider !== '') {
+            $copy->chatProvider = $provider;
+        }
+        if ($model !== null && $model !== '') {
+            $copy->chatModel = $model;
+        }
+
+        return $copy;
+    }
+
+    /**
+     * @return array{provider: string, chat_model: string, embedding_model: string, endpoint: array{provider: string, url: string, token: ?string}}
+     */
+    public function chatSettings(): array
+    {
+        return [
+            'provider' => $this->chatProvider,
+            'chat_model' => $this->chatModel,
+            'embedding_model' => $this->embeddingModel,
+            'endpoint' => OllamaChatEndpoint::resolve($this->chatProvider, $this->chatModel, $this->ollamaApiKey, $this->ollamaBaseUrl, $this->ollamaCloudUrl),
+        ];
     }
 
     /**
      * Cloud chat models (e.g. "gemma4:31b-cloud") are served directly by
      * ollama.com when an API key is configured, so a local `ollama signin`
      * is never required. Non-cloud models still go through the local server.
+     * SR-08: the provider setting (default "auto") decides; see OllamaChatEndpoint.
      */
     protected function usesOllamaCloud(): bool
     {
-        return str_ends_with($this->chatModel, '-cloud')
-            && $this->ollamaApiKey !== null
-            && $this->ollamaApiKey !== '';
+        return $this->chatSettings()['endpoint']['provider'] === OllamaChatEndpoint::CLOUD;
     }
 
     protected function ollamaChatRequest(array $payload): \Illuminate\Http\Client\Response
     {
-        if ($this->usesOllamaCloud()) {
-            return Http::withToken($this->ollamaApiKey)
-                ->timeout(180)
-                ->post("{$this->ollamaCloudUrl}/api/chat", $payload);
+        $endpoint = $this->chatSettings()['endpoint'];
+
+        if ($endpoint['token'] !== null) {
+            return Http::withToken($endpoint['token'])
+                ->timeout($this->chatTimeout)
+                ->post($endpoint['url'], $payload);
         }
 
-        return Http::timeout(180)->post("{$this->ollamaBaseUrl}/api/chat", $payload);
+        return Http::timeout($this->chatTimeout)->post($endpoint['url'], $payload);
     }
 
     protected string $embeddingModel = 'nomic-embed-text';
@@ -133,7 +178,7 @@ class RagService
 
     protected function embed(string $text): array
     {
-        $response = Http::timeout(60)->post("{$this->ollamaBaseUrl}/api/embeddings", [
+        $response = Http::timeout($this->embeddingTimeout)->post("{$this->ollamaBaseUrl}/api/embeddings", [
             'model'  => $this->embeddingModel,
             'prompt' => $text,
         ]);
@@ -1619,7 +1664,6 @@ class RagService
         Log::info('Language detection overrode selected language', [
             'selected' => $language,
             'detected' => $detectedLanguage,
-            'question' => $question,
         ]);
         $language = $detectedLanguage;
     }
@@ -1705,9 +1749,7 @@ class RagService
         );
         if ($pipelineQuestion !== $question) {
             Log::debug('Tagalog follow-up pipeline question', [
-                'user_question' => $userQuestion,
                 'topic_hint' => $effectiveTopicHint,
-                'pipeline_question' => $pipelineQuestion,
             ]);
         }
     }
@@ -1723,9 +1765,7 @@ class RagService
         );
         if ($pipelineQuestion !== $question) {
             Log::debug('English follow-up pipeline question', [
-                'user_question' => $userQuestion,
                 'topic_hint' => $effectiveTopicHint,
-                'pipeline_question' => $pipelineQuestion,
             ]);
         }
     }
@@ -1844,7 +1884,7 @@ $ollamaOptions = [
     'messages'   => $messages,
     'stream'     => false,
     'format'     => 'json',
-    'keep_alive' => '30m',
+    'keep_alive' => $this->keepAlive,
     'options'    => [
         'temperature' => $language === 'bcl' ? 0.0 : 0.2,
         'num_predict' => 700,
@@ -1888,8 +1928,6 @@ if (
     )
 ) {
     Log::warning('Bikol response drifted to English. Regenerating from same context.', [
-        'question' => $question,
-        'answer' => $structured['text'],
         'sources' => collect($chunks)
             ->pluck('source_file')
             ->unique()
@@ -2005,7 +2043,7 @@ return [
         }
 
         Log::warning('JSON parsing failed completely', [
-            'raw_content' => $rawContent,
+            'raw_content_length' => mb_strlen((string) $rawContent),
         ]);
 
         return [
@@ -2398,7 +2436,7 @@ protected function regenerateBikolFromContext(
         'messages' => $messages,
         'stream' => false,
         'format' => 'json',
-        'keep_alive' => '30m',
+        'keep_alive' => $this->keepAlive,
         'options' => [
             'temperature' => 0.0,
             'num_predict' => 700,

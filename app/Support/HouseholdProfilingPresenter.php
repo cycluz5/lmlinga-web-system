@@ -368,6 +368,15 @@ final class HouseholdProfilingPresenter
         return (string) ($resident->education ?? '');
     }
 
+    private static function philhealthMembershipTypeFromResident(Resident $resident): string
+    {
+        if (! PhilhealthMembershipTypes::available()) {
+            return '';
+        }
+
+        return PhilhealthMembershipTypes::codeForId($resident->getAttributes()[PhilhealthMembershipTypes::COLUMN] ?? null);
+    }
+
     private static function philhealthFromResident(Resident $resident): string
     {
         $guard = app(DatabaseSchemaGuard::class);
@@ -595,6 +604,8 @@ final class HouseholdProfilingPresenter
             'religion_other' => $religionState['other'],
             'education' => self::educationFromResident($resident),
             'philhealth' => self::philhealthFromResident($resident),
+            'philhealth_membership_type' => self::philhealthMembershipTypeFromResident($resident),
+            'philhealth_membership_type_label' => PhilhealthMembershipTypes::label(self::philhealthMembershipTypeFromResident($resident)),
             'fp_user' => self::fpUserFromResident($resident),
             'disability' => $health['disability'],
             'disability_others' => $health['disability_others'],

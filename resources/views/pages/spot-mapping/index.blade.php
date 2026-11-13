@@ -15,7 +15,76 @@
         data-plot-new-url="{{ route('spot-mapping.plot-new') }}"
         data-pending-candidates='@json($pendingCandidates, JSON_HEX_TAG | JSON_HEX_APOS | JSON_UNESCAPED_UNICODE)'
         data-markers='@json($markers, JSON_HEX_TAG | JSON_HEX_APOS | JSON_UNESCAPED_UNICODE)'
+        data-boundary-state="{{ $boundaryState ?? 'missing' }}"
+        {{-- Offline view: when this page is served from the offline cache, markers are as of this time. --}}
+        data-rendered-at="{{ now()->toIso8601String() }}"
+        @if (! empty($boundaryGeoJson))
+            data-boundary='@json($boundaryGeoJson, JSON_HEX_TAG | JSON_HEX_APOS | JSON_UNESCAPED_UNICODE)'
+        @endif
+        @if (! empty($demoLocation['active']))
+            data-demo-location='@json($demoLocation['active'], JSON_HEX_TAG | JSON_HEX_APOS | JSON_UNESCAPED_UNICODE)'
+        @endif
     >
+        {{-- SR-10 Demo Location Mode: shown only to the Admin whose session enabled it (gated deployment). --}}
+        @if (! empty($demoLocation['active']))
+            <div class="lml-spot-map__demo-banner" role="status" data-spot-map-demo-banner>
+                <i class="bi bi-broadcast-pin" aria-hidden="true"></i>
+                <p class="lml-spot-map__demo-banner-text">
+                    <strong>DEMO / SIMULATED LOCATION</strong> — "{{ $demoLocation['active']['label'] }}" is used instead of this device's real position.
+                    @unless ($demoLocation['active']['verified'] ?? false)
+                        <span data-spot-map-demo-unverified>This demo point is UNVERIFIED (not independently confirmed).</span>
+                    @endunless
+                    Simulated coordinates are not saved. Ends {{ \Illuminate\Support\Carbon::createFromTimestamp($demoLocation['active']['expires_at'])->timezone(config('app.timezone'))->format('g:i A') }} or when you turn it off or log out.
+                </p>
+                <form method="POST" action="{{ route('spot-mapping.demo-location.disable') }}">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-sm btn-light lml-focus-ring fw-medium" data-spot-map-demo-disable>Turn off Demo Mode</button>
+                </form>
+            </div>
+        @endif
+
+        @if (! empty($demoLocation['manage']) && empty($demoLocation['active']))
+            <section class="lml-spot-map__demo-panel" aria-labelledby="spot-map-demo-heading" data-spot-map-demo-panel>
+                <h2 id="spot-map-demo-heading" class="lml-spot-map__demo-panel-title">Demo Location Mode (Admin, this session only)</h2>
+                @if ($demoLocation['available'])
+                    <form method="POST" action="{{ route('spot-mapping.demo-location.enable') }}" class="lml-spot-map__demo-form">
+                        @csrf
+                        <label for="spot-map-demo-point" class="visually-hidden">Verified demo point</label>
+                        <select id="spot-map-demo-point" name="point" class="form-select form-select-sm lml-form-control" required>
+                            @foreach ($demoLocation['points'] as $point)
+                                <option value="{{ $point['key'] }}">{{ $point['label'] }}{{ ($point['verified'] ?? false) ? '' : ' — UNVERIFIED' }}</option>
+                            @endforeach
+                        </select>
+                        <button type="submit" class="btn btn-sm btn-outline-primary lml-focus-ring fw-medium">Turn on Demo Mode</button>
+                    </form>
+                    <p class="lml-spot-map__demo-panel-note">Uses a configured point inside the indicative barangay boundary instead of this device's GPS, for up to 2 hours. Nothing is saved while it is on.</p>
+                @else
+                    <p class="lml-spot-map__demo-panel-note" data-spot-map-demo-unavailable>Unavailable: {{ $demoLocation['reason'] }}</p>
+                @endif
+            </section>
+        @endif
+        {{-- SR-11 / SM-01: barangay boundary status (fail closed; nothing invented when data is missing). --}}
+        @if (($boundaryState ?? 'missing') === 'valid')
+            {{-- SR-10 Phase B: the boundary in use is INDICATIVE (NAMRIA/PSA COD-AB); it is not used to accept or refuse real plots. --}}
+            <p class="lml-spot-map__boundary-note" data-spot-map-boundary-indicative>
+                Barangay outline: {{ $boundaryGeoJson['properties']['name'] ?? 'Barangay La Medalla' }}. Indicative only (NAMRIA/PSA data, CC BY-IGO) — not a legal boundary and not used to accept or refuse household plots.
+            </p>
+        @endif
+
+        @if (($boundaryState ?? 'missing') !== 'valid')
+            <div class="lml-spot-map__server-alert lml-spot-map__server-alert--warning" role="status" data-spot-map-boundary-warning>
+                <p class="lml-spot-map__server-alert-text">
+                    @if (($boundaryState ?? 'missing') === 'missing')
+                        Barangay boundary not available: the official Barangay La Medalla boundary has not been added yet, so the map cannot show the barangay limits.
+                    @else
+                        Barangay boundary not shown: the boundary file is invalid. {{ $boundaryReason ?? '' }}
+                    @endif
+                    No location is treated as inside the barangay boundary until valid official boundary data is added.
+                </p>
+            </div>
+        @endif
+
         @if ($errors->any())
             <div class="lml-spot-map__server-alert" role="alert">
                 <p class="lml-spot-map__server-alert-text">{{ $errors->first() }}</p>
@@ -195,6 +264,11 @@
             ></ul>
         </section>
 
+        {{-- Offline view notice (spot-mapping.js fills and shows it when offline or map imagery fails). --}}
+        <p class="lml-spot-map__offline-notice" role="status" aria-live="polite" data-spot-map-offline-view-notice hidden></p>
+        {{-- Phase 2B: saved offline map progress/problems (hidden once the map is saved). --}}
+        <p class="lml-spot-map__offline-map-status" role="status" aria-live="polite" data-spot-map-offline-map-status hidden></p>
+
         <div class="lml-spot-map__workspace">
             <div class="lml-spot-map__map-wrap">
                 <div
@@ -229,9 +303,24 @@
                             </li>
                             <li class="lml-spot-map__legend-item">
                                 <span class="lml-spot-map__legend-swatch lml-spot-map__legend-swatch--pending" aria-hidden="true"></span>
-                                <span>Pending</span>
+                                <span>Not yet saved (new pin)</span>
+                            </li>
+                            <li class="lml-spot-map__legend-item">
+                                <span class="lml-spot-map__legend-swatch lml-spot-map__legend-swatch--manual" aria-hidden="true"></span>
+                                <span>Placed by hand (unverified)</span>
+                            </li>
+                            <li class="lml-spot-map__legend-item">
+                                <span class="lml-spot-map__legend-swatch lml-spot-map__legend-swatch--demo" aria-hidden="true"></span>
+                                <span>Simulated (demo, never saved)</span>
+                            </li>
+                            <li class="lml-spot-map__legend-item">
+                                <span class="lml-spot-map__legend-swatch lml-spot-map__legend-swatch--check" aria-hidden="true"></span>
+                                <span>Location to check (outside the indicative boundary)</span>
                             </li>
                         </ul>
+                        <p class="lml-spot-map__legend-asof">The number inside a marker is its zone. Zoom in to see household numbers; tap a marker for details.</p>
+                        <p class="lml-spot-map__legend-asof">Pending households have no location yet. They are listed under Pending Households.</p>
+                        <p class="lml-spot-map__legend-asof" data-spot-map-legend-asof>Households as of {{ now()->timezone(config('app.timezone'))->format('M j, Y g:i A') }}</p>
                     </div>
 
                     <div class="lml-spot-map__legend-section">
@@ -292,6 +381,33 @@
                 </div>
 
                 <div data-spot-map-details-body>
+                {{-- Phase 3A: location check (filled by spot-mapping.js; display only, never blocks saving on its own). --}}
+                <div class="lml-spot-map__location-check" data-spot-map-location-check hidden>
+                    <p class="lml-spot-map__location-kind" data-spot-map-location-kind></p>
+                    <ul class="lml-spot-map__location-lines" data-spot-map-location-lines></ul>
+                    <button type="button" class="lml-spot-map__btn lml-spot-map__btn--secondary lml-spot-map__regps lml-focus-ring" data-spot-map-regps hidden>
+                        <i class="bi bi-crosshair" aria-hidden="true"></i>
+                        <span>Try GPS again</span>
+                    </button>
+                    <label class="lml-spot-map__boundary-confirm" for="lml-spot-map-boundary-confirm-input" data-spot-map-boundary-confirm hidden>
+                        <input
+                            id="lml-spot-map-boundary-confirm-input"
+                            type="checkbox"
+                            class="lml-spot-map__consent-input lml-focus-ring"
+                            data-spot-map-boundary-confirm-input
+                            aria-describedby="lml-spot-map-boundary-confirm-error"
+                        >
+                        <span>I checked: this household is in La Medalla (the boundary is approximate).</span>
+                    </label>
+                    <p
+                        id="lml-spot-map-boundary-confirm-error"
+                        class="lml-spot-map__field-error"
+                        data-error-for="boundaryConfirm"
+                        role="alert"
+                        hidden
+                    ></p>
+                </div>
+
                 <dl class="lml-spot-map__fields">
                     <div class="lml-spot-map__field">
                         <dt>

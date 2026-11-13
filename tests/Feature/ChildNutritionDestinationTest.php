@@ -44,7 +44,7 @@ class ChildNutritionDestinationTest extends TestCase
     public function test_named_child_nutrition_route_resolves(): void
     {
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-001/child-nutrition'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-001').'/child-nutrition'),
             route('household-profiling.members.child-nutrition', $this->memberParams())
         );
     }

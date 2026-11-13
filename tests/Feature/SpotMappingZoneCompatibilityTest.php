@@ -36,7 +36,6 @@ class SpotMappingZoneCompatibilityTest extends TestCase
         DB::table('households')->insert(array_merge([
             'household_no' => 'HH-ERD-900',
             'zone' => '',
-            'street' => 'Test St.',
             'date_registered' => '2026-08-28',
             'latitude' => 13.38110000,
             'longitude' => 123.43060000,

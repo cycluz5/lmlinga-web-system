@@ -77,7 +77,7 @@ class OfflineLocalMemberViewTest extends TestCase
         $this->assertStringNotContainsString('data-offline-parent-resident-id', $edit);
         $this->assertStringNotContainsString('name="_method"', $edit);
         $this->assertStringContainsString(
-            '/household-profiling/999/members/MB-L-331929318FDA/edit',
+            '/household-profiling/'.$this->opaqueId('h', '999').'/members/'.$this->opaqueId('m', 'MB-L-331929318FDA').'/edit',
             $edit,
         );
     }

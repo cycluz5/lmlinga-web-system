@@ -1,6 +1,7 @@
 {{--
-    Household Request Details — Admin monitoring / audit of automatic verification (UI only).
-    No manual approve/reject controls.
+    Household Request Details — Admin monitoring / audit of household-record requests.
+    Staff-verified linking actions (verify identity + mobile, decline, revoke link) appear only
+    when HouseholdLinkingPolicy allows them; the server re-checks every action.
 --}}
 @extends('layouts.dashboard')
 
@@ -159,6 +160,72 @@
                         </div>
                     </dl>
                 </section>
+
+                @if (($request['can_staff_verify'] ?? false) || ($request['can_staff_decline'] ?? false) || ($request['can_revoke_link'] ?? false))
+                    <section class="lml-hr-view__section" aria-labelledby="lml-hr-view-staff-heading" data-hr-staff-verification>
+                        <h2 id="lml-hr-view-staff-heading" class="lml-hr-view__section-title">
+                            Staff identity verification
+                        </h2>
+
+                        @if (session('status'))
+                            <p class="lml-hr-view__text" role="status">{{ session('status') }}</p>
+                        @endif
+                        @if (session('error'))
+                            <p class="lml-hr-view__text" role="alert">{{ session('error') }}</p>
+                        @endif
+                        @if ($errors->any())
+                            <ul class="lml-hr-view__reasons" role="alert">
+                                @foreach ($errors->all() as $message)
+                                    <li>{{ $message }}</li>
+                                @endforeach
+                            </ul>
+                        @endif
+
+                        @if ($request['can_staff_verify'] ?? false)
+                            <p class="lml-hr-view__text">
+                                A household link is created only after barangay staff verify the requester in person
+                                (or by the barangay's official procedure) and confirm that the mobile number on this
+                                request belongs to that resident. The verification code is then sent by SMS to that number only.
+                            </p>
+                            <form method="POST" action="{{ route('household-requests.verify-identity', ['id' => $requestId]) }}" data-hr-staff-verify-form>
+                                @csrf
+                                <label class="lml-hr-view__text">
+                                    <input type="checkbox" name="identity_verified" value="1" required>
+                                    I verified this person's identity against their valid ID and the household record.
+                                </label>
+                                <label class="lml-hr-view__text">
+                                    <input type="checkbox" name="mobile_verified" value="1" required>
+                                    I confirmed that the mobile number {{ $request['mobile'] ?? '—' }} belongs to this resident.
+                                </label>
+                                <button type="submit" class="lml-hr-view__btn lml-focus-ring" data-hr-staff-verify>
+                                    Verify identity and mobile number
+                                </button>
+                            </form>
+                        @endif
+
+                        @if ($request['can_staff_decline'] ?? false)
+                            <form method="POST" action="{{ route('household-requests.decline', ['id' => $requestId]) }}" data-hr-staff-decline-form>
+                                @csrf
+                                <button type="submit" class="lml-hr-view__btn lml-focus-ring" data-hr-staff-decline>
+                                    Decline request
+                                </button>
+                            </form>
+                        @endif
+
+                        @if ($request['can_revoke_link'] ?? false)
+                            <p class="lml-hr-view__text">
+                                This resident account currently has household access. Revoke it only if staff determine
+                                the link is not legitimate; the resident can verify again in person.
+                            </p>
+                            <form method="POST" action="{{ route('household-requests.revoke-link', ['id' => $requestId]) }}" data-hr-staff-revoke-form>
+                                @csrf
+                                <button type="submit" class="lml-hr-view__btn lml-focus-ring" data-hr-staff-revoke>
+                                    Revoke household link
+                                </button>
+                            </form>
+                        @endif
+                    </section>
+                @endif
             @endif
 
             <div class="lml-hr-view__actions">

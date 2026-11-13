@@ -181,6 +181,8 @@ class Final5LandingAndAccountsTest extends TestCase
 
     public function test_user_management_empty_state_and_unknown_demo_id(): void
     {
+        $this->removeSeededSuperAdmin();
+
         $this->assertSame([], HealthWorkerUiCatalog::all());
         $this->assertNull(HealthWorkerUiCatalog::find('hw-001'));
 

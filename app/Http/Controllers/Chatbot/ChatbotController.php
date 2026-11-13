@@ -2,24 +2,41 @@
 
 namespace App\Http\Controllers\Chatbot;
 
+use App\Exceptions\ChatbotAiUnavailableException;
 use App\Http\Controllers\Controller;
 use App\Models\ChatbotConversation;
 use App\Models\ChatbotMessage;
 use App\Services\RagService;
 use App\Services\TagalogConversationService;
 use App\Support\ResidentAuthenticator;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
+use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
+use Throwable;
 
 
 class ChatbotController extends Controller
 {
+    /**
+     * SR-08 friendly reply when the AI provider fails. English only for now: Tagalog/Bikol-Iriga wording
+     * needs Linguist-verified text before it is added (no unverified Bikol-Iriga content).
+     */
+    /** Longest question accepted, so an oversized message cannot fail the search or the save. */
+    public const MAX_QUESTION_LENGTH = 2000;
+
+    public const AI_UNAVAILABLE_MESSAGE = 'Sorry, the chatbot cannot answer right now. Please try again in a few minutes.';
+
     public function ask(Request $request, RagService $rag)
     {
         $request->validate([
-            'question'        => 'required|string',
+            'question'        => 'required|string|max:'.self::MAX_QUESTION_LENGTH,
             'language'        => 'nullable|string|in:en,tl,bcl',
             'category'        => 'nullable|string|in:child_care,family_planning,maternal_care,other',
             'conversation_id' => 'nullable|integer|exists:chatbot_conversations,conversation_id',
@@ -33,6 +50,61 @@ class ChatbotController extends Controller
         $category = $request->input('category');
         $question = $request->input('question');
 
+        // SR-08: an AI provider failure (configuration, connection, failed request) gets a friendly reply
+        // instead of a server error. The transaction is rolled back exactly as before (no partial history),
+        // and the provider is never switched automatically.
+        try {
+            return $this->answer($request, $rag, $language, $category, $question, $accountId);
+        } catch (ConnectionException|RequestException|ChatbotAiUnavailableException $e) {
+            Log::warning('Chatbot AI provider unavailable', [
+                'reason' => $e::class,
+                'status' => $e instanceof RequestException ? $e->response->status() : null,
+                'detail' => $e instanceof ChatbotAiUnavailableException ? $e->getMessage() : null,
+                'provider' => config('services.ollama.chat_provider'),
+                'chat_model' => config('services.ollama.chat_model'),
+                'language' => $language,
+            ]);
+
+            return response()->json([
+                'error' => 'ai_unavailable',
+                'message' => self::AI_UNAVAILABLE_MESSAGE,
+            ], 503);
+        } catch (ValidationException|ModelNotFoundException|HttpExceptionInterface $e) {
+            throw $e;
+        } catch (Throwable $e) {
+            // The transaction has already rolled back. Exception messages can quote saved values and
+            // stack traces can hold arguments, so neither may reach the log or the response here.
+            Log::error('Chatbot request failed', [
+                'reason' => $e::class,
+                'sql_state' => $e instanceof QueryException ? $e->getCode() : null,
+                'location' => $this->firstApplicationFrame($e),
+                'language' => $language,
+            ]);
+
+            return response()->json(['message' => 'Server Error'], 500);
+        }
+    }
+
+    /** First place in application code the failure passed through: file and line only, never arguments. */
+    private function firstApplicationFrame(Throwable $e): string
+    {
+        $root = app_path();
+        $frames = array_merge([['file' => $e->getFile(), 'line' => $e->getLine()]], $e->getTrace());
+
+        foreach ($frames as $frame) {
+            $file = (string) ($frame['file'] ?? '');
+            if (str_starts_with($file, $root)) {
+                $relative = str_replace('\\', '/', substr($file, strlen(base_path()) + 1));
+
+                return $relative.':'.($frame['line'] ?? 0);
+            }
+        }
+
+        return 'unknown';
+    }
+
+    private function answer(Request $request, RagService $rag, string $language, ?string $category, string $question, mixed $accountId)
+    {
         return DB::transaction(function () use ($request, $rag, $language, $category, $question, $accountId) {
 
             $conversation = $request->filled('conversation_id')
@@ -91,12 +163,14 @@ class ChatbotController extends Controller
             $result = $rag->ask($question, $language, $category, $topicHint);
             $resolvedLanguage = $result['language'] ?? $language;
 
-            Log::info('Chatbot response', [
-    'question' => $question,
+            // Never log the question or the answer: they can contain residents' health information.
+Log::info('Chatbot response', [
     'selected_language' => $language,
     'resolved_language' => $result['language'] ?? $language,
-    'answer' => $result['answer'],
-    'points' => $result['points'],
+    'category' => $category,
+    'question_length' => mb_strlen((string) $question),
+    'answer_length' => mb_strlen((string) $result['answer']),
+    'point_count' => count($result['points']),
     'sources' => $result['sources'],
 ]);
 

@@ -183,6 +183,17 @@
                     </a>
                 @endif
 
+                @if ($emailVerificationNeeded ?? false)
+                    {{-- SR-03: non-blocking; existing account access is unchanged. --}}
+                    <a
+                        href="{{ route('chatbot.email.verify') }}"
+                        class="lml-chatbot-main__household-retry lml-focus-ring"
+                        data-lml-email-verify-notice
+                    >
+                        Verify your email address
+                    </a>
+                @endif
+
                 <div class="lml-chatbot-main__nav">
                     <button
                         type="button"
@@ -492,6 +503,7 @@
                             id="chatbot-message-input"
                             class="lml-chatbot-main__composer-input lml-focus-ring"
                             data-lml-composer-input
+                            maxlength="{{ \App\Http\Controllers\Chatbot\ChatbotController::MAX_QUESTION_LENGTH }}"
                             rows="1"
                             placeholder="Type a message..."
                             autocomplete="off"

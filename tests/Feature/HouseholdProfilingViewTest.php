@@ -171,22 +171,22 @@ class HouseholdProfilingViewTest extends TestCase
     public function test_household_profiling_route_names_remain_resolvable(): void
     {
         $this->assertSame(
-            url('/household-profiling/HH-151'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151')),
             route('household-profiling.view', ['householdNo' => 'HH-151'])
         );
         $this->assertSame(
-            url('/household-profiling/HH-151/members/create'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/create'),
             route('household-profiling.members.create', ['householdNo' => 'HH-151'])
         );
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-001'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-001')),
             route('household-profiling.members.show', [
                 'householdNo' => 'HH-151',
                 'memberId' => 'MB-001',
             ])
         );
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-001/edit'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-001').'/edit'),
             route('household-profiling.members.edit', [
                 'householdNo' => 'HH-151',
                 'memberId' => 'MB-001',

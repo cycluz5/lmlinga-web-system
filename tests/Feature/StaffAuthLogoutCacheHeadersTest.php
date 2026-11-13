@@ -51,7 +51,8 @@ class StaffAuthLogoutCacheHeadersTest extends TestCase
 
         $login = $this->get(route('login'));
         $loginCache = strtolower((string) $login->headers->get('Cache-Control', ''));
-        $this->assertStringNotContainsString('no-store', $loginCache);
+        // /login opts into auth.nocache (routes/web.php): the form carries a CSRF token and must not be cached.
+        $this->assertStringContainsString('no-store', $loginCache);
 
         $this->post(route('login.store'), [
             'email' => 'relogin.worker@example.test',

@@ -40,7 +40,8 @@ class OfflineExportContractTest extends TestCase
 
         $householdPage = $this->get(route('household-profiling.index'))->assertOk()->getContent();
         $this->assertStringContainsString('data-hh-export', $householdPage);
-        $this->assertStringContainsString('data-hh-export-url="'.e(route('household-profiling.export')).'"', $householdPage);
+        // Export Data opens the report builder (zone carried over), which previews then exports via household-profiling.export.
+        $this->assertStringContainsString('data-hh-export-url="'.e(route('household-profiling.report-builder')).'"', $householdPage);
 
         $householdExport = $this->get(route('household-profiling.export'));
         $householdExport->assertOk();

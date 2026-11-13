@@ -50,7 +50,7 @@ final class HouseholdRecordRequestEmailOtpVerifier
                 if (
                     ! $record instanceof RecordRequest
                     || (int) $record->account_id !== (int) $accountLocked->account_id
-                    || ! HouseholdRecordVerifiedAccess::allowsOtpInterface($record)
+                    || ! HouseholdRecordVerifiedAccess::allowsEmailOtpInterface($record)
                 ) {
                     return HouseholdOtpVerifyResult::failed('invalid_status');
                 }

@@ -276,11 +276,11 @@ class HouseholdProfilingDeathSharedSourceTest extends TestCase
         $this->assertStringContainsString('09/04/2026', $hpHtml);
         $this->assertRegistryNumberDisplayed($hpHtml, 'DC-121-0009', 'household-profiling');
         $this->assertSame(
-            url('/household-profiling/121/members/'.$memberId.'/death'),
+            url('/household-profiling/'.$this->opaqueId('h', '121').'/members/'.$this->opaqueId('m', $memberId).'/death'),
             route('household-profiling.members.death.index', $params)
         );
         $this->assertSame(
-            url('/health-records/death/121/'.$memberId),
+            url('/health-records/death/'.$this->opaqueId('h', '121').'/'.$this->opaqueId('m', $memberId)),
             route('health-records.death.show', $params)
         );
 
@@ -327,6 +327,7 @@ class HouseholdProfilingDeathSharedSourceTest extends TestCase
         $this->assertStringContainsString('01/20/2026', $hrHtml);
 
         $this->actingAs($staff['admin']->fresh(['currentAppointment']));
+        $this->alignSessionLoginWith($staff['admin']);
         $staff['admin']->syncUiRoleSession();
         $adminHtml = $this->get(route('death-requests.show', DeathRequest::query()->firstOrFail()))
             ->assertOk()
@@ -364,6 +365,7 @@ class HouseholdProfilingDeathSharedSourceTest extends TestCase
         $this->assertRegistryNumberDisplayed($hrHtml, $stored, 'health-records');
 
         $this->actingAs($staff['admin']->fresh(['currentAppointment']));
+        $this->alignSessionLoginWith($staff['admin']);
         $staff['admin']->syncUiRoleSession();
         $adminHtml = $this->get(route('death-requests.show', DeathRequest::query()->firstOrFail()))
             ->assertOk()

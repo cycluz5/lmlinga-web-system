@@ -22,7 +22,14 @@ class DatabaseSeeder extends Seeder
         }
 
         // Plaintext — User model hashes via the `hashed` cast. Never log this value.
-        $password = (string) env('SEED_STAFF_PASSWORD', 'ChangeMeLocally!123');
+        $password = (string) env('SEED_STAFF_PASSWORD', '');
+
+        // No built-in default password: seeding stops unless SEED_STAFF_PASSWORD is set.
+        if ($password === '') {
+            $this->command?->warn('DatabaseSeeder skipped: set SEED_STAFF_PASSWORD in .env first.');
+
+            return;
+        }
 
         $admin = User::query()->updateOrCreate(
             ['email' => 'admin@lmlinga.test'],

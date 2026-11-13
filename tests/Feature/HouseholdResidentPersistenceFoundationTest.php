@@ -30,9 +30,7 @@ class HouseholdResidentPersistenceFoundationTest extends TestCase
         $household = Household::query()->create([
             'household_no' => 'HH-151',
             'zone' => 'Zone 2',
-            'street' => 'Layuan St.',
             'date_registered' => '2026-01-21',
-            'address' => 'Layuan St., Brgy. La Medalla',
             'latitude' => 13.38110000,
             'longitude' => 123.43060000,
             'accomplished_by' => 'Lani Magistrado (BHW)',
@@ -42,7 +40,6 @@ class HouseholdResidentPersistenceFoundationTest extends TestCase
             'id' => $household->id,
             'household_no' => 'HH-151',
             'zone' => 'Zone 2',
-            'street' => 'Layuan St.',
             'accomplished_by' => 'Lani Magistrado (BHW)',
         ]);
 

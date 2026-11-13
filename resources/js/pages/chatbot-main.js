@@ -1791,6 +1791,14 @@ if (composer && composerInput) {
             });
 
             if (!response.ok) {
+                // SR-08: the AI provider is unavailable — show the server's friendly message.
+                const failure = await response.json().catch(() => null);
+                if (failure && failure.error === 'ai_unavailable' && typeof failure.message === 'string') {
+                    removeTypingIndicator();
+                    appendMessage('assistant', failure.message);
+
+                    return;
+                }
                 throw new Error('Request failed: ' + response.status);
             }
 

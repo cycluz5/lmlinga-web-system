@@ -33,6 +33,8 @@ abstract class TestCase extends BaseTestCase
     protected function setUp(): void
     {
         parent::setUp();
+        // Feature tests render Blade layouts with @vite; they must not depend on a local `npm run build`.
+        $this->withoutVite();
 
         LegacyResidentAccountsSchema::ensure();
         \Tests\Support\LaravelChildImmunizationSqliteCompatibility::ensure();
@@ -51,6 +53,14 @@ abstract class TestCase extends BaseTestCase
         \App\Support\DeathRecordsErdMode::resetCachedState();
         \App\Models\Household::resetResolvedKeyName();
         \App\Models\Resident::resetResolvedKeyName();
+    }
+
+    /**
+     * URL code OpaqueUrlGenerator emits for a raw record id (raw ids in those URL positions are a 404).
+     */
+    protected function opaqueId(string $kind, string $raw): string
+    {
+        return \App\Support\OpaqueId::forUrl($kind, $raw);
     }
 
     /**

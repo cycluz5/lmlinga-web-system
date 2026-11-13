@@ -31,6 +31,11 @@
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
+        <!-- Test-only placeholder credentials (NOT real). Seeders and the client-testing provisioner have no built-in defaults. -->
+        <env name="SUPER_ADMIN_PASSWORD" value="testing-only-super-admin-password" force="true"/>
+        <env name="SEED_STAFF_PASSWORD" value="testing-only-seed-staff-password" force="true"/>
+        <env name="CLIENT_TESTING_STAFF_PASSWORD" value="testing-only-client-staff-password" force="true"/>
+        <env name="CLIENT_TESTING_RESIDENT_PASSWORD" value="testing-only-client-resident-password" force="true"/>
         <env name="LMLINGA_AT_REST_KEY" value="base64:TE1MSU5HQS1BVC1SRVNULVRFU1QtS0VZLTMyQllURSE=" force="true"/>
         <env name="LMLINGA_AT_REST_KEY_ID" value="testk1" force="true"/>
         <env name="LMLINGA_AT_REST_PREVIOUS_KEYS" value="" force="true"/>

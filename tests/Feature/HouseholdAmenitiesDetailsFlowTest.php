@@ -32,7 +32,6 @@ class HouseholdAmenitiesDetailsFlowTest extends TestCase
             ['household_no' => $householdNo],
             [
                 'zone' => 'Zone 1',
-                'street' => 'Layuan St.',
                 'date_registered' => '2026-01-01',
             ]
         );

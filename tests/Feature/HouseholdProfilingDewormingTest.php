@@ -86,11 +86,11 @@ class HouseholdProfilingDewormingTest extends TestCase
         $this->assertTrue(Route::has('household-profiling.members.deworming.store'));
 
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-009/deworming'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-009').'/deworming'),
             route('household-profiling.members.deworming', $this->memberParams(self::INFANT_MEMBER_ID))
         );
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-009/deworming/create'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-009').'/deworming/create'),
             route('household-profiling.members.deworming.create', $this->memberParams(self::INFANT_MEMBER_ID))
         );
     }

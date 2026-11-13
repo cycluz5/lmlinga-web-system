@@ -22,7 +22,10 @@ import {
     isManagedStaffAvatarPath,
     isMutationMethod,
     isNeverCachePath,
+    isOfflineMapPath,
     isSameOrigin,
+    htmlHasDemoLocation,
+    OFFLINE_MAP_CACHE,
     isStaticAssetPath,
     MESSAGE_CLEAR_HTML,
     MESSAGE_ENSURE_BUILD_ASSETS,
@@ -386,6 +389,10 @@ export function createServiceWorkerRuntime(env = {}) {
         const actorId = await getActorId();
         const cacheName = htmlCacheNameForActor(actorId);
         if (!cacheName) {
+            return;
+        }
+        // Never cache a page rendered in Spot Mapping Demo Location Mode (simulated point + DEMO banner).
+        if (htmlHasDemoLocation(await response.clone().text())) {
             return;
         }
         const cache = await cachesApi.open(cacheName);
@@ -1031,6 +1038,28 @@ export function createServiceWorkerRuntime(env = {}) {
         }
     }
 
+    /**
+     * Saved Spot Mapping map (Phase 2B): read-only here. The page's verified preparation step fills the map
+     * cache; the worker never stores partial downloads. A tile that was not saved returns an empty 404 so the
+     * map simply shows a blank area instead of the offline HTML page.
+     */
+    async function handleOfflineMapFile(request, url) {
+        try {
+            const cache = await cachesApi.open(OFFLINE_MAP_CACHE);
+            const hit = await cache.match(new Request(`${origin}${url.pathname}`));
+            if (hit) {
+                return hit;
+            }
+        } catch {
+            // Fall through to the network.
+        }
+        try {
+            return await fetchImpl(request);
+        } catch {
+            return new Response('', { status: 404, headers: { 'Cache-Control': 'no-store' } });
+        }
+    }
+
     async function handleFetch(request) {
         const url = requestUrl(request);
         if (!url) {
@@ -1052,6 +1081,10 @@ export function createServiceWorkerRuntime(env = {}) {
 
         if (String(request.method || 'GET').toUpperCase() !== 'GET') {
             return fetchImpl(request);
+        }
+
+        if (isOfflineMapPath(url.pathname) && !hasUnsafeQuery(url)) {
+            return handleOfflineMapFile(request, url);
         }
 
         if (isManagedStaffAvatarPath(url.pathname) && String(request.method || 'GET').toUpperCase() === 'GET') {

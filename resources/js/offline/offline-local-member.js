@@ -149,6 +149,7 @@ function buildFallbackHtml(payload, householdNo, localMemberId) {
 <div class="lml-hh-member-view__item"><dt>Religion</dt><dd data-offline-local-field="religion">${escapeHtml(displayMemberField(member, 'religion'))}</dd></div>
 <div class="lml-hh-member-view__item"><dt>Educational Attainment</dt><dd data-offline-local-field="education">${escapeHtml(displayMemberField(member, 'education'))}</dd></div>
 <div class="lml-hh-member-view__item"><dt>PhilHealth Number</dt><dd data-offline-local-field="philhealth">${escapeHtml(displayMemberField(member, 'philhealth'))}</dd></div>
+<div class="lml-hh-member-view__item"><dt>PhilHealth Membership Type</dt><dd data-offline-local-field="philhealth_membership_type">${escapeHtml(displayMemberField(member, 'philhealth_membership_type'))}</dd></div>
 <div class="lml-hh-member-view__item"><dt>Family Planning</dt><dd data-offline-local-field="fp_user">${escapeHtml(displayMemberField(member, 'fp_user'))}</dd></div>
 <div class="lml-hh-member-view__item"><dt>Disability Type</dt><dd data-offline-local-field="disability">${escapeHtml(displayMemberField(member, 'disability'))}</dd></div>
 <div class="lml-hh-member-view__item"><dt>Medical History</dt><dd data-offline-local-field="medical_history">${escapeHtml(displayMemberField(member, 'medical_history'))}</dd></div>

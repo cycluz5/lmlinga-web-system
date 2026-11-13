@@ -40,7 +40,6 @@ const { gpsPlotPlan, OFFLINE_PLOT_PROMPT } = helperModule;
 const startGpsPlot = sliceInclusive(spotSource, 'function startGpsPlot()', '\n    function applyStats');
 const gpsSuccess = sliceInclusive(spotSource, 'function handleGpsSuccess(position, requestId)', '\n    function handleGpsError');
 const gpsError = sliceInclusive(spotSource, 'function handleGpsError(error, requestId)', '\n    function startGpsPlot');
-const outsideScope = sliceInclusive(spotSource, 'function enterOutsideScopeFallback(requestId)', '\n    function handleGpsSuccess');
 const mapClick = sliceInclusive(spotSource, "map.on('click', (event) => {", '\n    renderPendingPicker();');
 const placeTemp = sliceInclusive(spotSource, 'function placeTemporaryMarker(lat, lng', '\n    function enterManualFallback');
 
@@ -73,23 +72,16 @@ describe('spot mapping offline plot plan', () => {
         assert.equal(plan.branch, 'gps-request');
     });
 
-    it('keeps in-scope GPS flyTo at zoom 17 while online', () => {
-        const plan = gpsPlotPlan({ gpsReceived: true, inScope: true });
-        assert.equal(plan.requestGps, true);
-        assert.equal(plan.flyTo, true);
-        assert.equal(plan.zoom, 17);
-        assert.equal(plan.placing, false);
-        assert.equal(plan.preserveViewport, false);
-        assert.equal(plan.branch, 'gps-in-scope');
-    });
-
-    it('does not flyTo when GPS is outside La Medalla', () => {
-        const plan = gpsPlotPlan({ gpsReceived: true, inScope: false });
-        assert.equal(plan.flyTo, false);
-        assert.equal(plan.placing, true);
-        assert.equal(plan.preserveViewport, true);
-        assert.equal(plan.zoom, null);
-        assert.equal(plan.branch, 'gps-outside-scope');
+    it('shows every received GPS fix at zoom 17 while online (never rejected by area; Phase 3A)', () => {
+        for (const input of [{ gpsReceived: true }, { gpsReceived: true, inScope: true }, { gpsReceived: true, inScope: false }]) {
+            const plan = gpsPlotPlan(input);
+            assert.equal(plan.requestGps, true);
+            assert.equal(plan.flyTo, true);
+            assert.equal(plan.zoom, 17);
+            assert.equal(plan.placing, false);
+            assert.equal(plan.preserveViewport, false);
+            assert.equal(plan.branch, 'gps-located');
+        }
     });
 
     it('keeps manual fallback on GPS error without moving the viewport', () => {
@@ -121,12 +113,11 @@ describe('spot mapping offline plot source contract', () => {
         assert.doesNotMatch(startGpsPlot, /setLatLng/);
     });
 
-    it('keeps online GPS flyTo and outside-scope / error fallbacks', () => {
-        assert.match(gpsSuccess, /gpsPlotPlan\(\{\s*gpsReceived: true,\s*inScope: isWithinDemoScope\(lat, lng\),\s*\}\)/);
+    it('keeps online GPS flyTo and the error fallback; no outside-scope rejection (Phase 3A)', () => {
+        assert.match(gpsSuccess, /gpsPlotPlan\(\{ gpsReceived: true \}\)/);
         assert.match(gpsSuccess, /map\.flyTo\(\[lat, lng\], plan\.zoom \?\? GPS_ZOOM/);
-        assert.match(gpsSuccess, /enterOutsideScopeFallback\(requestId\)/);
-        assert.match(outsideScope, /OUTSIDE_SCOPE_MESSAGE/);
-        assert.doesNotMatch(outsideScope, /flyTo/);
+        assert.doesNotMatch(spotSource, /enterOutsideScopeFallback|isWithinDemoScope|OUTSIDE_SCOPE_MESSAGE|DEMO_SCOPE_RADIUS_METERS/);
+        assert.match(spotSource, /renderLocationCheck\(data\);/);
         assert.match(gpsError, /enterManualFallback\(geolocationErrorMessage\(error\)\)/);
         assert.doesNotMatch(gpsError, /flyTo/);
         assert.match(spotSource, /const GPS_ZOOM = 17/);

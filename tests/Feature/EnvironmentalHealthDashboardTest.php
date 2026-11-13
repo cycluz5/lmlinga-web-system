@@ -45,7 +45,8 @@ class EnvironmentalHealthDashboardTest extends TestCase
         $response->assertSee('Sanitation Services', false);
         $response->assertSee('With Toilet', false);
         $response->assertSee('Without Toilet', false);
-        $response->assertSee('Build Report', false);
+        // The dashboard's report entry point is labelled "Export Data" and links to the report builder (next assertion).
+        $response->assertSee('Export Data', false);
         $response->assertSee(route('environmental-health.report-builder'), false);
         $response->assertDontSee('data-eh-report', false);
         $response->assertDontSee('Recent Exports', false);
@@ -260,7 +261,8 @@ class EnvironmentalHealthDashboardTest extends TestCase
         // Environmental Health displays household heads as "Last, First Middle".
         $this->assertSame('Person, Canonical', $row['house_head']);
         $this->assertSame('Zone DB', $row['zone']);
-        $this->assertSame('Canonical Ave.', $row['street']);
+        // households.street was dropped; the dashboard reports no street.
+        $this->assertSame('', $row['street']);
         $this->assertSame(DemoHouseholdWaterSupply::WATER_LEVEL_I, $row['water_supply_status']);
         $this->assertSame('without_toilet', $row['toilet_presence']);
         $this->assertSame(EnvironmentalHealthDashboard::RECORD_STATUS_COMPLETED, $row['record_status']);
@@ -400,6 +402,12 @@ class EnvironmentalHealthDashboardTest extends TestCase
 
     public function test_filters_narrow_dashboard_rows(): void
     {
+        // The filter supports databases that still have households.street (DatabaseSchemaGuard).
+        \Illuminate\Support\Facades\Schema::table('households', function (\Illuminate\Database\Schema\Blueprint $table): void {
+            $table->string('street')->nullable();
+        });
+        app()->forgetInstance(\App\Support\DatabaseSchemaGuard::class);
+
         $this->seedCompletedHousehold('HH-891', [
             'zone' => 'Zone A',
             'street' => 'Filter St.',

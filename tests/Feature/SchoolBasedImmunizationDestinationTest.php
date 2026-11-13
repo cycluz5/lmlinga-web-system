@@ -39,7 +39,7 @@ class SchoolBasedImmunizationDestinationTest extends TestCase
     public function test_named_school_based_immunization_route_resolves(): void
     {
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-001/school-based-immunization'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-001').'/school-based-immunization'),
             route('household-profiling.members.school-based-immunization', $this->memberParams())
         );
     }

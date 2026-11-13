@@ -1,12 +1,21 @@
 (() => {
   // resources/js/offline/offline-sw-policy.js
-  var CACHE_VERSION = "offline-7-v21";
+  var CACHE_VERSION = "offline-7-v26";
   var ASSETS_CACHE = `lmlinga-assets-${CACHE_VERSION}`;
   var FALLBACK_CACHE = `lmlinga-fallback-${CACHE_VERSION}`;
   var META_CACHE = `lmlinga-meta-${CACHE_VERSION}`;
   var HTML_CACHE_PREFIX = `lmlinga-html-${CACHE_VERSION}-actor-`;
   var AVATAR_CACHE_PREFIX = `lmlinga-avatar-${CACHE_VERSION}-actor-`;
   var CURRENT_CACHE_NAMES = [ASSETS_CACHE, FALLBACK_CACHE, META_CACHE];
+  var OFFLINE_MAP_VERSION = "v1";
+  var OFFLINE_MAP_PATH_PREFIX = `/maps/la-medalla/${OFFLINE_MAP_VERSION}/`;
+  var OFFLINE_MAP_CACHE = `lmlinga-map-la-medalla-${OFFLINE_MAP_VERSION}`;
+  var OFFLINE_MAP_FILE_PATTERN = new RegExp(
+    `^${OFFLINE_MAP_PATH_PREFIX.replace(/\//g, "\\/")}(?:manifest\\.json|\\d{1,2}\\/\\d{1,7}\\/\\d{1,7}\\.mvt)$`
+  );
+  function isOfflineMapPath(pathname) {
+    return typeof pathname === "string" && OFFLINE_MAP_FILE_PATTERN.test(pathname);
+  }
   var ACTOR_META_PATH = "/__lmlinga/sw-current-actor";
   var MUTATION_METHODS = ["POST", "PUT", "PATCH", "DELETE"];
   var HOUSEHOLD_KEY = "h[a-z2-7]{12,}";
@@ -74,6 +83,14 @@
     "/offline",
     // /offline/status and /offline/sync
     "/chatbot",
+    "/language-review",
+    // SR-06: Linguist review is online-only and never cached
+    "/language-management",
+    // SR-05: Admin term management is online-only and never cached
+    "/chatbot-datasets",
+    // SR-07: Admin dataset uploads are online-only and never cached
+    "/spot-mapping/demo-location",
+    // SR-10: Demo Location Mode toggle is online-only and never cached
     "/storage",
     "/sanctum",
     "/up",
@@ -257,10 +274,10 @@
     if (typeof name !== "string") {
       return false;
     }
-    return name.startsWith("lmlinga-assets-") || name.startsWith("lmlinga-html-") || name.startsWith("lmlinga-avatar-") || name.startsWith("lmlinga-fallback-") || name.startsWith("lmlinga-meta-");
+    return name.startsWith("lmlinga-assets-") || name.startsWith("lmlinga-html-") || name.startsWith("lmlinga-avatar-") || name.startsWith("lmlinga-fallback-") || name.startsWith("lmlinga-meta-") || name.startsWith("lmlinga-map-");
   }
   function isCurrentOwnedCache(name) {
-    if (CURRENT_CACHE_NAMES.includes(name)) {
+    if (CURRENT_CACHE_NAMES.includes(name) || name === OFFLINE_MAP_CACHE) {
       return true;
     }
     return typeof name === "string" && (name.startsWith(HTML_CACHE_PREFIX) || name.startsWith(AVATAR_CACHE_PREFIX));
@@ -551,6 +568,15 @@
     if (path.startsWith("/profile")) {
       return "Profile";
     }
+    if (path.startsWith("/language-management")) {
+      return "Language Management";
+    }
+    if (path.startsWith("/chatbot-datasets")) {
+      return "Chatbot Datasets";
+    }
+    if (path.startsWith("/language-review")) {
+      return "Language Review";
+    }
     return "This page";
   }
   function warmupPathsForRole(role) {
@@ -673,6 +699,9 @@
       }
     }
     return next;
+  }
+  function htmlHasDemoLocation(html) {
+    return typeof html === "string" && (html.includes("data-demo-location=") || html.includes("data-spot-map-demo-banner"));
   }
   function fallbackHtml() {
     return `<!DOCTYPE html>
@@ -1038,6 +1067,9 @@
       const actorId = await getActorId();
       const cacheName = htmlCacheNameForActor(actorId);
       if (!cacheName) {
+        return;
+      }
+      if (htmlHasDemoLocation(await response.clone().text())) {
         return;
       }
       const cache = await cachesApi.open(cacheName);
@@ -1605,6 +1637,21 @@
         return fallbackResponse();
       }
     }
+    async function handleOfflineMapFile(request, url) {
+      try {
+        const cache = await cachesApi.open(OFFLINE_MAP_CACHE);
+        const hit = await cache.match(new Request(`${origin}${url.pathname}`));
+        if (hit) {
+          return hit;
+        }
+      } catch {
+      }
+      try {
+        return await fetchImpl(request);
+      } catch {
+        return new Response("", { status: 404, headers: { "Cache-Control": "no-store" } });
+      }
+    }
     async function handleFetch(request) {
       const url = requestUrl(request);
       if (!url) {
@@ -1622,6 +1669,9 @@
       }
       if (String(request.method || "GET").toUpperCase() !== "GET") {
         return fetchImpl(request);
+      }
+      if (isOfflineMapPath(url.pathname) && !hasUnsafeQuery(url)) {
+        return handleOfflineMapFile(request, url);
       }
       if (isManagedStaffAvatarPath(url.pathname) && String(request.method || "GET").toUpperCase() === "GET") {
         try {

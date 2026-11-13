@@ -60,4 +60,31 @@ trait AuthenticatesStaff
 
         return $user;
     }
+
+    /**
+     * Point the session login id at $user too. EnsureStaffAccountIsUsable resolves the
+     * actor from the session, so switching actors with actingAs() alone keeps the previous one.
+     * withSession() (re)starts the test session before writing, so the value survives a prior request.
+     */
+    protected function alignSessionLoginWith(User $user): void
+    {
+        $this->withSession([Auth::guard()->getName() => $user->getAuthIdentifier()]);
+    }
+
+    /**
+     * Migration 2026_09_28_100000 seeds an active super admin (maria.santos) into every test
+     * database. Tests that need a sole active Admin deactivate it in the disposable test DB.
+     */
+    protected function deactivateSeededSuperAdmin(): void
+    {
+        User::query()->where('username', 'maria.santos')->update(['status' => StaffAccountStatus::INACTIVE]);
+    }
+
+    /**
+     * Same seeded super admin, removed from the disposable test DB for empty-catalog tests.
+     */
+    protected function removeSeededSuperAdmin(): void
+    {
+        User::query()->where('username', 'maria.santos')->delete();
+    }
 }

@@ -44,7 +44,7 @@ class OfflineServiceWorkerContractTest extends TestCase
 
         $sw = (string) file_get_contents($swPath);
         $this->assertStringContainsString('offline-7-v', $sw);
-        $this->assertStringContainsString('offline-7-v14', $sw);
+        $this->assertStringContainsString('offline-7-v26', $sw);
         $this->assertStringContainsString('lmlinga-assets-', $sw);
         $this->assertStringContainsString('lmlinga-avatar-', $sw);
         $this->assertStringContainsString('/assets/images/logo/logo.png', $sw);
@@ -155,7 +155,7 @@ class OfflineServiceWorkerContractTest extends TestCase
         $this->assertStringContainsString('MESSAGE_WARMUP_CORE', $policy);
         $this->assertStringContainsString('MESSAGE_WARMUP_UM_WORKERS', $policy);
         $this->assertStringContainsString('MESSAGE_WARMUP_RELATED', $policy);
-        $this->assertStringContainsString('offline-7-v14', $policy);
+        $this->assertStringContainsString('offline-7-v26', $policy);
         $this->assertStringContainsString('Plot New Household', $policy);
         $this->assertStringNotContainsString('offline-7-v6', $policy);
         $this->assertStringNotContainsString('offline-7-v3', $policy);
@@ -299,7 +299,7 @@ class OfflineServiceWorkerContractTest extends TestCase
         $runtime = (string) file_get_contents(resource_path('js/offline/offline-sw-runtime.js'));
         $base = (string) file_get_contents(resource_path('js/maps/la-medalla-base.js'));
 
-        $this->assertStringContainsString("map.on('tileerror'", $spot);
+        $this->assertStringContainsString("imageryEvents.on('tileerror'", $spot); // listens on the online tile layer (Phase 2B)
         $this->assertStringContainsString('SPOT_MAP_OFFLINE_MESSAGE', $spot);
         $this->assertStringContainsString('tile.openstreetmap.org', $base);
         $this->assertStringNotContainsString('tile.openstreetmap.org', $runtime);

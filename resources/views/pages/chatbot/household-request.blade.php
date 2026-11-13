@@ -5,7 +5,9 @@
 @section('body')
     @php
         $previewState = (string) request()->query('state', '');
-        $isDailyLimit = $previewState === 'daily-limit';
+        // Server-enforced cap (HouseholdLinkingPolicy) or the UI preview state.
+        $isDailyLimit = $previewState === 'daily-limit' || (bool) session('household_request_limit_reached');
+        $staffVerified = \App\Support\HouseholdLinkingPolicy::requiresStaffVerification();
     @endphp
     <div
         class="lml-chatbot-household-request"
@@ -35,8 +37,14 @@
                             Request Household Record
                         </h1>
                         <p class="lml-chatbot-household-request__intro">
-                            Complete this form so the system can automatically compare your details with barangay household records.
-                            Matching is automatic. This is not a manual Admin approval step.
+                            @if ($staffVerified)
+                                Complete this form so the system can compare your details with barangay household records.
+                                Barangay staff then verify your identity in person before household access is granted —
+                                bring a valid ID to your Barangay Health Station or contact your Barangay Health Worker.
+                            @else
+                                Complete this form so the system can automatically compare your details with barangay household records.
+                                Matching is automatic. This is not a manual Admin approval step.
+                            @endif
                         </p>
                     </div>
 
@@ -141,7 +149,7 @@
                                         id="hh-first-name"
                                         name="firstName"
                                         type="text"
-                                        value="{{ old('firstName') }}"
+                                        value="{{ old('firstName', $prefill['firstName'] ?? '') }}"
                                         class="form-control lml-form-control lml-focus-ring{{ $errors->has('firstName') ? ' is-invalid' : '' }}"
                                         placeholder="First name"
                                         required
@@ -159,7 +167,7 @@
                                         id="hh-middle-name"
                                         name="middleName"
                                         type="text"
-                                        value="{{ old('middleName') }}"
+                                        value="{{ old('middleName', $prefill['middleName'] ?? '') }}"
                                         class="form-control lml-form-control lml-focus-ring{{ $errors->has('middleName') ? ' is-invalid' : '' }}"
                                         placeholder="Middle name"
                                         required
@@ -175,7 +183,7 @@
                                         id="hh-last-name"
                                         name="lastName"
                                         type="text"
-                                        value="{{ old('lastName') }}"
+                                        value="{{ old('lastName', $prefill['lastName'] ?? '') }}"
                                         class="form-control lml-form-control lml-focus-ring{{ $errors->has('lastName') ? ' is-invalid' : '' }}"
                                         placeholder="Last name"
                                         required
@@ -185,6 +193,12 @@
                                     <p class="lml-form-error" id="hh-last-name-error" @if (! $errors->has('lastName')) hidden @endif>{{ $errors->first('lastName') }}</p>
                                 </div>
                             </div>
+                            @if (! empty(array_filter($prefill ?? [])))
+                                {{-- SR-01: names prefilled from the resident's own account; editable. --}}
+                                <p class="lml-form-help" data-lml-name-prefill-note>
+                                    Your name was filled in from your account. Please check that it matches your household record.
+                                </p>
+                            @endif
                         </fieldset>
 
                         <fieldset class="lml-chatbot-household-request__fieldset">

@@ -70,19 +70,19 @@ class HouseholdProfilingFamilyPlanningTest extends TestCase
         $params = $this->memberWithVisits();
 
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-002/family-planning'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-002').'/family-planning'),
             route('household-profiling.members.family-planning.index', $params)
         );
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-002/family-planning/create'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-002').'/family-planning/create'),
             route('household-profiling.members.family-planning.create', $params)
         );
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-002/family-planning/FP-001'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-002').'/family-planning/'.$this->opaqueId('v', 'FP-001')),
             route('household-profiling.members.family-planning.show', $params + ['visitId' => 'FP-001'])
         );
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-002/family-planning/FP-001/edit'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-002').'/family-planning/'.$this->opaqueId('v', 'FP-001').'/edit'),
             route('household-profiling.members.family-planning.edit', $params + ['visitId' => 'FP-001'])
         );
     }

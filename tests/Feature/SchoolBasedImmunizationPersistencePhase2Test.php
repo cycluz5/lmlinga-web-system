@@ -505,10 +505,12 @@ class SchoolBasedImmunizationPersistencePhase2Test extends TestCase
         $residentA = Resident::factory()->create([
             'household_id' => $householdA->id,
             'member_no' => 'MB-960',
+            'birthday' => now()->subYears(10)->format('Y-m-d'),
         ]);
         $residentB = Resident::factory()->create([
             'household_id' => $householdB->id,
             'member_no' => 'MB-961',
+            'birthday' => now()->subYears(10)->format('Y-m-d'),
         ]);
 
         $this->service->saveForResident($residentB, [

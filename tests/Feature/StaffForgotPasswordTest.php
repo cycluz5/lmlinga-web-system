@@ -354,7 +354,7 @@ class StaffForgotPasswordTest extends TestCase
             ->assertOk()
             ->assertSee('lml-chatbot-forgot-password', false);
 
-        $this->get(route('chatbot.password.reset'))
+        $this->get(route('chatbot.password.reset', ['token' => 'test-reset-token']))
             ->assertOk();
     }
 

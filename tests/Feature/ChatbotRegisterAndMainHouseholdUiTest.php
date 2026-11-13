@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Mail\ResidentEmailVerificationOtpMail;
+use App\Mail\ResidentRegistrationAccountExistsMail;
 use App\Models\RecordRequest;
 use App\Models\ResidentAccount;
 use App\Support\ResidentAuthenticator;
@@ -9,13 +11,16 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Schema;
 use Tests\Support\ClientTestingErdSchema;
+use Tests\Support\ResidentEmailOtpFixtures;
 use Tests\TestCase;
 
 class ChatbotRegisterAndMainHouseholdUiTest extends TestCase
 {
     use RefreshDatabase;
+    use ResidentEmailOtpFixtures;
 
     protected function setUp(): void
     {
@@ -41,35 +46,46 @@ class ChatbotRegisterAndMainHouseholdUiTest extends TestCase
         $this->assertStringContainsString('name="_token"', $html);
     }
 
-    public function test_successful_registration_creates_one_account_and_redirects_to_login(): void
+    public function test_successful_registration_creates_one_account_after_email_verification_and_redirects_to_login(): void
     {
         ClientTestingErdSchema::ensure();
+        Mail::fake();
 
-        $response = $this->post(route('chatbot.register.store'), [
+        $this->post(route('chatbot.register.store'), [
             'first_name' => 'Ana',
             'middle_name' => 'B',
             'last_name' => 'Cruz',
             'zone' => '2',
-            'email' => 'new.resident@example.test',
+            'email' => 'new.resident.test@gmail.com',
             'password' => 'SafePassw0rd!x',
-        ]);
+        ])->assertRedirect(route('chatbot.register.verify'));
+
+        // SR-03: no account until the emailed code is entered.
+        $this->assertSame(0, ResidentAccount::query()->where('email', 'new.resident.test@gmail.com')->count());
+
+        $response = $this->post(route('chatbot.register.verify.submit'), ['otp' => $this->lastEmailedCode('new.resident.test@gmail.com')]);
 
         $response->assertRedirect(route('chatbot.login'));
-        $response->assertSessionHas('success', 'Account created successfully. You can now log in.');
+        $response->assertSessionHas('success', 'Email verified. Account created successfully. You can now log in.');
 
-        $this->assertSame(1, ResidentAccount::query()->where('email', 'new.resident@example.test')->count());
+        $this->assertSame(1, ResidentAccount::query()->where('email', 'new.resident.test@gmail.com')->count());
     }
 
-    public function test_duplicate_email_registration_still_fails_unique_validation(): void
+    /**
+     * SR-03 / P2-d: a duplicate email never creates a second account, and the response is the same as for a
+     * new address (no "email already taken" message), so registration cannot be used to discover accounts.
+     */
+    public function test_duplicate_email_registration_never_creates_a_second_account_and_reveals_nothing(): void
     {
         ClientTestingErdSchema::ensure();
+        Mail::fake();
 
         DB::table('resident_accounts')->insert([
             'first_name' => 'Existing',
             'middle_name' => 'A',
             'last_name' => 'User',
             'zone_purok' => '1',
-            'email' => 'taken@example.test',
+            'email' => 'taken.resident@gmail.com',
             'password' => bcrypt('SafePassw0rd!x'),
             'created_at' => now(),
             'updated_at' => now(),
@@ -81,13 +97,20 @@ class ChatbotRegisterAndMainHouseholdUiTest extends TestCase
                 'middle_name' => 'B',
                 'last_name' => 'Cruz',
                 'zone' => '2',
-                'email' => 'taken@example.test',
+                'email' => 'taken.resident@gmail.com',
                 'password' => 'SafePassw0rd!x',
             ])
-            ->assertRedirect(route('chatbot.register'))
-            ->assertSessionHasErrors('email');
+            ->assertRedirect(route('chatbot.register.verify'))
+            ->assertSessionHasNoErrors();
 
-        $this->assertSame(1, ResidentAccount::query()->where('email', 'taken@example.test')->count());
+        // The owner gets a notice instead of a code; any code entered fails like a wrong code.
+        Mail::assertSent(ResidentRegistrationAccountExistsMail::class, fn ($mail): bool => $mail->hasTo('taken.resident@gmail.com'));
+        Mail::assertNotSent(ResidentEmailVerificationOtpMail::class);
+        $this->post(route('chatbot.register.verify.submit'), ['otp' => '123456'])
+            ->assertRedirect(route('chatbot.register.verify'))
+            ->assertSessionHas('email_otp_error', 'The code is invalid or has expired.');
+
+        $this->assertSame(1, ResidentAccount::query()->where('email', 'taken.resident@gmail.com')->count());
     }
 
     public function test_chatbot_main_hides_household_profile_line_when_unverified(): void

@@ -5,10 +5,39 @@
  */
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { createLaMedallaBaseMap, LA_MEDALLA_CENTER, LA_MEDALLA_ZOOM } from '../maps/la-medalla-base';
+import { createLaMedallaBaseMap, LA_MEDALLA_ZOOM, onlineBaseLayerFor } from '../maps/la-medalla-base';
+import {
+    baseLayerMode,
+    createSavedMapLayer,
+    offlineMapDataDate,
+    offlineMapStatusText,
+    ONLINE_TILE_ERRORS_BEFORE_FALLBACK,
+    prepareOfflineMap,
+    readOfflineMapStatus,
+} from '../maps/la-medalla-offline-map';
 import { isClientOffline, isNetworkFailure } from '../offline/offline-forms';
 import { OFFLINE_EVENTS } from '../offline/offline-status.js';
 import { initSpotMappingExport } from './spot-mapping-export';
+import { drawBarangayBoundary, parseBoundaryGeoJson } from './spot-mapping-boundary';
+import { applyOfflineView, MAP_OFFLINE_NOTE, offlineViewState } from './spot-mapping-offline-view';
+import {
+    accuracyLevel,
+    describeLocationCheck,
+    householdLabelText,
+    locationKind,
+    locationKindLabel,
+    shouldShowHouseholdLabels,
+} from './spot-mapping-location-check';
+import { householdPopupHtml, savedLocationFlag, zoomBand } from './spot-mapping-marker-view';
+import {
+    DEMO_SAVE_BLOCKED_MESSAGE,
+    demoLocatedMessage,
+    locationSourceFor,
+    pageHasDemoLocation,
+    parseDemoLocation,
+    simulatedPosition,
+    syncDemoLocationIndicator,
+} from './spot-mapping-location';
 import {
     applyOverlapLayerPlan,
     buildOverlapGroups,
@@ -20,16 +49,12 @@ import {
  * Spot Mapping scope: Barangay La Medalla, Iriga City, Camarines Sur only.
  * Fixed map center from PhilAtlas (13.3806, 123.4312).
  *
- * DEMO_SCOPE_RADIUS_METERS is a UI-only field safeguard.
- * Do not treat this radius as legal barangay boundaries.
+ * Phase 3A: the old 2 km "scope" circle (which rejected real GPS fixes in parts of the barangay and accepted
+ * points outside it) is gone. Locations are checked against the indicative boundary in the plot panel and are
+ * never rejected for being outside it (spot-mapping-location-check.js).
  */
-const DEMO_CENTER = LA_MEDALLA_CENTER;
 const DEMO_ZOOM = LA_MEDALLA_ZOOM;
 const GPS_ZOOM = 17;
-const DEMO_SCOPE_RADIUS_METERS = 2000;
-
-const OUTSIDE_SCOPE_MESSAGE =
-    'You appear to be outside Barangay La Medalla. Household plotting is limited to Barangay La Medalla.';
 
 const GENERIC_PLOT_FAILURE =
     'Unable to register this household. Check the details and try again.';
@@ -158,7 +183,11 @@ function markerAccessibleName(data) {
     const statusLabel = STATUS_LABELS[data.status] || 'Household';
     const zone = zoneLabel(data.zone);
     const zonePart = zone !== '—' ? `, ${zone}` : '';
-    return `${statusLabel}: ${data.householdNo}${zonePart}`;
+    const kindPart = data.isTemp && data.source !== 'simulated'
+        ? ` (${locationKindLabel(locationKind({ source: data.source, accuracy: data.accuracy, isTemp: true }))})`
+        : '';
+    const flagPart = data.locationFlag === 'check' ? ', location to check (outside the indicative boundary)' : '';
+    return `${statusLabel}: ${data.householdNo}${zonePart}${kindPart}${flagPart}`;
 }
 
 function createMarkerIcon(data, selected = false, accessibleName = '', count = 1) {
@@ -168,14 +197,31 @@ function createMarkerIcon(data, selected = false, accessibleName = '', count = 1
     const zone = normalizeZone(data.zone);
     const zoneClass = zone ? `lml-spot-map__marker--zone-${zone}` : '';
     const statusClass = `lml-spot-map__marker--status-${safeStatus}`;
-    const label = accessibleName || markerAccessibleName(data);
+    // SR-10: simulated (demo) markers are styled and labelled so they are never mistaken for real GPS.
+    const simulatedClass = data.source === 'simulated' ? ' lml-spot-map__marker--simulated' : '';
+    const simulatedPrefix = data.verified === true ? 'Simulated location (demo): ' : 'Simulated location (demo, UNVERIFIED): ';
+    const label = (data.source === 'simulated' ? simulatedPrefix : '') + (accessibleName || markerAccessibleName(data));
     const countBadge = count > 1
         ? `<span class="lml-spot-map__marker-count" aria-hidden="true">${count}</span>`
         : '';
+    // Phase 3A: zone number inside the marker (zone is no longer shown by colour alone), plus the location kind.
+    const kind = locationKind({ source: data.source, accuracy: data.accuracy, isTemp: Boolean(data.isTemp) });
+    const kindClass = ` lml-spot-map__marker--kind-${kind}`;
+    const kindBadge = kind === 'manual'
+        ? '<span class="lml-spot-map__marker-badge" aria-hidden="true">?</span>'
+        : (kind === 'simulated' ? '<span class="lml-spot-map__marker-badge lml-spot-map__marker-badge--demo" aria-hidden="true">DEMO</span>' : '');
+    // Phase 3B: saved location clearly outside the indicative boundary → "!" badge (display only).
+    const flagBadge = data.locationFlag === 'check'
+        ? '<span class="lml-spot-map__marker-flag" aria-hidden="true">!</span>'
+        : '';
+    const flagClass = data.locationFlag === 'check' ? ' lml-spot-map__marker--check' : '';
+    const inner = safeStatus !== 'new' && zone
+        ? `<span class="lml-spot-map__marker-zone" aria-hidden="true">${zone}</span>`
+        : `<i class="bi ${iconClass}" aria-hidden="true"></i>`;
 
     return L.divIcon({
         className: 'lml-spot-map__marker-wrap',
-        html: `<span class="lml-spot-map__marker ${zoneClass} ${statusClass}${selectedClass}" aria-label="${escapeAttr(label)}">${countBadge}<i class="bi ${iconClass}" aria-hidden="true"></i></span>`,
+        html: `<span class="lml-spot-map__marker ${zoneClass} ${statusClass}${selectedClass}${simulatedClass}${kindClass}${flagClass}" aria-label="${escapeAttr(label)}">${countBadge}${inner}${kindBadge}${flagBadge}</span>`,
         iconSize: [24, 24],
         iconAnchor: [12, 12],
         popupAnchor: [0, -12],
@@ -226,29 +272,6 @@ function geolocationErrorMessage(error) {
     return 'Location access is unavailable. Please enable GPS or manually select a location on the map.';
 }
 
-/**
- * Haversine distance in meters between two WGS84 coordinates.
- */
-function distanceMeters(lat1, lng1, lat2, lng2) {
-    const toRad = (degrees) => (degrees * Math.PI) / 180;
-    const earthRadiusMeters = 6371000;
-    const dLat = toRad(lat2 - lat1);
-    const dLng = toRad(lng2 - lng1);
-    const a = Math.sin(dLat / 2) ** 2
-        + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLng / 2) ** 2;
-
-    return 2 * earthRadiusMeters * Math.asin(Math.min(1, Math.sqrt(a)));
-}
-
-/**
- * UI-only demo scope check against DEMO_CENTER + DEMO_SCOPE_RADIUS_METERS.
- * Swap this helper later for polygon / GIS / backend geofencing without
- * changing the GPS success / manual fallback workflow.
- */
-function isWithinDemoScope(lat, lng) {
-    const [centerLat, centerLng] = DEMO_CENTER;
-    return distanceMeters(centerLat, centerLng, lat, lng) <= DEMO_SCOPE_RADIUS_METERS;
-}
 
 export function queuedSpotHouseholdNo(value) {
     const raw = String(value ?? '').trim();
@@ -363,27 +386,16 @@ export function gpsPlotPlan(input = {}) {
     }
 
     if (input.gpsReceived === true) {
-        if (input.inScope === true) {
-            return {
-                requestGps: true,
-                flyTo: true,
-                placing: false,
-                locating: false,
-                preserveViewport: false,
-                zoom: 17,
-                branch: 'gps-in-scope',
-            };
-        }
-
+        // Phase 3A: never reject a GPS fix because of where it is; the plot panel checks it against the
+        // indicative boundary and asks for confirmation when it is clearly outside.
         return {
             requestGps: true,
-            flyTo: false,
-            placing: true,
+            flyTo: true,
+            placing: false,
             locating: false,
-            preserveViewport: true,
-            overlayMode: 'error',
-            zoom: null,
-            branch: 'gps-outside-scope',
+            preserveViewport: false,
+            zoom: 17,
+            branch: 'gps-located',
         };
     }
 
@@ -491,6 +503,22 @@ function initSpotMapping() {
     const householdNoInput = root.querySelector('[data-spot-map-household-no]');
     const consentWrap = root.querySelector('[data-spot-map-consent]');
     const consentInput = root.querySelector('[data-spot-map-consent-input]');
+    // Phase 3A location check (panel): source, accuracy, indicative-boundary status, outside tick-box.
+    const locationCheckEl = root.querySelector('[data-spot-map-location-check]');
+    const locationKindEl = root.querySelector('[data-spot-map-location-kind]');
+    const locationLinesEl = root.querySelector('[data-spot-map-location-lines]');
+    const boundaryConfirmWrap = root.querySelector('[data-spot-map-boundary-confirm]');
+    const boundaryConfirmInput = root.querySelector('[data-spot-map-boundary-confirm-input]');
+    const boundaryFeature = parseBoundaryGeoJson(root);
+    let boundaryConfirmFor = null;
+    // Phase 3B: "Try GPS again" for weak/rough GPS pins (reruns the same GPS step; never moves saved households).
+    const regpsBtn = root.querySelector('[data-spot-map-regps]');
+    const ACCURACY_RING_COLOURS = {
+        good: { stroke: '#15803d', fill: '#22c55e' },
+        weak: { stroke: '#b45309', fill: '#f59e0b' },
+        rough: { stroke: '#b91c1c', fill: '#ef4444' },
+        unknown: { stroke: '#b91c1c', fill: '#ef4444' },
+    };
     const VIEW_HH_BASE = '/household-profiling/';
     const detailsBody = panel.querySelector('[data-spot-map-details-body]');
     const groupSelector = panel.querySelector('[data-spot-map-group-selector]');
@@ -509,6 +537,7 @@ function initSpotMapping() {
         zone: 'Please select a zone.',
         householdNo: 'Household No. must be exactly 3 digits.',
         consent: 'Consent from the head of household is required before plotting.',
+        boundaryConfirm: 'Please tick the box to confirm you checked this location.',
     };
 
     const fieldControls = {
@@ -521,6 +550,7 @@ function initSpotMapping() {
         zone: zoneSelect,
         householdNo: householdNoInput,
         consent: consentInput,
+        boundaryConfirm: boundaryConfirmInput,
     };
 
     if (!mapEl || !plotBtn || !overlay || !panel) {
@@ -695,17 +725,215 @@ function initSpotMapping() {
         );
     }
 
-    const map = createLaMedallaBaseMap(mapEl, { zoom: DEMO_ZOOM });
+    // Offline at load: hold back the online imagery until the saved-map check decides (no pointless
+    // requests to the online tile servers). Online: unchanged.
+    const offlineAtStart = isClientOffline();
+    const map = createLaMedallaBaseMap(mapEl, { zoom: DEMO_ZOOM, addOnlineLayer: !offlineAtStart });
+
+    // SR-11 / SM-01: official boundary outline when valid data exists (display only; plotting rules unchanged).
+    drawBarangayBoundary(map, parseBoundaryGeoJson(root), L);
+
+    // SR-10: show the active Demo Location point immediately (display-only, non-interactive, never saved).
+    // Removed when the payload is missing (Demo Mode off / logged out), expired in this tab, or offline.
+    let demoIndicator = null;
+    const syncDemoIndicator = () => {
+        demoIndicator = syncDemoLocationIndicator({ map, root, leaflet: L, offline: isClientOffline(), current: demoIndicator });
+    };
+    syncDemoIndicator();
+    for (const eventName of ['online', 'offline', OFFLINE_EVENTS.ONLINE, OFFLINE_EVENTS.OFFLINE]) {
+        window.addEventListener(eventName, syncDemoIndicator);
+    }
+    const demoAtLoad = parseDemoLocation(root);
+    if (demoAtLoad && Number.isFinite(demoAtLoad.expires_at)) {
+        window.setTimeout(syncDemoIndicator, Math.max(0, demoAtLoad.expires_at * 1000 - Date.now()) + 1000);
+    }
 
     let tileOfflineNoted = false;
-    const TILES_OFFLINE_MESSAGE =
-        'Map imagery needs a connection. Coordinates already captured on this page are kept; you can still plot using that location.';
+    const TILES_OFFLINE_MESSAGE = MAP_OFFLINE_NOTE;
 
-    map.on('tileerror', () => {
+    // Offline view: neutral background + notice when offline or when map imagery fails. Display only —
+    // the cached boundary and plotted households stay visible; plotting remains online-only.
+    let imageryFailed = false;
+
+    // Phase 2B saved offline map: the online OpenStreetMap layer stays the default. The saved La Medalla map
+    // is drawn only when offline, or when the online imagery fails repeatedly, and only after every saved tile
+    // was verified. Display only: plotting, Demo Mode and GPS rules are unchanged.
+    const onlineLayer = onlineBaseLayerFor(map);
+    const offlineMapStatusEl = root.querySelector('[data-spot-map-offline-map-status]');
+    let savedMapStatus = { ready: false, manifest: null };
+    let savedLayer = null;
+    let savedLayerPromise = null;
+    let savedMapShown = false;
+    let savedLayerFailed = false; // the renderer could not load: the saved map is not usable on this page
+    let onlineTileErrors = 0;
+
+    /** A complete, verified saved map exists and can be drawn (it may still be switching in). */
+    const savedMapUsable = () => savedMapStatus.ready && !savedLayerFailed;
+
+    /** Remove the "You are offline. Map pictures…" map note once a usable saved map takes over. */
+    const clearTilesUnavailableNote = () => {
+        const note = root.querySelector('[data-spot-map-note]');
+        if (note && String(note.textContent || '').trim() === TILES_OFFLINE_MESSAGE) {
+            note.textContent = '';
+            note.hidden = true;
+        }
+        tileOfflineNoted = false;
+    };
+    let baseLayerSeq = 0;
+
+    // Until the (fast, local) saved-map check finishes, do not draw a notice: otherwise "map imagery is
+    // unavailable" can flash even though a saved map is about to be shown.
+    let savedMapChecked = false;
+    const syncOfflineView = () => {
+        if (!savedMapChecked) {
+            return;
+        }
+        applyOfflineView(root, offlineViewState({
+            offline: isClientOffline(),
+            imageryFailed,
+            renderedAt: root.getAttribute('data-rendered-at'),
+            savedMap: savedMapShown,
+            savedMapUsable: savedMapUsable(),
+            savedMapDate: offlineMapDataDate(savedMapStatus.manifest),
+        }));
+    };
+
+    const ensureSavedLayer = () => {
+        if (!savedLayerPromise) {
+            savedLayerPromise = createSavedMapLayer(L, { maxZoom: map.getMaxZoom() })
+                .then((layer) => {
+                    layer.setZIndex?.(5); // above the online layer while both are present
+                    savedLayer = layer;
+                    savedLayerFailed = false;
+                    return layer;
+                })
+                .catch(() => {
+                    savedLayerPromise = null;
+                    savedLayerFailed = true;
+                    return null;
+                });
+        }
+        return savedLayerPromise;
+    };
+
+    const applyBaseLayer = async () => {
+        const seq = ++baseLayerSeq;
+        const offline = isClientOffline();
+        const mode = baseLayerMode({
+            offline,
+            onlineImageryFailed: onlineTileErrors >= ONLINE_TILE_ERRORS_BEFORE_FALLBACK,
+            savedMapReady: savedMapStatus.ready,
+        });
+        const layer = mode === 'saved' ? await ensureSavedLayer() : null;
+        if (seq !== baseLayerSeq) {
+            return;
+        }
+        if (layer) {
+            if (!map.hasLayer(layer)) {
+                layer.addTo(map);
+            }
+            // Offline: drop the online layer so no outside requests are made. Online-but-failing: keep it
+            // underneath so the first successful online tile switches back.
+            if (onlineLayer && offline && map.hasLayer(onlineLayer)) {
+                map.removeLayer(onlineLayer);
+            } else if (onlineLayer && !offline && !map.hasLayer(onlineLayer)) {
+                onlineLayer.addTo(map);
+            }
+        } else {
+            if (savedLayer && map.hasLayer(savedLayer)) {
+                map.removeLayer(savedLayer);
+            }
+            if (onlineLayer && !map.hasLayer(onlineLayer)) {
+                onlineLayer.addTo(map);
+            }
+        }
+        savedMapShown = Boolean(layer);
+        if (savedMapShown) {
+            clearTilesUnavailableNote();
+        }
+        root.setAttribute('data-map-base', layer ? 'saved' : (mode === 'online' ? 'online' : 'none'));
+        syncOfflineView();
+    };
+
+    const showOfflineMapStatus = (text) => {
+        if (!offlineMapStatusEl) {
+            return;
+        }
+        offlineMapStatusEl.textContent = text || '';
+        offlineMapStatusEl.hidden = !text;
+    };
+
+    // Save the map once while online (about 0.3 MB, verified tile by tile). Progress and problems are shown;
+    // nothing partial is ever kept.
+    const saveOfflineMapIfNeeded = async () => {
+        if (isClientOffline() || savedMapStatus.ready) {
+            return;
+        }
+        const result = await prepareOfflineMap({
+            onProgress: ({ done, total }) => showOfflineMapStatus(`Saving the offline map for this device… ${done} / ${total}`),
+        });
+        if (result.ok) {
+            savedMapStatus = { ready: true, manifest: result.manifest };
+            showOfflineMapStatus('');
+        } else {
+            showOfflineMapStatus(offlineMapStatusText(result));
+        }
+        await applyBaseLayer();
+    };
+
+    syncOfflineView();
+    void readOfflineMapStatus().then(async (status) => {
+        savedMapStatus = status;
+        savedMapChecked = true;
+        await applyBaseLayer();
+        if (!status.ready && isClientOffline()) {
+            showOfflineMapStatus(offlineMapStatusText({ ok: false, reason: 'not-saved' }));
+        }
+        await saveOfflineMapIfNeeded();
+    });
+    for (const eventName of ['online', 'offline', OFFLINE_EVENTS.ONLINE, OFFLINE_EVENTS.OFFLINE]) {
+        window.addEventListener(eventName, syncOfflineView);
+        window.addEventListener(eventName, () => {
+            if (!isClientOffline()) {
+                onlineTileErrors = 0;
+            }
+            void applyBaseLayer().then(() => saveOfflineMapIfNeeded());
+        });
+    }
+    // Listen on the online layer itself: Leaflet does not forward tile events to the map, so the earlier
+    // map-level tile error/load handlers never ran. Saved-map tiles are not counted here.
+    const imageryEvents = onlineLayer || map;
+    imageryEvents.on('tileload', () => {
+        const wasFallingBack = onlineTileErrors >= ONLINE_TILE_ERRORS_BEFORE_FALLBACK;
+        onlineTileErrors = 0;
+        if (imageryFailed && !isClientOffline()) {
+            imageryFailed = false;
+            syncOfflineView();
+        }
+        if (wasFallingBack && !isClientOffline()) {
+            void applyBaseLayer();
+        }
+    });
+
+    imageryEvents.on('tileerror', () => {
+        onlineTileErrors += 1;
+        if (onlineTileErrors === ONLINE_TILE_ERRORS_BEFORE_FALLBACK && savedMapStatus.ready) {
+            void applyBaseLayer();
+        }
+        if (!imageryFailed) {
+            imageryFailed = true;
+            syncOfflineView();
+        }
         if (tileOfflineNoted || locating) {
             return;
         }
         if (!isClientOffline()) {
+            return;
+        }
+        if (savedMapUsable()) {
+            // The saved offline map takes over (offline: applyBaseLayer drops the online layer); do not claim
+            // that map pictures are unavailable.
+            void applyBaseLayer();
             return;
         }
         tileOfflineNoted = true;
@@ -826,6 +1054,57 @@ function initSpotMapping() {
         }
     }
 
+    /** Clearly outside the indicative boundary: the health worker must tick the check box (never a rejection). */
+    function requireBoundaryConfirm(invalid) {
+        const needsConfirm = Boolean(tempMarker?.__lmlData?.locationCheck?.needsConfirm);
+        if (needsConfirm && !boundaryConfirmInput?.checked) {
+            setFieldError('boundaryConfirm', FIELD_ERROR_MESSAGES.boundaryConfirm);
+            invalid.push(boundaryConfirmInput);
+        }
+    }
+
+    /** Fill the panel's location check for a temporary or saved marker. Display only. */
+    function renderLocationCheck(data) {
+        if (!locationCheckEl) {
+            return;
+        }
+        const check = describeLocationCheck({
+            feature: boundaryFeature,
+            lat: data.lat,
+            lng: data.lng,
+            source: data.isTemp || data.source === 'simulated' ? data.source : null,
+            accuracy: data.accuracy,
+            isTemp: Boolean(data.isTemp),
+        });
+        data.locationCheck = check;
+        locationCheckEl.hidden = false;
+        locationCheckEl.dataset.level = check.level;
+        if (locationKindEl) {
+            locationKindEl.textContent = check.kindLabel;
+        }
+        if (locationLinesEl) {
+            locationLinesEl.replaceChildren(...[check.accuracyText, check.boundaryText, check.adviceText]
+                .filter(Boolean)
+                .map((text) => {
+                    const li = document.createElement('li');
+                    li.textContent = text;
+                    return li;
+                }));
+        }
+        if (regpsBtn) {
+            regpsBtn.hidden = !(data.isTemp && data.source === 'gps' && accuracyLevel(data.accuracy) !== 'good');
+        }
+        const showConfirm = Boolean(data.isTemp && check.needsConfirm);
+        if (boundaryConfirmWrap) {
+            boundaryConfirmWrap.hidden = !showConfirm;
+        }
+        if (boundaryConfirmInput && boundaryConfirmFor !== data.id) {
+            boundaryConfirmInput.checked = false;
+            boundaryConfirmFor = data.id;
+            clearFieldError('boundaryConfirm');
+        }
+    }
+
     function validatePlotForm() {
         clearAllFieldErrors();
 
@@ -844,6 +1123,8 @@ function initSpotMapping() {
                 setFieldError('consent', FIELD_ERROR_MESSAGES.consent);
                 invalid.push(consentInput);
             }
+
+            requireBoundaryConfirm(invalid);
 
             return {
                 valid: invalid.length === 0,
@@ -929,6 +1210,8 @@ function initSpotMapping() {
             setFieldError('consent', FIELD_ERROR_MESSAGES.consent);
             invalid.push(consentInput);
         }
+
+        requireBoundaryConfirm(invalid);
 
         return {
             valid: invalid.length === 0,
@@ -1106,6 +1389,8 @@ function initSpotMapping() {
                 headCivilStatusEl.selectedIndex = 0;
             }
         }
+
+        renderLocationCheck(data);
 
         if (consentWrap && consentInput) {
             consentWrap.hidden = !data.isTemp;
@@ -1312,7 +1597,65 @@ function initSpotMapping() {
             groupMarker.__lmlMembers = members;
             groupMarker.__lmlGroup = stackedByKey.get(group.key);
         });
+
+        syncHouseholdLabels();
     }
+
+    /**
+     * Phase 3A: household-number labels (e.g. "HH-0012", or "HH-0012 +2" for a group) from zoom 18, only for
+     * markers on screen and only when not too many are on screen. Same white tag on the online and saved maps.
+     */
+    function syncHouseholdLabels() {
+        const bounds = map.getBounds();
+        const onScreen = [];
+        markerById.forEach((marker) => {
+            if (map.hasLayer(marker) && bounds.contains(marker.getLatLng())) {
+                onScreen.push([marker, householdLabelText(marker.__lmlData?.householdNo, 1)]);
+            }
+        });
+        groupMarkers.forEach((marker) => {
+            const members = marker.__lmlMembers || [];
+            if (map.hasLayer(marker) && bounds.contains(marker.getLatLng())) {
+                onScreen.push([marker, householdLabelText(members[0]?.householdNo, members.length)]);
+            }
+        });
+        const show = shouldShowHouseholdLabels(map.getZoom(), onScreen.length);
+        const labelled = new Set();
+        if (show) {
+            onScreen.forEach(([marker, text]) => {
+                if (!text) {
+                    return;
+                }
+                labelled.add(marker);
+                if (marker.__lmlLabelText === text && marker.getTooltip()) {
+                    return;
+                }
+                marker.unbindTooltip();
+                marker.bindTooltip(text, {
+                    permanent: true,
+                    direction: 'top',
+                    offset: [0, -14],
+                    className: 'lml-spot-map__hh-label',
+                    interactive: false,
+                    opacity: 1,
+                });
+                marker.__lmlLabelText = text;
+            });
+        }
+        [...markerById.values(), ...groupMarkers.values()].forEach((marker) => {
+            if (!labelled.has(marker) && marker.__lmlLabelText) {
+                marker.unbindTooltip();
+                marker.__lmlLabelText = null;
+            }
+        });
+    }
+
+    map.on('zoomend moveend', () => syncHouseholdLabels());
+
+    // Phase 3B: marker size follows the zoom level (small dots far out, larger numbered markers close in).
+    const syncZoomBand = () => root.setAttribute('data-zoom-band', zoomBand(map.getZoom()));
+    syncZoomBand();
+    map.on('zoomend', syncZoomBand);
 
     function openPanel(data, triggerEl = null) {
         panelReturnFocusEl = triggerEl
@@ -1330,7 +1673,26 @@ function initSpotMapping() {
         requestAnimationFrame(() => map.invalidateSize());
     }
 
+    /** Phase 3B: compact household card next to the tapped marker (same data as the side panel). */
+    function showHouseholdPopup(marker) {
+        const data = marker.__lmlData;
+        if (!data) {
+            return;
+        }
+        L.popup({
+            className: 'lml-spot-map__popup',
+            offset: [0, -10],
+            autoPan: true,
+            maxWidth: 260,
+            closeButton: true,
+        })
+            .setLatLng(marker.getLatLng())
+            .setContent(householdPopupHtml(data, { viewBase: VIEW_HH_BASE }))
+            .openOn(map);
+    }
+
     function closePanel({ removeTemp = false } = {}) {
+        map.closePopup();
         selectedId = null;
         setPanelMode('details');
         if (groupList) {
@@ -1354,6 +1716,9 @@ function initSpotMapping() {
     }
 
     function attachMarker(data, { temporary = false } = {}) {
+        if (!temporary && !data.isTemp && data.source !== 'simulated') {
+            data.locationFlag = savedLocationFlag(boundaryFeature, data.lat, data.lng);
+        }
         const accessibleName = markerAccessibleName(data);
         const marker = L.marker([data.lat, data.lng], {
             icon: createMarkerIcon(data, false, accessibleName),
@@ -1372,10 +1737,30 @@ function initSpotMapping() {
                 setPlacing(false);
             }
             openPanel(marker.__lmlData, marker.getElement());
+            if (!temporary) {
+                showHouseholdPopup(marker);
+            }
         });
 
         marker.addTo(map);
         applyMarkerAccessibleName(marker, accessibleName);
+
+        // Phase 3A: show the GPS uncertainty as a circle around an unsaved GPS pin; removed with the pin.
+        const accuracyMeters = Number(data.accuracy);
+        if (temporary && data.source === 'gps' && data.accuracy != null && Number.isFinite(accuracyMeters) && accuracyMeters > 0) {
+            // Phase 3B: colour shows the level (green good ≤30 m, amber weak ≤100 m, red rough).
+            const ring = ACCURACY_RING_COLOURS[accuracyLevel(accuracyMeters)] || ACCURACY_RING_COLOURS.rough;
+            const circle = L.circle([data.lat, data.lng], {
+                radius: accuracyMeters,
+                interactive: false,
+                className: `lml-spot-map__accuracy-circle lml-spot-map__accuracy-circle--${accuracyLevel(accuracyMeters)}`,
+                color: ring.stroke,
+                weight: 1.5,
+                fillColor: ring.fill,
+                fillOpacity: 0.12,
+            }).addTo(map);
+            marker.on('remove', () => circle.remove());
+        }
 
         if (temporary) {
             tempMarker = marker;
@@ -1386,7 +1771,7 @@ function initSpotMapping() {
         return marker;
     }
 
-    function placeTemporaryMarker(lat, lng, { accuracy = null, source = 'manual' } = {}) {
+    function placeTemporaryMarker(lat, lng, { accuracy = null, source = 'manual', verified = false } = {}) {
         if (tempMarker) {
             map.removeLayer(tempMarker);
             tempMarker = null;
@@ -1417,6 +1802,7 @@ function initSpotMapping() {
                 isTemp: true,
                 plotMode: 'existing',
                 source,
+                verified,
             }
             : {
                 id: createTempHouseholdId(),
@@ -1441,6 +1827,7 @@ function initSpotMapping() {
                 isTemp: true,
                 plotMode: 'new',
                 source,
+                verified,
             };
 
         attachMarker(tempData, { temporary: true });
@@ -1453,30 +1840,13 @@ function initSpotMapping() {
         focusMapCanvas();
     }
 
-    /**
-     * Outside-scope GPS: announce the restriction via setPlacing, then swap to the
-     * standard placement cue after 2.8s so demos can continue without re-tapping Plot.
-     */
-    function enterOutsideScopeFallback(requestId) {
-        setLocating(false);
-        setPlacing(true, OUTSIDE_SCOPE_MESSAGE);
-        focusMapCanvas();
-
-        window.setTimeout(() => {
-            if (requestId !== locateRequestId || !placing || locating) {
-                return;
-            }
-            showOverlay('Click on the map to plot a location.', {
-                mode: 'info',
-                icon: 'bi-geo-alt-fill',
-            });
-        }, 2800);
-    }
-
     function handleGpsSuccess(position, requestId) {
         if (requestId !== locateRequestId) {
             return;
         }
+
+        // SR-10: a Demo Location Mode point is marked simulated; it still passes the same UI scope check.
+        const source = position.simulated === true ? 'simulated' : 'gps';
 
         const lat = position.coords.latitude;
         const lng = position.coords.longitude;
@@ -1484,27 +1854,20 @@ function initSpotMapping() {
             ? position.coords.accuracy
             : null;
 
-        // UI-only radius guard — no temp marker / flyTo / panel when outside scope.
-        const plan = gpsPlotPlan({
-            gpsReceived: true,
-            inScope: isWithinDemoScope(lat, lng),
-        });
-        if (!plan.flyTo) {
-            enterOutsideScopeFallback(requestId);
-            return;
-        }
+        // Phase 3A: a GPS fix is always shown; the plot panel checks it against the indicative boundary.
+        const plan = gpsPlotPlan({ gpsReceived: true });
 
         setLocating(false);
         placing = false;
         root.classList.remove('is-placing');
         plotBtn.setAttribute('aria-pressed', 'false');
 
-        showOverlay('Location found. Review the household details.', {
+        showOverlay(source === 'simulated' ? demoLocatedMessage(position.verified === true) : 'Location found. Review the household details.', {
             mode: 'success',
             icon: 'bi-check-circle-fill',
         });
 
-        const tempData = placeTemporaryMarker(lat, lng, { accuracy, source: 'gps' });
+        const tempData = placeTemporaryMarker(lat, lng, { accuracy, source, verified: position.verified === true });
         map.flyTo([lat, lng], plan.zoom ?? GPS_ZOOM, { animate: true, duration: 0.85 });
 
         window.setTimeout(() => {
@@ -1543,6 +1906,13 @@ function initSpotMapping() {
             mode: plan.overlayMode,
             icon: 'bi-geo-alt-fill',
         });
+
+        // SR-10: Demo Location Mode (this Admin session only) — the device GPS is not asked or changed.
+        const demo = parseDemoLocation(root);
+        if (locationSourceFor({ offline: isClientOffline(), demo }) === 'simulated') {
+            handleGpsSuccess(simulatedPosition(demo), requestId);
+            return;
+        }
 
         if (!navigator.geolocation) {
             enterManualFallback(
@@ -1653,6 +2023,18 @@ function initSpotMapping() {
         }
 
         clearPendingSelection();
+        startGpsPlot();
+    });
+
+    regpsBtn?.addEventListener('click', () => {
+        if (locating) {
+            return;
+        }
+        if (isClientOffline()) {
+            showSpotMapOfflineMessage();
+            return;
+        }
+        // Same GPS step as Plot New Household / Plot Selected Household; the pending selection is kept.
         startGpsPlot();
     });
 
@@ -1801,11 +2183,26 @@ function initSpotMapping() {
         }
     });
 
+    boundaryConfirmInput?.addEventListener('change', () => {
+        if (boundaryConfirmInput.checked) {
+            clearFieldError('boundaryConfirm');
+        }
+    });
+
     confirmBtn?.addEventListener('click', async () => {
         /*
          | DB18-D: one request saves coordinates and establishes real-household handoff.
          */
         if (!isEditingActiveTempPlot()) {
+            return;
+        }
+
+        // SR-10: never save while Demo Location Mode is on (the server also refuses with 409).
+        if (pageHasDemoLocation(root)) {
+            const demoNote = root.querySelector('[data-spot-map-note]');
+            if (demoNote) {
+                demoNote.textContent = DEMO_SAVE_BLOCKED_MESSAGE;
+            }
             return;
         }
 

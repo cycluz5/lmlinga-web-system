@@ -439,7 +439,9 @@ class AdminHealthWorkerMultipleAssignedZonesTest extends TestCase
         $this->assertStringContainsString('value="Zone 1"', $edit);
         $this->assertStringContainsString('value="Zone 2"', $edit);
 
-        $this->actingAs($worker->fresh())->withSession([
+        $this->actingAs($worker->fresh());
+        $this->alignSessionLoginWith($worker);
+        $this->withSession([
             UiRole::SESSION_KEY => StaffRole::BHW,
             DemoStaffLogin::SESSION_LOGIN_ESTABLISHED => true,
         ]);

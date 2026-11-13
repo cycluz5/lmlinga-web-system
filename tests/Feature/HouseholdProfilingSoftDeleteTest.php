@@ -144,6 +144,8 @@ class HouseholdProfilingSoftDeleteTest extends TestCase
             'lat' => 13.3811,
             'lng' => 123.4306,
             'consent' => true,
+            // Deletion is unsupported on this schema, so the plotted household remains; replot needs confirmation.
+            'confirm_replot' => true,
         ])->assertOk();
     }
 
@@ -273,7 +275,8 @@ class HouseholdProfilingSoftDeleteTest extends TestCase
         ])->assertRedirect();
 
         $this->assertDatabaseHas('households', [
-            'street' => 'Still Works St.',
+            'household_no' => '121',
+            'accomplished_by' => 'R02-A Tester',
         ]);
     }
 }

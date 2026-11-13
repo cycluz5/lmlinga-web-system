@@ -80,7 +80,7 @@ class AdminHealthWorkerActivateTest extends TestCase
             ->getContent();
         $this->assertStringContainsString('data-hw-activate', $inactiveView);
         $this->assertStringContainsString('Activate Account', $inactiveView);
-        $this->assertStringNotContainsString('data-hw-deactivate-id="'.$inactiveWorker->id.'"', $inactiveView);
+        $this->assertStringNotContainsString('data-hw-deactivate-id="'.$this->opaqueId('w', (string) $inactiveWorker->id).'"', $inactiveView);
     }
 
     public function test_admin_session_survives_activating_another_worker(): void
@@ -126,7 +126,7 @@ class AdminHealthWorkerActivateTest extends TestCase
         $this->assertStringContainsString('data-hw-activate-id="'.$inactiveWorker->id.'"', $index);
         $this->assertStringContainsString('Activate Account', $index);
         $this->assertStringContainsString('Activate', $index);
-        $this->assertStringNotContainsString('data-hw-deactivate-id="'.$inactiveWorker->id.'"', $index);
+        $this->assertStringNotContainsString('data-hw-deactivate-id="'.$this->opaqueId('w', (string) $inactiveWorker->id).'"', $index);
     }
 
     public function test_admin_account_cannot_be_activated_through_the_route(): void

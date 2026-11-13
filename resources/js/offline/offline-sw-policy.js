@@ -5,7 +5,8 @@
  * CSRF tokens are stripped from cached HTML and are never treated as credentials.
  */
 
-export const CACHE_VERSION = 'offline-7-v21';
+// v25: Spot Mapping Phase 3B (marker zoom bands, location-to-check flag, popups, GPS ring colours) — one re-preparation.
+export const CACHE_VERSION = 'offline-7-v26';
 
 export const ASSETS_CACHE = `lmlinga-assets-${CACHE_VERSION}`;
 export const FALLBACK_CACHE = `lmlinga-fallback-${CACHE_VERSION}`;
@@ -14,6 +15,24 @@ export const HTML_CACHE_PREFIX = `lmlinga-html-${CACHE_VERSION}-actor-`;
 export const AVATAR_CACHE_PREFIX = `lmlinga-avatar-${CACHE_VERSION}-actor-`;
 
 export const CURRENT_CACHE_NAMES = [ASSETS_CACHE, FALLBACK_CACHE, META_CACHE];
+
+/**
+ * Spot Mapping saved offline map (Phase 2B): public OpenStreetMap vector tiles for La Medalla only.
+ * Versioned on its own so app releases do not force a re-download. It holds no household or user data,
+ * so it is shared by all users of the device and is not deleted on logout. Only the page's verified
+ * preparation step writes it; the service worker only reads it.
+ */
+export const OFFLINE_MAP_VERSION = 'v1';
+export const OFFLINE_MAP_PATH_PREFIX = `/maps/la-medalla/${OFFLINE_MAP_VERSION}/`;
+export const OFFLINE_MAP_CACHE = `lmlinga-map-la-medalla-${OFFLINE_MAP_VERSION}`;
+const OFFLINE_MAP_FILE_PATTERN = new RegExp(
+    `^${OFFLINE_MAP_PATH_PREFIX.replace(/\//g, '\\/')}(?:manifest\\.json|\\d{1,2}\\/\\d{1,7}\\/\\d{1,7}\\.mvt)$`,
+);
+
+/** True only for the saved-map manifest and z/x/y tile files. */
+export function isOfflineMapPath(pathname) {
+    return typeof pathname === 'string' && OFFLINE_MAP_FILE_PATTERN.test(pathname);
+}
 
 export const ACTOR_META_PATH = '/__lmlinga/sw-current-actor';
 
@@ -127,6 +146,10 @@ export const NEVER_CACHE_PATH_PREFIXES = [
     '/change-password',
     '/offline', // /offline/status and /offline/sync
     '/chatbot',
+    '/language-review', // SR-06: Linguist review is online-only and never cached
+    '/language-management', // SR-05: Admin term management is online-only and never cached
+    '/chatbot-datasets', // SR-07: Admin dataset uploads are online-only and never cached
+    '/spot-mapping/demo-location', // SR-10: Demo Location Mode toggle is online-only and never cached
     '/storage',
     '/sanctum',
     '/up',
@@ -403,12 +426,13 @@ export function isLmlingaOwnedCache(name) {
         name.startsWith('lmlinga-html-') ||
         name.startsWith('lmlinga-avatar-') ||
         name.startsWith('lmlinga-fallback-') ||
-        name.startsWith('lmlinga-meta-')
+        name.startsWith('lmlinga-meta-') ||
+        name.startsWith('lmlinga-map-')
     );
 }
 
 export function isCurrentOwnedCache(name) {
-    if (CURRENT_CACHE_NAMES.includes(name)) {
+    if (CURRENT_CACHE_NAMES.includes(name) || name === OFFLINE_MAP_CACHE) {
         return true;
     }
     return (
@@ -819,6 +843,15 @@ export function moduleLabelForPath(pathname) {
     if (path.startsWith('/profile')) {
         return 'Profile';
     }
+    if (path.startsWith('/language-management')) {
+        return 'Language Management';
+    }
+    if (path.startsWith('/chatbot-datasets')) {
+        return 'Chatbot Datasets';
+    }
+    if (path.startsWith('/language-review')) {
+        return 'Language Review';
+    }
     return 'This page';
 }
 
@@ -980,6 +1013,15 @@ export function sanitizeCachedHtml(html) {
     }
 
     return next;
+}
+
+/**
+ * Spot Mapping Demo Location Mode: a page rendered while Demo Mode was on carries the simulated point and the
+ * DEMO banner. Such HTML is never stored in the offline cache, so it can never be replayed offline.
+ */
+export function htmlHasDemoLocation(html) {
+    return typeof html === 'string'
+        && (html.includes('data-demo-location=') || html.includes('data-spot-map-demo-banner'));
 }
 
 export function documentHasSwCacheMarker(root) {

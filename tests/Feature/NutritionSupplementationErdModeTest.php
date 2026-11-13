@@ -13,6 +13,12 @@ class NutritionSupplementationErdModeTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        \Illuminate\Support\Facades\Storage::fake('death_certificates');
+    }
+
     public function test_physical_erd_values_are_defined_for_vitamin_a_scenarios(): void
     {
         $this->assertSame('Vitamin A', NutritionSupplementationErdMode::vitaminASupplementType());

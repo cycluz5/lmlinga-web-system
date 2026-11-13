@@ -221,6 +221,7 @@ export function fillMemberEditRoot(host, member) {
     setControlValue(host, 'monthly_income', member.monthly_income);
     setControlValue(host, 'fp_user', member.fp_user);
     setControlValue(host, 'philhealth', member.philhealth || member.philhealth_number);
+    setControlValue(host, 'philhealth_membership_type', member.philhealth_membership_type);
     setCheckboxGroup(host, 'disability', member.disability);
     setControlValue(host, 'disability_others', member.disability_others);
     setCheckboxGroup(host, 'medical_history', member.medical_history);

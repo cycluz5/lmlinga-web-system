@@ -21,17 +21,16 @@ class OfflineSyncUpdateConcurrencyTest extends TestCase
         $this->actingAsFieldStaff();
         $household = Household::factory()->create([
             'zone' => 'Zone 1',
-            'street' => 'Layuan St.',
+            'accomplished_by' => 'Original BHW',
             'date_registered' => '2026-01-15',
             'address' => null,
             'latitude' => null,
             'longitude' => null,
-            'accomplished_by' => null,
         ]);
 
         $response = $this->postOfflineSync($this->offlineEnvelope(
             OfflineOperationType::HOUSEHOLD_UPDATE,
-            $this->householdUpdatePayload($household, ['street' => 'Cateel Bay St.']),
+            $this->householdUpdatePayload($household, ['accomplished_by' => 'Client BHW']),
             [
                 'parent_server' => ['household_id' => $household->getKey()],
                 'base_snapshot' => ['field_hash' => OfflineFieldHasher::household($household)],
@@ -40,23 +39,23 @@ class OfflineSyncUpdateConcurrencyTest extends TestCase
 
         $response->assertOk();
         $response->assertJsonPath('code', 'SYNCED');
-        $this->assertSame('Cateel Bay St.', (string) $household->fresh()->street);
+        $this->assertSame('Client BHW', (string) $household->fresh()->accomplished_by);
     }
 
     public function test_changed_household_returns_409(): void
     {
         $this->actingAsFieldStaff();
         $household = Household::factory()->create([
-            'street' => 'Layuan St.',
+            'accomplished_by' => 'Original BHW',
             'date_registered' => '2026-01-15',
         ]);
         $staleHash = OfflineFieldHasher::household($household);
 
-        $household->forceFill(['street' => 'Dalipay St.'])->save();
+        $household->forceFill(['accomplished_by' => 'Server BHW'])->save();
 
         $response = $this->postOfflineSync($this->offlineEnvelope(
             OfflineOperationType::HOUSEHOLD_UPDATE,
-            $this->householdUpdatePayload($household->fresh(), ['street' => 'Cateel Bay St.']),
+            $this->householdUpdatePayload($household->fresh(), ['accomplished_by' => 'Client BHW']),
             [
                 'parent_server' => ['household_id' => $household->getKey()],
                 'base_snapshot' => ['field_hash' => $staleHash],
@@ -65,7 +64,7 @@ class OfflineSyncUpdateConcurrencyTest extends TestCase
 
         $response->assertStatus(409);
         $response->assertJsonPath('code', 'TARGET_CHANGED');
-        $this->assertSame('Dalipay St.', (string) $household->fresh()->street);
+        $this->assertSame('Server BHW', (string) $household->fresh()->accomplished_by);
         $this->assertNoAppliedReceipt();
     }
 
@@ -135,7 +134,7 @@ class OfflineSyncUpdateConcurrencyTest extends TestCase
     {
         $this->actingAsFieldStaff();
         $household = Household::factory()->create([
-            'street' => 'Layuan St.',
+            'accomplished_by' => 'Original BHW',
             'date_registered' => '2026-01-15',
             'updated_at' => '2026-01-15 10:00:00',
         ]);
@@ -143,7 +142,7 @@ class OfflineSyncUpdateConcurrencyTest extends TestCase
         $updatedAt = $household->fresh()->updated_at?->format('Y-m-d H:i:s');
 
         DB::table('households')->where('id', $household->getKey())->update([
-            'street' => 'Changed In Place St.',
+            'accomplished_by' => 'Changed In Place BHW',
             'updated_at' => $updatedAt,
         ]);
 
@@ -151,7 +150,7 @@ class OfflineSyncUpdateConcurrencyTest extends TestCase
 
         $response = $this->postOfflineSync($this->offlineEnvelope(
             OfflineOperationType::HOUSEHOLD_UPDATE,
-            $this->householdUpdatePayload($household, ['street' => 'Client St.']),
+            $this->householdUpdatePayload($household, ['accomplished_by' => 'Stale Client BHW']),
             [
                 'parent_server' => ['household_id' => $household->getKey()],
                 'base_snapshot' => ['field_hash' => $staleHash],
@@ -160,19 +159,19 @@ class OfflineSyncUpdateConcurrencyTest extends TestCase
 
         $response->assertStatus(409);
         $response->assertJsonPath('code', 'TARGET_CHANGED');
-        $this->assertSame('Changed In Place St.', (string) $household->fresh()->street);
+        $this->assertSame('Changed In Place BHW', (string) $household->fresh()->accomplished_by);
     }
 
     public function test_successful_update_replay_returns_already_applied(): void
     {
         $this->actingAsFieldStaff();
         $household = Household::factory()->create([
-            'street' => 'Layuan St.',
+            'accomplished_by' => 'Original BHW',
             'date_registered' => '2026-01-15',
         ]);
         $envelope = $this->offlineEnvelope(
             OfflineOperationType::HOUSEHOLD_UPDATE,
-            $this->householdUpdatePayload($household, ['street' => 'Cateel Bay St.']),
+            $this->householdUpdatePayload($household, ['accomplished_by' => 'Client BHW']),
             [
                 'parent_server' => ['household_id' => $household->getKey()],
                 'base_snapshot' => ['field_hash' => OfflineFieldHasher::household($household)],
@@ -184,7 +183,7 @@ class OfflineSyncUpdateConcurrencyTest extends TestCase
 
         $replay->assertOk();
         $replay->assertJsonPath('code', 'ALREADY_APPLIED');
-        $this->assertSame('Cateel Bay St.', (string) $household->fresh()->street);
+        $this->assertSame('Client BHW', (string) $household->fresh()->accomplished_by);
     }
 
     public function test_missing_household_target_returns_409(): void

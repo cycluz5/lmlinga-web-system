@@ -41,9 +41,20 @@ final class HouseholdRecordVerifiedAccess
             && ! self::hasVerifiedOtpEvidence($record);
     }
 
+    /**
+     * Every OTP page, issue, send and verify path goes through here. In staff_verified
+     * linking mode the request must also carry staff verification (HouseholdLinkingPolicy).
+     */
     public static function allowsOtpInterface(RecordRequest $record): bool
     {
-        return self::requiresOtpVerification($record);
+        return self::requiresOtpVerification($record)
+            && HouseholdLinkingPolicy::permitsOtp($record);
+    }
+
+    /** Email OTP additionally requires a linking mode that trusts the account email. */
+    public static function allowsEmailOtpInterface(RecordRequest $record): bool
+    {
+        return HouseholdLinkingPolicy::emailOtpAllowed() && self::allowsOtpInterface($record);
     }
 
     /**

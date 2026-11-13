@@ -66,6 +66,21 @@ return [
         // to ollama.com's hosted API instead of the local server — no
         // `ollama signin` needed. Generate at https://ollama.com/settings/keys.
         'api_key' => env('OLLAMA_API_KEY'),
+
+        /*
+         | SR-08 configurable inference. Defaults reproduce the existing behaviour exactly:
+         | chat model gemma4:31b-cloud, provider "auto" (ollama.com only for a "-cloud" model with an
+         | API key, otherwise the local server), embeddings always on the local server.
+         | "local" never sends the API key; "cloud" requires it. There is no automatic fallback
+         | between providers.
+         */
+        'chat_provider' => env('OLLAMA_CHAT_PROVIDER') ?: 'auto',
+        'chat_model' => env('OLLAMA_CHAT_MODEL') ?: 'gemma4:31b-cloud',
+        'embedding_model' => env('OLLAMA_EMBEDDING_MODEL') ?: 'nomic-embed-text',
+        'cloud_url' => env('OLLAMA_CLOUD_URL') ?: 'https://ollama.com',
+        'chat_timeout' => (int) (env('OLLAMA_CHAT_TIMEOUT') ?: 180),
+        'embedding_timeout' => (int) (env('OLLAMA_EMBEDDING_TIMEOUT') ?: 60),
+        'keep_alive' => env('OLLAMA_KEEP_ALIVE') ?: '30m',
     ],
 
 ];

@@ -326,7 +326,7 @@ class HouseholdProfilingPersistencePhase2CTest extends TestCase
                 );
 
                 // Force a second head in the same new household to fail.
-                $createdHousehold = Household::query()->where('street', 'Rollback St.')->firstOrFail();
+                $createdHousehold = Household::query()->orderByDesc('id')->firstOrFail();
                 $residentService->create($createdHousehold, $this->validMemberPayload([
                     'relation' => 'Head',
                     'first_name' => 'Second',

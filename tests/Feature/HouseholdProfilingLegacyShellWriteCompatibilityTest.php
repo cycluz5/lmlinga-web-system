@@ -29,11 +29,10 @@ class HouseholdProfilingLegacyShellWriteCompatibilityTest extends TestCase
             'accomplished_by' => 'Maria BHW',
         ]);
 
+        // street/address were dropped (2026_09_28_140000); the remaining shell columns still persist.
         $this->assertDatabaseHas('households', [
             'id' => $household->id,
             'zone' => 'Zone 2',
-            'street' => 'Layuan St.',
-            'address' => '123 Layuan St.',
             'accomplished_by' => 'Maria BHW',
         ]);
         $this->assertSame('2026-01-15', $household->date_registered?->format('Y-m-d'));

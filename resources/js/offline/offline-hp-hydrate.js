@@ -3,6 +3,7 @@
  * into the actor Cache Storage. Never fetches one HTML page per household.
  */
 
+import { PHILHEALTH_MEMBERSHIP_TYPES, philhealthMembershipTypeLabel } from './offline-philhealth-membership-types.js';
 import {
     htmlCacheNameForActor,
     navigationCacheUrl,
@@ -500,6 +501,9 @@ function formatMemberList(value, member, key) {
 }
 
 export function displayMemberField(member, key) {
+    if (key === 'philhealth_membership_type') {
+        return philhealthMembershipTypeLabel(member?.philhealth_membership_type);
+    }
     const row = member && typeof member === 'object' ? member : {};
     if (key === 'name') {
         const name = String(row.name || '').trim() || [row.first_name, row.middle_name, row.last_name]
@@ -567,6 +571,7 @@ export const MEMBER_VIEW_DT_FIELDS = [
     ['Religion', 'religion'],
     ['Educational Attainment', 'education'],
     ['PhilHealth Number', 'philhealth'],
+    ['PhilHealth Membership Type', 'philhealth_membership_type'],
     ['Family Planning', 'fp_user'],
     ['Disability Type', 'disability'],
     ['Medical History', 'medical_history'],
@@ -615,7 +620,7 @@ export function hydrateMemberViewHtml(shellHtml, household, member, fromHousehol
     const fieldKeys = [
         'name', 'last_name', 'first_name', 'middle_name', 'relation', 'sex', 'birthday',
         'relationship_status', 'occupation', 'monthly_income', 'religion', 'education',
-        'philhealth', 'fp_user', 'disability', 'medical_history',
+        'philhealth', 'philhealth_membership_type', 'fp_user', 'disability', 'medical_history',
     ];
     fieldKeys.forEach((key) => {
         const safe = escapeHtml(displayMemberField(member, key));
@@ -784,6 +789,18 @@ export function isOnlineOnlyHealthModule(healthKey) {
     return ONLINE_ONLY_HEALTH_MODULES.includes(String(healthKey || ''));
 }
 
+function philhealthMembershipTypeOptionsHtml(selected) {
+    const current = String(selected ?? '').trim();
+    const groups = [...new Set(PHILHEALTH_MEMBERSHIP_TYPES.map((type) => type.group))];
+    return '<option value="">Select</option>' + groups.map((group) => {
+        const options = PHILHEALTH_MEMBERSHIP_TYPES
+            .filter((type) => type.group === group)
+            .map((type) => `<option value="${escapeHtml(type.code)}"${type.code === current ? ' selected' : ''}>${escapeHtml(type.label)}</option>`)
+            .join('');
+        return `<optgroup label="${escapeHtml(group)}">${options}</optgroup>`;
+    }).join('');
+}
+
 function setInputValue(html, name, value) {
     const safeName = String(name).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     const safeValue = escapeHtml(value || '');
@@ -874,6 +891,7 @@ export function hydrateMemberEditHtml(shellHtml, household, member, fromHousehol
     html = setSelectValue(html, 'monthly_income', member.monthly_income);
     html = setSelectValue(html, 'fp_user', member.fp_user);
     html = setInputValue(html, 'philhealth', member.philhealth || member.philhealth_number || '');
+    html = setSelectValue(html, 'philhealth_membership_type', member.philhealth_membership_type);
     if (templateName && localName && templateName !== localName) {
         html = html.split(templateName).join(localName);
     }
@@ -1008,6 +1026,7 @@ ${pending ? '<p class="lml-hh-view__sync-badge">Waiting to sync</p>' : ''}
 <div class="lml-hh-member-view__item"><dt>Religion</dt><dd data-offline-local-field="religion">${escapeHtml(displayMemberField(member, 'religion'))}</dd></div>
 <div class="lml-hh-member-view__item"><dt>Educational Attainment</dt><dd data-offline-local-field="education">${escapeHtml(displayMemberField(member, 'education'))}</dd></div>
 <div class="lml-hh-member-view__item"><dt>PhilHealth Number</dt><dd data-offline-local-field="philhealth">${escapeHtml(displayMemberField(member, 'philhealth'))}</dd></div>
+<div class="lml-hh-member-view__item"><dt>PhilHealth Membership Type</dt><dd data-offline-local-field="philhealth_membership_type">${escapeHtml(displayMemberField(member, 'philhealth_membership_type'))}</dd></div>
 <div class="lml-hh-member-view__item"><dt>Family Planning</dt><dd data-offline-local-field="fp_user">${escapeHtml(displayMemberField(member, 'fp_user'))}</dd></div>
 <div class="lml-hh-member-view__item"><dt>Disability Type</dt><dd data-offline-local-field="disability">${escapeHtml(displayMemberField(member, 'disability'))}</dd></div>
 <div class="lml-hh-member-view__item"><dt>Medical History</dt><dd data-offline-local-field="medical_history">${escapeHtml(displayMemberField(member, 'medical_history'))}</dd></div>
@@ -1037,6 +1056,7 @@ function fallbackMemberEditHtml(household, member) {
 <label>Birthday <input type="date" name="birthday" required value="${escapeHtml(member.birthday || '')}"></label>
 <label>Sex <select name="sex" required><option value="${escapeHtml(member.sex || '')}" selected>${escapeHtml(member.sex || '')}</option></select></label>
 <label>PhilHealth Number <input name="philhealth" value="${escapeHtml(member.philhealth || member.philhealth_number || '')}"></label>
+<label>PhilHealth Membership Type <select name="philhealth_membership_type">${philhealthMembershipTypeOptionsHtml(member.philhealth_membership_type)}</select></label>
 <button type="submit" data-hh-member-save>Update</button>
 </form>
 </div></body></html>`);

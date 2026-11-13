@@ -190,7 +190,10 @@ final class HealthWorkerAccountService
             try {
                 $user->save();
 
-                $zones = WorkerAssignedZones::normalize($data['hw_assigned_zone'] ?? []);
+                // SR-06: Linguists never have assigned zones (any submitted zones are ignored).
+                $zones = StaffRole::isLinguist($role)
+                    ? []
+                    : WorkerAssignedZones::normalize($data['hw_assigned_zone'] ?? []);
                 $employment = [
                     'role' => $role,
                     'assigned_barangay' => (string) $data['hw_assigned_barangay'],

@@ -37,7 +37,7 @@ class ChildImmunizationDestinationTest extends TestCase
     public function test_named_child_immunization_route_resolves(): void
     {
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-001/child-immunization'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-001').'/child-immunization'),
             route('household-profiling.members.child-immunization', $this->memberParams())
         );
     }
@@ -380,7 +380,7 @@ class ChildImmunizationDestinationTest extends TestCase
     public function test_named_birth_history_edit_route_resolves(): void
     {
         $this->assertSame(
-            url('/household-profiling/HH-151/members/MB-001/child-immunization/birth-history/edit'),
+            url('/household-profiling/'.$this->opaqueId('h', 'HH-151').'/members/'.$this->opaqueId('m', 'MB-001').'/child-immunization/birth-history/edit'),
             route('household-profiling.members.child-immunization.birth-history.edit', $this->memberParams())
         );
     }

@@ -43,6 +43,7 @@ final class OfflineLocalMemberId
             'religion' => '—',
             'education' => '—',
             'philhealth' => '—',
+            'philhealth_membership_type_label' => '',
             'fp_user' => '—',
             'disability' => '—',
             'medical_history' => '—',

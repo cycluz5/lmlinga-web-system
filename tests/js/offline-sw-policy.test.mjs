@@ -326,7 +326,7 @@ describe('offline service worker policy', () => {
         assert.equal(isUserManagementHealthWorkerWarmPath('/user-management/health-workers/create'), false);
         assert.equal(isUserManagementHealthWorkerCreatePath('/user-management/health-workers/create'), true);
         assert.equal(isUserManagementHealthWorkerWarmPath('/user-management/health-workers/hw-001/view'), false);
-        assert.equal(CACHE_VERSION, 'offline-7-v21');
+        assert.equal(CACHE_VERSION, 'offline-7-v26');
         assert.equal(MESSAGE_WARMUP_RELATED, 'lmlinga:warmup-related');
         assert.equal(isRelatedWarmPath('/household-profiling/HH-121'), true);
         assert.equal(isRelatedWarmPath('/household-profiling/HH-121/amenities'), true);

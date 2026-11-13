@@ -13,6 +13,12 @@ class RiskAssessmentErdModeTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        \Illuminate\Support\Facades\Storage::fake('death_certificates');
+    }
+
     public function test_fixture_requires_user_id_and_omits_generated_blood_pressure_status(): void
     {
         ClientTestingErdSchema::ensure();

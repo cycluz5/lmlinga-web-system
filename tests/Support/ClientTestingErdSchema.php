@@ -89,6 +89,8 @@ final class ClientTestingErdSchema
             $table->string('last_name', 100);
             $table->string('zone_purok', 20)->nullable();
             $table->string('email', 150)->unique();
+            // Mirrors 2026_10_30_090000_add_email_verified_at_to_resident_accounts_table (SR-03).
+            $table->timestamp('email_verified_at')->nullable();
             $table->string('password', 255);
             $table->timestamps();
         });

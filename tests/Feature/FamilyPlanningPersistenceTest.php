@@ -179,7 +179,7 @@ class FamilyPlanningPersistenceTest extends TestCase
 
         $this->assertStringContainsString('08/20/2026', $htmlOwner);
         $this->assertStringContainsString('Pills, Condoms', $htmlOwner);
-        $this->assertStringContainsString('FP-001', $htmlOwner);
+        $this->assertStringContainsString($this->opaqueId('v', 'FP-001'), $htmlOwner);
         $this->assertSame(1, substr_count($htmlOwner, 'data-fp-row'));
 
         $htmlOther = $this->get(route('household-profiling.members.family-planning.index', [

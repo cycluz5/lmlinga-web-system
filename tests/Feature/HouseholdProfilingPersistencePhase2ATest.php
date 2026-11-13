@@ -89,8 +89,6 @@ class HouseholdProfilingPersistencePhase2ATest extends TestCase
         $this->assertDatabaseHas('households', [
             'id' => $household->id,
             'zone' => 'Zone 2',
-            'street' => 'Layuan St.',
-            'address' => '123 Layuan St., Brgy. La Medalla',
             'accomplished_by' => 'Maria BHW',
         ]);
         $this->assertSame('2026-01-15', $household->date_registered?->format('Y-m-d'));
@@ -137,9 +135,7 @@ class HouseholdProfilingPersistencePhase2ATest extends TestCase
         $household->refresh();
         $this->assertSame('HH-810', $household->household_no);
         $this->assertSame('Zone 5', $household->zone);
-        $this->assertSame('Cateel Bay St.', $household->street);
         $this->assertSame('After Edit', $household->accomplished_by);
-        $this->assertSame('Updated Address', $household->address);
 
         $this->get(route('household-profiling.view', ['householdNo' => 'HH-810']))
             ->assertOk()

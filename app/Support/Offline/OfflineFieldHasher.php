@@ -5,6 +5,7 @@ namespace App\Support\Offline;
 use App\Models\Household;
 use App\Models\Resident;
 use App\Models\User;
+use App\Support\PhilhealthMembershipTypes;
 use App\Models\WorkerAppointment;
 use App\Services\HouseholdEnvironmentalProfileService;
 use App\Support\DatabaseSchemaGuard;
@@ -57,6 +58,7 @@ final class OfflineFieldHasher
         'education',
         'fp_user',
         'philhealth',
+        'philhealth_membership_type',
         'disability',
         'disability_others',
         'medical_history',
@@ -347,6 +349,18 @@ final class OfflineFieldHasher
             }
 
             return '__skip__';
+        }
+
+        if ($field === 'philhealth_membership_type') {
+            // A blank type stays out of the hash, so records without a type keep the hash they already had
+            // and edits queued before this field existed do not raise false conflicts.
+            if (! PhilhealthMembershipTypes::available()) {
+                return '__skip__';
+            }
+
+            $code = PhilhealthMembershipTypes::codeForId($resident->getAttribute(PhilhealthMembershipTypes::COLUMN));
+
+            return $code === '' ? '__skip__' : $code;
         }
 
         if ($field === 'disability') {

@@ -74,20 +74,20 @@ class AdminHealthWorkerDeactivateTest extends TestCase
             ->assertOk()
             ->getContent();
 
-        $this->assertStringContainsString('data-hw-deactivate-id="'.$worker->id.'"', $index);
+        $this->assertStringContainsString('data-hw-deactivate-id="'.$this->opaqueId('w', (string) $worker->id).'"', $index);
         $this->assertStringContainsString('Deactivate Account', $index);
-        $this->assertStringNotContainsString('data-hw-deactivate-id="'.$admin->id.'"', $index);
-        $this->assertStringNotContainsString('data-hw-deactivate-id="'.$peerAdmin->id.'"', $index);
+        $this->assertStringNotContainsString('data-hw-deactivate-id="'.$this->opaqueId('w', (string) $admin->id).'"', $index);
+        $this->assertStringNotContainsString('data-hw-deactivate-id="'.$this->opaqueId('w', (string) $peerAdmin->id).'"', $index);
 
         $this->actingAsAdminSession();
         $this->get(route('user-management.health-workers.view', ['id' => (string) $worker->id]))
             ->assertOk()
-            ->assertSee('data-hw-deactivate-id="'.$worker->id.'"', false);
+            ->assertSee('data-hw-deactivate-id="'.$this->opaqueId('w', (string) $worker->id).'"', false);
 
         $this->actingAsAdminSession();
         $this->get(route('user-management.health-workers.view', ['id' => (string) $peerAdmin->id]))
             ->assertOk()
-            ->assertDontSee('data-hw-deactivate-id="'.$peerAdmin->id.'"', false);
+            ->assertDontSee('data-hw-deactivate-id="'.$this->opaqueId('w', (string) $peerAdmin->id).'"', false);
     }
 
     public function test_admin_session_survives_deactivating_another_worker(): void
@@ -292,6 +292,8 @@ class AdminHealthWorkerDeactivateTest extends TestCase
 
     public function test_last_admin_edit_protection_is_unchanged(): void
     {
+        $this->deactivateSeededSuperAdmin();
+
         $admin = $this->actingAsAdminSession();
 
         $this->from(route('user-management.health-workers.edit', ['id' => (string) $admin->id]))

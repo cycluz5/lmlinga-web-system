@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Chatbot;
 use App\Http\Controllers\Controller;
 use App\Models\RecordRequest;
 use App\Models\ResidentAccount;
+use App\Services\ResidentEmailOtpService;
 use App\Support\ChatbotHouseholdNumberDisplay;
+use App\Support\HouseholdLinkingPolicy;
 use App\Support\HouseholdRecordVerifiedAccess;
 use App\Support\ResidentAuthenticator;
 use Carbon\Carbon;
@@ -27,6 +29,11 @@ class ChatbotMainController extends Controller
             'householdDisplayNo' => $this->officialHouseholdDisplay($account),
             'householdRequestState' => $householdRequestState,
             'householdDecisionReason' => $this->householdDecisionReason($account),
+            // SR-03: non-blocking prompt for accounts created before email verification existed.
+            'emailVerificationNeeded' => $account instanceof ResidentAccount
+                && ResidentEmailOtpService::enabled()
+                && ResidentAccount::supportsEmailVerification()
+                && ! $account->hasVerifiedEmail(),
             'chatbotNotifications' => $this->residentNotificationsForView(
                 $account,
                 $householdRequestState === 'approved',
@@ -118,8 +125,20 @@ class ChatbotMainController extends Controller
             return 'approved';
         }
 
-        if (HouseholdRecordVerifiedAccess::requiresOtpVerification($record)) {
+        // "Continue Verification" only when the OTP step is actually open. In staff_verified mode an
+        // OTP-stage request that staff have not verified yet is still waiting on staff ("Request Sent").
+        if (HouseholdRecordVerifiedAccess::allowsOtpInterface($record)) {
             return 'awaiting_otp';
+        }
+
+        // Legacy Approved-without-OTP: no open request exists, so offer "Request Household Record"
+        // (resubmission goes to staff verification). Does not grant anything.
+        if (HouseholdLinkingPolicy::needsResubmission($record)) {
+            return 'none';
+        }
+
+        if (HouseholdRecordVerifiedAccess::requiresOtpVerification($record)) {
+            return 'pending';
         }
 
         return match ($record->status) {

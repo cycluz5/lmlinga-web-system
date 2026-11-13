@@ -159,7 +159,7 @@ class OperationTimbangPersistenceTest extends TestCase
             'last_name' => 'Resident',
             'birthday' => '1990-01-01',
             'sex' => 'Male',
-        ]);
+        ], ['household_no' => 'HH-810']);
 
         TimbangRecord::factory()->create([
             'resident_id' => $adult->id,
