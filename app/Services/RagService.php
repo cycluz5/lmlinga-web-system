@@ -23,17 +23,6 @@ class RagService
     }
 
     /**
-     * Folder with the chatbot's health .txt files ({en,tl,bcl}/<category>/<topic>.txt).
-     * Set by config('services.health_docs.path'); default resources/health_docs_v2.
-     */
-    protected function healthDocsPath(string $sub = ''): string
-    {
-        $root = rtrim((string) config('services.health_docs.path', resource_path('health_docs_v2')), '/\\');
-
-        return $sub === '' ? $root : $root . DIRECTORY_SEPARATOR . ltrim($sub, '/\\');
-    }
-
-    /**
      * Cloud chat models (e.g. "gemma4:31b-cloud") are served directly by
      * ollama.com when an API key is configured, so a local `ollama signin`
      * is never required. Non-cloud models still go through the local server.
@@ -72,7 +61,7 @@ class RagService
 
     public function indexAllDocuments(): array
     {
-        $root = $this->healthDocsPath();
+        $root = resource_path('health_docs');
         $languages = ['en', 'tl', 'bcl'];
         $totalChunks = 0;
         $log = [];
@@ -153,10 +142,10 @@ class RagService
     }
 
     protected array $stopwords = [
-        'uno', 'ono', 'ano', 'sarin', 'sari', 'saan', 'kuno', 'kailan', 'isay', 'sino',
-        'ngata', 'tangata', 'bakit', 'pauno', 'paono', 'paano', 'pira', 'magkano', 'ilan', 'arin',
-        'alin', 'amo', 'amu', 'oo', 'buku', 'boko', 'bokong', 'usad', 'osad', 'diri', 'hindi', 'pwede', 'ana', 'ang', 'an',
-        'a', 'na', 'sa', 'ka', 'kana', 'kan', 'kin', 'kung', 'mga', 'manga', 'para', 'ng', 'ag',
+        'uno', 'ano', 'sarin', 'sari', 'saan', 'kuno', 'kailan', 'isay', 'sino',
+        'ngata', 'tangata', 'bakit', 'pauno', 'paano', 'pira', 'magkano', 'ilan', 'arin',
+        'alin', 'amo', 'amu', 'oo', 'buku', 'hindi', 'pwede', 'ana', 'ang', 'an',
+        'a', 'na', 'sa', 'ka', 'kan', 'kin', 'mga', 'para', 'ng',
         'gibuhon', 'maiwasan', 'makaiwas', 'gawin', 'gawa', 'ito', 'adi',
         'with', 'what', 'where', 'when', 'who', 'why', 'how', 'this', 'that',
         // Short particles that must never act as acronym/keywords
@@ -366,8 +355,8 @@ class RagService
         $resolveCurrentText = function ($file) use (&$fullTextCache): ?string {
             $cacheKey = $file->language . '|' . $file->category . '|' . $file->source_file;
             if (!array_key_exists($cacheKey, $fullTextCache)) {
-                $path = $this->healthDocsPath(
-                    "{$file->language}/{$file->category}/{$file->source_file}"
+                $path = resource_path(
+                    "health_docs/{$file->language}/{$file->category}/{$file->source_file}"
                 );
                 $fullTextCache[$cacheKey] = File::exists($path)
                     ? (string) File::get($path)
@@ -916,7 +905,7 @@ class RagService
         // Soft interrogative / deixis follow-ups (topic often omitted).
         // Includes Tagalog deixis (nito/dito/…) used by TL-D2 inheritance.
         if (preg_match(
-            '/\b(ano|ono|ngata|ngaya|pauno|paono|paano|kaipwana|bakit|what|how|why|when|adi|ito|nito|dito|iyan|niyan|iyon|doon|nun|this|that|it)\b/u',
+            '/\b(ano|ngata|ngaya|pauno|paano|kaipwana|bakit|what|how|why|when|adi|ito|nito|dito|iyan|niyan|iyon|doon|nun|this|that|it)\b/u',
             $q
         )) {
             return true;
@@ -951,7 +940,7 @@ class RagService
     protected function isWeakScheduleTopicAnchor(string $keyword): bool
     {
         return in_array($keyword, [
-            'uno', 'ono', 'edad', 'bulan', 'buwan', 'taon', 'aldow', 'days', 'day',
+            'uno', 'edad', 'bulan', 'buwan', 'taon', 'aldow', 'days', 'day',
             'araw', 'stage', 'yugto', 'milestone', 'schedule', 'iskedyul',
             'pagdakulo', 'pagbabago', 'sakop', 'sunod', 'kuno', 'first',
             'dapat',
@@ -970,9 +959,9 @@ class RagService
 
         return in_array($keyword, [
             'importante', 'ngata', 'igen', 'agko', 'ataman', 'aatamanon',
-            'gibuhon', 'senyales', 'sintomas', 'sinyales', 'palatandaan', 'katangian',
+            'gibuhon', 'senyales', 'sintomas', 'palatandaan', 'katangian',
             'dahilan', 'rason', 'benepisyo', 'benipisyo', 'ngaya',
-            'maiwasan', 'makaiwas', 'likay', 'malikayan', 'pauno', 'paono', 'paano',
+            'maiwasan', 'makaiwas', 'likay', 'malikayan', 'pauno', 'paano',
         ], true);
     }
 
@@ -1278,7 +1267,7 @@ class RagService
             return $this->resolvedDocumentTextCache[$cacheKey];
         }
 
-        $path = $this->healthDocsPath("{$language}/{$category}/{$source}");
+        $path = resource_path("health_docs/{$language}/{$category}/{$source}");
         if (File::exists($path)) {
             return $this->resolvedDocumentTextCache[$cacheKey] = trim((string) File::get($path));
         }
@@ -1379,13 +1368,7 @@ class RagService
                     // Slug matching stays limited to strong topic words.
                     if (
                         $this->isUsableRetrieveTopicKeyword($kw, $language)
-                        && (
-                            str_contains($slug, $kw)
-                            || (
-                                $language === 'bcl'
-                                && in_array($kw, $this->bikolTopicAliasTokens((string) $chunk->source_file), true)
-                            )
-                        )
+                        && str_contains($slug, $kw)
                     ) {
                         return true;
                     }
@@ -1449,16 +1432,7 @@ class RagService
                         if (!$this->isUsableRetrieveTopicKeyword($kw, $language)) {
                             continue;
                         }
-                        if (
-                            mb_strlen($kw) >= 4
-                            && (
-                                str_contains($slug, $kw)
-                                || (
-                                    $language === 'bcl'
-                                    && in_array($kw, $this->bikolTopicAliasTokens((string) $chunk->source_file), true)
-                                )
-                            )
-                        ) {
+                        if (mb_strlen($kw) >= 4 && str_contains($slug, $kw)) {
                             $score += 10;
                         }
                         $textHit = $language === 'bcl'
@@ -1621,59 +1595,6 @@ class RagService
         ];
     }
 
-    /**
-     * Split a message that holds several questions: "A? B?", "A? / B?", "A / B".
-     * Each part needs at least 2 words; at most 3 questions are answered.
-     *
-     * @return list<string>
-     */
-    protected function splitMultipleQuestions(string $message): array
-    {
-        $parts = preg_split('/(?<=\?)\s*(?:\/\s*)?|\s+\/\s+/u', trim($message)) ?: [];
-        $parts = array_values(array_filter(
-            array_map(fn ($p) => trim($p, " \t\n\r\0\x0B/"), $parts),
-            fn ($p) => $p !== '' && count(preg_split('/\s+/u', $p) ?: []) >= 2
-        ));
-
-        return count($parts) > 1 ? array_slice($parts, 0, 3) : [trim($message)];
-    }
-
-    /**
-     * Answer each question separately and join them in one reply, same layout
-     * every time: **title**, the answer, then its points as "• " lines.
-     *
-     * @param  list<string>  $questions
-     */
-    protected function askMultiple(array $questions, string $language, ?string $category, ?string $topicHint): array
-    {
-        $blocks = [];
-        $sources = [];
-        $resultLanguage = $language;
-        foreach ($questions as $q) {
-            $r = $this->ask($q, $language, $category, $topicHint);
-            $resultLanguage = $r['language'] ?? $resultLanguage;
-            $title = trim((string) ($r['title'] ?? '')) ?: rtrim($q, '?') . '?';
-            $lines = ['**' . $title . '**'];
-            if (trim((string) ($r['answer'] ?? '')) !== '') {
-                $lines[] = trim((string) $r['answer']);
-            }
-            foreach ((array) ($r['points'] ?? []) as $point) {
-                $lines[] = '• ' . trim((string) $point);
-            }
-            $blocks[] = implode("\n\n", $lines);
-            $sources = array_merge($sources, (array) ($r['sources'] ?? []));
-        }
-
-        return [
-            'title' => null,
-            'answer' => implode("\n\n", $blocks),
-            'points' => [],
-            'sources' => array_values(array_unique($sources)),
-            'language' => $resultLanguage,
-            'is_conversation' => false,
-        ];
-    }
-
     protected function bikolConversation(): BikolConversationService
     {
         return app(BikolConversationService::class);
@@ -1693,12 +1614,6 @@ class RagService
 {
     set_time_limit(180);
 
-    // "Ono ana kalintora? / Ono ana dengue?" -> answer each question, one reply.
-    $subQuestions = $this->splitMultipleQuestions($question);
-    if (count($subQuestions) > 1) {
-        return $this->askMultiple($subQuestions, $language, $category, $topicHint);
-    }
-
     $detectedLanguage = $this->detectLanguageFromQuestion($question, $language);
     if ($detectedLanguage !== $language) {
         Log::info('Language detection overrode selected language', [
@@ -1711,19 +1626,6 @@ class RagService
 
     $this->retrieveInvoked = false;
     if ($language === 'bcl') {
-        // Serious messages (no hope / hurt oneself): always the team's fixed checked reply.
-        $seriousReply = app(BikolSmallTalkService::class)->seriousReply($question);
-        if ($seriousReply !== null) {
-            return [
-                'title' => null,
-                'answer' => $seriousReply,
-                'points' => [],
-                'sources' => [],
-                'language' => 'bcl',
-                'is_conversation' => true,
-            ];
-        }
-
         $conversation = $this->bikolConversation();
         $handled = $conversation->resolve($question);
         if ($handled['type'] === 'canned') {
@@ -1853,12 +1755,6 @@ if (empty($chunks)) {
                 return $result;
             }
         }
-
-        // Not found in the health documents = small talk.
-        $smallTalk = $this->bikolSmallTalkResult($question);
-        if ($smallTalk !== null) {
-            return $smallTalk;
-        }
     }
 
     return [
@@ -1876,19 +1772,6 @@ if ($language === 'bcl') {
         $question,
         (bool) ($retrieval['usedKeywordMatch'] ?? false)
     );
-
-    // No health answer found in the documents -> small talk model.
-    if (empty($result['sources']) && ($result['answer'] ?? '') === $this->noContextMessage('bcl')) {
-        $smallTalk = $this->bikolSmallTalkResult($question);
-        if ($smallTalk !== null) {
-            return $smallTalk;
-        }
-    }
-
-    // "Cloud AI" mode: Gemma explains the verified answer conversationally.
-    if ($this->answerMode === 'cloud' && !empty($result['sources'])) {
-        $result = $this->conversationalBikolAnswer($question, $result);
-    }
 
     $result['language'] = $language;
     $result['is_conversation'] = false;
@@ -2245,27 +2128,6 @@ protected function isPlaceholderValue($value): bool
         return trim($result);
     }
 
-    /**
-     * Reply from the fine-tuned Bikol-Iriga small-talk model (never used for
-     * health answers), or null when the model is off or unreachable.
-     */
-    protected function bikolSmallTalkResult(string $question): ?array
-    {
-        $answer = app(BikolSmallTalkService::class)->reply($question);
-        if ($answer === null) {
-            return null;
-        }
-
-        return [
-            'title' => null,
-            'answer' => $answer,
-            'points' => [],
-            'sources' => [],
-            'language' => 'bcl',
-            'is_conversation' => true,
-        ];
-    }
-
     protected function noContextMessage(string $language): string
     {
         return match ($language) {
@@ -2427,7 +2289,7 @@ protected function detectLanguageFromQuestion(string $question, string $selected
 {
     $lower = mb_strtolower($question);
 
-    $bikolMarkers = ['uno', 'ono', 'ngata', 'pauno', 'paono', 'sarin', 'kadi', 'agko', 'kaipuhan', 'dawa', 'amo'];
+    $bikolMarkers = ['uno', 'ngata', 'pauno', 'sarin', 'kadi', 'agko', 'kaipuhan', 'dawa', 'amo'];
     // Exclusive Filipino question words. Shared particles such as "mga" / "naman"
     // appear in genuine Bicol queries and must not steal a selected BCL session.
     $tagalogExclusiveMarkers = ['ano', 'bakit', 'paano', 'saan', 'kailan'];
@@ -2504,126 +2366,6 @@ protected function isEnglishDominant(string $text): bool
     }
 
     return $hits >= 4;
-}
-
-/**
- * Local AI model mode (Bikol): Gemma re-tells the VERIFIED answer in friendly
- * Bikol-Iriga. Facts come only from $verified (taken from the linguist-verified
- * dataset); afterwards fixBikolIrigaSpelling() changes leftover Naga-Bikol words.
- * On any problem the verified answer is returned unchanged.
- */
-protected function conversationalBikolAnswer(string $question, array $verified): array
-{
-    $facts = trim(implode("\n", array_filter([
-        trim((string) ($verified['answer'] ?? '')),
-        implode("\n", array_map(fn ($p) => '- ' . trim((string) $p), (array) ($verified['points'] ?? []))),
-    ])));
-    if ($facts === '') {
-        return $verified;
-    }
-
-    $system = "Ika ay LMLinga, health chatbot kana health center sa Iriga City.\n"
-        . "Magsimbag SANA sa Bikol-Iriga (Rinconada). BOKO Naga Bikol, BOKO Tagalog.\n"
-        . "Pirmi gamiton: ana (boko 'an/ang'), kana (boko 'kan/nin/ng'), ono (boko 'ano/uno'), "
-        . "paono (boko 'pano/paano'), agko (boko 'igwa/may'), uda (boko 'mayo/wala'), osad (boko 'sarong/isa'), "
-        . "ag (boko 'asin/at'), kin (boko 'kun/kung'), amo (boko 'iyo/oo'), kanimo (boko 'saimo/sa iyo'), "
-        . "kanako (boko 'sakuya'), diri (=don't), boko (=no/not), kalintora (=fever), tobig (=water), "
-        . "sinyales (=symptoms), otos (=chickenpox), rogo (=blood), aldow (boko 'aldaw'), "
-        . "maray (boko 'marhay'), kanato/kanatong (boko 'satuya/satuyang'), kaipowan (boko 'kaipuhan').\n"
-        . "Diri magbati (uda 'Maray na aldow', uda 'Hello'): direkta sa simbag.\n"
-        . "Gamiton SANA ana impormasyon sa VERIFIED ANSWER. Diri magdagdag ka bagong impormasyon, "
-        . "numero, o bulong na uda adi.\n"
-        . "Magsarita na bana osad na mabuot na health worker na nakikipag-ulay sa taga-barangay:\n"
-        . "1. Osad o darwang mainit na sentence na direktang nagsisimbag sa HAPOT gamit ana sadiring sarita "
-        . "(boko kopya kana listahan).\n"
-        . "2. Ana mga importanteng punto bilang listahan na nagpupuon sa '- '. Pwede ading paiklion o "
-        . "sabihon sa mas simpleng paagi, pero pareho ana kahulugan.\n"
-        . "3. Osad na maikling pangtapos na sentence (halimbawa: magpakonsulta sa health center kin "
-        . "nagmamalala), basta diri bagong impormasyong medikal.\n"
-        . "Diri gamiton ana markdown na **bold** o #.";
-
-    try {
-        $response = Http::timeout(60)->withToken((string) $this->ollamaApiKey)
-            ->post($this->usesOllamaCloud() ? "{$this->ollamaCloudUrl}/api/chat" : "{$this->ollamaBaseUrl}/api/chat", [
-                'model' => $this->chatModel,
-                'stream' => false,
-                'keep_alive' => '30m',
-                'options' => ['temperature' => 0.2, 'num_predict' => 600],
-                'messages' => [
-                    ['role' => 'system', 'content' => $system],
-                    ['role' => 'user', 'content' => "VERIFIED ANSWER:\n{$facts}\n\nHAPOT:\n{$question}"],
-                ],
-            ]);
-        $text = $response->successful() ? trim((string) $response->json('message.content')) : '';
-    } catch (\Throwable $e) {
-        Log::warning('Bikol conversational answer failed, using verified answer', ['error' => $e->getMessage()]);
-        $text = '';
-    }
-
-    // Cloud AI is fully online: no offline fallback. Tell the user instead.
-    if ($text === '' || mb_strlen($text) < 20) {
-        return [
-            'title' => null,
-            'answer' => 'Diri makakonekta sa Cloud AI (Gemma). Siguraduhon na agko internet ag uliton ulit.',
-            'points' => [],
-            'sources' => [],
-            'answered_by' => 'Cloud AI (Gemma) - offline',
-        ];
-    }
-
-    $text = $this->fixBikolIrigaSpelling(str_replace(['**', '##', '#'], '', $text));
-    // Drop a greeting the model may still add ("Maray na aldow!").
-    $text = preg_replace('/^\s*(?:dios\s+)?maray\s+na\s+(?:aldow|aga|banggi|hapon)\s*[!.,]?\s*/iu', '', $text) ?? $text;
-
-    // Keep the model's order: intro, list, closing sentence. Points are written
-    // as "• " lines inside the answer so the closing line stays at the end.
-    $lines = [];
-    foreach (preg_split('/\R/u', $text) ?: [] as $line) {
-        $line = trim($line);
-        if ($line === '') {
-            continue;
-        }
-        $lines[] = preg_match('/^(?:[-*•]|\d+[.)])\s*(.+)$/u', $line, $m) === 1
-            ? '• ' . trim($m[1])
-            : $line;
-    }
-
-    return array_merge($verified, [
-        'answer' => implode("\n\n", $lines),
-        'points' => [],
-    ]);
-}
-
-/**
- * Last safety net for model output: Naga-Bikol / Tagalog words -> team's Iriga spelling.
- */
-protected function fixBikolIrigaSpelling(string $text): string
-{
-    $map = [
-        'iyo' => 'amo', 'igwa' => 'agko', 'sarong' => 'osad', 'asin' => 'ag', 'kun' => 'kin',
-        'kung' => 'kin', 'saimo' => 'kanimo', 'sakuya' => 'kanako', 'sako' => 'kanako', 'nin' => 'kana',
-        'ano' => 'ono', 'uno' => 'ono', 'paano' => 'paono', 'pauno' => 'paono', 'ang' => 'ana',
-        'mayo' => 'uda', 'lagnat' => 'kalintora', 'kalintura' => 'kalintora', 'tubig' => 'tobig',
-        'sintomas' => 'sinyales', 'usad' => 'osad', 'rugo' => 'rogo', 'dugo' => 'rogo',
-        'dapit' => 'manungod', 'tungkol' => 'manungod',
-        'aldaw' => 'aldow', 'marhay' => 'maray', 'satuya' => 'kanato', 'satuyang' => 'kanatong',
-        'kaipuhan' => 'kaipowan', 'kaipuhang' => 'kaipowan', 'an' => 'ana', 'kan' => 'kana',
-        'hali' => 'galin', 'tataramon' => 'sarita', 'gabos' => 'ngamin',
-    ];
-
-    return preg_replace_callback('/\b\p{L}+\b/u', function ($m) use ($map) {
-        $word = $m[0];
-        $lower = mb_strtolower($word, 'UTF-8');
-        if (!isset($map[$lower])) {
-            return $word;
-        }
-        $new = $map[$lower];
-        if (mb_strtoupper($word, 'UTF-8') === $word && mb_strlen($word) > 1) {
-            return mb_strtoupper($new, 'UTF-8');
-        }
-
-        return mb_substr($word, 0, 1) !== mb_strtolower(mb_substr($word, 0, 1)) ? mb_strtoupper(mb_substr($new, 0, 1)) . mb_substr($new, 1) : $new;
-    }, $text) ?? $text;
 }
 
 protected function regenerateBikolFromContext(
@@ -2862,17 +2604,6 @@ protected function buildBikolAnswerFromContext(
         if ($parts !== []) {
             $selectedParts = array_values($parts);
             $contributingSources = [$currentSource];
-        }
-    }
-
-    // General "paono ..." question about a topic the file clearly is about
-    // (title / other name matched): give the main points of that file.
-    if ($selectedParts === [] && $intent === 'general' && $confidentCurrentTopic) {
-        $parts = $this->extractBikolSections($currentContent, 'general', null, $question);
-        if ($parts !== []) {
-            $selectedParts = array_values($parts);
-            $contributingSources = [$currentSource];
-            $usedHeadingKeywordFallback = true;
         }
     }
 
@@ -3150,14 +2881,14 @@ protected function buildBikolResponseTitle(string $question): ?string
         return null;
     }
 
-    if (preg_match('/\b(?:uno|ono)(?:\s+man)?\s+(ana|a)\s+(.+?)(?:\?|$)/iu', $q, $m)) {
+    if (preg_match('/\buno(?:\s+man)?\s+(ana|a)\s+(.+?)(?:\?|$)/iu', $q, $m)) {
+        $connector = mb_strtolower($m[1]);
         $topic = trim($m[2], " \t\n\r\0\x0B?.!");
 
         if ($topic !== '' && mb_strlen($topic) >= 2) {
             $topicTitle = $this->titleCaseBikolTitleWords($topic);
             if ($topicTitle !== '') {
-                // Team spelling: always "Ono ana" (not "Uno a")
-                return 'Ono ana ' . $topicTitle . '?';
+                return 'Uno ' . $connector . ' ' . $topicTitle . '?';
             }
         }
     }
@@ -3194,17 +2925,17 @@ protected function titleCaseBikolTitleWords(string $text): string
  */
 protected function isBikolDefinitionHeading(string $lower): bool
 {
-    if (!preg_match('/^(?:uno|ono)(?:\s+man)?\s+(?:ana|a)\s+.+/u', $lower)) {
+    if (!preg_match('/^uno(?:\s+man)?\s+(?:ana|a)\s+.+/u', $lower)) {
         return false;
     }
 
     // "Uno a mga dahilan?" etc. are cause/list headings, not definitions.
-    if (preg_match('/^(?:uno|ono)(?:\s+man)?\s+(?:ana|a)\s+mga\b/u', $lower)) {
+    if (preg_match('/^uno(?:\s+man)?\s+(?:ana|a)\s+mga\b/u', $lower)) {
         return false;
     }
 
     // "Uno a dapat/gibuhon …" are action/process lines, not "what is X".
-    if (preg_match('/^(?:uno|ono)(?:\s+man)?\s+(?:ana|a)\s+(dapat|gibuhon|gigibuhon)\b/u', $lower)) {
+    if (preg_match('/^uno(?:\s+man)?\s+(?:ana|a)\s+(dapat|gibuhon|gigibuhon)\b/u', $lower)) {
         return false;
     }
 
@@ -3504,51 +3235,7 @@ protected function selectBikolBenefitsFallback(string $content): array
     return $collected;
 }
 
-/**
- * Bikol question type: keyword warning rules first (urgent questions must never
- * be missed), then the trained model (ml/bikol-intent) when it is confident
- * enough, otherwise the keyword rules below.
- */
-/**
- * FOD comparison switch (chat page buttons):
- *  - "context": answer from the linguist-verified datasets using the written rules only.
- *  - "ai": the locally trained Bikol-Iriga AI model (BikolIntentClassifier) reads the
- *    question first; the rules are only used when the model is not sure. Works offline.
- *  - "cloud": same as "ai", then cloud Gemma explains the verified answer in Bikol-Iriga.
- *    Fully online: when the cloud is not reachable the user is told so (no offline fallback).
- */
-protected string $answerMode = 'ai';
-
-public function setAnswerMode(string $mode): void
-{
-    $this->answerMode = in_array($mode, ['context', 'ai', 'cloud'], true) ? $mode : 'ai';
-}
-
-public function answerMode(): string
-{
-    return $this->answerMode;
-}
-
 protected function detectBikolIntent(string $question): string
-{
-    if ($this->isBikolWarningQuestion(mb_strtolower(trim($question)))) {
-        return 'warning';
-    }
-
-    if ($this->answerMode !== 'context' && config('services.bikol_intent.enabled', true)) {
-        $prediction = BikolIntentClassifier::fromConfig()->predict($question);
-        if (
-            $prediction !== null
-            && $prediction['confidence'] >= (float) config('services.bikol_intent.min_confidence', 0.5)
-        ) {
-            return $prediction['intent'];
-        }
-    }
-
-    return $this->detectBikolIntentByRules($question);
-}
-
-protected function detectBikolIntentByRules(string $question): string
 {
     $q = mb_strtolower(trim($question));
 
@@ -3561,7 +3248,6 @@ protected function detectBikolIntentByRules(string $question): string
     // Symptoms / signs / characteristics
     if (
         str_contains($q, 'sintomas') ||
-        str_contains($q, 'sinyales') ||
         str_contains($q, 'palatandaan') ||
         str_contains($q, 'senyales') ||
         str_contains($q, 'sinyalis') ||
@@ -3668,7 +3354,7 @@ protected function detectBikolIntentByRules(string $question): string
     }
 
     // "Uno ana X?" = definition (only when no more-specific marker matched)
-    if (preg_match('/\b(?:uno|ono)\b/u', $q)) {
+    if (preg_match('/\buno\b/u', $q)) {
         return 'definition';
     }
 
@@ -3720,7 +3406,7 @@ protected function isBikolWarningQuestion(string $q): bool
     if (
         (
             str_contains($q, 'alangkaw')
-            && (str_contains($q, 'kalintura') || str_contains($q, 'kalintora'))
+            && str_contains($q, 'kalintura')
         )
         || (
             str_contains($q, 'malala')
@@ -4488,7 +4174,7 @@ protected function isBikolWarningHeading(string $line, string $lower): bool
         || $this->bikolTextHasPositiveTestCondition($lower)
         || (
             str_contains($lower, 'alangkaw')
-            && (str_contains($lower, 'kalintura') || str_contains($lower, 'kalintora'))
+            && str_contains($lower, 'kalintura')
         )
         || preg_match('/nahihirapan\s+(?:mag[\s\-]*inga|pag[\s\-]*inga)/u', $lower) === 1
         || (
@@ -4537,7 +4223,7 @@ protected function isBikolAmbiguousFaqQuestion(string $question, string $intent)
 {
     $q = mb_strtolower(trim($question));
 
-    if (!preg_match('/\b(?:uno|ono)\b/u', $q)) {
+    if (!preg_match('/\buno\b/u', $q)) {
         return false;
     }
 
@@ -4712,7 +4398,7 @@ protected function isBikolPlainUnoTopicQuestion(string $q): bool
 {
     $q = mb_strtolower(trim($q));
 
-    if (!preg_match('/^\s*(?:uno|ono)(?:\s+man)?\s+(?:ana|a)\s+(.+?)\s*\??\s*$/u', $q, $m)) {
+    if (!preg_match('/^\s*uno(?:\s+man)?\s+(?:ana|a)\s+(.+?)\s*\??\s*$/u', $q, $m)) {
         return false;
     }
 
@@ -5039,7 +4725,6 @@ protected function isBikolSymptomsHeading(string $lower): bool
         || str_contains($lower, 'katangian')
         || str_contains($lower, 'palatandaan')
         || str_contains($lower, 'sintomas')
-        || str_contains($lower, 'sinyales')
         || str_contains($lower, 'pag-uugali')
         || str_contains($lower, 'pag uugali');
 }
@@ -5051,7 +4736,6 @@ protected function isBikolCausesHeading(string $lower): bool
 {
     return str_contains($lower, 'dahilan')
         || str_contains($lower, 'rason')
-        || preg_match('/\b(?:kwasa|sanhi)\b/u', $lower) === 1
         || $this->isBikolCauseRiskRaiseHeading($lower);
 }
 
@@ -5071,7 +4755,7 @@ protected function isBikolDiseaseOnsetCausesQuestion(string $question): bool
  */
 protected function isBikolCauseRiskRaiseHeading(string $lower): bool
 {
-    return preg_match('/nagpapalangkaw\s+(?:sa|kana)\s+(?:panganib|peligro)/u', $lower) === 1;
+    return preg_match('/nagpapalangkaw\s+(?:sa|kana)\s+panganib/u', $lower) === 1;
 }
 
 /**
@@ -5082,8 +4766,7 @@ protected function isBikolManagementHeading(string $lower): bool
     return $this->isBikolPreventionHeading($lower)
         || $this->isBikolTreatmentHeading($lower)
         || str_contains($lower, 'pag-likay pala pamamahala')
-        || str_contains($lower, 'uno mga dapat gibuhon')
-        || str_contains($lower, 'ono mga dapat gibuhon');
+        || str_contains($lower, 'uno mga dapat gibuhon');
 }
 
 /**
@@ -5098,11 +4781,7 @@ protected function isBikolPreventionHeading(string $lower): bool
         || str_contains($compact, 'pagiwas')
         || str_contains($lower, 'makaiwas')
         || str_contains($lower, 'malikayan')
-        || str_contains($lower, 'pagsugpo')
-        || str_contains($lower, 'mapupugulan')
-        || str_contains($lower, 'maiiwasan')
-        // "PAONO MAPAPABABA / MABABAWASAN ANA PELIGRO ..." (how to lower the risk)
-        || preg_match('/\b(?:mapapababa|mababawasan|mapababa)\s+(?:ana\s+|a\s+|ang\s+)?(?:peligro|panganib)/u', $lower) === 1;
+        || str_contains($lower, 'pagsugpo');
 }
 
 /**
@@ -5119,9 +4798,7 @@ protected function isBikolTreatmentHeading(string $lower): bool
         || str_contains($lower, 'kalinigan')
         || str_contains($lower, 'suporta')
         || str_contains($lower, 'interbensyon')
-        || str_contains($lower, 'intervention')
-        || str_contains($lower, 'pamamahala')
-        || str_contains($lower, 'binubulong');
+        || str_contains($lower, 'intervention');
 }
 
 /**
@@ -5408,14 +5085,9 @@ protected function isBikolSemanticIntentCueToken(string $token): bool
         'pambulung',
         'senyales',
         'sintomas',
-        'sinyales',
         'palatandaan',
         'dahilan',
         'rason',
-        'kwasa',
-        'peligro',
-        // people words, not topic names ("paono magpasoso sa igin?")
-        'igin',
         'epekto',
         'panganib',
         'benepisyo',
@@ -5540,66 +5212,7 @@ protected function extractBikolTopicTitleTokens(string $content = '', string $so
         break;
     }
 
-    return array_values(array_unique(array_merge($tokens, $this->bikolTopicAliasTokens($sourceFile))));
-}
-
-/** @var array<string, list<string>> */
-protected array $bikolTopicAliasCache = [];
-
-/**
- * Other names of the topic in $sourceFile: the title of the same topic in the
- * English and Tagalog files ("DIARRHEA", "PAGTATAE") plus config/bikol_topic_aliases.php
- * ("hypotension"). Lets "ono ana hypotension?" use the Bikol file whose headings
- * only say "ABABANG PRESYON KANA ROGO".
- *
- * @return list<string>
- */
-protected function bikolTopicAliasTokens(string $sourceFile): array
-{
-    $file = basename(trim($sourceFile));
-    if ($file === '') {
-        return [];
-    }
-    if (isset($this->bikolTopicAliasCache[$file])) {
-        return $this->bikolTopicAliasCache[$file];
-    }
-
-    $titles = [];
-    foreach (['en', 'tl'] as $lang) {
-        $path = glob($this->healthDocsPath($lang) . DIRECTORY_SEPARATOR . '*' . DIRECTORY_SEPARATOR . $file)[0] ?? null;
-        if ($path === null) {
-            continue;
-        }
-        $lines = array_values(array_filter(
-            array_map('trim', preg_split('/\R/u', $this->stripUtf8Bom((string) file_get_contents($path))) ?: []),
-            fn ($l) => $l !== ''
-        ));
-        foreach (array_slice($lines, 0, 4) as $i => $line) {
-            if (preg_match('/^(?:main\s+subject|pangunahi?n?g?\s+paksa)\s*:\s*(.+)$/iu', $line, $m) === 1) {
-                $titles[] = $m[1];
-            } elseif (preg_match('/^(?:what\s+(?:is|are)|ano\s+(?:ba\s+)?ang)\s+(?:a\s+|an\s+|the\s+|mga\s+)?(.+?)\s*\?$/iu', $line, $m) === 1) {
-                $titles[] = $m[1];
-            } elseif ($i === 0 && count(preg_split('/\s+/u', $line) ?: []) <= 3 && !str_contains($line, '.')) {
-                $titles[] = $line; // a short plain title such as "Hypertension"
-            }
-        }
-    }
-
-    $slug = pathinfo($file, PATHINFO_FILENAME);
-    $titles = array_merge($titles, (array) config('bikol_topic_aliases.' . $slug, []));
-
-    $tokens = [];
-    foreach ($titles as $title) {
-        foreach ($this->extractBikolHeadingMatchTokens((string) $title) as $token) {
-            $tokens[] = $token;
-        }
-    }
-    // compact forms too, so "nag-uudo-udo" also matches "naguudoudo"
-    foreach ((array) config('bikol_topic_aliases.' . $slug, []) as $alias) {
-        $tokens[] = mb_strtolower(preg_replace('/[\s\-]+/u', '', (string) $alias) ?? '', 'UTF-8');
-    }
-
-    return $this->bikolTopicAliasCache[$file] = array_values(array_unique(array_filter($tokens)));
+    return array_values(array_unique($tokens));
 }
 
 /**
@@ -5798,7 +5411,7 @@ protected function normalizeBikolArticleHeadingKey(string $key): string
         return '';
     }
 
-    $key = preg_replace('/\b(?:uno|ono)(?:\s+man)?\s+(?:ana|a)\b/u', 'uno a', $key) ?? $key;
+    $key = preg_replace('/\buno(?:\s+man)?\s+ana\b/u', 'uno a', $key) ?? $key;
 
     return trim($key);
 }
@@ -5963,7 +5576,7 @@ protected function isBikolExactHeadingPeerStop(string $line, string $lower): boo
     }
 
     return preg_match(
-        '/^(?:mga\b|pag[\s\-]|uno\b|ono\b|ngata\b|normal\s+ba\b|tandaan\b)/u',
+        '/^(?:mga\b|pag[\s\-]|uno\b|ngata\b|normal\s+ba\b|tandaan\b)/u',
         $lower
     ) === 1;
 }
@@ -6070,7 +5683,7 @@ protected function resolveBikolDocumentByStrongHeading(string $question): ?array
         return null;
     }
 
-    $root = $this->healthDocsPath('bcl');
+    $root = resource_path('health_docs/bcl');
     if (!File::isDirectory($root)) {
         return null;
     }
@@ -6105,7 +5718,7 @@ protected function resolveBikolDocumentByStrongHeading(string $question): ?array
 protected function resolveBikolSourceFileContent(string $sourceFile): string
 {
     $sourceFile = trim($sourceFile);
-    $root = $this->healthDocsPath('bcl');
+    $root = resource_path('health_docs/bcl');
     if ($sourceFile === '' || !File::isDirectory($root)) {
         return '';
     }
@@ -6983,8 +6596,8 @@ protected function isTagalogSupportIntentCueToken(string $token): bool
 
     return in_array($token, [
         'gamot', 'gamit', 'gamutin', 'ginagamot', 'paggamot', 'pagamot', 'gamutan', 'lunas', 'treatment',
-        'sintomas', 'senyales', 'sinyales', 'palatandaan',
-        'iwas', 'iwasan', 'maiwasan', 'maiiwasan', 'pagiwas', 'likayan',
+        'sintomas', 'senyales', 'palatandaan',
+        'iwas', 'iwasan', 'maiwasan', 'maiiwasan', 'pagiwas',
         'sanhi', 'dahilan', 'dahil', 'benepisyo', 'benipisyo',
         'kapag', 'dapat', 'gawin', 'gawa', 'gagawin',
         'paano', 'bakit', 'ano', 'tungkol', 'para', 'may',

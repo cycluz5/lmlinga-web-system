@@ -1,0 +1,820 @@
+LMLinga Health Chatbot — Acceptable Questions BY REAL INTENT
+=============================================================================
+NOT part of the indexed corpus. Reference/testing document only.
+
+HOW THIS DIFFERS FROM THE PREVIOUS LIST
+------------------------------------------
+The earlier "scenarios" file varied wording but kept asking the same
+DEFINITION intent every time ("What is X?" / "Ano ang X?" / "Uno an X?").
+This file instead uses the pipeline's own intent classifiers, so each
+variant is a genuinely different question type that gets routed to a
+different section of the source document.
+
+Source (read directly from code, not guessed):
+- English intents: detectEnglishSupportIntent() — RagService.php:6169
+- Tagalog intents: detectTagalogSupportIntent() — RagService.php:6577
+- Bikol intents:   detectBikolIntent()          — RagService.php:3209
+
+IMPORTANT PIPELINE DIFFERENCE FOUND WHILE STUDYING THE CODE
+----------------------------------------------------------------
+Bikol-Iriga does NOT have a separate "prevention" intent bucket the way
+English and Tagalog do. In detectBikolIntent(), both prevention-style words
+(maiwasan, likay, pag-iwas) and treatment/care-style words (gibuhon, gamot,
+ataman) resolve to the SAME intent: "management". English and Tagalog keep
+"prevention" and "treatment" as two separate intents. This means a Bikol
+prevention question and a Bikol treatment question for the same illness are
+expected to surface the SAME section of the document — that is correct,
+intended pipeline behavior, not a bug, but it is worth knowing when testing.
+
+Bikol also has two intents English/Tagalog do not have:
+- "warning" — urgent/unsafe-symptom questions (e.g. mentions "ospital",
+  "magpakonsulta", "positive" test result, convulsions). See
+  isBikolWarningQuestion() — RagService.php:3339.
+- "schedule" — age/month/year eligibility questions (e.g. "bakuna sa 9 na
+  bulan"). See isBikolScheduleQuestion() — RagService.php:3409.
+
+Whether an intent question actually returns a good answer ALSO depends on
+whether the target document has a real section for that intent (a
+"Symptoms" or "Causes" heading, etc.) — not just whether the intent is
+recognized. A recognized intent with no matching section in the document
+will still fall back to the definition/general text.
+
+
+#############################################################################
+# ENGLISH
+#############################################################################
+Legend: [Definition] [Symptoms] [Causes] [Prevention] [Treatment] [Benefits]
+
+--- Child Care ---
+
+Autism
+ [Definition] What is autism?
+ [Symptoms]   What are the symptoms of autism?
+ [Causes]     What causes autism?
+
+Immunization / Baby Vaccines
+ [Definition] What is immunization for babies?
+ [Benefits]   What are the benefits of immunizing my baby?
+ [Prevention] How does immunization prevent disease?
+
+Newborn Hearing Screening
+ [Definition] What is a newborn hearing screening?
+ [Benefits]   What are the benefits of newborn hearing screening?
+
+Breastfeeding / Nursing
+ [Definition] What is breastfeeding?
+ [Benefits]   What are the benefits of breastfeeding?
+
+Baby Nutrition (First 1,000 Days)
+ [Definition] What is proper nutrition during a baby's first 1,000 days?
+ [Benefits]   What are the benefits of good nutrition in the first 1,000 days?
+
+Puberty for Teen Boys
+ [Definition] What is puberty for teen boys?
+ [Symptoms]   What changes/signs happen to a teen boy's body during puberty?
+
+Malnutrition
+ [Definition] What is malnutrition?
+ [Symptoms]   What are the symptoms of malnutrition?
+ [Causes]     What causes malnutrition?
+ [Prevention] How can malnutrition be prevented?
+
+National Deworming Month
+ [Definition] What is National Deworming Month?
+ [Benefits]   What are the benefits of deworming?
+
+Pneumonia in Children
+ [Definition] What is pneumonia in children?
+ [Symptoms]   What are the symptoms of pneumonia in children?
+ [Causes]     What causes pneumonia in children?
+ [Prevention] How can pneumonia in children be prevented?
+
+Newborn Screening (NBS)
+ [Definition] What is newborn screening?
+ [Benefits]   What are the benefits of newborn screening?
+
+Micronutrient Deficiency
+ [Definition] What is micronutrient deficiency?
+ [Symptoms]   What are the symptoms of micronutrient deficiency?
+ [Causes]     What causes micronutrient deficiency?
+
+--- Family Planning ---
+
+Birth Control Pills
+ [Definition] What are birth control pills?
+ [Benefits]   What are the benefits of taking birth control pills?
+
+Modern Family Planning Methods
+ [Definition] What are the modern family planning methods?
+ [Benefits]   What are the benefits of modern family planning methods?
+
+Family Planning Facts
+ [Definition] What is family planning?
+ [Benefits]   What are the benefits of family planning?
+
+--- Maternal Care ---
+
+Menopause
+ [Definition] What is menopause?
+ [Symptoms]   What are the symptoms of menopause?
+
+Preterm Birth
+ [Definition] What is preterm birth?
+ [Causes]     What causes preterm birth?
+ [Prevention] How can preterm birth be prevented?
+
+Tetanus
+ [Definition] What is tetanus?
+ [Symptoms]   What are the symptoms of tetanus?
+ [Causes]     What causes tetanus?
+ [Prevention] How can tetanus be prevented?
+
+--- Other / General Health ---
+
+Oral Health During Pregnancy
+ [Definition] What is oral health care during pregnancy?
+ [Prevention] How can dental problems during pregnancy be prevented?
+
+Hypertension
+ [Definition] What is hypertension?
+ [Symptoms]   What are the symptoms of hypertension?
+ [Causes]     What causes hypertension?
+ [Prevention] How can hypertension be prevented?
+ [Treatment]  What is the treatment for hypertension?
+
+Asthma
+ [Definition] What is asthma?
+ [Symptoms]   What are the symptoms of asthma?
+ [Causes]     What causes asthma?
+ [Treatment]  What is the treatment for asthma?
+
+Gout
+ [Definition] What is gout?
+ [Symptoms]   What are the symptoms of gout?
+ [Causes]     What causes gout?
+ [Prevention] How can gout be prevented?
+
+Kidney Cancer
+ [Definition] What is kidney cancer?
+ [Symptoms]   What are the symptoms of kidney cancer?
+ [Causes]     What causes kidney cancer?
+
+Liver Cancer
+ [Definition] What is liver cancer?
+ [Symptoms]   What are the symptoms of liver cancer?
+ [Causes]     What causes liver cancer?
+
+Blood Donation Program
+ [Definition] What is the blood donation program?
+ [Benefits]   What are the benefits of donating blood?
+
+Breast Cancer
+ [Definition] What is breast cancer?
+ [Symptoms]   What are the symptoms of breast cancer?
+ [Causes]     What causes breast cancer?
+ [Prevention] How can breast cancer be prevented?
+
+Cholera
+ [Definition] What is cholera?
+ [Symptoms]   What are the symptoms of cholera?
+ [Causes]     What causes cholera?
+ [Prevention] How can cholera be prevented?
+
+Chronic Kidney Disease (CKD)
+ [Definition] What is chronic kidney disease?
+ [Symptoms]   What are the symptoms of chronic kidney disease?
+ [Causes]     What causes chronic kidney disease?
+ [Prevention] How can chronic kidney disease be prevented?
+
+Handwashing
+ [Definition] What is proper handwashing?
+ [Benefits]   What are the benefits of handwashing?
+ [Prevention] How does handwashing prevent illness?
+
+Deafness
+ [Definition] What is deafness?
+ [Causes]     What causes deafness?
+
+Dementia
+ [Definition] What is dementia?
+ [Symptoms]   What are the symptoms of dementia?
+ [Causes]     What causes dementia?
+
+Diabetes
+ [Definition] What is diabetes?
+ [Symptoms]   What are the symptoms of diabetes?
+ [Prevention] How can diabetes be prevented?
+ [Treatment]  What is the treatment for diabetes?
+
+Gender Identity
+ [Definition] What is gender identity?
+
+Proper Coughing (Tuberculosis Prevention)
+ [Definition] What is the proper way to cough?
+ [Prevention] How does proper coughing prevent tuberculosis?
+
+Heart Attack
+ [Definition] What is a heart attack?
+ [Symptoms]   What are the symptoms of a heart attack?
+ [Causes]     What causes a heart attack?
+ [Prevention] How can a heart attack be prevented?
+
+Hepatitis
+ [Definition] What is hepatitis?
+ [Symptoms]   What are the symptoms of hepatitis?
+ [Causes]     What causes hepatitis?
+ [Prevention] How can hepatitis be prevented?
+
+HIV and AIDS
+ [Definition] What is HIV and AIDS?
+ [Symptoms]   What are the symptoms of HIV?
+ [Causes]     What causes HIV infection?
+ [Prevention] How can HIV be prevented?
+
+Dengue
+ [Definition] What is dengue?
+ [Symptoms]   What are the symptoms of dengue?
+ [Causes]     What causes dengue?
+ [Prevention] How can dengue be prevented?
+
+Influenza
+ [Definition] What is influenza?
+ [Symptoms]   What are the symptoms of influenza?
+ [Prevention] How can influenza be prevented?
+
+Low Back Pain
+ [Definition] What is low back pain?
+ [Causes]     What causes low back pain?
+ [Prevention] How can low back pain be prevented?
+
+Lung Cancer
+ [Definition] What is lung cancer?
+ [Symptoms]   What are the symptoms of lung cancer?
+ [Causes]     What causes lung cancer?
+
+Malaria
+ [Definition] What is malaria?
+ [Symptoms]   What are the symptoms of malaria?
+ [Causes]     What causes malaria?
+ [Prevention] How can malaria be prevented?
+
+Pinggang Pinoy
+ [Definition] What is Pinggang Pinoy?
+ [Benefits]   What are the benefits of following Pinggang Pinoy?
+
+Flu Prevention (Rainy Season)
+ [Definition] What illnesses are common during rainy season?
+ [Prevention] How can influenza be prevented during rainy season?
+
+Rabies
+ [Definition] What is rabies?
+ [Symptoms]   What are the symptoms of rabies?
+ [Causes]     What causes rabies?
+ [Prevention] How can rabies be prevented?
+
+Seven Healthy Habits
+ [Definition] What are the seven healthy habits for a healthier life?
+ [Benefits]   What are the benefits of these healthy habits?
+
+The 10 Kumainments
+ [Definition] What are the 10 Kumainments?
+ [Benefits]   What are the benefits of following the 10 Kumainments?
+
+Epilepsy
+ [Definition] What is epilepsy?
+ [Symptoms]   What are the symptoms of epilepsy?
+ [Causes]     What causes epilepsy?
+ [Treatment]  What is the treatment for epilepsy?
+
+Stroke
+ [Definition] What is stroke?
+ [Symptoms]   What are the symptoms of stroke?
+ [Causes]     What causes stroke?
+ [Prevention] How can stroke be prevented?
+
+Smoking Effects
+ [Definition] What does smoking do to your body?
+ [Causes]     Why is smoking harmful?
+ [Prevention] How can I quit / avoid smoking?
+
+
+#############################################################################
+# TAGALOG
+#############################################################################
+Legend: [Depinisyon] [Sintomas] [Sanhi] [Pag-iwas] [Gamot] [Benepisyo] [Dapat Gawin]
+
+--- Pangangalaga sa Bata ---
+
+Autism
+ [Depinisyon] Ano ang autism?
+ [Sintomas]   Ano ang mga sintomas ng autism?
+
+Bakuna para sa Sanggol (Immunization)
+ [Depinisyon] Ano ang immunization para sa sanggol?
+ [Benepisyo]  Ano ang benepisyo ng pagbabakuna sa sanggol?
+
+Newborn Hearing Screening
+ [Depinisyon] Ano ang newborn hearing screening?
+ [Benepisyo]  Ano ang benepisyo ng hearing screening sa sanggol?
+
+Pagpapasuso (Breastfeeding)
+ [Depinisyon] Ano ang breastfeeding o pagpapasuso?
+ [Benepisyo]  Ano ang benepisyo ng pagpapasuso?
+
+Nutrisyon sa Unang 1,000 Araw
+ [Depinisyon] Ano ang tamang nutrisyon sa unang 1,000 araw ng sanggol?
+ [Benepisyo]  Ano ang benepisyo ng magandang nutrisyon sa unang 1,000 araw?
+
+Puberty para sa Teen Boys
+ [Depinisyon] Ano ang puberty para sa batang lalaki?
+ [Sintomas]   Anong mga pagbabago ang senyales ng puberty sa lalaki?
+
+Malnutrisyon
+ [Depinisyon] Ano ang malnutrisyon?
+ [Sintomas]   Ano ang mga sintomas ng malnutrisyon?
+ [Sanhi]      Ano ang sanhi ng malnutrisyon?
+ [Pag-iwas]   Paano maiiwasan ang malnutrisyon?
+
+National Deworming Month
+ [Depinisyon] Ano ang National Deworming Month?
+ [Benepisyo]  Ano ang benepisyo ng deworming?
+
+Pneumonia sa mga Bata
+ [Depinisyon] Ano ang pneumonia sa mga bata?
+ [Sintomas]   Ano ang mga sintomas ng pneumonia sa bata?
+ [Sanhi]      Ano ang sanhi ng pneumonia sa bata?
+ [Pag-iwas]   Paano maiiwasan ang pneumonia sa bata?
+
+Newborn Screening (NBS)
+ [Depinisyon] Ano ang newborn screening?
+ [Benepisyo]  Ano ang benepisyo ng newborn screening?
+
+Micronutrient Deficiency
+ [Depinisyon] Ano ang micronutrient deficiency?
+ [Sintomas]   Ano ang mga sintomas ng micronutrient deficiency?
+
+--- Family Planning ---
+
+Pills bilang Family Planning
+ [Depinisyon] Ano ang birth control pills?
+ [Benepisyo]  Ano ang benepisyo ng pills bilang family planning?
+
+Mga Modernong Paraan ng Family Planning
+ [Depinisyon] Ano ang mga modernong paraan ng family planning?
+ [Benepisyo]  Ano ang benepisyo ng modernong family planning?
+
+Mga Katotohanan Tungkol sa Family Planning
+ [Depinisyon] Ano ang family planning?
+ [Benepisyo]  Ano ang benepisyo ng family planning?
+
+--- Maternal Care ---
+
+Menopause
+ [Depinisyon] Ano ang menopause?
+ [Sintomas]   Ano ang mga sintomas ng menopause?
+
+Preterm Birth
+ [Depinisyon] Ano ang preterm o napaagang panganganak?
+ [Sanhi]      Ano ang sanhi ng preterm birth?
+ [Pag-iwas]   Paano maiiwasan ang preterm birth?
+
+Tetanus
+ [Depinisyon] Ano ang tetanus?
+ [Sintomas]   Ano ang mga sintomas ng tetanus?
+ [Sanhi]      Ano ang sanhi ng tetanus?
+ [Pag-iwas]   Paano maiiwasan ang tetanus?
+
+--- Iba Pang Kalusugan ---
+
+Kalusugan ng Bibig Habang Buntis
+ [Depinisyon] Ano ang tamang pag-aalaga ng bibig habang buntis?
+ [Pag-iwas]   Paano maiiwasan ang problema sa ngipin habang buntis?
+
+Hypertension
+ [Depinisyon] Ano ang hypertension?
+ [Sintomas]   Ano ang mga sintomas ng hypertension?
+ [Sanhi]      Ano ang sanhi ng hypertension?
+ [Pag-iwas]   Paano maiiwasan ang hypertension?
+ [Gamot]      Ano ang gamot sa hypertension?
+
+Hika (Asthma)
+ [Depinisyon] Ano ang hika?
+ [Sintomas]   Ano ang mga sintomas ng hika?
+ [Sanhi]      Ano ang sanhi ng hika?
+ [Gamot]      Ano ang gamot sa hika?
+
+Gout
+ [Depinisyon] Ano ang gout?
+ [Sintomas]   Ano ang mga sintomas ng gout?
+ [Sanhi]      Ano ang sanhi ng gout?
+ [Pag-iwas]   Paano maiiwasan ang gout?
+
+Kanser sa Bato
+ [Depinisyon] Ano ang kanser sa bato?
+ [Sintomas]   Ano ang mga sintomas ng kanser sa bato?
+ [Sanhi]      Ano ang sanhi ng kanser sa bato?
+
+Kanser sa Atay
+ [Depinisyon] Ano ang kanser sa atay?
+ [Sintomas]   Ano ang mga sintomas ng kanser sa atay?
+ [Sanhi]      Ano ang sanhi ng kanser sa atay?
+
+Blood Donation Program
+ [Depinisyon] Ano ang blood donation program?
+ [Benepisyo]  Ano ang benepisyo ng pagbibigay ng dugo?
+
+Kanser sa Suso (Breast Cancer)
+ [Depinisyon] Ano ang kanser sa suso?
+ [Sintomas]   Ano ang mga sintomas ng kanser sa suso?
+ [Sanhi]      Ano ang sanhi ng kanser sa suso?
+ [Pag-iwas]   Paano maiiwasan ang kanser sa suso?
+
+Cholera
+ [Depinisyon] Ano ang cholera?
+ [Sintomas]   Ano ang mga sintomas ng cholera?
+ [Sanhi]      Ano ang sanhi ng cholera?
+ [Pag-iwas]   Paano maiiwasan ang cholera?
+
+Malalang Sakit sa Bato (CKD)
+ [Depinisyon] Ano ang malalang sakit sa bato?
+ [Sintomas]   Ano ang mga sintomas ng CKD?
+ [Sanhi]      Ano ang sanhi ng CKD?
+ [Pag-iwas]   Paano maiiwasan ang CKD?
+
+Paghuhugas ng Kamay
+ [Depinisyon] Ano ang tamang paghuhugas ng kamay?
+ [Benepisyo]  Ano ang benepisyo ng paghuhugas ng kamay?
+ [Pag-iwas]   Paano naiiwasan ng paghuhugas ng kamay ang sakit?
+
+Pagkabingi (Deafness)
+ [Depinisyon] Ano ang pagkabingi?
+ [Sanhi]      Ano ang sanhi ng pagkabingi?
+
+Dementia
+ [Depinisyon] Ano ang dementia?
+ [Sintomas]   Ano ang mga sintomas ng dementia?
+ [Sanhi]      Ano ang sanhi ng dementia?
+
+Diyabetis
+ [Depinisyon] Ano ang diyabetis?
+ [Sintomas]   Ano ang mga sintomas ng diyabetis?
+ [Pag-iwas]   Paano maiiwasan ang diyabetis?
+ [Gamot]      Ano ang gamot sa diyabetis?
+
+Gender Identity
+ [Depinisyon] Ano ang gender identity?
+
+Tamang Pag-ubo (Pag-iwas sa Tuberculosis)
+ [Depinisyon] Ano ang tamang pag-ubo?
+ [Pag-iwas]   Paano naiiwasan ng tamang pag-ubo ang tuberculosis?
+
+Atake sa Puso (Heart Attack)
+ [Depinisyon] Ano ang atake sa puso?
+ [Sintomas]   Ano ang mga sintomas ng atake sa puso?
+ [Sanhi]      Ano ang sanhi ng atake sa puso?
+ [Pag-iwas]   Paano maiiwasan ang atake sa puso?
+
+Hepatitis
+ [Depinisyon] Ano ang hepatitis?
+ [Sintomas]   Ano ang mga sintomas ng hepatitis?
+ [Sanhi]      Ano ang sanhi ng hepatitis?
+ [Pag-iwas]   Paano maiiwasan ang hepatitis?
+
+HIV at AIDS
+ [Depinisyon] Ano ang HIV at AIDS?
+ [Sintomas]   Ano ang mga sintomas ng HIV?
+ [Sanhi]      Ano ang sanhi ng HIV infection?
+ [Pag-iwas]   Paano maiiwasan ang HIV?
+
+Dengue
+ [Depinisyon] Ano ang dengue?
+ [Sintomas]   Ano ang mga sintomas ng dengue?
+ [Sanhi]      Ano ang sanhi ng dengue?
+ [Pag-iwas]   Paano maiiwasan ang dengue?
+
+Influenza (Trangkaso)
+ [Depinisyon] Ano ang trangkaso?
+ [Sintomas]   Ano ang mga sintomas ng trangkaso?
+ [Pag-iwas]   Paano maiiwasan ang trangkaso?
+
+Pananakit ng Ibabang Likod (Low Back Pain)
+ [Depinisyon] Ano ang pananakit ng ibabang bahagi ng likod?
+ [Sanhi]      Ano ang sanhi ng pananakit ng likod?
+ [Pag-iwas]   Paano maiiwasan ang pananakit ng likod?
+
+Kanser sa Baga (Lung Cancer)
+ [Depinisyon] Ano ang kanser sa baga?
+ [Sintomas]   Ano ang mga sintomas ng kanser sa baga?
+ [Sanhi]      Ano ang sanhi ng kanser sa baga?
+
+Malaria
+ [Depinisyon] Ano ang malaria?
+ [Sintomas]   Ano ang mga sintomas ng malaria?
+ [Sanhi]      Ano ang sanhi ng malaria?
+ [Pag-iwas]   Paano maiiwasan ang malaria?
+
+Pinggang Pinoy
+ [Depinisyon] Ano ang Pinggang Pinoy?
+ [Benepisyo]  Ano ang benepisyo ng Pinggang Pinoy?
+
+Pag-iwas sa Trangkaso sa Tag-ulan
+ [Depinisyon] Anong sakit ang laganap tuwing tag-ulan?
+ [Pag-iwas]   Paano maiiwasan ang trangkaso sa tag-ulan?
+
+Rabies
+ [Depinisyon] Ano ang rabies?
+ [Sintomas]   Ano ang mga sintomas ng rabies?
+ [Sanhi]      Ano ang sanhi ng rabies?
+ [Pag-iwas]   Paano maiiwasan ang rabies?
+
+Pitong Malusog na Gawi
+ [Depinisyon] Ano ang pitong malusog na gawi?
+ [Benepisyo]  Ano ang benepisyo ng malusog na gawi?
+
+10 Kumainments
+ [Depinisyon] Ano ang 10 Kumainments?
+ [Benepisyo]  Ano ang benepisyo ng pagsunod sa Kumainments?
+
+Epilepsy
+ [Depinisyon] Ano ang epilepsy?
+ [Sintomas]   Ano ang mga sintomas ng epilepsy?
+ [Sanhi]      Ano ang sanhi ng epilepsy?
+ [Gamot]      Ano ang gamot sa epilepsy?
+
+Stroke
+ [Depinisyon] Ano ang stroke?
+ [Sintomas]   Ano ang mga sintomas ng stroke?
+ [Sanhi]      Ano ang sanhi ng stroke?
+ [Pag-iwas]   Paano maiiwasan ang stroke?
+
+Epekto ng Paninigarilyo
+ [Depinisyon] Ano ang epekto ng paninigarilyo sa katawan?
+ [Sanhi]      Bakit masama ang paninigarilyo?
+
+
+#############################################################################
+# BIKOL-IRIGA
+#############################################################################
+Legend: [Definisyon] [Sintomas] [Kausa] [Management: prevention+treatment
+merged for Bikol] [Benepisyo] [Warning] [Schedule]
+
+--- Pag-ataman sa Igin ---
+
+Autism
+ [Definisyon] Uno an autism?
+ [Sintomas]   Uno an mga senyales kan autism?
+
+Bakuna Para sa Igin (Immunization)
+ [Definisyon] Uno an immunization para sa igin?
+ [Benepisyo]  Uno an benepisyo kan pagbabakuna sa igin?
+
+Newborn Hearing Screening
+ [Definisyon] Uno an newborn hearing screening?
+ [Benepisyo]  Uno an benepisyo kan hearing screening sa igin?
+
+Pagpapasuso (Breastfeeding)
+ [Definisyon] Uno an pagpapasuso?
+ [Benepisyo]  Uno an benepisyo kan pagpapasuso?
+
+Nutrisyon sa Enot na 1,000 Aldaw
+ [Definisyon] Uno an tamang nutrisyon sa enot na 1,000 aldaw kan igin?
+ [Benepisyo]  Uno an benepisyo kan marhay na nutrisyon sa enot na 1,000 aldaw?
+
+Puberty Para sa Teen Boys
+ [Definisyon] Uno an puberty para sa batang lalaki?
+ [Sintomas]   Anong pagbabago an senyales kan puberty sa lalaki?
+
+Malnutrisyon
+ [Definisyon] Uno an malnutrisyon?
+ [Sintomas]   Uno an mga senyales kan malnutrisyon?
+ [Kausa]      Uno an dahilan kan malnutrisyon?
+ [Management] Pauno malikayan an malnutrisyon?
+
+National Deworming Month
+ [Definisyon] Uno an National Deworming Month?
+ [Benepisyo]  Uno an benepisyo kan pagpurga?
+
+Pneumonia sa mga Igen
+ [Definisyon] Uno an pneumonia sa mga igen?
+ [Sintomas]   Uno an mga senyales kan pneumonia sa igen?
+ [Kausa]      Uno an dahilan kan pneumonia sa igen?
+ [Management] Pauno malikayan an pneumonia sa igen?
+
+Newborn Screening (NBS)
+ [Definisyon] Uno an newborn screening?
+ [Benepisyo]  Uno an benepisyo kan newborn screening?
+
+Micronutrient Deficiency
+ [Definisyon] Uno an micronutrient deficiency?
+ [Sintomas]   Uno an mga senyales kan micronutrient deficiency?
+
+--- Family Planning ---
+
+Pill bilang Family Planning
+ [Definisyon] Uno an pill bilang family planning?
+ [Benepisyo]  Uno an benepisyo kan pill bilang family planning?
+
+Mga Modernong Pagi kan Family Planning
+ [Definisyon] Uno an mga modernong pagi kan family planning?
+ [Benepisyo]  Uno an benepisyo kan modernong family planning?
+
+Mga Kamaturan Manungod sa Family Planning
+ [Definisyon] Uno an family planning?
+ [Benepisyo]  Uno an benepisyo kan family planning?
+
+--- Maternal Care ---
+
+Menopause
+ [Definisyon] Uno an menopause?
+ [Sintomas]   Uno an mga senyales kan menopause?
+
+Preterm Birth
+ [Definisyon] Uno an preterm o napaamay na panganganak?
+ [Kausa]      Uno an dahilan kan preterm birth?
+ [Management] Pauno malikayan an preterm birth?
+
+Tetanus
+ [Definisyon] Uno an tetanus?
+ [Sintomas]   Uno an mga senyales kan tetanus?
+ [Kausa]      Uno an dahilan kan tetanus?
+ [Management] Pauno malikayan an tetanus?
+
+--- Iba Pang Kalusugan ---
+
+Kalusugan kan Ngipon Habang Buntis
+ [Definisyon] Uno an tamang pag-ataman kan ngipon habang buntis?
+ [Management] Pauno malikayan an problema sa ngipon habang buntis?
+
+Hypertension
+ [Definisyon] Uno an hypertension?
+ [Sintomas]   Uno an mga senyales kan hypertension?
+ [Kausa]      Uno an dahilan kan hypertension?
+ [Management] Pauno aatamanon o malikayan an hypertension?
+
+Hika (Asthma)
+ [Definisyon] Uno an hika?
+ [Sintomas]   Uno an mga senyales kan hika?
+ [Kausa]      Uno an dahilan kan hika?
+ [Management] Uno an gamot sa hika?
+
+Gout
+ [Definisyon] Uno an gout?
+ [Sintomas]   Uno an mga senyales kan gout?
+ [Kausa]      Uno an dahilan kan gout?
+ [Management] Pauno malikayan an gout?
+
+Kanser sa Bato
+ [Definisyon] Uno an kanser sa bato?
+ [Sintomas]   Uno an mga senyales kan kanser sa bato?
+ [Kausa]      Uno an dahilan kan kanser sa bato?
+
+Kanser sa Atay
+ [Definisyon] Uno an kanser sa atay?
+ [Sintomas]   Uno an mga senyales kan kanser sa atay?
+ [Kausa]      Uno an dahilan kan kanser sa atay?
+
+Blood Donation Program
+ [Definisyon] Uno an blood donation program?
+ [Benepisyo]  Uno an benepisyo kan pagtao nin rugo?
+
+Kanser sa Soso (Breast Cancer)
+ [Definisyon] Uno an kanser sa soso?
+ [Sintomas]   Uno an mga senyales kan kanser sa soso?
+ [Kausa]      Uno an dahilan kan kanser sa soso?
+ [Management] Pauno malikayan an kanser sa soso?
+
+Cholera
+ [Definisyon] Uno an cholera?
+ [Sintomas]   Uno an mga senyales kan cholera?
+ [Kausa]      Uno an dahilan kan cholera?
+ [Management] Pauno malikayan an cholera?
+
+Malalang Ilang sa Bato (CKD)
+ [Definisyon] Uno an malalang ilang sa bato?
+ [Sintomas]   Uno an mga senyales kan CKD?
+ [Kausa]      Uno an dahilan kan CKD?
+ [Management] Pauno malikayan an CKD?
+
+Panunugas kan Kamot
+ [Definisyon] Uno an tamang panunugas kan kamot?
+ [Benepisyo]  Uno an benepisyo kan panunugas kan kamot?
+
+Pagkabungog (Deafness)
+ [Definisyon] Uno an pagkabungog?
+ [Kausa]      Uno an dahilan kan pagkabungog?
+
+Dementia
+ [Definisyon] Uno an dementia?
+ [Sintomas]   Uno an mga senyales kan dementia?
+ [Kausa]      Uno an dahilan kan dementia?
+
+Diyabetes
+ [Definisyon] Uno an diyabetes?
+ [Sintomas]   Uno an mga senyales kan diyabetes?
+ [Management] Pauno aatamanon an diyabetes?
+
+Gender Identity
+ [Definisyon] Uno an gender identity?
+
+Tamang Pag-ubo (Pag-likay sa Tuberculosis)
+ [Definisyon] Uno an tamang pag-ubo?
+ [Management] Pauno malikayan an tuberculosis paagi sa tamang pag-ubo?
+
+Heart Attack
+ [Definisyon] Uno an heart attack?
+ [Sintomas]   Uno an mga senyales kan heart attack?
+ [Kausa]      Uno an dahilan kan heart attack?
+ [Management] Pauno malikayan an heart attack?
+
+Hepatitis
+ [Definisyon] Uno an hepatitis?
+ [Sintomas]   Uno an mga senyales kan hepatitis?
+ [Kausa]      Uno an dahilan kan hepatitis?
+ [Management] Pauno malikayan an hepatitis?
+
+HIV asin AIDS
+ [Definisyon] Uno an HIV asin AIDS?
+ [Sintomas]   Uno an mga senyales kan HIV?
+ [Kausa]      Uno an dahilan kan HIV infection?
+ [Management] Pauno malikayan an HIV?
+
+Dengue
+ [Definisyon] Uno an dengue?
+ [Sintomas]   Uno an mga senyales kan dengue?
+ [Kausa]      Uno an dahilan kan dengue?
+ [Management] Pauno malikayan an dengue?
+
+Influenza (Trangkaso)
+ [Definisyon] Uno an trangkaso?
+ [Sintomas]   Uno an mga senyales kan trangkaso?
+ [Management] Pauno malikayan an trangkaso?
+
+Kulog sa Ibabang Bahagi kan Likod (Low Back Pain)
+ [Definisyon] Uno an kulog sa ibabang bahagi kan likod?
+ [Kausa]      Uno an dahilan kan kulog kan likod?
+ [Management] Pauno malikayan an kulog kan likod?
+
+Kanser sa Baga (Lung Cancer)
+ [Definisyon] Uno an kanser sa baga?
+ [Sintomas]   Uno an mga senyales kan kanser sa baga?
+ [Kausa]      Uno an dahilan kan kanser sa baga?
+
+Malaria
+ [Definisyon] Uno an malaria?
+ [Sintomas]   Uno an mga senyales kan malaria?
+ [Kausa]      Uno an dahilan kan malaria?
+ [Management] Pauno malikayan an malaria?
+
+Pinggang Pinoy
+ [Definisyon] Uno an Pinggang Pinoy?
+ [Benepisyo]  Uno an benepisyo kan Pinggang Pinoy?
+
+Pag-likay sa Trangkaso sa Tag-uran
+ [Definisyon] Anong hilang an dakol sa tag-uran?
+ [Management] Pauno malikayan an trangkaso sa tag-uran?
+
+Rabies
+ [Definisyon] Uno an rabies?
+ [Sintomas]   Uno an mga senyales kan rabies?
+ [Kausa]      Uno an dahilan kan rabies?
+ [Warning]    Kinagat ako nin ayam, uno an dapat kong gibuhon? (magpakonsulta)
+
+Pitong Makusog na Gibo
+ [Definisyon] Uno an pitong makusog na gibo?
+ [Benepisyo]  Uno an benepisyo kan makusog na gibo?
+
+10 Kumainments
+ [Definisyon] Uno an 10 Kumainments?
+ [Benepisyo]  Uno an benepisyo kan pagsunod sa Kumainments?
+
+Epilepsy
+ [Definisyon] Uno an epilepsy?
+ [Sintomas]   Uno an mga senyales kan epilepsy?
+ [Kausa]      Uno an dahilan kan epilepsy?
+ [Warning]    Nagkombolsyon an aking ko, uno an dapat kong gibuhon?
+
+Stroke
+ [Definisyon] Uno an stroke?
+ [Sintomas]   Uno an mga senyales kan stroke?
+ [Kausa]      Uno an dahilan kan stroke?
+ [Warning]    Malala an senyales, kaipuhan ko na daw magpakonsulta sa ospital?
+
+Epekto kan Pagsisigarilyo
+ [Definisyon] Uno an epekto kan pagsisigarilyo sa lawas?
+ [Kausa]      Ngata maraot an pagsisigarilyo?
+
+
+=============================================================================
+NOTES FOR TESTING
+=============================================================================
+1. Every [Definition]/[Depinisyon]/[Definisyon] line should be answerable
+   from any topic in this list — these are the safest baseline tests.
+2. [Symptoms]/[Sintomas]/[Kausa]/etc. lines only work if the source .txt
+   document actually has a matching heading (e.g. "Symptoms", "Causes").
+   If one of these fails while the Definition for the same topic succeeds,
+   that specifically means the document has no such section — not a bug.
+3. Bikol [Management] entries intentionally cover BOTH prevention and
+   treatment phrasing, per the merged intent found in detectBikolIntent().
+4. [Warning] (Bikol only) should trigger urgent-tone handling, not a plain
+   informational answer — verify the tone/content differs from a normal
+   [Definition] answer for the same topic.
