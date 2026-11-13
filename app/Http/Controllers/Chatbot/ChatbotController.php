@@ -23,7 +23,14 @@ class ChatbotController extends Controller
             'language'        => 'nullable|string|in:en,tl,bcl',
             'category'        => 'nullable|string|in:child_care,family_planning,maternal_care,other',
             'conversation_id' => 'nullable|integer|exists:chatbot_conversations,conversation_id',
+            'mode'            => 'nullable|string|in:context,ai,cloud',
         ]);
+
+        // FOD comparison switch: "context" = verified datasets + rules,
+        // "ai" = locally trained Bikol-Iriga AI model, "cloud" = trained model
+        // + cloud Gemma explains the verified answer.
+        $mode = $request->input('mode', 'context');
+        $rag->setAnswerMode($mode);
 
         // Pulled from the session by EnsureResidentChatbotAccount middleware —
         // never trust a client-supplied account_id for who is asking.
@@ -33,7 +40,7 @@ class ChatbotController extends Controller
         $category = $request->input('category');
         $question = $request->input('question');
 
-        return DB::transaction(function () use ($request, $rag, $language, $category, $question, $accountId) {
+        return DB::transaction(function () use ($request, $rag, $language, $category, $question, $accountId, $mode) {
 
             $conversation = $request->filled('conversation_id')
                 ? ChatbotConversation::where('account_id', $accountId)
@@ -94,6 +101,7 @@ class ChatbotController extends Controller
             Log::info('Chatbot response', [
     'question' => $question,
     'selected_language' => $language,
+    'mode' => $mode,
     'resolved_language' => $result['language'] ?? $language,
     'answer' => $result['answer'],
     'points' => $result['points'],
@@ -123,6 +131,8 @@ return response()->json([
     'sources'         => $result['sources'],
     'language'        => $resolvedLanguage,
     'is_conversation' => (bool) ($result['is_conversation'] ?? false),
+    'mode'            => $mode,
+    'answered_by'     => $result['answered_by'] ?? null,
 ]);
         });
     }

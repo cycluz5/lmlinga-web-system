@@ -68,4 +68,45 @@ return [
         'api_key' => env('OLLAMA_API_KEY'),
     ],
 
+    /*
+    | Health documents used by the context-based chatbot (RAG).
+    | Linguist-verified set, made by ml/health-docs/convert_verified_docs.py.
+    */
+    'health_docs' => [
+        'path' => env('HEALTH_DOCS_PATH', resource_path('health_docs_v2')),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Bikol-Iriga question-type model (ml/bikol-intent)
+    |--------------------------------------------------------------------------
+    |
+    | Trained in Colab and exported as JSON. When enabled, the model decides
+    | the Bikol question type if it is at least `min_confidence` sure;
+    | otherwise the keyword rules in RagService are used.
+    |
+    */
+    'bikol_intent' => [
+        'enabled' => (bool) env('BIKOL_INTENT_MODEL_ENABLED', true),
+        'model_path' => env('BIKOL_INTENT_MODEL_PATH', base_path('resources/ml/bikol_intent_model.json')),
+        'min_confidence' => (float) env('BIKOL_INTENT_MIN_CONFIDENCE', 0.5),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Bikol-Iriga small-talk model (ml/bikol-chat)
+    |--------------------------------------------------------------------------
+    |
+    | Fine-tuned Gemma 3 4B, run by the LOCAL Ollama (`ollama create
+    | lmlinga-bikol-chat -f Modelfile`). Used only for Bikol messages that are
+    | not health questions. Serious messages always get a fixed checked reply.
+    |
+    */
+    'bikol_chat' => [
+        'enabled' => (bool) env('BIKOL_CHAT_MODEL_ENABLED', true),
+        'model' => env('BIKOL_CHAT_MODEL', 'lmlinga-bikol-chat'),
+        'base_url' => env('BIKOL_CHAT_BASE_URL', env('OLLAMA_BASE_URL', 'http://127.0.0.1:11434')),
+        'timeout' => (int) env('BIKOL_CHAT_TIMEOUT', 60),
+    ],
+
 ];

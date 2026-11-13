@@ -59,7 +59,7 @@ php artisan config:cache
 php artisan route:cache
 php artisan view:cache
 
-# Chatbot knowledge base: embed resources/health_docs into health_chunks on a
+# Chatbot knowledge base: embed resources/health_docs_v2 into health_chunks on a
 # fresh database. Runs in the background (it takes a few minutes and needs
 # Ollama) so Apache starts right away; no-op once health_chunks has rows.
 php artisan health:index --if-empty >/var/log/health-index.log 2>&1 &

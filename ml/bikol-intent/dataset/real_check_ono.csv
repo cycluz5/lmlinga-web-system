@@ -1,0 +1,140 @@
+question,intent
+Ono an autism?,definition
+Ono an mga senyales kan autism?,symptoms
+Ono an immunization para sa igin?,definition
+Ono an benepisyo kan pagbabakuna sa igin?,benefits
+Ono an newborn hearing screening?,definition
+Ono an benepisyo kan hearing screening sa igin?,benefits
+Ono an pagpapasuso?,definition
+Ono an benepisyo kan pagpapasuso?,benefits
+"Ono an tamang nutrisyon sa enot na 1,000 aldaw kan igin?",definition
+"Ono an benepisyo kan marhay na nutrisyon sa enot na 1,000 aldaw?",benefits
+Ono an puberty para sa batang lalaki?,definition
+Anong pagbabago an senyales kan puberty sa lalaki?,symptoms
+Ono an malnutrisyon?,definition
+Ono an mga senyales kan malnutrisyon?,symptoms
+Ono an dahilan kan malnutrisyon?,causes
+Paono malikayan an malnutrisyon?,management
+Ono an National Deworming Month?,definition
+Ono an benepisyo kan pagpurga?,benefits
+Ono an pneumonia sa mga igen?,definition
+Ono an mga senyales kan pneumonia sa igen?,symptoms
+Ono an dahilan kan pneumonia sa igen?,causes
+Paono malikayan an pneumonia sa igen?,management
+Ono an newborn screening?,definition
+Ono an benepisyo kan newborn screening?,benefits
+Ono an micronutrient deficiency?,definition
+Ono an mga senyales kan micronutrient deficiency?,symptoms
+Ono an pill bilang family planning?,definition
+Ono an benepisyo kan pill bilang family planning?,benefits
+Ono an mga modernong pagi kan family planning?,definition
+Ono an benepisyo kan modernong family planning?,benefits
+Ono an family planning?,definition
+Ono an benepisyo kan family planning?,benefits
+Ono an menopause?,definition
+Ono an mga senyales kan menopause?,symptoms
+Ono an preterm o napaamay na panganganak?,definition
+Ono an dahilan kan preterm birth?,causes
+Paono malikayan an preterm birth?,management
+Ono an tetanus?,definition
+Ono an mga senyales kan tetanus?,symptoms
+Ono an dahilan kan tetanus?,causes
+Paono malikayan an tetanus?,management
+Ono an tamang pag-ataman kan ngipon habang buntis?,definition
+Paono malikayan an problema sa ngipon habang buntis?,management
+Ono an hypertension?,definition
+Ono an mga senyales kan hypertension?,symptoms
+Ono an dahilan kan hypertension?,causes
+Paono aatamanon o malikayan an hypertension?,management
+Ono an hika?,definition
+Ono an mga senyales kan hika?,symptoms
+Ono an dahilan kan hika?,causes
+Ono an gamot sa hika?,management
+Ono an gout?,definition
+Ono an mga senyales kan gout?,symptoms
+Ono an dahilan kan gout?,causes
+Paono malikayan an gout?,management
+Ono an kanser sa bato?,definition
+Ono an mga senyales kan kanser sa bato?,symptoms
+Ono an dahilan kan kanser sa bato?,causes
+Ono an kanser sa atay?,definition
+Ono an mga senyales kan kanser sa atay?,symptoms
+Ono an dahilan kan kanser sa atay?,causes
+Ono an blood donation program?,definition
+Ono an benepisyo kan pagtao nin rugo?,benefits
+Ono an kanser sa soso?,definition
+Ono an mga senyales kan kanser sa soso?,symptoms
+Ono an dahilan kan kanser sa soso?,causes
+Paono malikayan an kanser sa soso?,management
+Ono an cholera?,definition
+Ono an mga senyales kan cholera?,symptoms
+Ono an dahilan kan cholera?,causes
+Paono malikayan an cholera?,management
+Ono an malalang ilang sa bato?,definition
+Ono an mga senyales kan CKD?,symptoms
+Ono an dahilan kan CKD?,causes
+Paono malikayan an CKD?,management
+Ono an tamang panunugas kan kamot?,definition
+Ono an benepisyo kan panunugas kan kamot?,benefits
+Ono an pagkabungog?,definition
+Ono an dahilan kan pagkabungog?,causes
+Ono an dementia?,definition
+Ono an mga senyales kan dementia?,symptoms
+Ono an dahilan kan dementia?,causes
+Ono an diyabetes?,definition
+Ono an mga senyales kan diyabetes?,symptoms
+Paono aatamanon an diyabetes?,management
+Ono an gender identity?,definition
+Ono an tamang pag-ubo?,definition
+Paono malikayan an tuberculosis paagi sa tamang pag-ubo?,management
+Ono an heart attack?,definition
+Ono an mga senyales kan heart attack?,symptoms
+Ono an dahilan kan heart attack?,causes
+Paono malikayan an heart attack?,management
+Ono an hepatitis?,definition
+Ono an mga senyales kan hepatitis?,symptoms
+Ono an dahilan kan hepatitis?,causes
+Paono malikayan an hepatitis?,management
+Ono an HIV asin AIDS?,definition
+Ono an mga senyales kan HIV?,symptoms
+Ono an dahilan kan HIV infection?,causes
+Paono malikayan an HIV?,management
+Ono an dengue?,definition
+Ono an mga senyales kan dengue?,symptoms
+Ono an dahilan kan dengue?,causes
+Paono malikayan an dengue?,management
+Ono an trangkaso?,definition
+Ono an mga senyales kan trangkaso?,symptoms
+Paono malikayan an trangkaso?,management
+Ono an kulog sa ibabang bahagi kan likod?,definition
+Ono an dahilan kan kulog kan likod?,causes
+Paono malikayan an kulog kan likod?,management
+Ono an kanser sa baga?,definition
+Ono an mga senyales kan kanser sa baga?,symptoms
+Ono an dahilan kan kanser sa baga?,causes
+Ono an malaria?,definition
+Ono an mga senyales kan malaria?,symptoms
+Ono an dahilan kan malaria?,causes
+Paono malikayan an malaria?,management
+Ono an Pinggang Pinoy?,definition
+Ono an benepisyo kan Pinggang Pinoy?,benefits
+Anong hilang an dakol sa tag-uran?,definition
+Paono malikayan an trangkaso sa tag-uran?,management
+Ono an rabies?,definition
+Ono an mga senyales kan rabies?,symptoms
+Ono an dahilan kan rabies?,causes
+"Kinagat ako nin ayam, ono an dapat kong gibuhon?",warning
+Ono an pitong makusog na gibo?,definition
+Ono an benepisyo kan makusog na gibo?,benefits
+Ono an 10 Kumainments?,definition
+Ono an benepisyo kan pagsunod sa Kumainments?,benefits
+Ono an epilepsy?,definition
+Ono an mga senyales kan epilepsy?,symptoms
+Ono an dahilan kan epilepsy?,causes
+"Nagkombolsyon an aking ko, ono an dapat kong gibuhon?",warning
+Ono an stroke?,definition
+Ono an mga senyales kan stroke?,symptoms
+Ono an dahilan kan stroke?,causes
+"Malala an senyales, kaipuhan ko na daw magpakonsulta sa ospital?",warning
+Ono an epekto kan pagsisigarilyo sa lawas?,definition
+Ngata maraot an pagsisigarilyo?,causes

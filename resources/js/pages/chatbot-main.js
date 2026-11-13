@@ -1736,6 +1736,44 @@ function syncLanguageButton(languageCode) {
     }
 }
 
+/** Chatbot type for the FOD comparison: 'context' or 'ai'. */
+function getSelectedMode() {
+    const activeBtn = root.querySelector('[data-lml-mode].lml-chatbot-main__mode-btn--active');
+    const mode = activeBtn ? activeBtn.dataset.lmlMode : 'context';
+    return ['context', 'ai', 'cloud'].includes(mode) ? mode : 'context';
+}
+
+function setSelectedMode(mode) {
+    root.querySelectorAll('[data-lml-mode]').forEach((btn) => {
+        const active = btn.dataset.lmlMode === mode;
+        btn.classList.toggle('lml-chatbot-main__mode-btn--active', active);
+        btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+    try {
+        localStorage.setItem('lmlChatbotMode', mode);
+    } catch (e) {
+        // storage blocked: the switch still works for this page
+    }
+}
+
+root.querySelectorAll('[data-lml-mode]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+        setSelectedMode(btn.dataset.lmlMode);
+        if (langLive) {
+            langLive.textContent = `Chatbot changed to ${btn.textContent.trim()}`;
+        }
+    });
+});
+
+try {
+    const savedMode = localStorage.getItem('lmlChatbotMode');
+    if (['context', 'ai', 'cloud'].includes(savedMode)) {
+        setSelectedMode(savedMode);
+    }
+} catch (e) {
+    // ignore
+}
+
 function getSelectedLanguageCode() {
     const activeBtn = root.querySelector('[data-lml-lang].lml-chatbot-main__lang-btn--active');
     const label = activeBtn ? activeBtn.dataset.lmlLang : 'English';
@@ -1786,6 +1824,7 @@ if (composer && composerInput) {
                 body: JSON.stringify({
                     question: text,
                     language: getSelectedLanguageCode(),
+                    mode: getSelectedMode(),
                     conversation_id: currentConversationId,
                 }),
             });
@@ -1802,7 +1841,22 @@ if (data.language) {
 }
 
 removeTypingIndicator();
-appendMessage('assistant', data.answer, data.points, data.title, data.language, data.is_conversation === true);
+const answerEl = appendMessage('assistant', data.answer, data.points, data.title, data.language, data.is_conversation === true);
+if (answerEl && data.mode) {
+    const bubble = answerEl.querySelector('.lml-chatbot-main__bubble');
+    const time = bubble ? bubble.querySelector('.lml-chatbot-main__bubble-time') : null;
+    if (bubble) {
+        const tag = document.createElement('span');
+        tag.className = 'lml-chatbot-main__mode-tag';
+        const modeNames = {
+            context: 'Context-based',
+            ai: 'Local AI model',
+            cloud: 'Cloud AI (Gemma)',
+        };
+        tag.textContent = 'Answered by: ' + (data.answered_by || modeNames[data.mode] || 'Context-based');
+        bubble.insertBefore(tag, time);
+    }
+}
             await refreshConversationList();
             markConversationRowActive(currentConversationId);
         } catch (error) {
