@@ -1,137 +1,165 @@
-#!/bin/bash
-# LMLinga production deploy for the EC2 setup in docs/DEPLOYMENT_AWS_EC2.md.
+#!/usr/bin/env bash
 #
-# Installed on the server as /opt/lmlinga-deploy.sh (owner root, mode 700) and started by
-# GitHub Actions over SSH after a merge to main (see docs/DEPLOYMENT_CICD.md):
+# Deploys one commit of main to production (lmlinga.com).
 #
-#   sudo /opt/lmlinga-deploy.sh <40-character commit SHA on origin/main>
+# Installed on the server as /opt/lmlinga-deploy.sh (owner root, mode 755) and run as the
+# lmlinga user. GitHub Actions starts it over SSH: the deploy key in
+# /home/lmlinga/.ssh/authorized_keys is locked to
+#   command="/opt/lmlinga-deploy.sh \"$SSH_ORIGINAL_COMMAND\"",restrict
+# so the only thing that key can do is pass a commit SHA to this script.
+# See docs/DEPLOYMENT_CICD.md.
 #
-# Steps (same as "Deploying updates" in the EC2 guide):
-#   backup -> maintenance mode -> fast-forward to the commit -> composer/npm install + build
-#   -> run each NEW migration file one at a time with --path -> rebuild caches
-#   -> reload PHP-FPM -> back online.
+# Migrations: only files ADDED since the deployed commit are run, one at a time
+# with --path. Never replace this with a plain `php artisan migrate`: most
+# migration files are not recorded in this database, and running them would
+# create legacy tables and switch modules out of ERD mode.
 #
-# If anything fails before migrations start, the code is rolled back to the previous commit
-# and the site comes back online. If a migration or a later step fails, the site stays in
-# maintenance mode so the database can be checked by hand.
+# Sudo needed (/etc/sudoers.d/lmlinga-deploy):
+#   lmlinga ALL=(root) NOPASSWD: /usr/bin/systemctl reload php-fpm, /opt/lmlinga-backup.sh
+
 set -Eeuo pipefail
 
 APP_DIR=/var/www/lmlinga
-APP_USER=lmlinga
 BRANCH=main
-BACKUP_SCRIPT=/opt/lmlinga-backup.sh
-LOCK_FILE=/var/lock/lmlinga-deploy.lock
-PHP_FPM_SERVICE=php-fpm
+HEALTH_URL=https://lmlinga.com/up
+HEALTH_RESOLVE=lmlinga.com:443:127.0.0.1
+TARGET_SHA="${1:-}"
 
-TARGET="${1:-}"
-OLD=""
-STAGE="prepare"
+export PATH=/usr/local/bin:/usr/bin:/bin
+export NODE_OPTIONS=--max-old-space-size=1536
+export COMPOSER_NO_INTERACTION=1
 
-log() { printf '\n==> %s\n' "$*"; }
-die() { printf '\nERROR: %s\n' "$*" >&2; exit 1; }
+if [[ ! "$TARGET_SHA" =~ ^[0-9a-f]{40}$ ]]; then
+    echo "::error::Expected a 40-character commit SHA, got: '${TARGET_SHA}'"
+    exit 2
+fi
 
-# Run a command as the app user inside the app directory (never as root; see the EC2 guide).
-as_app() { sudo -u "$APP_USER" -H bash -lc "cd '$APP_DIR' && $1"; }
+if [ "$(id -un)" != "lmlinga" ]; then
+    echo "::error::Run this as the lmlinga user, not $(id -un)."
+    exit 2
+fi
 
-[[ $EUID -eq 0 ]] || die "Run as root: sudo /opt/lmlinga-deploy.sh <commit-sha>"
-[[ "$TARGET" =~ ^[0-9a-f]{40}$ ]] || die "Expected a 40-character commit SHA, got: '${TARGET}'"
-[[ -d "$APP_DIR/.git" ]] || die "$APP_DIR is not a git checkout."
+exec 9>"$HOME/.lmlinga-deploy.lock"
+flock -n 9 || { echo "::error::Another deployment is running."; exit 1; }
 
-exec 9>"$LOCK_FILE"
-flock -n 9 || die "Another deploy is already running."
+cd "$APP_DIR"
 
-rebuild_app() {
-    as_app "composer install --no-dev --optimize-autoloader --no-interaction --no-progress"
-    as_app "npm ci --no-audit --no-fund"
-    as_app "npm run build"
-}
+git fetch --quiet origin "$BRANCH"
 
-cache_and_reload() {
-    as_app "php artisan config:cache && php artisan route:cache && php artisan view:cache"
-    systemctl reload "$PHP_FPM_SERVICE"
-}
+if ! git merge-base --is-ancestor "$TARGET_SHA" "origin/$BRANCH" 2>/dev/null; then
+    echo "::error::Commit $TARGET_SHA is not on origin/$BRANCH. Only commits merged to $BRANCH are deployed."
+    exit 1
+fi
 
-on_error() {
-    local code=$?
-    trap - ERR
-    set +e
+PREVIOUS_SHA="$(git rev-parse HEAD)"
 
-    if [[ "$STAGE" == "code" && -n "$OLD" ]]; then
-        printf '\nDeploy failed while updating code. Rolling back to %s...\n' "$OLD" >&2
-        as_app "git reset --hard --quiet $OLD"
-        rebuild_app
-        as_app "php artisan config:clear"
-        cache_and_reload
-        as_app "php artisan up"
-        printf 'Rolled back to %s. The site is back online on the previous version.\n' "$OLD" >&2
-    elif [[ "$STAGE" == "migrate" || "$STAGE" == "finish" ]]; then
-        printf '\nDeploy failed during the "%s" step. The site is LEFT IN MAINTENANCE MODE.\n' "$STAGE" >&2
-        printf 'Check the database and the Laravel log, fix the problem, then run as %s:\n' "$APP_USER" >&2
-        printf '  cd %s && php artisan config:cache && php artisan up && sudo systemctl reload %s\n' "$APP_DIR" "$PHP_FPM_SERVICE" >&2
-    fi
-
-    exit "$code"
-}
-trap on_error ERR
-
-log "Fetching origin/$BRANCH"
-as_app "git fetch --quiet origin $BRANCH"
-as_app "git merge-base --is-ancestor $TARGET origin/$BRANCH" \
-    || die "Commit $TARGET is not on origin/$BRANCH. Only commits merged to $BRANCH are deployed."
-
-OLD="$(as_app "git rev-parse HEAD")"
-if [[ "$OLD" == "$TARGET" ]]; then
-    log "Already at $TARGET. Nothing to deploy."
+if [ "$PREVIOUS_SHA" = "$TARGET_SHA" ]; then
+    echo "Commit $TARGET_SHA is already deployed."
     exit 0
 fi
 
-as_app "git diff --quiet && git diff --cached --quiet" \
-    || die "The server checkout has local changes. Commit or discard them in $APP_DIR first."
-as_app "git merge-base --is-ancestor $OLD $TARGET" \
-    || die "$TARGET is not ahead of the deployed commit $OLD (not a fast-forward). Deploy it by hand."
+if git merge-base --is-ancestor "$TARGET_SHA" "$PREVIOUS_SHA"; then
+    echo "Commit $TARGET_SHA is older than the deployed commit $PREVIOUS_SHA. Skipping."
+    exit 0
+fi
 
-# Migration files ADDED between the deployed commit and the target, oldest first.
+if ! git diff --quiet || ! git diff --cached --quiet; then
+    echo "::error::$APP_DIR has local changes to tracked files. Check 'git status' on the server first."
+    exit 1
+fi
+
 # Captured first so a failing git diff stops the deploy instead of looking like "no migrations".
-MIGRATION_LIST="$(as_app "git diff --name-only --diff-filter=A $OLD $TARGET -- database/migrations")"
-mapfile -t MIGRATIONS < <(printf '%s\n' "$MIGRATION_LIST" | sed '/^$/d' | sort)
-for migration in "${MIGRATIONS[@]}"; do
-    [[ "$migration" =~ ^database/migrations/[A-Za-z0-9_.-]+\.php$ ]] || die "Unexpected migration path: $migration"
+MIGRATION_LIST="$(git diff --name-only --diff-filter=A "$PREVIOUS_SHA" "$TARGET_SHA" -- database/migrations)"
+mapfile -t NEW_MIGRATIONS < <(printf '%s\n' "$MIGRATION_LIST" | sed '/^$/d' | sort)
+for migration in "${NEW_MIGRATIONS[@]}"; do
+    if [[ ! "$migration" =~ ^database/migrations/[A-Za-z0-9_.-]+\.php$ ]]; then
+        echo "::error::Unexpected migration path: $migration"
+        exit 1
+    fi
 done
 
-log "Deploying $OLD -> $TARGET"
-if [[ -x "$BACKUP_SCRIPT" ]]; then
-    log "Backing up (database + storage)"
-    "$BACKUP_SCRIPT"
-else
-    log "Backup script $BACKUP_SCRIPT not found; continuing WITHOUT a backup."
+build_release() {
+    composer install --no-dev --optimize-autoloader --no-progress --quiet </dev/null
+    npm ci --no-audit --no-fund --silent </dev/null
+    npm run build --silent </dev/null
+}
+
+cache_release() {
+    php artisan config:cache </dev/null
+    php artisan route:cache </dev/null
+    php artisan view:cache </dev/null
+}
+
+restart_php() {
+    sudo -n /usr/bin/systemctl reload php-fpm
+}
+
+STAGE=starting
+
+on_failure() {
+    local status=$?
+    trap - ERR
+    set +e
+
+    case "$STAGE" in
+        release)
+            echo "::error::Deployment failed before the database changed. Restoring $PREVIOUS_SHA."
+            git reset --hard --quiet "$PREVIOUS_SHA"
+            build_release
+            cache_release
+            php artisan up </dev/null
+            restart_php
+            ;;
+        migrating)
+            echo "::error::A migration failed. The site stays in maintenance mode because the database may be partly changed."
+            echo "::error::Fix it on the server, or restore the backup in /var/backups/lmlinga, then run: php artisan up"
+            ;;
+        *)
+            echo "::error::Deployment failed at stage: $STAGE"
+            ;;
+    esac
+
+    exit "$status"
+}
+
+trap on_failure ERR
+
+echo "Deploying $PREVIOUS_SHA -> $TARGET_SHA"
+echo "New migrations: ${#NEW_MIGRATIONS[@]}"
+
+if [ "${#NEW_MIGRATIONS[@]}" -gt 0 ]; then
+    STAGE=backup
+    sudo -n /opt/lmlinga-backup.sh
 fi
 
-log "Maintenance mode on"
-as_app "php artisan down --retry=60"
+php artisan down --retry=15 </dev/null
 
-STAGE="code"
-log "Updating code"
-as_app "git merge --ff-only --quiet $TARGET"
-rebuild_app
-# Migrations must run with a fresh (uncached) config; see the EC2 guide.
-as_app "php artisan config:clear"
+STAGE=release
+git reset --hard --quiet "$TARGET_SHA"
+build_release
 
-STAGE="migrate"
-if [[ ${#MIGRATIONS[@]} -eq 0 ]]; then
-    log "No new migrations"
-else
-    for migration in "${MIGRATIONS[@]}"; do
-        log "Migrating $migration"
-        as_app "php artisan migrate --path=$migration --force"
-    done
-fi
+# The config cache must be cleared first: migrations read SUPER_ADMIN_* from .env.
+php artisan config:clear </dev/null
 
-STAGE="finish"
-log "Rebuilding caches and reloading PHP-FPM"
-cache_and_reload
+STAGE=migrating
+for migration in "${NEW_MIGRATIONS[@]}"; do
+    echo "Running $migration"
+    php artisan migrate --path="$migration" --force </dev/null
+done
 
-log "Maintenance mode off"
-as_app "php artisan up"
+STAGE=activating
+cache_release
+php artisan up </dev/null
+restart_php
 
-STAGE="done"
-log "Deployed $TARGET"
+STAGE=verifying
+for attempt in 1 2 3 4 5 6; do
+    if curl -fsS -o /dev/null -m 10 --resolve "$HEALTH_RESOLVE" "$HEALTH_URL"; then
+        echo "Deployed $TARGET_SHA"
+        exit 0
+    fi
+    sleep 5
+done
+
+echo "::error::The site did not pass its health check after deploying $TARGET_SHA."
+exit 1

@@ -1,183 +1,130 @@
 # Automatic deployment to AWS EC2 (GitHub Actions)
 
-After this is set up, every merge (or push) to `main` updates the live server automatically.
+Every merge (or push) to `main` updates the live server, **lmlinga.com**, automatically.
 
 ```text
 merge to main ──> GitHub Actions "deploy" workflow
                     1. Build check: composer install, PHP syntax check, npm run build, JS tests
-                    2. SSH to EC2 as "deployer" ──> sudo /opt/lmlinga-deploy.sh <commit>
-                         backup ─> maintenance on ─> git fast-forward ─> composer/npm build
-                         ─> new migrations one at a time ─> caches ─> reload PHP-FPM ─> online
-                    3. Health check of the site URL (optional)
+                    2. SSH to EC2 as "lmlinga" with a deploy-only key ──> /opt/lmlinga-deploy.sh <commit>
+                         (backup if migrations) ─> maintenance on ─> code to <commit> ─> composer/npm build
+                         ─> new migrations one at a time ─> caches ─> online ─> reload PHP-FPM ─> check /up
+                    3. Health check of https://lmlinga.com/up from GitHub
 ```
-
-This assumes the server was set up with [DEPLOYMENT_AWS_EC2.md](DEPLOYMENT_AWS_EC2.md): code at `/var/www/lmlinga`
-owned by the `lmlinga` user, PHP-FPM, Caddy, MariaDB, and the backup script `/opt/lmlinga-backup.sh`.
-
-Files:
 
 | File | Purpose |
 |---|---|
 | `.github/workflows/deploy.yml` | The workflow: build check, then SSH deploy, then health check |
 | `scripts/deploy/lmlinga-deploy.sh` | The deploy script. A copy runs on the server as `/opt/lmlinga-deploy.sh` |
 
+## The server (current setup)
+
+| Item | Value |
+|---|---|
+| Host | `16.176.39.226` (Amazon Linux 2023, ap-southeast-2) |
+| Site | `https://lmlinga.com`, nginx + certbot, PHP-FPM 8.3, Node 22, MariaDB |
+| App | `/var/www/lmlinga`, a git checkout of `main` owned by `lmlinga` |
+| Deploy script | `/opt/lmlinga-deploy.sh` (root-owned, runs as `lmlinga`) |
+| Backup script | `/opt/lmlinga-backup.sh` (backups in `/var/backups/lmlinga`) |
+| Sudo for `lmlinga` | `/etc/sudoers.d/lmlinga-deploy`: `systemctl reload php-fpm` and `/opt/lmlinga-backup.sh` only |
+| Deploy key | `/home/lmlinga/.ssh/authorized_keys`, locked to the deploy script (below) |
+
+The general server setup is in [DEPLOYMENT_AWS_EC2.md](DEPLOYMENT_AWS_EC2.md). That guide uses Caddy; this server
+uses nginx instead.
+
 ## What the deploy script does, and what happens on failure
 
-It follows "Deploying updates" in the EC2 guide:
+1. Refuses anything that isn't a 40-character commit SHA, a commit not on `origin/main`, an older commit than the one
+   deployed, or a checkout with local changes. Only one deploy runs at a time. If the commit is already deployed,
+   it does nothing.
+2. If the update adds migrations, runs `/opt/lmlinga-backup.sh` first.
+3. `php artisan down`, moves the checkout to the commit, runs `composer install --no-dev`, `npm ci` and
+   `npm run build` (Node is capped at 1.5 GB; the server has 1 GB RAM + 4 GB swap).
+4. Runs **only the migration files added since the last deploy, one at a time** with `--path`, never a plain
+   `php artisan migrate`, with the config cache cleared first.
+5. Rebuilds the caches, `php artisan up`, reloads PHP-FPM (for OPcache), then checks `https://lmlinga.com/up`.
 
-1. Refuses to run if another deploy is running, if the commit isn't on `origin/main`, if it isn't ahead of the deployed
-   commit, or if the server checkout has local changes.
-2. Runs `/opt/lmlinga-backup.sh` (if present), then `php artisan down`.
-3. Fast-forwards the checkout to the merged commit, runs `composer install --no-dev`, `npm ci` and `npm run build`.
-4. Runs **only the migration files added since the last deploy, one at a time** with `--path` (never a plain
-   `php artisan migrate`), with the config cache cleared first.
-5. Rebuilds the config/route/view caches, reloads PHP-FPM (needed for OPcache) and runs `php artisan up`.
+If step 3 fails, the code is restored to the previous commit and the site comes back online. If a migration fails,
+the site is **left in maintenance mode** so the database can be checked (a backup was taken in step 2). The
+workflow run fails and shows the reason.
 
-If step 3 fails, the code is rolled back to the previous commit and the site comes back online on the old version.
-If a migration or step 5 fails, the site is **left in maintenance mode** so the database can be checked first. The
-workflow run fails and shows the script's message with the commands to finish by hand.
+## How GitHub is allowed in
 
-## One-time server setup
+GitHub holds a private SSH key (`EC2_SSH_KEY` secret) whose public half is in `/home/lmlinga/.ssh/authorized_keys`
+as:
 
-Run these on the EC2 server as `ec2-user`.
-
-### 1. Get the deploy script onto the server
-
-The script must first be on `main` (merge the branch that adds it), then pull once by hand:
-
-```bash
-sudo -iu lmlinga bash -c 'cd /var/www/lmlinga && git pull --ff-only'
-sudo install -o root -g root -m 700 /var/www/lmlinga/scripts/deploy/lmlinga-deploy.sh /opt/lmlinga-deploy.sh
+```text
+command="/opt/lmlinga-deploy.sh \"$SSH_ORIGINAL_COMMAND\"",restrict ssh-ed25519 AAAA... github-actions-deploy-lmlinga
 ```
 
-The script runs as root, so the server uses this **copy** in `/opt`, not the file in the repo. A merge can't change
-what root runs. If `scripts/deploy/lmlinga-deploy.sh` changes later, repeat the `install` command above.
+`command=` and `restrict` mean this key can't open a shell, forward ports or run anything else. Whatever is sent
+becomes the script's argument, and the script rejects anything that isn't a commit SHA on `main`. The script file is
+owned by root, so neither `lmlinga` nor a merged change can alter it.
 
-### 2. Create the `deployer` user and allow it to run only the deploy script
-
-```bash
-sudo useradd -m -s /bin/bash deployer
-echo 'deployer ALL=(root) NOPASSWD: /opt/lmlinga-deploy.sh' | sudo tee /etc/sudoers.d/lmlinga-deploy
-sudo chmod 440 /etc/sudoers.d/lmlinga-deploy
-sudo visudo -cf /etc/sudoers.d/lmlinga-deploy
-```
-
-The last command must print `parsed OK`.
-
-### 3. Create the SSH key GitHub will use
-
-On **your own computer** (not the server):
+**Updating the script:** after changing `scripts/deploy/lmlinga-deploy.sh` and merging, install the new copy by
+hand as `ec2-user`:
 
 ```bash
-ssh-keygen -t ed25519 -N "" -C "github-deploy-lmlinga" -f lmlinga_deploy
+sudo cp -p /opt/lmlinga-deploy.sh /opt/lmlinga-deploy.sh.bak-$(date +%Y%m%d)
+sudo install -o root -g root -m 755 /var/www/lmlinga/scripts/deploy/lmlinga-deploy.sh /opt/lmlinga-deploy.sh
 ```
 
-This creates `lmlinga_deploy` (private key, goes into GitHub) and `lmlinga_deploy.pub` (public key, goes on the server).
+**Replacing the deploy key** (if it leaks or is lost): generate a new key with
+`ssh-keygen -t ed25519 -N "" -C github-actions-deploy-lmlinga -f lmlinga_deploy`, replace the line in
+`/home/lmlinga/.ssh/authorized_keys` (same `command=...,restrict` prefix), and update the `EC2_SSH_KEY` secret.
 
-On the server, add the public key, **locked to the deploy script**. Replace `ssh-ed25519 AAAA... github-deploy-lmlinga`
-with the full contents of `lmlinga_deploy.pub`:
-
-```bash
-sudo install -o deployer -g deployer -m 700 -d /home/deployer/.ssh
-echo 'command="sudo /opt/lmlinga-deploy.sh \"$SSH_ORIGINAL_COMMAND\"",restrict ssh-ed25519 AAAA... github-deploy-lmlinga' \
-  | sudo tee /home/deployer/.ssh/authorized_keys
-sudo chown deployer:deployer /home/deployer/.ssh/authorized_keys
-sudo chmod 600 /home/deployer/.ssh/authorized_keys
-```
-
-With `command=` and `restrict`, this key can't open a shell, forward ports or run anything else. Whatever command is
-sent is passed to the deploy script as the commit SHA, and the script rejects anything that isn't a 40-character SHA.
-
-### 4. Make sure `lmlinga` can fetch from GitHub
-
-The script runs `git fetch` as `lmlinga`. If the repo is private, the read-only deploy key from step 7 of the EC2 guide
-must be set up. Check with:
-
-```bash
-sudo -iu lmlinga bash -c 'cd /var/www/lmlinga && git fetch --dry-run origin main && echo OK'
-```
-
-### 5. Open SSH to GitHub Actions
-
-GitHub-hosted runners connect from many changing IP addresses, so the EC2 **security group** must allow inbound
-port **22** from `0.0.0.0/0`. Keep it safe with key-only login (the Amazon Linux 2023 default). Check that
-`sudo sshd -T | grep -i passwordauthentication` prints `passwordauthentication no`.
-
-### 6. Get the server's host key (protects against a fake server)
-
-On your own computer, replace `YOUR_SERVER` with the server's domain or Elastic IP (the same value as `EC2_HOST`
-below):
-
-```bash
-ssh-keyscan -t ed25519 YOUR_SERVER
-```
-
-Compare its fingerprint with the server's own (`ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub` on the server, and
-`ssh-keyscan -t ed25519 YOUR_SERVER | ssh-keygen -lf -` locally). They must match. Keep the `ssh-keyscan` output line
-for the `EC2_KNOWN_HOSTS` secret.
-
-## One-time GitHub setup
+## GitHub settings
 
 In the repo, go to **Settings > Secrets and variables > Actions**.
 
-**Secrets** (New repository secret):
-
-| Name | Value |
+| Secret | Value |
 |---|---|
-| `EC2_HOST` | Server domain or Elastic IP, exactly as used with `ssh-keyscan` |
-| `EC2_DEPLOY_USER` | `deployer` |
-| `EC2_SSH_KEY` | Full contents of the private key file `lmlinga_deploy`, including the BEGIN/END lines |
-| `EC2_KNOWN_HOSTS` | The line printed by `ssh-keyscan -t ed25519 YOUR_SERVER` |
+| `EC2_HOST` | `16.176.39.226` |
+| `EC2_DEPLOY_USER` | `lmlinga` |
+| `EC2_SSH_KEY` | The deploy private key, including the BEGIN/END lines |
+| `EC2_KNOWN_HOSTS` | `16.176.39.226 ssh-ed25519 <server host key>` (from `/etc/ssh/ssh_host_ed25519_key.pub` on the server) |
 
-**Variables** tab (optional but recommended):
-
-| Name | Value |
+| Variable | Value |
 |---|---|
-| `PRODUCTION_URL` | The site's HTTPS URL, e.g. `https://lmlinga.example.com`. Used for the health check after deploying |
+| `PRODUCTION_URL` | `https://lmlinga.com/up` (health check after deploying) |
 
-**Environment** (optional): the workflow deploys through an environment named `production`, which GitHub creates on
-the first run. To require someone to approve each deploy, open **Settings > Environments > production** and add
-**Required reviewers**.
+Optional: to require approval for each deploy, add **Required reviewers** under
+**Settings > Environments > production**. The environment is created on the first run.
 
-After that, delete the private key file `lmlinga_deploy` from your computer, or store it somewhere safe.
-
-## Test it
-
-1. Test the key from your own computer. Use the commit that is already deployed, which makes the script exit without
-   changes:
-
-   ```bash
-   ssh -i lmlinga_deploy deployer@YOUR_SERVER "$(git rev-parse origin/main)"
-   ```
-
-   It should print `Already at ... Nothing to deploy.` (or deploy, if the server was behind).
-2. In GitHub, open **Actions > deploy > Run workflow** on `main`, or merge a small PR, and watch the run.
+**Firewall:** GitHub-hosted runners connect from many changing IP addresses, so the EC2 security group must allow
+inbound port **22** from `0.0.0.0/0`. Password login is off on this server (key-only), and the deploy key is locked as
+described above.
 
 ## Everyday use
 
 - Merge a PR into `main`. The deploy starts automatically. Follow it in the **Actions** tab.
 - A second merge during a deploy waits for the first to finish.
-- Only commits on `main` are deployed. Running the workflow by hand from another branch is refused by the server.
+- Re-run a deploy: **Actions > deploy > Run workflow** on `main`.
 
 ## Rolling back
 
-The automatic deploy only moves forward. To go back to an older version, deploy it by hand on the server as
-`lmlinga`, following "Deploying updates" in the EC2 guide but using `git checkout <old-commit>` instead of
-`git pull`, and restore the database from `/var/backups/lmlinga` if a migration changed it. Or revert the change
-with a new PR (preferred), which deploys normally.
+The automatic deploy only moves forward. The simplest rollback is reverting the change in a new PR, which deploys
+normally. For an emergency rollback on the server as `lmlinga`, follow "Deploying updates" in the EC2 guide with
+`git reset --hard <old-commit>` instead of `git pull`, and restore the database from `/var/backups/lmlinga` if a
+migration changed it.
+
+## Old self-hosted runner
+
+An earlier setup used a self-hosted GitHub Actions runner in `/opt/actions-runner`. Its service is no longer
+installed and this workflow doesn't use it. If it still shows under **Settings > Actions > Runners**, remove it there,
+then delete `/opt/actions-runner` on the server.
 
 ## Troubleshooting
 
 | Symptom in the Actions log | Fix |
 |---|---|
 | `Set the EC2_SSH_KEY and EC2_KNOWN_HOSTS secrets` | Add the secrets above |
-| `Host key verification failed` | `EC2_KNOWN_HOSTS` doesn't match `EC2_HOST`; redo step 6 with the same name/IP |
-| `Permission denied (publickey)` | Public key missing or wrong in `/home/deployer/.ssh/authorized_keys`, or wrong `EC2_DEPLOY_USER` |
-| `Connection timed out` | Security group doesn't allow port 22, or the instance is stopped |
-| `sudo: a password is required` | The sudoers file from step 2 is missing or the path differs from `/opt/lmlinga-deploy.sh` |
-| `Expected a 40-character commit SHA` | The key was used for an interactive login; it can only deploy |
+| `Host key verification failed` | `EC2_KNOWN_HOSTS` doesn't match the server's host key or `EC2_HOST` |
+| `Permission denied (publickey)` | The key line in `/home/lmlinga/.ssh/authorized_keys` is missing or doesn't match `EC2_SSH_KEY` |
+| `Connection timed out` | The security group doesn't allow port 22 from GitHub, or the instance is stopped |
 | `is not on origin/main` | The workflow was started from another branch; run it on `main` |
-| `The server checkout has local changes` | Someone edited files on the server; check `git status` in `/var/www/lmlinga` as `lmlinga` |
-| `Another deploy is already running` | Wait, or check for a stuck `/opt/lmlinga-deploy.sh` process |
-| `LEFT IN MAINTENANCE MODE` | A migration or cache step failed; follow the printed commands after fixing the cause |
+| `has local changes to tracked files` | Someone edited files on the server; check `git status` in `/var/www/lmlinga` as `lmlinga` |
+| `Another deployment is running` | Wait, or check for a stuck `/opt/lmlinga-deploy.sh` process |
+| `A migration failed` | The site is in maintenance mode. Fix the database or restore the backup, then `php artisan up` |
+| `did not pass its health check` | Check the Laravel log and `systemctl status php-fpm nginx` |
+| `sudo: a password is required` | `/etc/sudoers.d/lmlinga-deploy` is missing or changed |
 | Build check fails | The merged code doesn't install or build; nothing was deployed. Fix and merge again |

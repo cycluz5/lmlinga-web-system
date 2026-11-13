@@ -82,7 +82,7 @@ jobs:
           chmod 600 ~/.ssh/deploy_key
           printf '%s\n' "$EC2_KNOWN_HOSTS" > ~/.ssh/known_hosts
 
-      # The server's authorized_keys forces this key to run only /opt/lmlinga-deploy.sh,
+      # The server's authorized_keys (user lmlinga) forces this key to run only /opt/lmlinga-deploy.sh,
       # so the remote "command" below is just the commit SHA to deploy.
       - name: Deploy commit
         env:
