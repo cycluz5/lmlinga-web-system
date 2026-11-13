@@ -14,8 +14,10 @@ import {
 import { isPointInBoundary } from '../maps/la-medalla-boundary';
 import {
     currentSessionToken,
+    GEO_BLOCKED_MESSAGE,
     GEO_CONSENT_CONFIRM_TEXT,
     GEO_CONSENT_MANUAL_MESSAGE,
+    geolocationPermissionState,
     hasGeoConsent,
     rememberGeoConsent,
     sessionStore,
@@ -1559,13 +1561,25 @@ function initSpotMapping() {
             return;
         }
 
-        // Ask in-app before touching the device GPS (once per login session).
-        if (hasGeoConsent(sessionStore(), currentSessionToken())) {
-            requestGpsLocation(requestId, plan);
-            return;
-        }
+        geolocationPermissionState(navigator).then((state) => {
+            if (requestId !== locateRequestId) {
+                return;
+            }
 
-        askGeoConsent(requestId, plan);
+            // Blocked in the browser: it will not prompt again, so explain how to unblock.
+            if (state === 'denied') {
+                enterManualFallback(GEO_BLOCKED_MESSAGE);
+                return;
+            }
+
+            // Ask in-app before touching the device GPS (once per login session).
+            if (hasGeoConsent(sessionStore(), currentSessionToken())) {
+                requestGpsLocation(requestId, plan);
+                return;
+            }
+
+            askGeoConsent(requestId, plan);
+        });
     }
 
     function askGeoConsent(requestId, plan) {

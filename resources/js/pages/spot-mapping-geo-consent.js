@@ -16,6 +16,29 @@ export const GEO_CONSENT_CONFIRM_TEXT =
     + 'Your location is used only for this plot.\n\n'
     + 'Press OK to allow, or Cancel to place the household manually.';
 
+export const GEO_BLOCKED_MESSAGE =
+    'Location is blocked for this site, so your browser will not ask again. '
+    + 'Click the location icon in the address bar (or the site info icon beside the address), '
+    + 'set Location to Allow, then reload the page — or tap the map to place a location manually.';
+
+/**
+ * Browser permission state for geolocation: 'granted' | 'prompt' | 'denied', or 'unknown'
+ * when the Permissions API is unavailable or fails (callers then just try the GPS).
+ * Never rejects.
+ */
+export async function geolocationPermissionState(nav = globalThis.navigator) {
+    try {
+        if (!nav?.permissions?.query) {
+            return 'unknown';
+        }
+        const status = await nav.permissions.query({ name: 'geolocation' });
+        const state = status?.state;
+        return state === 'granted' || state === 'prompt' || state === 'denied' ? state : 'unknown';
+    } catch {
+        return 'unknown';
+    }
+}
+
 /** Current session token from <meta name="csrf-token">, or '' when unavailable. */
 export function currentSessionToken(doc = globalThis.document) {
     try {

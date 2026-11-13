@@ -6,6 +6,7 @@ import path from 'node:path';
 import {
     currentSessionToken,
     GEO_CONSENT_KEY,
+    geolocationPermissionState,
     hasGeoConsent,
     rememberGeoConsent,
     sessionStore,
@@ -72,6 +73,23 @@ describe('geo consent storage', () => {
     });
 });
 
+describe('geolocationPermissionState', () => {
+    const navWith = (query) => ({ permissions: { query } });
+
+    it('returns the browser permission state', async () => {
+        for (const state of ['granted', 'prompt', 'denied']) {
+            assert.equal(await geolocationPermissionState(navWith(async () => ({ state }))), state);
+        }
+    });
+
+    it('returns unknown when the Permissions API is missing, fails or is odd', async () => {
+        assert.equal(await geolocationPermissionState(null), 'unknown');
+        assert.equal(await geolocationPermissionState({}), 'unknown');
+        assert.equal(await geolocationPermissionState(navWith(async () => { throw new TypeError('x'); })), 'unknown');
+        assert.equal(await geolocationPermissionState(navWith(async () => ({ state: 'weird' }))), 'unknown');
+    });
+});
+
 describe('spot mapping GPS permission gate', () => {
     const start = slice(spotSource, 'function startGpsPlot()', '\n    function askGeoConsent');
     const ask = slice(spotSource, 'function askGeoConsent(', '\n    function requestGpsLocation');
@@ -81,6 +99,15 @@ describe('spot mapping GPS permission gate', () => {
         assert.match(start, /askGeoConsent\(requestId, plan\)/);
         assert.doesNotMatch(start, /getCurrentPosition/);
         assert.ok(start.indexOf('isClientOffline') < start.indexOf('hasGeoConsent'));
+    });
+
+    it('shows how to unblock instead of asking when the browser has blocked location', () => {
+        const permAt = start.indexOf('geolocationPermissionState(navigator)');
+        const deniedAt = start.indexOf("state === 'denied'");
+        assert.ok(permAt >= 0 && deniedAt > permAt);
+        assert.ok(deniedAt < start.indexOf('hasGeoConsent'));
+        assert.match(start, /if \(state === 'denied'\) \{\s*enterManualFallback\(GEO_BLOCKED_MESSAGE\);\s*return;/);
+        assert.match(start, /\.then\(\(state\) => \{\s*if \(requestId !== locateRequestId\)/);
     });
 
     it('allow remembers consent then requests GPS; manual falls back to map clicking', () => {
