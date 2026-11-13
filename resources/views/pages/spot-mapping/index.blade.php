@@ -246,20 +246,6 @@
                     <p class="lml-spot-map__legend-title">Map Legend</p>
 
                     <div class="lml-spot-map__legend-section">
-                        <p class="lml-spot-map__legend-heading">Household Status</p>
-                        <ul class="lml-spot-map__legend-list list-unstyled mb-0">
-                            <li class="lml-spot-map__legend-item">
-                                <span class="lml-spot-map__legend-swatch lml-spot-map__legend-swatch--plotted" aria-hidden="true"></span>
-                                <span>Completed / Plotted</span>
-                            </li>
-                            <li class="lml-spot-map__legend-item">
-                                <span class="lml-spot-map__legend-swatch lml-spot-map__legend-swatch--pending" aria-hidden="true"></span>
-                                <span>Pending</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <div class="lml-spot-map__legend-section">
                         <p class="lml-spot-map__legend-heading">Barangay Zones</p>
                         <ul class="lml-spot-map__legend-list list-unstyled mb-0">
                             <li class="lml-spot-map__legend-item">
