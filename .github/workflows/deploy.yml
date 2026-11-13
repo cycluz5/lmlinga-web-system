@@ -1,0 +1,110 @@
+name: deploy
+
+# Deploys main to the AWS EC2 server (setup: docs/DEPLOYMENT_AWS_EC2.md, CI/CD: docs/DEPLOYMENT_CICD.md).
+# Runs after every merge/push to main, or manually from the Actions tab.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# One production deploy at a time; a newer merge waits for the running deploy instead of cancelling it.
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Build check
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: bcmath, gd, intl, mbstring, pdo_mysql, zip
+          coverage: none
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install PHP dependencies (production)
+        run: composer install --no-dev --optimize-autoloader --no-interaction --no-progress --prefer-dist
+
+      - name: PHP syntax check
+        run: find app bootstrap config database routes -name '*.php' -print0 | xargs -0 -n 50 -P 4 php -l > /dev/null
+
+      - name: Install Node dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Build front-end assets
+        run: npm run build
+
+      # Runs every file listed in the test:js script except offline-prepare.test.mjs,
+      # which already fails on main and would otherwise block every deploy.
+      - name: JavaScript tests
+        run: |
+          FILES=$(node -e "const s=require('./package.json').scripts['test:js']; console.log(s.replace(/^node --test\s+/, '').split(/\s+/).filter(f => f && !f.endsWith('offline-prepare.test.mjs')).join(' '))")
+          node --test --test-timeout=60000 $FILES
+
+  deploy:
+    name: Deploy to EC2
+    needs: check
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # Optional: add required reviewers to the "production" environment in repo Settings > Environments.
+    environment:
+      name: production
+      url: ${{ vars.PRODUCTION_URL }}
+
+    steps:
+      - name: Configure SSH
+        env:
+          EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
+          EC2_KNOWN_HOSTS: ${{ secrets.EC2_KNOWN_HOSTS }}
+        run: |
+          if [ -z "$EC2_SSH_KEY" ] || [ -z "$EC2_KNOWN_HOSTS" ]; then
+            echo "::error::Set the EC2_SSH_KEY and EC2_KNOWN_HOSTS secrets (see docs/DEPLOYMENT_CICD.md)."
+            exit 1
+          fi
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$EC2_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$EC2_KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+      # The server's authorized_keys forces this key to run only /opt/lmlinga-deploy.sh,
+      # so the remote "command" below is just the commit SHA to deploy.
+      - name: Deploy commit
+        env:
+          EC2_HOST: ${{ secrets.EC2_HOST }}
+          EC2_DEPLOY_USER: ${{ secrets.EC2_DEPLOY_USER }}
+        run: |
+          ssh -i ~/.ssh/deploy_key \
+            -o IdentitiesOnly=yes \
+            -o StrictHostKeyChecking=yes \
+            -o ServerAliveInterval=30 \
+            "${EC2_DEPLOY_USER}@${EC2_HOST}" "$GITHUB_SHA"
+
+      - name: Health check
+        if: vars.PRODUCTION_URL != ''
+        env:
+          PRODUCTION_URL: ${{ vars.PRODUCTION_URL }}
+        run: |
+          curl --fail --silent --show-error --location \
+            --retry 6 --retry-delay 10 --retry-all-errors \
+            --output /dev/null --write-out 'HTTP %{http_code} from %{url_effective}\n' \
+            "$PRODUCTION_URL"
+
+      - name: Remove SSH key
+        if: always()
+        run: rm -f ~/.ssh/deploy_key
