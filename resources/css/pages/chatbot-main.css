@@ -1503,6 +1503,59 @@
     box-shadow: 0 2px 6px rgba(var(--lml-secondary-rgb), 0.16);
 }
 
+/* Chatbot type switch (Context-based / Local AI model), above the composer */
+.lml-chatbot-main__modes {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    margin: 0 auto 0.5rem;
+}
+
+.lml-chatbot-main__modes-label {
+    color: var(--lml-dark-green);
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.lml-chatbot-main__mode-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0.3rem 0.8rem;
+    border: 1px solid rgba(var(--lml-secondary-rgb), 0.35);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--lml-dark-green);
+    font-family: inherit;
+    font-size: 0.9rem;
+    font-weight: 500;
+    line-height: 1.3;
+    cursor: pointer;
+}
+
+.lml-chatbot-main__mode-btn:hover {
+    background-color: rgba(var(--lml-soft-green-rgb), 0.28);
+}
+
+.lml-chatbot-main__mode-btn--active,
+.lml-chatbot-main__mode-btn[aria-pressed='true'] {
+    font-weight: 700;
+    background-color: rgba(var(--lml-soft-green-rgb), 0.55);
+    border-color: var(--lml-secondary);
+}
+
+/* Small tag under each answer: which chatbot answered */
+.lml-chatbot-main__mode-tag {
+    display: block;
+    margin-top: 0.35rem;
+    color: var(--lml-dark-green);
+    font-size: 0.75rem;
+    opacity: 0.7;
+}
+
 .lml-chatbot-main__messages {
     display: flex;
     flex: 1 1 auto;

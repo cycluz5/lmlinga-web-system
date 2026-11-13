@@ -1,0 +1,909 @@
+question,intent,topic,template
+"Ono a pagkabongog, tabi?",definition,pagkabongog,"Ono a {a}, tabi?"
+kono a sunod na bakuna,schedule,bakuna,Kono a sunod na {s}?
+Sa pirang bulan na edad a bakuna?,schedule,bakuna,Sa pirang bulan na edad a {s}?
+Ono an pagkabongog?,definition,pagkabongog,Ono an {}?
+Ono an pneumonia?,definition,pneumonia,Ono an {}?
+agko newborn screening sa health center?,general,newborn screening,Agko {p} sa health center?
+Ono a preterm birth,definition,preterm birth,Ono a {o}?
+Delikado na raw kin nagkokombolsyon a igin ko?,warning,nagkokombolsyon a igin ko,Delikado na raw kin {d}?
+sari raw nakokoko a sip'on?,causes,sip'on,Sari raw nakokoko a {i}?
+Ono an HIV?,definition,HIV,Ono an {}?
+ono a mingyari kin magka-malaria a mabrus?,effects,malaria,Ono a mingyari kin magka-{i} a mabrus?
+ngata kaipowan a pagbabakuna?,benefits,pagbabakuna,Ngata kaipowan a {p}?
+Ono a pakinabang ka pagpupurga?,benefits,pagpupurga,Ono a pakinabang ka {p}?
+Ono an kanser sa atay?,definition,kanser sa atay,Ono an {}?
+Siisay a pwedeng magka-TB?,general,TB,Siisay a pwedeng magka-{a}?
+Ono a maray sa igen ka pag-ogas ka kamut,benefits,pag-ogas ka kamut,Ono a maray sa igin ka {p}?
+Ono a kahulugan ka kakulangan sa micronutrient?,definition,kakulangan sa micronutrient,Ono a kahulugan ka {i}?
+ono tabi a kwasa ka hika?,causes,hika,Ono tabi a kwasa ka {i}?
+"Maispid na tabang tabi, nangubugkubug a gorang",warning,nangubugkubug a gorang,"Maispid na tabang tabi, {d}"
+Sari pwedeng magpa-test sa TB?,diagnosis,test sa TB,Sari pwedeng magpa-{g}?
+ono a dahilan ka olod?,causes,olod,Ono a dahilan ka {i}?
+Ono a purga?,definition,purga,Ono a {}?
+ngata importante a newborn screening?,benefits,newborn screening,Ngata importante a {p}?
+Ono a mga senyales ka atake sa poso?,symptoms,atake sa poso,Ono a mga senyales ka {i}?
+sari pwedeng magpa-purga?,diagnosis,purga,Sari pwedeng magpa-{g}?
+Ono a dengue?,definition,dengue,Ono a {}?
+Ono an kanser sa soso?,definition,kanser sa soso,Ono an {}?
+"makulug saigo a payo ko sagkud agko pagkalibong, kaipowan na magpabayad sa doktor",warning,makulug saigo a payo ko sagkud agko pagkalibong,"{D}, kaipowan na magpabayad sa doktor?"
+ngata importante a newborn hearing screening?,benefits,newborn hearing screening,Ngata importante a {p}?
+Ono a test para maisiyan a kolera?,diagnosis,kolera,Ono a test para maisiyan a {i}?
+paono tabi malikayan a kolera?,management,kolera,Paono tabi malikayan a {i}?
+Paono ko asikasowon a igin na agko malnutrisyon?,management,malnutrisyon,Paono ko asikasowon {w} na agko {i}?
+Ngata tabi nagkaka-tuberkulosis a tawo?,causes,tuberkulosis,Ngata tabi nagkaka-{i} a tawo?
+Ono a buut sabiyun ka hika?,definition,hika,Ono a buut sabiyun ka {i}?
+Paono malikayan a ilang sa bato?,management,ilang sa bato,Paono malikayan a {i}?
+Agko side effect a Pinggang Pinoy?,effects,Pinggang Pinoy,Agko side effect a {p}?
+Ono a tanda kin agko kanser sa soso,symptoms,kanser sa soso,Ono a tanda kin agko {i}?
+Sari pwedeng magpa-hearing screening?,diagnosis,hearing screening,Sari pwedeng magpa-{g}?
+Ngata tabi nagkaka-kolog sa likod a tawo?,causes,kolog sa likod,Ngata tabi nagkaka-{i} a tawo?
+Ono a namamatian ka agko diabetes?,symptoms,diabetes,Ono a namamatian ka agko {i}?
+ono a dahilan ka epilepsy,causes,epilepsy,Ono a dahilan ka {i}?
+Ono a paglikay sa rabies?,management,rabies,Ono a paglikay sa {i}?
+Ono a kaipowan kong gibowon kin agko kanser sa soso a mabrus?,management,kanser sa soso,Ono a kaipowan kong gibowon kin agko {i} {w}?
+Pira a bayad sa bitamina?,general,bitamina,Pira a bayad sa {p}?
+Sari pwedeng magpa-family planning?,diagnosis,family planning,Sari pwedeng magpa-{g}?
+Paono sinusuri a kakulangan sa micronutrient?,diagnosis,kakulangan sa micronutrient,Paono sinusuri a {i}?
+Pirang beses sa taon a pagpupurga?,schedule,pagpupurga,Pirang beses sa taon a {s}?
+Ono a sintomas ka kakulangan sa micronutrient?,symptoms,kakulangan sa micronutrient,Ono a sintomas ka {i}?
+ono a kaipowan kong gibowon kin agko rabies a igin,management,rabies,Ono a kaipowan kong gibowon kin agko {i} {w}?
+"ono a pills,",definition,pills,"Ono a {a}, tabi?"
+"sakit sa pag-inga a igin ko, ono a dapat kong gibowon",warning,sakit sa pag-inga a igin ko,"{D}, ono a dapat kong gibowon?"
+Ono an kolera?,definition,kolera,Ono an {}?
+Ono tabi a bolong sa malaria ka igin?,management,malaria,Ono tabi a bolong sa {i} ka igin?
+"ono man a paninigarilyo,?",definition,paninigarilyo,"Ono man a {o}, tabi?"
+Ono a mga senyales ka high blood?,symptoms,high blood,Ono a mga senyales ka {i}?
+Kono dapat a bakuna sa trangkaso?,schedule,bakuna sa trangkaso,Kono dapat a {s}?
+Onong aldow a newborn hearing screening sa health center?,schedule,newborn hearing screening,Onong aldow a {s} sa health center?
+Sari tabi a health center sa barangay?,general,,Sari tabi a health center sa barangay?
+"maispid na tabang tabi, rinorogo a mabrus",warning,rinorogo a mabrus,"Maispid na tabang tabi, {d}"
+Ono a rason ka HIV?,causes,HIV,Ono a rason ka {i}?
+Sari makukua a libreng pagpupurga sa barangay?,general,pagpupurga,Sari makukua a libreng {p} sa barangay?
+Paono nakokoko a altapresyon?,causes,altapresyon,Paono nakokoko a {i}?
+Ono tabi a family planning,definition,family planning,Ono tabi a {p}?
+Kaipowan na tabi magpakonsulta kin mahihimatay a agom ko,warning,mahihimatay a agom ko,Kaipowan na tabi magpakonsulta kin {d}?
+"Diri nagkaun a igin ko sa tolong aldow, ono a dapat kong gibowon?",warning,diri nagkaun a igin ko sa tolong aldow,"{D}, ono a dapat kong gibowon?"
+Ono a high blood?,definition,high blood,Ono a {}?
+Agko side effect a bakuna?,effects,bakuna,Agko side effect a {p}?
+Ono a test sa TB?,definition,test sa TB,Ono a {}?
+kono dapat a check-up ka mabrus?,schedule,check-up ka mabrus,Kono dapat a {s}?
+Pirang beses sa taon a newborn hearing screening?,schedule,newborn hearing screening,Pirang beses sa taon a {s}?
+Ono a kaipowan kong gibowon kin agko kakulangan sa micronutrient a igin ko?,management,kakulangan sa micronutrient,Ono a kaipowan kong gibowon kin agko {i} {w}?
+ono a mga sinyales ka tb?,symptoms,TB,Ono a mga sinyales ka {i}?
+"maispid na tabang, mahihimatay a agom ko",warning,mahihimatay a agom ko,"Maispid na tabang tabi, {d}"
+Ono an pagtao sa rogo?,definition,pagtao sa rogo,Ono an {}?
+Ono a mga sinyales ka autism?,symptoms,autism,Ono a mga sinyales ka {i}?
+Ono an tetano?,definition,tetano,Ono an {}?
+siisay a dapat kong ipabayad kin agko high blood?,general,high blood,Siisay a dapat kong ipabayad kin agko {i}?
+ono tabi a pakinabang ka newborn screening sa awak?,benefits,newborn screening,Ono tabi a pakinabang ka {p} sa awak?
+"Maispid na tabang tabi, kinagat sa ayam a igen ko",warning,kinagat sa ayam a igin ko,"Maispid na tabang tabi, {d}"
+"Ono a epilepsy, tabi?",definition,epilepsy,"Ono a {a}, tabi?"
+Sa pirang bulan na edad a bakuna kontra tetano?,schedule,bakuna kontra tetano,Sa pirang bulan na edad a {s}?
+Ono a namamatian ka agko malnutrisyon?,symptoms,malnutrisyon,Ono a namamatian ka agko {i}?
+Ipaliwanag mo tabi kin ono a malaria,definition,malaria,Ipaliwanag mo tabi kin ono a {i}
+onong edad pwede a pills?,schedule,pills,Onong edad pwede a {s}?
+Ono a stroke?,definition,stroke,Ono a {}?
+Ngata nagka-olod a agom ko?,causes,olod,Ngata nagka-{i} {w}?
+Ono an pagpapasoso?,definition,pagpapasoso,Ono an {}?
+Ono an TB?,definition,TB,Ono an {}?
+"Maispid na tabang tabi, mataas a kalintora ka igin ko",warning,mataas a kalintora ka igin ko,"Maispid na tabang tabi, {d}"
+Ono a mingyari sa igin kin diri magpa-newborn screening?,effects,newborn screening,Ono a mingyari sa igin kin diri magpa-{g}?
+Ngata importante a bakuna,benefits,bakuna,Ngata importante a {p}?
+ono a bolong sa diabetes,management,diabetes,Ono a bolong sa {i}?
+paono tabi malikayan a kanser sa baga?,management,kanser sa baga,Paono tabi malikayan a {i}?
+Onong edad pwede a bakuna sa trangkaso?,schedule,bakuna sa trangkaso,Onong edad pwede a {s}?
+Kono tabi pwede a bakuna sa trangkaso ka talaginun?,schedule,bakuna sa trangkaso,Kono tabi pwede a {s} ka talaginun?
+Ono a bitamina?,definition,bitamina,Ono a {}?
+Paono maisiyan kin agko obo?,diagnosis,obo,Paono maisiyan kin agko {i}?
+Ono an pagbabakuna?,definition,pagbabakuna,Ono an {}?
+Ono raw a namamatian ka nagkaka-rabies,symptoms,rabies,Ono raw a namamatian ka nagkaka-{i}?
+Ono a pagpupurga?,definition,pagpupurga,Ono a {a}?
+Kono a sunod na bakuna kontra tetano?,schedule,bakuna kontra tetano,Kono a sunod na {s}?
+Onong aldow a pills sa health center?,schedule,pills,Onong aldow a {s} sa health center?
+ono a epekto ka gout sa awak?,effects,gout,Ono a epekto ka {i} sa awak?
+"Nakainom sa ilo a igin, ono a gibowon ko?",warning,nakainom sa ilo a igin,"{D}, ono a gibowon ko?"
+Delikado na raw kin kinagat sa sawa a agom ko,warning,kinagat sa sawa a agom ko,Delikado na raw kin {d}?
+Paono ko masisigoro kin agko ako dengue,diagnosis,dengue,Paono ko masisigoro kin agko ako {i}?
+Ono a mingyari sa igin kin diri magpa-test sa HIV?,effects,test sa HIV,Ono a mingyari sa igin kin diri magpa-{g}?
+Ono a maray na gibowon tanganing diri magka-kolog sa likod,management,kolog sa likod,Ono a maray na gibowon tanganing diri magka-{i}?
+Ono a pagpapasoso?,definition,pagpapasoso,Ono a {p}?
+Siisay a pwedeng magpa-newborn screening?,general,newborn screening,Siisay a pwedeng magpa-{g}?
+Ono a bolong sa hepatitis ka igin?,management,hepatitis,Ono tabi a bolong sa {i} ka igin?
+Onong aldow a bitamina sa health center?,schedule,bitamina,Onong aldow a {s} sa health center?
+pirang beses kaipowan a pagpupurga?,schedule,pagpupurga,Pirang beses kaipowan a {s}?
+Kaipowan pa magpa-check-up para maisiyan a sip'on,diagnosis,sip'on,Kaipowan pa magpa-check-up para maisiyan a {i}?
+Ono a bolong sa hika?,management,hika,Ono a bolong sa {i}?
+Ono a mga tanda ka pagkabongog sa igin?,symptoms,pagkabongog,Ono a mga tanda ka {i} sa igin?
+Ono tabi a sintomas ka gout?,symptoms,gout,Ono tabi a sintomas ka {i}?
+agko newborn hearing screening sa health center?,general,newborn hearing screening,Agko {p} sa health center?
+Sari raw nakokoko a altapresyon?,causes,altapresyon,Sari raw nakokoko a {i}?
+Ngata kaipowan a newborn hearing screening?,benefits,newborn hearing screening,Ngata kaipowan a {p}?
+ono a mingyari sa igin kin diri magpa-bakuna?,effects,bakuna,Ono a mingyari sa igin kin diri magpa-{g}?
+Ono a mingyari sa igin kin diri magpa-family planning?,effects,family planning,Ono a mingyari sa igin kin diri magpa-{g}?
+Kaipowan na tabi magpakonsulta kin makulug saigo a payo ko sagkud agko pagkalibong?,warning,makulug saigo a payo ko sagkud agko pagkalibong,Kaipowan na tabi magpakonsulta kin {d}?
+Ono an check-up?,definition,check-up,Ono an {}?
+Ono a TB?,definition,TB,Ono a {}?
+"Isinoka a igin ko sagkud maluya, ono a gibowon ko?",warning,isinoka a igin ko sagkud maluya,"{D}, ono tabi a gibowon ko?"
+ono a namamatian ka agko epilepsy?,symptoms,epilepsy,Ono a namamatian ka agko {i}?
+Kono kaipowan omiyan sa ospital kin agko kolog sa likod,warning,kolog sa likod,Kono kaipowan omiyan sa ospital kin agko {i}?
+Pirang beses sa taon a bakuna kontra tetano?,schedule,bakuna kontra tetano,Pirang beses sa taon a {s}?
+Ono a kalintora?,definition,kalintora,Ono a {}?
+Ono a test para maisiyan a ilang sa bato?,diagnosis,ilang sa bato,Ono a test para maisiyan a {i}?
+Ono a epilepsy?,definition,epilepsy,Ono a {}?
+Ngata maray a family planning?,benefits,family planning,Ngata maray a {p}?
+Ono a olod?,definition,olod,Ono a {}?
+"kinagat sa sawa a agom ko, ono a dapat kong gibowon",warning,kinagat sa sawa a agom ko,"{D}, ono a dapat kong gibowon?"
+"Diri nagkaun a igin ko sa tolong aldow, ono tabi a gibowon ko?",warning,diri nagkaun a igin ko sa tolong aldow,"{D}, ono tabi a gibowon ko?"
+Ngata importante a family planning?,benefits,family planning,Ngata importante a {p}?
+ono a epekto ka paninigarilyo sa mabrus?,effects,mabrus,Ono a epekto ka paninigarilyo sa {x}?
+Sari pwedeng magpa-test para sa sip'on?,diagnosis,sip'on,Sari pwedeng magpa-test para sa {i}?
+Ono a autism?,definition,autism,Ono a {}?
+Ono a mga tanda ka sip'on sa igin?,symptoms,sip'on,Ono a mga tanda ka {i} sa igin?
+Ono an autism?,definition,autism,Ono an {}?
+Onong aldow a pagbakuna ka igin sa health center,schedule,pagbakuna ka igin,Onong aldow a {s} sa health center?
+Agko test para sa kalintora?,diagnosis,kalintora,Agko test para sa {i}?
+Paono maisiyan kin agko kanser sa soso?,diagnosis,kanser sa soso,Paono maisiyan kin agko {i}?
+Siisay a pwedeng magka-gout?,general,gout,Siisay a pwedeng magka-{i}?
+"Ono a altapresyon,?",definition,altapresyon,"Ono a {a}, tabi?"
+Ono a gout?,definition,gout,Ono a {}?
+Siisay a pwedeng magpa-pills,general,pills,Siisay a pwedeng magpa-{g}?
+Ono a mingyari kin diri mabolong a trangkaso?,effects,trangkaso,Ono a mingyari kin diri mabolong a {i}?
+Kono kaipowan omiyan sa ospital kin agko pulmonya?,warning,pulmonya,Kono kaipowan omiyan sa ospital kin agko {i}?
+ono raw a dahilan ka olod,causes,olod,Ono raw a dahilan ka {i}?
+ono a paglikay sa hepatitis?,management,hepatitis,Ono a paglikay sa {i}?
+ono a mga senyales ka pneumonia?,symptoms,pneumonia,Ono a mga senyales ka {i}?
+Kono a sunod na newborn screening,schedule,newborn screening,Kono a sunod na {s}?
+Sari pwedeng magpa-test para sa tetano?,diagnosis,tetano,Sari pwedeng magpa-test para sa {i}?
+Kaipowan pa magpa-check-up para maisiyan a rabies?,diagnosis,rabies,Kaipowan pa magpa-check-up para maisiyan a {i}?
+Ono tabi a menopause?,definition,menopause,Ono tabi a {o}?
+Ngata tabi nagkaka-kanser sa atay a tawo?,causes,kanser sa atay,Ngata tabi nagkaka-{i} a tawo?
+Siisay a pwedeng magka-HIV?,general,HIV,Siisay a pwedeng magka-{i}?
+Kono kaipowan omiyan sa ospital kin agko obo,warning,obo,Kono kaipowan omiyan sa ospital kin agko {i}?
+Paono maiisiyan kin agko pulmonya a igin?,diagnosis,pulmonya,Paono maiisiyan kin agko {i} {w}?
+Ono a tanda kin agko rabies?,symptoms,rabies,Ono a tanda kin agko {i}?
+Naooyon raw a igin sa newborn screening?,general,newborn screening,Naooyon raw a igin sa {p}?
+Pirang beses sa taon a pills?,schedule,pills,Pirang beses sa taon a {s}?
+Ono an hepatitis?,definition,hepatitis,Ono an {}?
+ono a komplikasyon ka kanser sa atay?,effects,kanser sa atay,Ono a komplikasyon ka {i}?
+Paono maiisiyan kin agko obo a igin ko?,diagnosis,obo,Paono maiisiyan kin agko {i} {w}?
+kaipowan na tabi magpakonsulta kin mapolang mata ka igin ko sagkud mainit?,warning,mapolang mata ka igin ko sagkud mainit,Kaipowan na tabi magpakonsulta kin {d}?
+Agko bolong sa epilepsy,management,epilepsy,Agko bolong sa {i}?
+Ono a namamatian ka agko pagkabongog?,symptoms,pagkabongog,Ono a namamatian ka agko {i}?
+Ono a sinyales ka amay na pangingigin?,symptoms,amay na pangingigin,Ono a sinyales ka {o}?
+ono a kwasa ka malnutrisyon?,causes,malnutrisyon,Ono a kwasa ka {i}?
+Siisay a pwedeng magka-dementia?,general,dementia,Siisay a pwedeng magka-{a}?
+Kono tabi pwede a newborn screening ka talaginun?,schedule,newborn screening,Kono tabi pwede a {s} ka talaginun?
+ono a family planning?,definition,family planning,Ono a {p}?
+Ono a mga tanda ka pneumonia sa igen?,symptoms,pneumonia,Ono a mga tanda ka {i} sa igin?
+Agko pagtao sa rogo sa health center?,general,pagtao sa rogo,Agko {p} sa health center?
+Libre raw a pagpupurga?,general,pagpupurga,Libre raw a {p}?
+sari makukua a libreng pagpapasoso sa barangay?,general,pagpapasoso,Sari makukua a libreng {p} sa barangay?
+"Makulug a ruruggan ko, ono tabi a gibowon ko?",warning,makulug a ruruggan ko,"{D}, ono tabi a gibowon ko?"
+Ono a komplikasyon ka hepatitis?,effects,hepatitis,Ono a komplikasyon ka {i}?
+agko test para sa kakulangan sa micronutrient?,diagnosis,kakulangan sa micronutrient,Agko test para sa {i}?
+ono a benepisyo ka pagpapasoso?,benefits,pagpapasoso,Ono tabi a benepisyo ka {p}?
+Ono a epekto ka pagbabakuna?,effects,pagbabakuna,Ono a epekto ka {p}?
+Ono a buut sabiyun ka pagtao sa rogo?,definition,pagtao sa rogo,Ono a buut sabiyun ka {p}?
+ono a delikadong senyales ka kolera?,warning,kolera,Ono a delikadong sinyales ka {i}?
+Agko test para sa hepatitis?,diagnosis,hepatitis,Agko test para sa {i}?
+Ono a epekto ka dengue sa awak,effects,dengue,Ono a epekto ka {i} sa awak?
+paono malikayan a pulmonya?,management,pulmonya,Paono malikayan a {i}?
+Paono ko masisigoro kin agko ako obo,diagnosis,obo,Paono ko masisigoro kin agko ako {i}?
+Ono a mingyari kin diri mabolong a ilang sa bato?,effects,ilang sa bato,Ono a mingyari kin diri mabolong a {i}?
+Ono a dahilan ka atake sa poso?,causes,atake sa poso,Ono a dahilan ka {i}?
+Agko maray na pagkaun sa health center?,general,maray na pagkaun,Agko {p} sa health center?
+Ngata tabi nagkaka-trangkaso a tawo?,causes,trangkaso,Ngata tabi nagkaka-{i} a tawo?
+Ono a paglikay sa kanser sa baga?,management,kanser sa baga,Ono a paglikay sa {i}?
+Ono a pulmonya?,definition,pulmonya,Ono a {i}?
+Siisay a pwedeng magka-high blood?,general,high blood,Siisay a pwedeng magka-{a}?
+Paono malikayan a dementia,management,dementia,Paono malikayan a {i}?
+Ono a test para maisiyan a autism?,diagnosis,autism,Ono a test para maisiyan a {i}?
+Ono man a dementia?,definition,dementia,Ono man a {i}?
+Ono an kanser sa baga?,definition,kanser sa baga,Ono an {}?
+Ono a pakinabang ka Pinggang Pinoy?,benefits,Pinggang Pinoy,Ono a pakinabang ka {p}?
+Ono an check-up ka mabrus?,definition,check-up ka mabrus,Ono an {}?
+Sari raw nakokoko a autism?,causes,autism,Sari raw nakokoko a {i}?
+Paono ko asikasowon a gorang na agko hepatitis?,management,hepatitis,Paono ko asikasowon {w} na agko {i}?
+Ono a hepatitis?,definition,hepatitis,Ono a {}?
+kono tabi pwede a pills ka talaginun,schedule,pills,Kono tabi pwede a {s} ka talaginun?
+Ono a benepisyo ka pagpapakusug sa awak,benefits,pagpapakusug sa awak,Ono a benepisyo ka {p}?
+Ono an rayuma?,definition,rayuma,Ono an {}?
+ono a namamatian ka agko ilang sa bato,symptoms,ilang sa bato,Ono a namamatian ka agko {i}?
+Ono a kolera?,definition,kolera,Ono a {}?
+Ono an trangkaso?,definition,trangkaso,Ono an {}?
+Ono a maray na gibowon tanganing diri magka-kakulangan sa micronutrient?,management,kakulangan sa micronutrient,Ono a maray na gibowon tanganing diri magka-{i}?
+Sari pwedeng magpa-test para sa HIV?,diagnosis,HIV,Sari pwedeng magpa-test para sa {i}?
+Ono a delikadong sinyales ka atake sa poso?,warning,atake sa poso,Ono a delikadong sinyales ka {i}?
+kaipowan pa magpa-check-up para maisiyan a hepatitis?,diagnosis,hepatitis,Kaipowan pa magpa-check-up para maisiyan a {i}?
+Ono a tuberkulosis?,definition,tuberkulosis,Ono a {}?
+Ono raw a namamatian ka nagkaka-dementia?,symptoms,dementia,Ono raw a namamatian ka nagkaka-{i}?
+Ngata importante a pagpupurga?,benefits,pagpupurga,Ngata importante a {p}?
+Ono a test para maisiyan a atake sa poso?,diagnosis,atake sa poso,Ono a test para maisiyan a {i}?
+"Isinoka a igin ko sagkud maluya, ono a dapat kong gibowon",warning,isinoka a igin ko sagkud maluya,"{D}, ono a dapat kong gibowon?"
+Onong aldow a pagpupurga sa health center?,schedule,pagpupurga,Onong aldow a {s} sa health center?
+Ono an newborn hearing screening?,definition,newborn hearing screening,Ono an {}?
+Ono an stroke?,definition,stroke,Ono an {}?
+Ono a epekto ka stroke sa awak?,effects,stroke,Ono a epekto ka {i} sa awak?
+Paono nakokoko a rabies?,causes,rabies,Paono nakokoko a {i}?
+Agko bolong sa kanser sa baga?,management,kanser sa baga,Agko bolong sa {i}?
+Ngata nagkakaagko malnutrisyon?,causes,malnutrisyon,Ngata nagkakaagko {i}?
+Ono a mingyari kin magka-epilepsy a mabrus?,effects,epilepsy,Ono a mingyari kin magka-{i} a mabrus?
+paono sinusuri a kalintora?,diagnosis,kalintora,Paono sinusuri a {i}?
+Agko side effect a pagpupurga?,effects,pagpupurga,Agko side effect a {p}?
+kono pwede a bakuna ka talaginun?,schedule,bakuna,Kono tabi pwede a {s} ka talaginun?
+Ono tabi a paninigarilyo?,definition,paninigarilyo,Ono tabi a {o}?
+Agko test para sa pagkabongog?,diagnosis,pagkabongog,Agko test para sa {i}?
+ngata kaipowan a bitamina?,benefits,bitamina,Ngata kaipowan a {p}?
+Ono a mingyari sa igen kin diri magpa-bakuna kontra tetano?,effects,bakuna kontra tetano,Ono a mingyari sa igin kin diri magpa-{g}?
+Ono a maray na gibowon tanganing diri magka-kanser sa baga?,management,kanser sa baga,Ono a maray na gibowon tanganing diri magka-{i}?
+agko test para sa olod?,diagnosis,olod,Agko test para sa {i}?
+Ngata nagka-epilepsy ako?,causes,epilepsy,Ngata nagka-{i} {w}?
+Ono a epekto ka pagtao sa rogo?,effects,pagtao sa rogo,Ono a epekto ka {p}?
+Ono a mingyari sa igin kin diri magpa-check-up?,effects,check-up,Ono a mingyari sa igin kin diri magpa-{g}?
+Ono a epekto ka HIV sa awak,effects,HIV,Ono a epekto ka {i} sa awak?
+Paono maisiyan kin agko kolog sa likod?,diagnosis,kolog sa likod,Paono maisiyan kin agko {i}?
+Ono a sintomas ka epilepsy?,symptoms,epilepsy,Ono a sintomas ka {i}?
+Ono tabi a dahilan ka menopause?,causes,menopause,Ono tabi a dahilan ka {o}?
+ono a test para maisiyan a epilepsy?,diagnosis,epilepsy,Ono a test para maisiyan a {i}?
+Ono raw a mingyari kin pabayaan a epilepsy?,effects,epilepsy,Ono raw a mingyari kin pabayaan a {i}?
+Onong edad pwede a pagpupurga?,schedule,pagpupurga,Onong edad pwede a {s}?
+Ono a rayuma?,definition,rayuma,Ono a {}?
+Ipaliwanag mo tabi kin ono a TB,definition,TB,Ipaliwanag mo tabi kin ono a {i}
+Ono a mga tanda ka pagkabongog sa igen,symptoms,pagkabongog,Ono a mga tanda ka {i} sa igin?
+Ono an ilang sa bato?,definition,ilang sa bato,Ono an {}?
+Sa pirang bulan na edad a newborn hearing screening?,schedule,newborn hearing screening,Sa pirang bulan na edad a {s}?
+Ono an hearing screening?,definition,hearing screening,Ono an {}?
+Paono ataman a agko kanser sa baga?,management,kanser sa baga,Paono ataman a agko {i}?
+Ono a kwasa ka autism?,causes,autism,Ono a kwasa ka {i}?
+Ono a komplikasyon ka kakulangan sa micronutrient?,effects,kakulangan sa micronutrient,Ono a komplikasyon ka {i}?
+Ono a epekto ka pagpapakusug sa awak,effects,pagpapakusug sa awak,Ono a epekto ka {p}?
+Ono a pagkabongog?,definition,pagkabongog,Ono a {}?
+ono a mingyari kin diri mabolong a epilepsy?,effects,epilepsy,Ono a mingyari kin diri mabolong a {i}?
+"Mataas a kalintora ka igen ko, ono a dapat kong gibowon?",warning,mataas a kalintora ka igin ko,"{D}, ono a dapat kong gibowon?"
+Ono a mga tanda ka epilepsy sa igin?,symptoms,epilepsy,Ono a mga tanda ka {i} sa igin?
+Paono ko asikasowon a igin na agko pulmonya?,management,pulmonya,Paono ko asikasowon {w} na agko {i}?
+Sa pirang bulan na edad a newborn screening?,schedule,newborn screening,Sa pirang bulan na edad a {s}?
+Ono a mingyari kin magka-tetano a mabrus,effects,tetano,Ono a mingyari kin magka-{i} a mabrus?
+Ono a dahilan ka kanser sa soso?,causes,kanser sa soso,Ono a dahilan ka {i}?
+Agko test para sa dementia?,diagnosis,dementia,Agko test para sa {i}?
+Kono dapat a pills?,schedule,pills,Kono dapat a {s}?
+"Sakit sa pag-inga a igin ko, ono a gibowon ko?",warning,sakit sa pag-inga a igin ko,"{D}, ono a gibowon ko?"
+Paono maiisiyan kin agko diabetes a igen?,diagnosis,diabetes,Paono maiisiyan kin agko {i} {w}?
+Ono an high blood?,definition,high blood,Ono an {}?
+"Nangubugkubug a gorang, dapat na omiyan sa ospital?",warning,nangubugkubug a gorang,"{D}, dapat na omiyan sa ospital?"
+Libre raw a pills,general,pills,Libre raw a {p}?
+ono raw a mingyari kin pabayaan a sip'on?,effects,sip'on,Ono raw a mingyari kin pabayaan a {i}?
+Onong edad pwede a check-up ka mabrus?,schedule,check-up ka mabrus,Onong edad pwede a {s}?
+Mataas a kalintora ka igin ko. Delikado na,warning,mataas a kalintora ka igin ko,{D}. Delikado na?
+Sari pwedeng magpa-bakuna kontra tetano?,diagnosis,bakuna kontra tetano,Sari pwedeng magpa-{g}?
+ono a bolong sa kolera?,management,kolera,Ono a bolong sa {i}?
+Ono a pagtao sa rogo?,definition,pagtao sa rogo,Ono a {}?
+Paono malikayan a kanser sa baga?,management,kanser sa baga,Paono malikayan a {i}?
+Agko bolong sa pneumonia?,management,pneumonia,Agko bolong sa {i}?
+ngata nagkakaagko gout,causes,gout,Ngata nagkakaagko {i}?
+Ono a bolong sa HIV?,management,HIV,Ono a bolong sa {i}?
+Sari makukua a libreng pagtao sa rogo sa barangay,general,pagtao sa rogo,Sari makukua a libreng {p} sa barangay?
+Paono maparay a kanser sa baga?,management,kanser sa baga,Paono maparay a {i}?
+Paono maparay a obo?,management,obo,Paono maparay a {i}?
+Ono a pagbabakuna sa igin,definition,pagbabakuna,Ono a {a} sa igin?
+Kaipowan pa magpa-check-up para maisiyan a kolera?,diagnosis,kolera,Kaipowan pa magpa-check-up para maisiyan a {i}?
+Agko pagpupurga sa health center?,general,pagpupurga,Agko {p} sa health center?
+Ono a namamatian ka agko dengue?,symptoms,dengue,Ono a namamatian ka agko {i}?
+Ono an gender identity?,definition,gender identity,Ono an {}?
+Ono an pulmonya?,definition,pulmonya,Ono an {}?
+siisay a dapat kong ipabayad kin agko pulmonya?,general,pulmonya,Siisay a dapat kong ipabayad kin agko {i}?
+ono a epekto ka pinggang pinoy?,effects,Pinggang Pinoy,Ono a epekto ka {p}?
+Siisay a dapat kong ipabayad kin agko pneumonia?,general,pneumonia,Siisay a dapat kong ipabayad kin agko {i}?
+Ono a atake sa poso?,definition,atake sa poso,Ono a {i}?
+Sa pirang bulan na edad a pills?,schedule,pills,Sa pirang bulan na edad a {s}?
+Ono raw a dahilan ka pulmonya,causes,pulmonya,Ono raw a dahilan ka {i}?
+onong aldow a bakuna sa trangkaso sa health center,schedule,bakuna sa trangkaso,Onong aldow a {s} sa health center?
+Ngata nagka-kalintora a agom ko?,causes,kalintora,Ngata nagka-{i} {w}?
+Sari pwedeng magpa-test sa HIV?,diagnosis,test sa HIV,Sari pwedeng magpa-{g}?
+Ono a sintomas kin agko HIV a igen?,symptoms,HIV,Ono a sintomas kin agko {i} {w}?
+Ono a maray na naitatabang ka newborn screening?,benefits,newborn screening,Ono a maray na naitatabang ka {p}?
+Paono maparay a kanser sa atay,management,kanser sa atay,Paono maparay a {i}?
+Ono an kolog sa likod?,definition,kolog sa likod,Ono an {}?
+Ono raw a mingyari kin pabayaan a pulmonya,effects,pulmonya,Ono raw a mingyari kin pabayaan a {i}?
+Paono maparay a kolera?,management,kolera,Paono maparay a {i}?
+Ngata maray a Pinggang Pinoy?,benefits,Pinggang Pinoy,Ngata maray a {p}?
+Paono nakokoko a malnutrisyon?,causes,malnutrisyon,Paono nakokoko a {i}?
+ngata tabi nagkaka-pneumonia a tawo,causes,pneumonia,Ngata tabi nagkaka-{i} a tawo?
+Ono a kaipowan kong gibowon kin agko obo a talaginun,management,obo,Ono a kaipowan kong gibowon kin agko {i} {w}?
+Agko test para sa kanser sa baga?,diagnosis,kanser sa baga,Agko test para sa {i}?
+Paono ko asikasowon a igen na agko atake sa poso?,management,atake sa poso,Paono ko asikasowon {w} na agko {i}?
+Kono a iskedyul ka bakuna?,schedule,bakuna,Kono a iskedyul ka {s}?
+Ngata importante a pills?,benefits,pills,Ngata importante a {p}?
+Ono a mga tanda ka diabetes sa igen?,symptoms,diabetes,Ono a mga tanda ka {i} sa igin?
+Ono a dahilan ka kolog sa likod?,causes,kolog sa likod,Ono a dahilan ka {i}?
+paono tabi malikayan a autism?,management,autism,Paono tabi malikayan a {i}?
+Ono a paglikay sa kalintora,management,kalintora,Ono a paglikay sa {i}?
+Ono a buut sabiyun ka gout?,definition,gout,Ono a buut sabiyun ka {i}?
+Ono a malaria?,definition,malaria,Ono a {a}?
+Mahihimatay a agom ko. Delikado na?,warning,mahihimatay a agom ko,{D}. Delikado na?
+Ono a benepisyo ka pills?,benefits,pills,Ono a benepisyo ka {p}?
+Ono a hearing screening?,definition,hearing screening,Ono a {}?
+paono ataman a agko autism?,management,autism,Paono ataman a agko {i}?
+"kinagat sa ayam a igin ko, kaipowan na magpabayad sa doktor",warning,kinagat sa ayam a igin ko,"{D}, kaipowan na magpabayad sa doktor?"
+Ono raw a mingyari kin pabayaan a pagkabongog?,effects,pagkabongog,Ono raw a mingyari kin pabayaan a {i}?
+Ono raw a mingyari kin pabayaan a rayuma?,effects,rayuma,Ono raw a mingyari kin pabayaan a {i}?
+Ono tabi a sintomas ka pagkabongog?,symptoms,pagkabongog,Ono tabi a sintomas ka {i}?
+Paono malikayan a sip'on?,management,sip'on,Paono malikayan a {i}?
+Ono a namamatian ka agko kanser sa soso?,symptoms,kanser sa soso,Ono a namamatian ka agko {i}?
+ono a mingyari sa igin kin diri magpa-test sa tb?,effects,test sa TB,Ono a mingyari sa igin kin diri magpa-{g}?
+Ono raw a dahilan ka kalintora?,causes,kalintora,Ono raw a dahilan ka {i}?
+Paono maiisiyan kin agko atake sa poso a agom ko?,diagnosis,atake sa poso,Paono maiisiyan kin agko {i} {w}?
+paono maisiyan kin agko olod?,diagnosis,olod,Paono maisiyan kin agko {i}?
+Ono an purga?,definition,purga,Ono an {}?
+Ono tabi a benepisyo ka maray na pagkaun?,benefits,maray na pagkaun,Ono tabi a benepisyo ka {p}?
+Ono man a atake sa poso?,definition,atake sa poso,Ono man a {i}?
+Ono a epekto ka check-up ka mabrus?,effects,check-up ka mabrus,Ono a epekto ka {p}?
+Ono a check-up?,definition,check-up,Ono a {}?
+ono a mga senyales ka altapresyon?,symptoms,altapresyon,Ono a mga senyales ka {i}?
+Ono a komplikasyon ka olod?,effects,olod,Ono a komplikasyon ka {i}?
+paono maiisiyan kin agko atake sa poso a igin ko?,diagnosis,atake sa poso,Paono maiisiyan kin agko {i} {w}?
+Pirang beses sa taon a bakuna sa trangkaso?,schedule,bakuna sa trangkaso,Pirang beses sa taon a {s}?
+Siisay a pwedeng magka-kanser sa baga?,general,kanser sa baga,Siisay a pwedeng magka-{a}?
+agko bolong sa trangkaso?,management,trangkaso,Agko bolong sa {i}?
+Paono nakokoko a trangkaso?,causes,trangkaso,Paono nakokoko a {i}?
+Ono tabi a check-up ka mabrus,definition,check-up ka mabrus,Ono tabi a {p}?
+Ono a buut sabiyun ka kakulangan sa micronutrient,definition,kakulangan sa micronutrient,Ono a buut sabiyun ka {i}?
+Ono an test sa TB?,definition,test sa TB,Ono an {}?
+Onong aldow a bakuna kontra tetano sa health center,schedule,bakuna kontra tetano,Onong aldow a {s} sa health center?
+ono tabi a dementia?,definition,dementia,Ono tabi a {a}?
+Ono a dementia?,definition,dementia,Ono a {}?
+Ono a pakinabang ka check-up ka mabrus?,benefits,check-up ka mabrus,Ono a pakinabang ka {p}?
+Ono a newborn hearing screening?,definition,newborn hearing screening,Ono a {}?
+Ono a senyales ka gender identity?,symptoms,gender identity,Ono a sinyales ka {o}?
+"Diri nagkaun a igin ko sa tolong aldow, kaipowan na magpabayad sa doktor?",warning,diri nagkaun a igin ko sa tolong aldow,"{D}, kaipowan na magpabayad sa doktor?"
+Agko bolong sa ilang sa bato,management,ilang sa bato,Agko bolong sa {i}?
+Ono an pagpapakusug sa awak?,definition,pagpapakusug sa awak,Ono an {}?
+Ono an kalintora?,definition,kalintora,Ono an {}?
+Ono a menopause?,definition,menopause,Ono a {}?
+Kono tabi pwede a pagpupurga ka talaginun?,schedule,pagpupurga,Kono tabi pwede a {s} ka talaginun?
+Ono a mga senyales ka gout?,symptoms,gout,Ono a mga senyales ka {i}?
+Ono a maray na naitatabang ka maray na pagkaun,benefits,maray na pagkaun,Ono a maray na naitatabang ka {p}?
+Ono a pakinabang ka maray na pagkaun sa awak?,benefits,maray na pagkaun,Ono tabi a pakinabang ka {p} sa awak?
+ono a epekto ka family planning?,effects,family planning,Ono a epekto ka {p}?
+Ono a pakinabang ka newborn hearing screening?,benefits,newborn hearing screening,Ono a pakinabang ka {p}?
+Ono a maray sa igin ka bakuna,benefits,bakuna,Ono a maray sa igin ka {p}?
+Paono tabi malikayan a diabetes?,management,diabetes,Paono tabi malikayan a {i}?
+Agko pa ibang impormasyon manungud sa check-up ka mabrus,general,check-up ka mabrus,Agko pa ibang impormasyon manungud sa {a}?
+Pira a bayad sa check-up ka mabrus?,general,check-up ka mabrus,Pira a bayad sa {p}?
+Ono a sinyales ka preterm birth?,symptoms,preterm birth,Ono a sinyales ka {o}?
+Ono a mga sinyales ka kalintora,symptoms,kalintora,Ono a mga sinyales ka {i}?
+Ono a pakinabang ka pagtao sa rogo?,benefits,pagtao sa rogo,Ono a pakinabang ka {p}?
+"Maluya a awak ka igen ko sagkud mainit, dapat na omiyan sa ospital?",warning,maluya a awak ka igin ko sagkud mainit,"{D}, dapat na omiyan sa ospital?"
+Ono an pag-ogas ka kamut?,definition,pag-ogas ka kamut,Ono an {}?
+Sa pirang bulan na edad a bakuna sa trangkaso?,schedule,bakuna sa trangkaso,Sa pirang bulan na edad a {s}?
+Ngata kaipowan a check-up ka mabrus?,benefits,check-up ka mabrus,Ngata kaipowan a {p}?
+Ono an family planning?,definition,family planning,Ono an {}?
+paono ko asikasowon a talaginun na agko hika?,management,hika,Paono ko asikasowon {w} na agko {i}?
+Ono a benepisyo ka newborn hearing screening,benefits,newborn hearing screening,Ono a benepisyo ka {p}?
+Ono a mingyari sa igin kin diri magpa-pills?,effects,pills,Ono a mingyari sa igin kin diri magpa-{g}?
+ono raw a mingyari kin pabayaan a kolera?,effects,kolera,Ono raw a mingyari kin pabayaan a {i}?
+"Mataas a kalintora ka igin ko, dapat na omiyan sa ospital?",warning,mataas a kalintora ka igin ko,"{D}, dapat na omiyan sa ospital?"
+Sari raw nakokoko a gout?,causes,gout,Sari raw nakokoko a {i}?
+paono maisiyan kin agko gout?,diagnosis,gout,Paono maisiyan kin agko {i}?
+Kono tabi pwede a bakuna kontra tetano ka talaginun?,schedule,bakuna kontra tetano,Kono tabi pwede a {s} ka talaginun?
+pirang beses sa taon a check-up ka mabrus?,schedule,check-up ka mabrus,Pirang beses sa taon a {s}?
+Ono an epilepsy?,definition,epilepsy,Ono an {}?
+Ono tabi a dahilan ka paninigarilyo?,causes,paninigarilyo,Ono tabi a dahilan ka {o}?
+Ono a pakinabang ka pills?,benefits,pills,Ono a pakinabang ka {p}?
+Ono an bitamina?,definition,bitamina,Ono an {}?
+Ono an pagpupurga?,definition,pagpupurga,Ono an {}?
+Siisay a dapat kong ipabayad kin agko stroke?,general,stroke,Siisay a dapat kong ipabayad kin agko {i}?
+Naooyon raw a mabrus na magpa-pills?,general,pills,Naooyon raw a mabrus na magpa-{g}?
+Ono a komplikasyon ka pagkabongog?,effects,pagkabongog,Ono a komplikasyon ka {i}?
+Ngata maray a bakuna?,benefits,bakuna,Ngata maray a {p}?
+Ono a maray na naitatabang ka pagpapakusug sa awak?,benefits,pagpapakusug sa awak,Ono a maray na naitatabang ka {p}?
+Ono a tetano?,definition,tetano,Ono a {i}?
+ono a test para maisiyan a hepatitis,diagnosis,hepatitis,Ono a test para maisiyan a {i}?
+Ono an malaria?,definition,malaria,Ono an {}?
+Ono a mingyari sa igen kin diri magpa-check-up?,effects,check-up,Ono a mingyari sa igin kin diri magpa-{g}?
+Ono a kwasa ka TB?,causes,TB,Ono a kwasa ka {i}?
+Siisay a pwedeng magka-pagbabakuna?,general,pagbabakuna,Siisay a pwedeng magka-{a}?
+kono a iskedyul ka check-up ka mabrus?,schedule,check-up ka mabrus,Kono a iskedyul ka {s}?
+Ipaliwanag mo tabi kin ono a olod,definition,olod,Ipaliwanag mo tabi kin ono a {i}
+"Mataas a kalintora ka igen ko, kaipowan na magpabayad sa doktor",warning,mataas a kalintora ka igin ko,"{D}, kaipowan na magpabayad sa doktor?"
+Paono sinusuri a malnutrisyon?,diagnosis,malnutrisyon,Paono sinusuri a {i}?
+"Isinoka a igen ko sagkud maluya, kaipowan na magpabayad sa doktor?",warning,isinoka a igin ko sagkud maluya,"{D}, kaipowan na magpabayad sa doktor?"
+Ono a sintomas ka malaria?,symptoms,malaria,Ono a sintomas ka {i}?
+"Ono man a amay na pangingigin, tabi?",definition,amay na pangingigin,"Ono man a {o}, tabi?"
+Sari pwedeng magpa-test para sa pagkabongog?,diagnosis,pagkabongog,Sari pwedeng magpa-test para sa {i}?
+Ono a paglikay sa kolera?,management,kolera,Ono a paglikay sa {i}?
+Ono an dengue?,definition,dengue,Ono an {}?
+"Ono a newborn screening, tabi?",definition,newborn screening,"Ono a {a}, tabi?"
+Ono tabi a bolong sa kanser sa atay ka igin?,management,kanser sa atay,Ono tabi a bolong sa {i} ka igin?
+kaipowan na tabi magpakonsulta kin makulug a ruruggan ko?,warning,makulug a ruruggan ko,Kaipowan na tabi magpakonsulta kin {d}?
+"Mataas a kalintora ka igin ko, ono a gibowon ko?",warning,mataas a kalintora ka igin ko,"{D}, ono tabi a gibowon ko?"
+Libre raw a bitamina?,general,bitamina,Libre raw a {p}?
+Ono a amay na pangingigin?,definition,amay na pangingigin,Ono a {}?
+Ono a mga tanda ka rayuma sa igin?,symptoms,rayuma,Ono a mga tanda ka {i} sa igin?
+"Sakit sa pag-inga a igen ko, ono tabi a gibowon ko?",warning,sakit sa pag-inga a igin ko,"{D}, ono tabi a gibowon ko?"
+Ono a buut sabiyun ka pag-ogas ka kamut?,definition,pag-ogas ka kamut,Ono a buut sabiyun ka {p}?
+Ono a sinyales ka puberty?,symptoms,puberty,Ono a sinyales ka {o}?
+Agko libreng tabang para sa agko epilepsy?,general,epilepsy,Agko libreng tabang para sa agko {i}?
+Ngata nagka-kanser sa soso a igen,causes,kanser sa soso,Ngata nagka-{i} {w}?
+Ono a epekto ka paninigarilyo sa baga?,effects,baga,Ono a epekto ka paninigarilyo sa {x}?
+kono pwede a bitamina ka talaginun?,schedule,bitamina,Kono tabi pwede a {s} ka talaginun?
+paono nakokoko a kakulangan sa micronutrient?,causes,kakulangan sa micronutrient,Paono nakokoko a {i}?
+Ono a mga tanda ka altapresyon sa igen,symptoms,altapresyon,Ono a mga tanda ka {i} sa igin?
+Agko libreng tabang para sa agko kalintora?,general,kalintora,Agko libreng tabang para sa agko {i}?
+Ono tabi a benepisyo ka check-up ka mabrus?,benefits,check-up ka mabrus,Ono tabi a benepisyo ka {p}?
+paono ko masisigoro kin agko ako kolog sa likod?,diagnosis,kolog sa likod,Paono ko masisigoro kin agko ako {i}?
+paono ko masisigoro kin agko ako tb?,diagnosis,TB,Paono ko masisigoro kin agko ako {i}?
+ngata importante a bitamina?,benefits,bitamina,Ngata importante a {p}?
+Ono a rason ka altapresyon?,causes,altapresyon,Ono a rason ka {i}?
+Ono a komplikasyon ka sip'on?,effects,sip'on,Ono a komplikasyon ka {i}?
+Ngata maray a pagpupurga?,benefits,pagpupurga,Ngata maray a {p}?
+Ono a tanda kin agko ilang sa bato?,symptoms,ilang sa bato,Ono a tanda kin agko {i}?
+Ngata maray a pagpapakusug sa awak,benefits,pagpapakusug sa awak,Ngata maray a {p}?
+Kono a sunod na bitamina,schedule,bitamina,Kono a sunod na {s}?
+Pira a bayad sa newborn hearing screening?,general,newborn hearing screening,Pira a bayad sa {p}?
+Ono a Pinggang Pinoy?,definition,Pinggang Pinoy,Ono a {}?
+Ono raw a mingyari kin pabayaan a autism?,effects,autism,Ono raw a mingyari kin pabayaan a {i}?
+Ono a test sa HIV?,definition,test sa HIV,Ono a {}?
+Ono a kahulugan ka pagkabongog?,definition,pagkabongog,Ono a kahulugan ka {i}?
+Ono tabi a pakinabang ka family planning sa awak?,benefits,family planning,Ono tabi a pakinabang ka {p} sa awak?
+Ono a bolong sa rabies ka igin?,management,rabies,Ono tabi a bolong sa {i} ka igin?
+Ono an preterm birth?,definition,preterm birth,Ono an {}?
+Pira a bayad sa family planning?,general,family planning,Pira a bayad sa {p}?
+Ono an olod?,definition,olod,Ono an {}?
+Sari a health center sa barangay?,general,,Sari tabi a health center sa barangay?
+ngata nagkakaagko olod?,causes,olod,Ngata nagkakaagko {i}?
+Kono a iskedyul ka newborn hearing screening?,schedule,newborn hearing screening,Kono a iskedyul ka {s}?
+Ono raw a pagpupurga?,definition,pagpupurga,Ono raw a {p}?
+Ono a mingyari kin magka-kolera a mabrus?,effects,kolera,Ono a mingyari kin magka-{i} a mabrus?
+Naooyon raw a igin sa pagtao sa rogo?,general,pagtao sa rogo,Naooyon raw a igin sa {p}?
+Ono a kanser sa soso?,definition,kanser sa soso,Ono a {}?
+"Kinagat sa ayam ako, kaipowan na magpabayad sa doktor?",warning,kinagat sa ayam ako,"{D}, kaipowan na magpabayad sa doktor?"
+Ono an tuberkulosis?,definition,tuberkulosis,Ono an {}?
+Ono tabi a pakinabang ka pagpapasoso sa awak,benefits,pagpapasoso,Ono tabi a pakinabang ka {p} sa awak?
+Kono a iskedyul ka bakuna sa trangkaso?,schedule,bakuna sa trangkaso,Kono a iskedyul ka {s}?
+Ono tabi a kwasa ka pagkabongog?,causes,pagkabongog,Ono tabi a kwasa ka {i}?
+"Diri nagkaun a igin ko sa tolong aldow, ono a gibowon ko?",warning,diri nagkaun a igin ko sa tolong aldow,"{D}, ono a gibowon ko?"
+paono maisiyan kin agko trangkaso?,diagnosis,trangkaso,Paono maisiyan kin agko {i}?
+Kaipowan pa magpa-check-up para maisiyan a TB,diagnosis,TB,Kaipowan pa magpa-check-up para maisiyan a {i}?
+Ngata maray a maray na pagkaun,benefits,maray na pagkaun,Ngata maray a {p}?
+Ono tabi a sintomas ka kolog sa likod?,symptoms,kolog sa likod,Ono tabi a sintomas ka {i}?
+Ono a test para maisiyan a kalintora?,diagnosis,kalintora,Ono a test para maisiyan a {i}?
+Ono an gout?,definition,gout,Ono an {}?
+Ono a kaipowan kong gibowon kin agko epilepsy a gorang?,management,epilepsy,Ono a kaipowan kong gibowon kin agko {i} {w}?
+"Makulug a ruruggan ko, dapat na omiyan sa ospital?",warning,makulug a ruruggan ko,"{D}, dapat na omiyan sa ospital?"
+Agko test para sa stroke?,diagnosis,stroke,Agko test para sa {i}?
+Ono a delikadong sinyales ka pulmonya?,warning,pulmonya,Ono a delikadong sinyales ka {i}?
+Siisay a pwedeng magka-tetano?,general,tetano,Siisay a pwedeng magka-{i}?
+ono a bakuna,definition,bakuna,Ono a {a}?
+Agko side effect a check-up ka mabrus?,effects,check-up ka mabrus,Agko side effect a {p}?
+ono a senyales ka paninigarilyo?,symptoms,paninigarilyo,Ono a sinyales ka {o}?
+Ono a epekto ka kalintora sa awak?,effects,kalintora,Ono a epekto ka {i} sa awak?
+ono a kahulugan ka stroke?,definition,stroke,Ono a kahulugan ka {i}?
+ono tabi a sintomas ka hiv?,symptoms,HIV,Ono tabi a sintomas ka {i}?
+Kono a iskedyul ka pagbakuna ka igin?,schedule,pagbakuna ka igin,Kono a iskedyul ka {s}?
+Sari pwedeng magpa-pills?,diagnosis,pills,Sari pwedeng magpa-{g}?
+onong edad pwede a newborn screening?,schedule,newborn screening,Onong edad pwede a {s}?
+Ono a mingyari sa igin kin diri magpa-hearing screening,effects,hearing screening,Ono a mingyari sa igin kin diri magpa-{g}?
+Paono ko masisigoro kin agko ako tetano?,diagnosis,tetano,Paono ko masisigoro kin agko ako {i}?
+Paono malikayan a pneumonia?,management,pneumonia,Paono malikayan a {i}?
+Paono maisiyan kin agko hika?,diagnosis,hika,Paono maisiyan kin agko {i}?
+Ono a sintomas ka TB?,symptoms,TB,Ono a sintomas ka {i}?
+Ono a komplikasyon ka dengue,effects,dengue,Ono a komplikasyon ka {i}?
+Ono a mingyari kin diri mabolong a rayuma?,effects,rayuma,Ono a mingyari kin diri mabolong a {i}?
+Ono a tuberkulosis sa igin?,definition,tuberkulosis,Ono a {a} sa igin?
+paono ko asikasowon a igin ko na agko sip'on,management,sip'on,Paono ko asikasowon {w} na agko {i}?
+siisay a pwedeng magka-kanser sa atay?,general,kanser sa atay,Siisay a pwedeng magka-{i}?
+Ono a kwasa ka kanser sa atay?,causes,kanser sa atay,Ono a kwasa ka {i}?
+Kaipowan na tabi magpakonsulta kin sakit sa pag-inga a igin ko?,warning,sakit sa pag-inga a igin ko,Kaipowan na tabi magpakonsulta kin {d}?
+Ono a ilang sa bato?,definition,ilang sa bato,Ono a {}?
+Ono a pag-ogas ka kamut?,definition,pag-ogas ka kamut,Ono a {p}?
+Ono tabi a benepisyo ka bakuna,benefits,bakuna,Ono tabi a benepisyo ka {p}?
+Ono a dahilan ka rayuma?,causes,rayuma,Ono a dahilan ka {i}?
+Sari makukua a libreng newborn hearing screening sa barangay,general,newborn hearing screening,Sari makukua a libreng {p} sa barangay?
+delikado na raw kin mataas a kalintora ka igin ko?,warning,mataas a kalintora ka igin ko,Delikado na raw kin {d}?
+Pirang beses kaipowan a pills?,schedule,pills,Pirang beses kaipowan a {s}?
+ono a maray na gibowon tanganing diri magka-pneumonia?,management,pneumonia,Ono a maray na gibowon tanganing diri magka-{i}?
+"ono man a gender identity, tabi?",definition,gender identity,"Ono man a {o}, tabi?"
+Ngata kaipowan a family planning?,benefits,family planning,Ngata kaipowan a {p}?
+Ono a test para maisiyan a kanser sa soso?,diagnosis,kanser sa soso,Ono a test para maisiyan a {i}?
+Ngata tabi nagkaka-ilang sa bato a tawo?,causes,ilang sa bato,Ngata tabi nagkaka-{i} a tawo?
+ono a pakinabang ka bakuna sa awak?,benefits,bakuna,Ono tabi a pakinabang ka {p} sa awak?
+Paono maparay a kalintora?,management,kalintora,Paono maparay a {i}?
+"Nangubugkubug a gorang, ono tabi a gibowon ko?",warning,nangubugkubug a gorang,"{D}, ono tabi a gibowon ko?"
+Ngata nagkakaagko paninigarilyo?,causes,paninigarilyo,Ngata nagkakaagko {o}?
+kono pwede a check-up ka mabrus ka talaginun?,schedule,check-up ka mabrus,Kono tabi pwede a {s} ka talaginun?
+Siisay a pwedeng magka-kanser sa soso?,general,kanser sa soso,Siisay a pwedeng magka-{a}?
+Ono a bolong sa pagkabongog?,management,pagkabongog,Ono a bolong sa {i}?
+ono a paninigarilyo?,definition,paninigarilyo,Ono a {o}?
+Agko test para sa atake sa poso,diagnosis,atake sa poso,Agko test para sa {i}?
+paono maiisiyan kin agko atake sa poso a mabrus?,diagnosis,atake sa poso,Paono maiisiyan kin agko {i} {w}?
+Kono a iskedyul ka pagbakuna ka igen?,schedule,pagbakuna ka igin,Kono a iskedyul ka {s}?
+Ono raw a newborn screening?,definition,newborn screening,Ono raw a {p}?
+Kinagat sa ayam ako. Delikado na?,warning,kinagat sa ayam ako,{D}. Delikado na?
+Paono sinusuri a diabetes?,diagnosis,diabetes,Paono sinusuri a {i}?
+Ngata nagka-autism a gorang?,causes,autism,Ngata nagka-{i} {w}?
+Agko libreng tabang para sa agko HIV,general,HIV,Agko libreng tabang para sa agko {i}?
+Ono a tanda kin agko sip'on?,symptoms,sip'on,Ono a tanda kin agko {i}?
+ono a pakinabang ka newborn screening?,benefits,newborn screening,Ono a pakinabang ka {p}?
+Pirang beses kaipowan a newborn hearing screening?,schedule,newborn hearing screening,Pirang beses kaipowan a {s}?
+"ono a hepatitis, tabi?",definition,hepatitis,"Ono a {a}, tabi?"
+Ono a diabetes?,definition,diabetes,Ono a {}?
+Ono a rason ka high blood?,causes,high blood,Ono a rason ka {i}?
+Ono a kaipowan kong gibowon kin agko pulmonya a gorang?,management,pulmonya,Ono a kaipowan kong gibowon kin agko {i} {w}?
+Ono a epekto ka olod sa awak?,effects,olod,Ono a epekto ka {i} sa awak?
+Kono kaipowan omiyan sa ospital kin agko rabies?,warning,rabies,Kono kaipowan omiyan sa ospital kin agko {i}?
+Ono a kanser sa atay?,definition,kanser sa atay,Ono a {}?
+"Kinagat sa ayam a igin ko, ono tabi a gibowon ko?",warning,kinagat sa ayam a igin ko,"{D}, ono tabi a gibowon ko?"
+Kono a iskedyul ka newborn screening,schedule,newborn screening,Kono a iskedyul ka {s}?
+ono a delikadong sinyales ka rayuma?,warning,rayuma,Ono a delikadong sinyales ka {i}?
+Ono a mga senyales ka autism?,symptoms,autism,Ono a mga senyales ka {i}?
+Ono an test sa HIV?,definition,test sa HIV,Ono an {}?
+Ngata maray a pagpapasoso?,benefits,pagpapasoso,Ngata maray a {p}?
+Ono a buut sabiyun ka TB?,definition,TB,Ono a buut sabiyun ka {i}?
+Ono a mga senyales ka hepatitis?,symptoms,hepatitis,Ono a mga senyales ka {i}?
+Ono a kaipowan kong gibowon kin agko diabetes a igin ko?,management,diabetes,Ono a kaipowan kong gibowon kin agko {i} {w}?
+ono a mingyari kin diri mabolong a stroke?,effects,stroke,Ono a mingyari kin diri mabolong a {i}?
+Ngata importante a pagpapakusug sa awak?,benefits,pagpapakusug sa awak,Ngata importante a {p}?
+Kono dapat a newborn hearing screening?,schedule,newborn hearing screening,Kono dapat a {s}?
+Ono a mingyari kin magka-obo a mabrus,effects,obo,Ono a mingyari kin magka-{i} a mabrus?
+Ono tabi a pakinabang ka bitamina sa awak?,benefits,bitamina,Ono tabi a pakinabang ka {p} sa awak?
+ono a komplikasyon ka hiv,effects,HIV,Ono a komplikasyon ka {i}?
+Ngata maray a pagbabakuna,benefits,pagbabakuna,Ngata maray a {p}?
+"Ono a maray na pagkaun, tabi",definition,maray na pagkaun,"Ono a {a}, tabi?"
+Ono a komplikasyon ka kalintora?,effects,kalintora,Ono a komplikasyon ka {i}?
+Ono a mingyari kin magka-atake sa poso a mabrus?,effects,atake sa poso,Ono a mingyari kin magka-{i} a mabrus?
+Siisay a pwedeng magpa-test sa TB?,general,test sa TB,Siisay a pwedeng magpa-{g}?
+"Ono a preterm birth, tabi",definition,preterm birth,"Ono a {a}, tabi?"
+Ono a benepisyo ka pagbabakuna?,benefits,pagbabakuna,Ono a benepisyo ka {p}?
+Ono raw a TB?,definition,TB,Ono raw a {i}?
+Delikado na raw kin agko rogo sa obo ko?,warning,agko rogo sa obo ko,Delikado na raw kin {d}?
+Ngata nagka-TB a talaginun?,causes,TB,Ngata nagka-{i} {w}?
+Ono a pakinabang ka bakuna?,benefits,bakuna,Ono a pakinabang ka {p}?
+Sari pwedeng magpa-test para sa rabies?,diagnosis,rabies,Sari pwedeng magpa-test para sa {i}?
+ono tabi a bolong sa tetano ka igin,management,tetano,Ono tabi a bolong sa {i} ka igin?
+Paono malikayan a high blood?,management,high blood,Paono malikayan a {i}?
+Ono a benepisyo ka family planning?,benefits,family planning,Ono tabi a benepisyo ka {p}?
+libre raw a pinggang pinoy,general,Pinggang Pinoy,Libre raw a {p}?
+Paono ataman a agko malnutrisyon,management,malnutrisyon,Paono ataman a agko {i}?
+Ono a maray sa igen ka check-up ka mabrus?,benefits,check-up ka mabrus,Ono a maray sa igin ka {p}?
+Ono a epekto ka pills?,effects,pills,Ono a epekto ka {p}?
+Onong edad pwede a pagbakuna ka igin?,schedule,pagbakuna ka igin,Onong edad pwede a {s}?
+siisay a pwedeng magpa-bakuna kontra tetano?,general,bakuna kontra tetano,Siisay a pwedeng magpa-{g}?
+ono a mingyari sa igen kin diri magpa-family planning?,effects,family planning,Ono a mingyari sa igin kin diri magpa-{g}?
+Kono kaipowan omiyan sa ospital kin agko stroke?,warning,stroke,Kono kaipowan omiyan sa ospital kin agko {i}?
+Ono a mga tanda ka kalintora sa igin?,symptoms,kalintora,Ono a mga tanda ka {i} sa igin?
+Kono pwede a pagpupurga ka talaginun?,schedule,pagpupurga,Kono tabi pwede a {s} ka talaginun?
+Naooyon raw a igen sa pills?,general,pills,Naooyon raw a igin sa {p}?
+Libre raw a pag-ogas ka kamut?,general,pag-ogas ka kamut,Libre raw a {p}?
+Ono a dahilan ka pneumonia?,causes,pneumonia,Ono a dahilan ka {i}?
+ono a maray na gibowon tanganing diri magka-gout?,management,gout,Ono a maray na gibowon tanganing diri magka-{i}?
+Kono a sunod na pagbakuna ka igin?,schedule,pagbakuna ka igin,Kono a sunod na {s}?
+Paono sinusuri a sip'on?,diagnosis,sip'on,Paono sinusuri a {i}?
+Ono a rason ka pulmonya?,causes,pulmonya,Ono a rason ka {i}?
+"Maluya a awak ka igin ko sagkud mainit, kaipowan na magpabayad sa doktor?",warning,maluya a awak ka igin ko sagkud mainit,"{D}, kaipowan na magpabayad sa doktor?"
+Siisay a pwedeng magpa-family planning,general,family planning,Siisay a pwedeng magpa-{g}?
+ono a maray sa igin ka pag-ogas ka kamut?,benefits,pag-ogas ka kamut,Ono a maray sa igin ka {p}?
+ono a sintomas ka malnutrisyon?,symptoms,malnutrisyon,Ono a sintomas ka {i}?
+pirang beses sa taon a newborn screening,schedule,newborn screening,Pirang beses sa taon a {s}?
+paono ko asikasowon a igin na agko olod?,management,olod,Paono ko asikasowon {w} na agko {i}?
+Ono tabi a kanser sa baga?,definition,kanser sa baga,Ono tabi a {i}?
+kono a iskedyul ka bitamina?,schedule,bitamina,Kono a iskedyul ka {s}?
+Ono raw a bitamina?,definition,bitamina,Ono raw a {p}?
+Ono a mga senyales ka kalintora?,symptoms,kalintora,Ono a mga sinyales ka {i}?
+Libre raw a check-up ka mabrus?,general,check-up ka mabrus,Libre raw a {p}?
+Libre raw a newborn screening?,general,newborn screening,Libre raw a {p}?
+Paono ataman a agko HIV,management,HIV,Paono ataman a agko {i}?
+Ono an malnutrisyon?,definition,malnutrisyon,Ono an {}?
+"Maispid na tabang, diri nagkaun a igin ko sa tolong aldow",warning,diri nagkaun a igin ko sa tolong aldow,"Maispid na tabang tabi, {d}"
+ono a maray na naitatabang ka pagpupurga?,benefits,pagpupurga,Ono a maray na naitatabang ka {p}?
+ono a sintomas kin agko sip'on a talaginun?,symptoms,sip'on,Ono a sintomas kin agko {i} {w}?
+ono a test para maisiyan a sip'on?,diagnosis,sip'on,Ono a test para maisiyan a {i}?
+Paono maisiyan kin agko pneumonia,diagnosis,pneumonia,Paono maisiyan kin agko {i}?
+Ono tabi a dahilan ka amay na pangingigin?,causes,amay na pangingigin,Ono tabi a dahilan ka {o}?
+Ngata kaipowan a pag-ogas ka kamut?,benefits,pag-ogas ka kamut,Ngata kaipowan a {p}?
+Sari raw nakokoko a pneumonia?,causes,pneumonia,Sari raw nakokoko a {i}?
+Ono a namamatian ka agko tetano?,symptoms,tetano,Ono a namamatian ka agko {i}?
+Ono an newborn screening?,definition,newborn screening,Ono an {}?
+Ono a delikadong sinyales ka kolog sa likod?,warning,kolog sa likod,Ono a delikadong sinyales ka {i}?
+Kono a sunod na newborn hearing screening?,schedule,newborn hearing screening,Kono a sunod na {s}?
+Sa pirang bulan na edad a pagbakuna ka igin,schedule,pagbakuna ka igin,Sa pirang bulan na edad a {s}?
+Naooyon raw a igin sa family planning?,general,family planning,Naooyon raw a igin sa {p}?
+Ono a buut sabiyun ka pills,definition,pills,Ono a buut sabiyun ka {p}?
+Ono a pagbabakuna?,definition,pagbabakuna,Ono a {}?
+paono maiisiyan kin agko kakulangan sa micronutrient a mabrus?,diagnosis,kakulangan sa micronutrient,Paono maiisiyan kin agko {i} {w}?
+ngata tabi nagkaka-autism a tawo?,causes,autism,Ngata tabi nagkaka-{i} a tawo?
+Ono a maray na naitatabang ka Pinggang Pinoy?,benefits,Pinggang Pinoy,Ono a maray na naitatabang ka {p}?
+Ono a maray na gibowon tanganing diri magka-kanser sa atay?,management,kanser sa atay,Ono a maray na gibowon tanganing diri magka-{i}?
+Ono a namamatian ka agko pulmonya?,symptoms,pulmonya,Ono a namamatian ka agko {i}?
+Ngata nagka-trangkaso ako?,causes,trangkaso,Ngata nagka-{i} {w}?
+Kono a iskedyul ka bakuna kontra tetano?,schedule,bakuna kontra tetano,Kono a iskedyul ka {s}?
+Ono a namamatian ka agko obo,symptoms,obo,Ono a namamatian ka agko {i}?
+Ngata nagkaka-obo a tawo?,causes,obo,Ngata tabi nagkaka-{i} a tawo?
+Pirang beses kaipowan a newborn screening,schedule,newborn screening,Pirang beses kaipowan a {s}?
+Sari raw nakokoko a diabetes?,causes,diabetes,Sari raw nakokoko a {i}?
+ono a maray na naitatabang ka pagbabakuna?,benefits,pagbabakuna,Ono a maray na naitatabang ka {p}?
+paono ko masisigoro kin agko ako pneumonia?,diagnosis,pneumonia,Paono ko masisigoro kin agko ako {i}?
+pira a bayad sa pagbabakuna?,general,pagbabakuna,Pira a bayad sa {p}?
+sa pirang bulan na edad a pagpupurga?,schedule,pagpupurga,Sa pirang bulan na edad a {s}?
+Ono a pakinabang ka newborn screening sa awak?,benefits,newborn screening,Ono tabi a pakinabang ka {p} sa awak?
+Ono a maray na gibowon tanganing diri magka-atake sa poso?,management,atake sa poso,Ono a maray na gibowon tanganing diri magka-{i}?
+Ono an paninigarilyo?,definition,paninigarilyo,Ono an {}?
+ono a namamatian ka agko tuberkulosis,symptoms,tuberkulosis,Ono a namamatian ka agko {i}?
+Ono a pills?,definition,pills,Ono a {}?
+Ono a mingyari kin magka-kalintora a mabrus?,effects,kalintora,Ono a mingyari kin magka-{i} a mabrus?
+Ono tabi a pulmonya,definition,pulmonya,Ono tabi a {i}?
+"Kinagat sa ayam a igin ko, ono a gibowon ko?",warning,kinagat sa ayam a igin ko,"{D}, ono a gibowon ko?"
+"maluya a awak ka igen ko sagkud mainit, ono a gibowon ko?",warning,maluya a awak ka igin ko sagkud mainit,"{D}, ono a gibowon ko?"
+Ono a mingyari kin diri mabolong a dementia?,effects,dementia,Ono a mingyari kin diri mabolong a {i}?
+ono raw a pagbabakuna?,definition,pagbabakuna,Ono raw a {a}?
+Ono a sintomas ka rayuma?,symptoms,rayuma,Ono a sintomas ka {i}?
+"Agko rogo sa obo ko, ono a gibowon ko?",warning,agko rogo sa obo ko,"{D}, ono a gibowon ko?"
+Ono a maray sa igin ka pills?,benefits,pills,Ono a maray sa igin ka {p}?
+Onong aldow a pagbakuna ka igen sa health center?,schedule,pagbakuna ka igin,Onong aldow a {s} sa health center?
+Ono a test para maisiyan a hika?,diagnosis,hika,Ono a test para maisiyan a {i}?
+Ono a paglikay sa atake sa poso?,management,atake sa poso,Ono a paglikay sa {i}?
+Ono a maray sa igin ka bitamina?,benefits,bitamina,Ono a maray sa igin ka {p}?
+Ono tabi a kwasa ka kolog sa likod?,causes,kolog sa likod,Ono tabi a kwasa ka {i}?
+Paono ko asikasowon ako na agko obo?,management,obo,Paono ko asikasowon {w} na agko {i}?
+paono sinusuri a kolog sa likod?,diagnosis,kolog sa likod,Paono sinusuri a {i}?
+Ono raw a puberty?,definition,puberty,Ono raw a {a}?
+Ono a newborn screening?,definition,newborn screening,Ono a {p}?
+Ngata nagka-altapresyon a igin?,causes,altapresyon,Ngata nagka-{i} {w}?
+Ono a rabies?,definition,rabies,Ono a {}?
+siisay a dapat kong ipabayad kin agko tetano,general,tetano,Siisay a dapat kong ipabayad kin agko {i}?
+Ono a epekto ka newborn screening?,effects,newborn screening,Ono a epekto ka {p}?
+libre raw a bakuna?,general,bakuna,Libre raw a {p}?
+ono tabi a sintomas ka stroke?,symptoms,stroke,Ono tabi a sintomas ka {i}?
+Sari raw nakokoko a kalintora?,causes,kalintora,Sari raw nakokoko a {i}?
+Ipaliwanag mo kin ono a high blood,definition,high blood,Ipaliwanag mo tabi kin ono a {i}
+Ono a paglikay sa epilepsy?,management,epilepsy,Ono a paglikay sa {i}?
+Ngata nagka-atake sa poso a gorang?,causes,atake sa poso,Ngata nagka-{i} {w}?
+Kaipowan na tabi magpakonsulta kin kinagat sa ayam a igin ko?,warning,kinagat sa ayam a igin ko,Kaipowan na tabi magpakonsulta kin {d}?
+Ono tabi a pakinabang ka maray na pagkaun sa awak?,benefits,maray na pagkaun,Ono tabi a pakinabang ka {p} sa awak?
+Ngata nagkakaagko autism?,causes,autism,Ngata nagkakaagko {i}?
+Ono a epekto ka pag-ogas ka kamut?,effects,pag-ogas ka kamut,Ono a epekto ka {p}?
+Ono raw a mingyari kin pabayaan a olod,effects,olod,Ono raw a mingyari kin pabayaan a {i}?
+kaipowan pa magpa-check-up para maisiyan a olod?,diagnosis,olod,Kaipowan pa magpa-check-up para maisiyan a {i}?
+Naooyon raw a igin sa check-up ka mabrus?,general,check-up ka mabrus,Naooyon raw a igin sa {p}?
+ono a sintomas ka hiv?,symptoms,HIV,Ono a sintomas ka {i}?
+ono raw a mingyari kin pabayaan a hika?,effects,hika,Ono raw a mingyari kin pabayaan a {i}?
+Ono raw a namamatian ka nagkaka-epilepsy?,symptoms,epilepsy,Ono raw a namamatian ka nagkaka-{i}?
+Ono a rason ka diabetes?,causes,diabetes,Ono a rason ka {i}?
+Ono a bolong sa sip'on?,management,sip'on,Ono a bolong sa {i}?
+Onong aldow a newborn screening sa health center?,schedule,newborn screening,Onong aldow a {s} sa health center?
+"Ono man a menopause, tabi?",definition,menopause,"Ono man a {o}, tabi?"
+Ono a maray sa igin ka newborn screening?,benefits,newborn screening,Ono a maray sa igin ka {p}?
+Agko test para sa dengue?,diagnosis,dengue,Agko test para sa {i}?
+Ono a maray na gibowon tanganing diri magka-rabies?,management,rabies,Ono a maray na gibowon tanganing diri magka-{i}?
+"Maispid na tabang tabi, kinagat sa sawa a agom ko",warning,kinagat sa sawa a agom ko,"Maispid na tabang tabi, {d}"
+Ono a sinyales ka gender identity?,symptoms,gender identity,Ono a sinyales ka {o}?
+Kono a iskedyul ka pills?,schedule,pills,Kono a iskedyul ka {s}?
+Ono a obo?,definition,obo,Ono a {}?
+Ono a kwasa ka rabies?,causes,rabies,Ono a kwasa ka {i}?
+Kono a sunod na check-up ka mabrus,schedule,check-up ka mabrus,Kono a sunod na {s}?
+Ono a check-up ka mabrus?,definition,check-up ka mabrus,Ono a {}?
+Agko pagpapakusug sa awak sa health center?,general,pagpapakusug sa awak,Agko {p} sa health center?
+Ono a rason ka dementia,causes,dementia,Ono a rason ka {i}?
+Ono an hika?,definition,hika,Ono an {}?
+ono a pakinabang ka pag-ogas ka kamut?,benefits,pag-ogas ka kamut,Ono a pakinabang ka {p}?
+ono a maray sa igin ka check-up ka mabrus,benefits,check-up ka mabrus,Ono a maray sa igin ka {p}?
+Agko libreng tabang para sa agko kanser sa atay,general,kanser sa atay,Agko libreng tabang para sa agko {i}?
+Paono malikayan a epilepsy?,management,epilepsy,Paono malikayan a {i}?
+Ono an maray na pagkaun?,definition,maray na pagkaun,Ono an {}?
+Ono raw a namamatian ka nagkaka-kanser sa atay?,symptoms,kanser sa atay,Ono raw a namamatian ka nagkaka-{i}?
+ono a kwasa ka kanser sa soso?,causes,kanser sa soso,Ono a kwasa ka {i}?
+Ono a sintomas ka altapresyon?,symptoms,altapresyon,Ono tabi a sintomas ka {i}?
+Ono raw a mingyari kin pabayaan a gout?,effects,gout,Ono raw a mingyari kin pabayaan a {i}?
+Ono a benepisyo ka maray na pagkaun?,benefits,maray na pagkaun,Ono tabi a benepisyo ka {p}?
+Paono maparay a stroke?,management,stroke,Paono maparay a {i}?
+Pira a bayad sa maray na pagkaun?,general,maray na pagkaun,Pira a bayad sa {p}?
+"Nagkokombolsyon a igin ko, dapat na omiyan sa ospital?",warning,nagkokombolsyon a igin ko,"{D}, dapat na omiyan sa ospital?"
+Ono a namamatian ka agko dementia?,symptoms,dementia,Ono a namamatian ka agko {i}?
+Sari raw nakokoko a trangkaso?,causes,trangkaso,Sari raw nakokoko a {i}?
+"Ono a tuberkulosis, tabi?",definition,tuberkulosis,"Ono a {a}, tabi?"
+Ono tabi a newborn screening?,definition,newborn screening,Ono tabi a {a}?
+Ono an obo?,definition,obo,Ono an {}?
+Ono a malnutrisyon?,definition,malnutrisyon,Ono a {}?
+Ono an amay na pangingigin?,definition,amay na pangingigin,Ono an {}?
+Paono nakokoko a HIV?,causes,HIV,Paono nakokoko a {i}?
+Paono maiisiyan kin agko tetano a gorang?,diagnosis,tetano,Paono maiisiyan kin agko {i} {w}?
+Onong aldow a bakuna sa health center?,schedule,bakuna,Onong aldow a {s} sa health center?
+Pira a bayad sa newborn screening?,general,newborn screening,Pira a bayad sa {p}?
+Ono a mga tanda ka rabies sa igin?,symptoms,rabies,Ono a mga tanda ka {i} sa igin?
+Ono a sinyales ka menopause?,symptoms,menopause,Ono a sinyales ka {o}?
+ono a hiv?,definition,HIV,Ono tabi a {a}?
+pirang beses kaipowan a bakuna sa trangkaso?,schedule,bakuna sa trangkaso,Pirang beses kaipowan a {s}?
+Paono ko asikasowon a igin na agko dementia?,management,dementia,Paono ko asikasowon {w} na agko {i}?
+Ono tabi a benepisyo ka pagpupurga,benefits,pagpupurga,Ono tabi a benepisyo ka {p}?
+Ono tabi a dahilan ka puberty?,causes,puberty,Ono tabi a dahilan ka {o}?
+Pirang beses sa taon a pagbakuna ka igin?,schedule,pagbakuna ka igin,Pirang beses sa taon a {s}?
+Agko test para sa ilang sa bato?,diagnosis,ilang sa bato,Agko test para sa {i}?
+"Maispid na tabang, makulug a ruruggan ko",warning,makulug a ruruggan ko,"Maispid na tabang tabi, {d}"
+Ngata nagkakaagko menopause?,causes,menopause,Ngata nagkakaagko {o}?
+Ono a maray na naitatabang ka pagpapasoso?,benefits,pagpapasoso,Ono a maray na naitatabang ka {p}?
+Libre raw a maray na pagkaun,general,maray na pagkaun,Libre raw a {p}?
+paono maparay a olod?,management,olod,Paono maparay a {i}?
+Ono an altapresyon?,definition,altapresyon,Ono an {}?
+Naooyon raw a igin sa pagpapakusug sa awak?,general,pagpapakusug sa awak,Naooyon raw a igin sa {p}?
+Sari pwedeng magpa-check-up?,diagnosis,check-up,Sari pwedeng magpa-{g}?
+Ono raw a dahilan ka pagkabongog?,causes,pagkabongog,Ono raw a dahilan ka {i}?
+Ono a altapresyon?,definition,altapresyon,Ono a {}?
+Pira a bayad sa pills?,general,pills,Pira a bayad sa {p}?
+Ngata tabi nagkaka-epilepsy a tawo?,causes,epilepsy,Ngata tabi nagkaka-{i} a tawo?
+Paono ko masisigoro kin agko ako trangkaso?,diagnosis,trangkaso,Paono ko masisigoro kin agko ako {i}?
+ono a namamatian ka agko kanser sa baga?,symptoms,kanser sa baga,Ono a namamatian ka agko {i}?
+ono a mingyari kin magka-kolog sa likod a mabrus,effects,kolog sa likod,Ono a mingyari kin magka-{i} a mabrus?
+Onong edad pwede a bakuna?,schedule,bakuna,Onong edad pwede a {s}?
+kaipowan na magpakonsulta kin nakainom sa ilo a igin,warning,nakainom sa ilo a igin,Kaipowan na tabi magpakonsulta kin {d}?
+Ono raw a namamatian ka nagkaka-trangkaso,symptoms,trangkaso,Ono raw a namamatian ka nagkaka-{i}?
+Paono ko masisigoro kin agko ako HIV?,diagnosis,HIV,Paono ko masisigoro kin agko ako {i}?
+Ono a maray sa igin ka pagbabakuna?,benefits,pagbabakuna,Ono a maray sa igin ka {p}?
+Naooyon raw a igin sa maray na pagkaun?,general,maray na pagkaun,Naooyon raw a igin sa {p}?
+Agko pa ibang impormasyon manungud sa kakulangan sa micronutrient?,general,kakulangan sa micronutrient,Agko pa ibang impormasyon manungud sa {a}?
+Ono a benepisyo ka Pinggang Pinoy?,benefits,Pinggang Pinoy,Ono tabi a benepisyo ka {p}?
+Ono an kakulangan sa micronutrient?,definition,kakulangan sa micronutrient,Ono an {}?
+Ono a trangkaso?,definition,trangkaso,Ono a {}?
+ono a rason ka kanser sa soso?,causes,kanser sa soso,Ono a rason ka {i}?
+Kono tabi pwede a pagbakuna ka igin ka talaginun?,schedule,pagbakuna ka igin,Kono tabi pwede a {s} ka talaginun?
+sa pirang bulan na edad a bitamina?,schedule,bitamina,Sa pirang bulan na edad a {s}?
+Ono a puberty?,definition,puberty,Ono a {}?
+Ono a mga sinyales ka tetano,symptoms,tetano,Ono a mga sinyales ka {i}?
+Ono a bakuna kontra tetano?,definition,bakuna kontra tetano,Ono a {}?
+Ono a kanser sa baga?,definition,kanser sa baga,Ono a {a}?
+Pirang beses sa taon a bitamina?,schedule,bitamina,Pirang beses sa taon a {s}?
+Ono tabi a kwasa ka diabetes?,causes,diabetes,Ono tabi a kwasa ka {i}?
+kono dapat a pagpupurga,schedule,pagpupurga,Kono dapat a {s}?
+Ono tabi a benepisyo ka pills?,benefits,pills,Ono tabi a benepisyo ka {p}?
+Ono a mga senyales ka tetano?,symptoms,tetano,Ono a mga sinyales ka {i}?
+Agko bolong sa rayuma,management,rayuma,Agko bolong sa {i}?
+Ono raw a pagkabongog?,definition,pagkabongog,Ono raw a {i}?
+Ono a pneumonia?,definition,pneumonia,Ono a {}?
+Ngata nagkakaagko dementia?,causes,dementia,Ngata nagkakaagko {i}?
+Ono a buut sabiyun ka pagbabakuna?,definition,pagbabakuna,Ono a buut sabiyun ka {p}?
+Ono a mga sinyales ka rabies?,symptoms,rabies,Ono a mga sinyales ka {i}?
+Ono a delikadong sinyales ka hika?,warning,hika,Ono a delikadong sinyales ka {i}?
+Delikado na raw kin diri nagkaun a igin ko sa tolong aldow?,warning,diri nagkaun a igin ko sa tolong aldow,Delikado na raw kin {d}?
+Ono a kaipowan kong gibowon kin agko stroke a agom ko?,management,stroke,Ono a kaipowan kong gibowon kin agko {i} {w}?
+Ono man a obo,definition,obo,Ono man a {a}?
+Kono tabi pwede a newborn hearing screening ka talaginun?,schedule,newborn hearing screening,Kono tabi pwede a {s} ka talaginun?
+Ono a komplikasyon ka atake sa poso?,effects,atake sa poso,Ono a komplikasyon ka {i}?
+Ono an puberty?,definition,puberty,Ono an {}?
+Sari makukua a libreng bitamina sa barangay?,general,bitamina,Sari makukua a libreng {p} sa barangay?
+Ono a kakulangan sa micronutrient?,definition,kakulangan sa micronutrient,Ono a {}?
+Ono a tanda kin agko kanser sa baga?,symptoms,kanser sa baga,Ono a tanda kin agko {i}?
+Siisay a dapat kong ipabayad kin agko malnutrisyon?,general,malnutrisyon,Siisay a dapat kong ipabayad kin agko {i}?
+Pira a bayad sa pag-ogas ka kamut,general,pag-ogas ka kamut,Pira a bayad sa {p}?
+Ono a pagpapakusug sa awak?,definition,pagpapakusug sa awak,Ono tabi a {p}?
+Ngata nagkakaagko puberty?,causes,puberty,Ngata nagkakaagko {o}?
+Onong edad pwede a newborn hearing screening?,schedule,newborn hearing screening,Onong edad pwede a {s}?
+Agko libreng tabang para sa agko stroke?,general,stroke,Agko libreng tabang para sa agko {i}?
+Ono an menopause?,definition,menopause,Ono an {}?
+Agko side effect a pag-ogas ka kamut?,effects,pag-ogas ka kamut,Agko side effect a {p}?
+Kono kaipowan omiyan sa ospital kin agko epilepsy?,warning,epilepsy,Kono kaipowan omiyan sa ospital kin agko {i}?
+Ono a maray na naitatabang ka bakuna?,benefits,bakuna,Ono a maray na naitatabang ka {p}?
+ono raw a mingyari kin pabayaan a kanser sa soso?,effects,kanser sa soso,Ono raw a mingyari kin pabayaan a {i}?
+Kaipowan na tabi magpakonsulta kin rinorogo a mabrus?,warning,rinorogo a mabrus,Kaipowan na tabi magpakonsulta kin {d}?
+"nangubugkubug a gorang, ono a dapat kong gibowon?",warning,nangubugkubug a gorang,"{D}, ono a dapat kong gibowon?"
+Ono raw a dahilan ka malnutrisyon?,causes,malnutrisyon,Ono raw a dahilan ka {i}?
+ono a namamatian ka agko olod,symptoms,olod,Ono a namamatian ka agko {i}?
+Ngata kaipowan a pagpapakusug sa awak?,benefits,pagpapakusug sa awak,Ngata kaipowan a {p}?
+Ono man a altapresyon,definition,altapresyon,Ono man a {i}?
+Siisay a pwedeng magka-pulmonya?,general,pulmonya,Siisay a pwedeng magka-{i}?
+kaipowan pa magpa-check-up para maisiyan a hiv?,diagnosis,HIV,Kaipowan pa magpa-check-up para maisiyan a {i}?
+Ono raw a newborn hearing screening?,definition,newborn hearing screening,Ono raw a {p}?
+Sari pwedeng magpa-test para sa malaria,diagnosis,malaria,Sari pwedeng magpa-test para sa {i}?
+Ono man a bakuna?,definition,bakuna,Ono man a {a}?
+Ono tabi a kalintora?,definition,kalintora,Ono tabi a {i}?
+Ono tabi a benepisyo ka family planning,benefits,family planning,Ono tabi a benepisyo ka {p}?
+Ono a komplikasyon ka dementia?,effects,dementia,Ono a komplikasyon ka {i}?
+Ono a mingyari kin magka-kanser sa baga a mabrus?,effects,kanser sa baga,Ono a mingyari kin magka-{i} a mabrus?
+paono ko asikasowon a igin ko na agko pulmonya?,management,pulmonya,Paono ko asikasowon {w} na agko {i}?
+Ono an bakuna kontra tetano?,definition,bakuna kontra tetano,Ono an {}?
+Ono a kolog sa likod?,definition,kolog sa likod,Ono a {}?
+ono a buut sabiyun ka check-up ka mabrus?,definition,check-up ka mabrus,Ono a buut sabiyun ka {p}?
+Agko test para sa sip'on?,diagnosis,sip'on,Agko test para sa {i}?
+Ono a epekto ka kolera sa awak?,effects,kolera,Ono a epekto ka {i} sa awak?
+Paono tabi malikayan a dementia?,management,dementia,Paono tabi malikayan a {i}?
+Kono dapat a newborn screening?,schedule,newborn screening,Kono dapat a {s}?
+Naooyon raw a igin sa pills?,general,pills,Naooyon raw a igin sa {p}?
+Ono tabi a preterm birth?,definition,preterm birth,Ono tabi a {o}?
+Ngata nagka-pulmonya a agom ko?,causes,pulmonya,Ngata nagka-{i} {w}?
+Ono man a amay na pangingigin,definition,amay na pangingigin,Ono man a {a}?
+Ono raw a namamatian ka nagkaka-altapresyon?,symptoms,altapresyon,Ono raw a namamatian ka nagkaka-{i}?
+Ono a kwasa ka atake sa poso?,causes,atake sa poso,Ono a kwasa ka {i}?
+agko pa ibang impormasyon manungud sa tuberkulosis?,general,tuberkulosis,Agko pa ibang impormasyon manungud sa {a}?
+Ono a maray na naitatabang ka bitamina?,benefits,bitamina,Ono a maray na naitatabang ka {p}?
+Ono an atake sa poso?,definition,atake sa poso,Ono an {}?
+Ono a mga senyales ka TB?,symptoms,TB,Ono a mga senyales ka {i}?
+Ono a mingyari kin diri mabolong a gout?,effects,gout,Ono a mingyari kin diri mabolong a {i}?
+Ono an dementia?,definition,dementia,Ono an {}?
+Ono a sip'on?,definition,sip'on,Ono a {}?
+"Kinagat sa ayam ako, ono a gibowon ko?",warning,kinagat sa ayam ako,"{D}, ono a gibowon ko?"
+Ono a mga senyales ka tuberkulosis?,symptoms,tuberkulosis,Ono a mga senyales ka {i}?
+Ono an Pinggang Pinoy?,definition,Pinggang Pinoy,Ono an {}?
+Nagkokombolsyon a igin ko. Delikado na?,warning,nagkokombolsyon a igin ko,{D}. Delikado na?
+Ono a kaipowan kong gibowon kin agko hika a igin ko?,management,hika,Ono a kaipowan kong gibowon kin agko {i} {w}?
+paono nakokoko a high blood,causes,high blood,Paono nakokoko a {i}?
+"Rinorogo a mabrus, ono a dapat kong gibowon",warning,rinorogo a mabrus,"{D}, ono a dapat kong gibowon?"
+Ono an sip'on?,definition,sip'on,Ono an {}?
+ono raw a altapresyon?,definition,altapresyon,Ono raw a {i}?
+Kono a sunod na bakuna sa trangkaso?,schedule,bakuna sa trangkaso,Kono a sunod na {s}?
+Ono raw a dahilan ka altapresyon?,causes,altapresyon,Ono raw a dahilan ka {i}?
+ono a rason ka olod?,causes,olod,Ono a rason ka {i}?
+kono kaipowan omiyan sa ospital kin agko pneumonia?,warning,pneumonia,Kono kaipowan omiyan sa ospital kin agko {i}?
+Ono a kaipowan kong gibowon kin agko obo a igin?,management,obo,Ono a kaipowan kong gibowon kin agko {i} {w}?
+Agko libreng tabang para sa agko kolog sa likod?,general,kolog sa likod,Agko libreng tabang para sa agko {i}?
+Naooyon raw a mabrus na magpa-hearing screening?,general,hearing screening,Naooyon raw a mabrus na magpa-{g}?
+ngata kaipowan a pagpupurga?,benefits,pagpupurga,Ngata kaipowan a {p}?
+Ono a mga sinyales ka epilepsy?,symptoms,epilepsy,Ono a mga sinyales ka {i}?
+Kaipowan pa magpa-check-up para maisiyan a diabetes?,diagnosis,diabetes,Kaipowan pa magpa-check-up para maisiyan a {i}?
+Ono a epekto ka pneumonia sa awak?,effects,pneumonia,Ono a epekto ka {i} sa awak?
+kaipowan pa magpa-check-up para maisiyan a high blood?,diagnosis,high blood,Kaipowan pa magpa-check-up para maisiyan a {i}?
+Ono a sinyales ka paninigarilyo?,symptoms,paninigarilyo,Ono a sinyales ka {o}?
+"mahihimatay a agom ko, ono tabi a gibowon ko?",warning,mahihimatay a agom ko,"{D}, ono tabi a gibowon ko?"
+Kono kaipowan omiyan sa ospital kin agko tuberkulosis?,warning,tuberkulosis,Kono kaipowan omiyan sa ospital kin agko {i}?
+ono man a pneumonia?,definition,pneumonia,Ono man a {i}?
+Ono tabi a benepisyo ka bitamina?,benefits,bitamina,Ono tabi a benepisyo ka {p}?
+Ono a bolong sa ilang sa bato?,management,ilang sa bato,Ono a bolong sa {i}?
+Kono kaipowan omiyan sa ospital kin agko malaria,warning,malaria,Kono kaipowan omiyan sa ospital kin agko {i}?
+Kaipowan pa magpa-check-up para maisiyan a kanser sa atay,diagnosis,kanser sa atay,Kaipowan pa magpa-check-up para maisiyan a {i}?
+Paono maiisiyan kin agko trangkaso a gorang?,diagnosis,trangkaso,Paono maiisiyan kin agko {i} {w}?
+Ono raw a mingyari kin pabayaan a obo,effects,obo,Ono raw a mingyari kin pabayaan a {i}?
+Pirang beses sa taon a bakuna?,schedule,bakuna,Pirang beses sa taon a {s}?
+Ono a mga senyales ka obo,symptoms,obo,Ono a mga senyales ka {i}?
+Agko side effect a pagpapakusug sa awak?,effects,pagpapakusug sa awak,Agko side effect a {p}?
+Pira a bayad sa bakuna?,general,bakuna,Pira a bayad sa {p}?
+Ono an diabetes?,definition,diabetes,Ono an {}?
+kaipowan na magpakonsulta kin agko rogo sa obo ko?,warning,agko rogo sa obo ko,Kaipowan na tabi magpakonsulta kin {d}?
+Kaipowan pa magpa-check-up para maisiyan a pulmonya?,diagnosis,pulmonya,Kaipowan pa magpa-check-up para maisiyan a {i}?
+Ono an pills?,definition,pills,Ono an {}?
+sari raw nakokoko a kanser sa baga?,causes,kanser sa baga,Sari raw nakokoko a {i}?
+Ono a epekto ka paninigarilyo sa igin?,effects,igin,Ono a epekto ka paninigarilyo sa {x}?
+Ono man a menopause?,definition,menopause,Ono man a {a}?
+Ono a hika?,definition,hika,Ono a {}?
+Ono an rabies?,definition,rabies,Ono an {}?
+Naooyon raw a igen sa maray na pagkaun,general,maray na pagkaun,Naooyon raw a igin sa {p}?
+Ono a gender identity?,definition,gender identity,Ono a {}?
+Ono an bakuna?,definition,bakuna,Ono an {}?
+Ono a pakinabang ka pagpapakusug sa awak?,benefits,pagpapakusug sa awak,Ono a pakinabang ka {p}?
+ono a pakinabang ka bitamina?,benefits,bitamina,Ono a pakinabang ka {p}?
+Agko side effect a bitamina?,effects,bitamina,Agko side effect a {p}?
+Ono a epekto ka maray na pagkaun?,effects,maray na pagkaun,Ono a epekto ka {p}?
+Siisay a pwedeng magpa-test sa HIV,general,test sa HIV,Siisay a pwedeng magpa-{g}?
+Siisay a dapat kong ipabayad kin agko TB?,general,TB,Siisay a dapat kong ipabayad kin agko {i}?
+Ono a mingyari kin diri mabolong a obo?,effects,obo,Ono a mingyari kin diri mabolong a {i}?
+"Ono a rayuma, tabi?",definition,rayuma,"Ono a {a}, tabi?"
+Pirang beses kaipowan a pagbakuna ka igen,schedule,pagbakuna ka igin,Pirang beses kaipowan a {s}?
+Ono a benepisyo ka check-up ka mabrus?,benefits,check-up ka mabrus,Ono a benepisyo ka {p}?
+Ono a test para maisiyan a kolog sa likod?,diagnosis,kolog sa likod,Ono a test para maisiyan a {i}?
+"rinorogo a mabrus, dapat na omiyan sa ospital?",warning,rinorogo a mabrus,"{D}, dapat na omiyan sa ospital?"
+ono a mga sinyales ka kanser sa atay?,symptoms,kanser sa atay,Ono a mga sinyales ka {i}?
+Paono ko asikasowon a gorang na agko malaria?,management,malaria,Paono ko asikasowon {w} na agko {i}?
+agko test para sa tetano?,diagnosis,tetano,Agko test para sa {i}?
+"maluya a awak ka igin ko sagkud mainit, dapat na omiyan sa ospital?",warning,maluya a awak ka igin ko sagkud mainit,"{D}, dapat na omiyan sa ospital?"
+Ono a maray na pagkaun?,definition,maray na pagkaun,Ono a {p}?
+Ono man a trangkaso?,definition,trangkaso,Ono man a {i}?
+Nagkokombolsyon a igen ko. Delikado na,warning,nagkokombolsyon a igin ko,{D}. Delikado na?
+Ono a delikadong sinyales ka TB,warning,TB,Ono a delikadong sinyales ka {i}?
+Ono tabi a sintomas ka pulmonya?,symptoms,pulmonya,Ono tabi a sintomas ka {i}?
+ono a epekto ka paninigarilyo sa poso,effects,poso,Ono a epekto ka paninigarilyo sa {x}?
+Ono raw a paninigarilyo?,definition,paninigarilyo,Ono raw a {a}?
+Ono a maray na naitatabang ka newborn hearing screening?,benefits,newborn hearing screening,Ono a maray na naitatabang ka {p}?
+Sari makukua a libreng bakuna sa barangay?,general,bakuna,Sari makukua a libreng {p} sa barangay?
+paono ataman a agko rabies,management,rabies,Paono ataman a agko {i}?
+Siisay a dapat kong ipabayad kin agko kanser sa soso?,general,kanser sa soso,Siisay a dapat kong ipabayad kin agko {i}?
+Kono dapat a bitamina?,schedule,bitamina,Kono dapat a {s}?
+Ono raw a kanser sa soso?,definition,kanser sa soso,Ono raw a {a}?
+Ono raw a kalintora?,definition,kalintora,Ono raw a {i}?
+Ipaliwanag mo tabi kin ono a stroke,definition,stroke,Ipaliwanag mo tabi kin ono a {i}
+Ono a mga senyales ka sip'on?,symptoms,sip'on,Ono a mga senyales ka {i}?
+Paono ataman a agko high blood,management,high blood,Paono ataman a agko {i}?
+Agko pagpapasoso sa health center?,general,pagpapasoso,Agko {p} sa health center?
+ngata kaipowan a pinggang pinoy,benefits,Pinggang Pinoy,Ngata kaipowan a {p}?
+Ono a namamatian ka agko hepatitis?,symptoms,hepatitis,Ono a namamatian ka agko {i}?
+"maispid na tabang tabi, isinoka a igin ko sagkud maluya",warning,isinoka a igin ko sagkud maluya,"Maispid na tabang tabi, {d}"
+Pirang beses kaipowan a bakuna kontra tetano?,schedule,bakuna kontra tetano,Pirang beses kaipowan a {s}?
+Ngata nagka-autism a mabrus?,causes,autism,Ngata nagka-{i} {w}?
+Ngata importante a pag-ogas ka kamut,benefits,pag-ogas ka kamut,Ngata importante a {p}?
+agko check-up ka mabrus sa health center,general,check-up ka mabrus,Agko {p} sa health center?
