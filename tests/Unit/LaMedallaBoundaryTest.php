@@ -32,6 +32,33 @@ class LaMedallaBoundaryTest extends TestCase
         $this->assertFalse(LaMedallaBoundary::contains(14.5995, 120.9842));
     }
 
+    public function test_points_just_outside_the_edge_are_accepted_within_tolerance(): void
+    {
+        // Southernmost vertex of the polygon; moving south moves straight away from it.
+        $southLat = 13.361063343000067;
+        $southLng = 123.43145186800005;
+
+        $this->assertFalse(LaMedallaBoundary::contains($southLat - 0.0009, $southLng));
+        $this->assertTrue(LaMedallaBoundary::containsWithTolerance($southLat - 0.0009, $southLng));
+        $this->assertFalse(LaMedallaBoundary::containsWithTolerance($southLat - 0.002, $southLng));
+        $this->assertFalse(LaMedallaBoundary::containsWithTolerance(13.3900, 123.4400));
+        $this->assertFalse(LaMedallaBoundary::containsWithTolerance(14.5995, 120.9842));
+        $this->assertTrue(LaMedallaBoundary::containsWithTolerance(13.3806, 123.4312));
+    }
+
+    public function test_tolerance_is_null_when_boundary_is_unreadable(): void
+    {
+        $this->assertNull(LaMedallaBoundary::containsWithTolerance(13.3806, 123.4312, null, base_path('does-not-exist.json')));
+    }
+
+    public function test_php_and_js_tolerance_match(): void
+    {
+        $js = file_get_contents(resource_path('js/maps/la-medalla-boundary.js'));
+        preg_match('/BOUNDARY_TOLERANCE_METERS = (\d+)/', $js, $m);
+
+        $this->assertSame(LaMedallaBoundary::TOLERANCE_METERS, (int) $m[1]);
+    }
+
     public function test_missing_or_invalid_boundary_file_returns_null(): void
     {
         $this->assertNull(LaMedallaBoundary::contains(13.3806, 123.4312, base_path('does-not-exist.json')));

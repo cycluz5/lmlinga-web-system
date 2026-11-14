@@ -118,10 +118,11 @@ describe('spot mapping GPS permission gate', () => {
         assert.match(ask, /window\.confirm\(GEO_CONSENT_CONFIRM_TEXT\)/);
     });
 
-    it('only requestGpsLocation calls getCurrentPosition', () => {
+    it('only requestGpsLocation starts the GPS (watchPosition)', () => {
         const request = slice(spotSource, 'function requestGpsLocation(', '\n    function applyStats');
-        assert.match(request, /navigator\.geolocation\.getCurrentPosition/);
-        assert.equal(spotSource.split('getCurrentPosition(').length - 1, 1);
+        assert.match(request, /navigator\.geolocation\.watchPosition/);
+        assert.equal(spotSource.split('watchPosition(').length - 1, 1);
+        assert.equal(spotSource.split('getCurrentPosition(').length - 1, 0);
     });
 
     it('renders the permission dialog with allow and manual buttons', () => {

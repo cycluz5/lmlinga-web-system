@@ -39,7 +39,7 @@ final class WithinLaMedallaBoundary implements DataAwareRule, ValidationRule
             return;
         }
 
-        $inside = LaMedallaBoundary::contains((float) $value, (float) $lng);
+        $inside = LaMedallaBoundary::containsWithTolerance((float) $value, (float) $lng);
         if ($inside === null) {
             // Missing/unreadable boundary file must not block every plot.
             Log::warning('La Medalla boundary unavailable; plot boundary check skipped.', [

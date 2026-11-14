@@ -40,7 +40,7 @@ const { gpsPlotPlan, OFFLINE_PLOT_PROMPT } = helperModule;
 const startGpsPlot = sliceInclusive(spotSource, 'function startGpsPlot()', '\n    function applyStats');
 const gpsSuccess = sliceInclusive(spotSource, 'function handleGpsSuccess(position, requestId)', '\n    function handleGpsError');
 const gpsError = sliceInclusive(spotSource, 'function handleGpsError(error, requestId)', '\n    function startGpsPlot');
-const outsideScope = sliceInclusive(spotSource, 'function enterOutsideScopeFallback(requestId)', '\n    function handleGpsSuccess');
+const outsideScope = sliceInclusive(spotSource, 'function enterOutsideScopeFallback(requestId, fix = {})', '\n    function handleGpsSuccess');
 const mapClick = sliceInclusive(spotSource, "map.on('click', (event) => {", '\n    renderPendingPicker();');
 const placeTemp = sliceInclusive(spotSource, 'function placeTemporaryMarker(lat, lng', '\n    function enterManualFallback');
 
@@ -104,10 +104,10 @@ describe('spot mapping offline plot plan', () => {
 });
 
 describe('spot mapping offline plot source contract', () => {
-    it('skips getCurrentPosition before GPS when offline', () => {
+    it('skips watchPosition before GPS when offline', () => {
         assert.match(startGpsPlot, /gpsPlotPlan\(\{ offline: isClientOffline\(\) \}\)/);
         const offlineAt = startGpsPlot.indexOf('isClientOffline');
-        const gpsAt = startGpsPlot.indexOf('getCurrentPosition');
+        const gpsAt = startGpsPlot.indexOf('watchPosition');
         const flyAt = startGpsPlot.indexOf('flyTo');
         assert.ok(offlineAt >= 0);
         assert.ok(gpsAt > offlineAt);
@@ -124,13 +124,13 @@ describe('spot mapping offline plot source contract', () => {
     it('keeps online GPS flyTo and outside-scope / error fallbacks', () => {
         assert.match(gpsSuccess, /gpsPlotPlan\(\{\s*gpsReceived: true,\s*inScope: isWithinDemoScope\(lat, lng\),\s*\}\)/);
         assert.match(gpsSuccess, /map\.flyTo\(\[lat, lng\], plan\.zoom \?\? GPS_ZOOM/);
-        assert.match(gpsSuccess, /enterOutsideScopeFallback\(requestId\)/);
+        assert.match(gpsSuccess, /enterOutsideScopeFallback\(requestId, \{ lat, lng, accuracy \}\)/);
         assert.match(outsideScope, /OUTSIDE_SCOPE_MESSAGE/);
         assert.doesNotMatch(outsideScope, /flyTo/);
         assert.match(gpsError, /enterManualFallback\(geolocationErrorMessage\(error\)\)/);
         assert.doesNotMatch(gpsError, /flyTo/);
         assert.match(spotSource, /const GPS_ZOOM = 17/);
-        assert.match(spotSource, /navigator\.geolocation\.getCurrentPosition/);
+        assert.match(spotSource, /navigator\.geolocation\.watchPosition/);
     });
 
     it('drops a temporary marker on map click without moving the viewport or saving', () => {

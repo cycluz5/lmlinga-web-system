@@ -11,7 +11,15 @@ import {
     LA_MEDALLA_CENTER,
     LA_MEDALLA_ZOOM,
 } from '../maps/la-medalla-base';
-import { isPointInBoundary } from '../maps/la-medalla-boundary';
+import {
+    distanceToBoundaryMeters,
+    isPointWithinBoundaryTolerance,
+} from '../maps/la-medalla-boundary';
+import {
+    betterGpsFix,
+    gpsFixGoodEnough,
+    outsideBoundaryGpsMessage,
+} from './spot-mapping-gps-fix';
 import {
     currentSessionToken,
     GEO_BLOCKED_MESSAGE,
@@ -261,7 +269,7 @@ function distanceMeters(lat1, lng1, lat2, lng2) {
  * Falls back to DEMO_CENTER + DEMO_SCOPE_RADIUS_METERS only if the boundary cannot be read.
  */
 function isWithinDemoScope(lat, lng) {
-    const inBoundary = isPointInBoundary(LA_MEDALLA_BOUNDARY, lat, lng);
+    const inBoundary = isPointWithinBoundaryTolerance(LA_MEDALLA_BOUNDARY, lat, lng);
     if (inBoundary !== null) {
         return inBoundary;
     }
@@ -1480,9 +1488,12 @@ function initSpotMapping() {
      * Outside-scope GPS: announce the restriction via setPlacing, then swap to the
      * standard placement cue after 2.8s so demos can continue without re-tapping Plot.
      */
-    function enterOutsideScopeFallback(requestId) {
+    function enterOutsideScopeFallback(requestId, fix = {}) {
         setLocating(false);
-        setPlacing(true, OUTSIDE_SCOPE_MESSAGE);
+        setPlacing(true, outsideBoundaryGpsMessage(OUTSIDE_SCOPE_MESSAGE, {
+            ...fix,
+            distanceMeters: distanceToBoundaryMeters(LA_MEDALLA_BOUNDARY, fix.lat, fix.lng),
+        }));
         focusMapCanvas();
 
         window.setTimeout(() => {
@@ -1513,7 +1524,7 @@ function initSpotMapping() {
             inScope: isWithinDemoScope(lat, lng),
         });
         if (!plan.flyTo) {
-            enterOutsideScopeFallback(requestId);
+            enterOutsideScopeFallback(requestId, { lat, lng, accuracy });
             return;
         }
 
@@ -1552,6 +1563,7 @@ function initSpotMapping() {
         closePanel();
         locateRequestId += 1;
         const requestId = locateRequestId;
+        stopGpsWatch();
 
         setPlacing(false);
 
@@ -1647,11 +1659,64 @@ function initSpotMapping() {
             return;
         }
 
-        navigator.geolocation.getCurrentPosition(
-            (position) => handleGpsSuccess(position, requestId),
-            (error) => handleGpsError(error, requestId),
+        // Listen briefly and keep the most accurate fix: the first fix on a phone is often a
+        // coarse Wi-Fi/cell estimate that lands outside the barangay.
+        stopGpsWatch();
+        let best = null;
+        let finished = false;
+        const finish = (run) => {
+            if (finished) {
+                return;
+            }
+            finished = true;
+            stopGpsWatch();
+            run();
+        };
+
+        gpsWatchTimer = window.setTimeout(() => {
+            finish(() => {
+                if (best) {
+                    handleGpsSuccess(best, requestId);
+                } else {
+                    handleGpsError({ code: 3 }, requestId);
+                }
+            });
+        }, GEO_OPTIONS.timeout);
+
+        gpsWatchId = navigator.geolocation.watchPosition(
+            (position) => {
+                if (requestId !== locateRequestId) {
+                    finish(() => {});
+                    return;
+                }
+                best = betterGpsFix(best, position);
+                if (gpsFixGoodEnough(best)) {
+                    finish(() => handleGpsSuccess(best, requestId));
+                }
+            },
+            (error) => {
+                // Keep waiting if we already have a fix; only fail when there is none.
+                if (best) {
+                    return;
+                }
+                finish(() => handleGpsError(error, requestId));
+            },
             GEO_OPTIONS,
         );
+    }
+
+    let gpsWatchId = null;
+    let gpsWatchTimer = null;
+
+    function stopGpsWatch() {
+        if (gpsWatchId !== null) {
+            navigator.geolocation?.clearWatch?.(gpsWatchId);
+            gpsWatchId = null;
+        }
+        if (gpsWatchTimer !== null) {
+            window.clearTimeout(gpsWatchTimer);
+            gpsWatchTimer = null;
+        }
     }
 
     function applyStats(stats) {

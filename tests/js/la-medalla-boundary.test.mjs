@@ -5,9 +5,12 @@ import path from 'node:path';
 
 import {
     BOUNDARY_STYLE,
+    BOUNDARY_TOLERANCE_METERS,
     OUTSIDE_MASK_STYLE,
+    distanceToBoundaryMeters,
     drawBarangayBoundary,
     isPointInBoundary,
+    isPointWithinBoundaryTolerance,
     outsideMaskLatLngs,
 } from '../../resources/js/maps/la-medalla-boundary.js';
 
@@ -98,11 +101,43 @@ describe('isPointInBoundary', () => {
     });
 });
 
+describe('boundary tolerance', () => {
+    // Southernmost vertex of the polygon: moving straight south moves straight away from it.
+    const [southLng, southLat] = feature.geometry.coordinates[0][6];
+
+    it('measures the distance to the nearest edge in metres', () => {
+        const d = distanceToBoundaryMeters(feature, southLat - 0.0009, southLng);
+        assert.ok(d > 90 && d < 110, `expected ~100 m, got ${d}`);
+        assert.equal(distanceToBoundaryMeters(null, southLat, southLng), null);
+    });
+
+    it('accepts inside points and points just outside the edge', () => {
+        assert.equal(isPointWithinBoundaryTolerance(feature, 13.3806, 123.4312), true);
+        assert.equal(isPointWithinBoundaryTolerance(feature, southLat - 0.0009, southLng), true);
+    });
+
+    it('rejects points beyond the tolerance', () => {
+        assert.equal(isPointWithinBoundaryTolerance(feature, southLat - 0.002, southLng), false);
+        assert.equal(isPointWithinBoundaryTolerance(feature, 13.39, 123.44), false);
+        assert.equal(isPointWithinBoundaryTolerance(feature, 14.5995, 120.9842), false);
+    });
+
+    it('returns null when the boundary or point cannot be read', () => {
+        assert.equal(isPointWithinBoundaryTolerance(null, 13.3806, 123.4312), null);
+        assert.equal(isPointWithinBoundaryTolerance(feature, Number.NaN, 123.4312), null);
+    });
+
+    it('matches the PHP tolerance constant', () => {
+        const php = readFileSync(path.resolve('app/Support/Geo/LaMedallaBoundary.php'), 'utf8');
+        assert.equal(Number(php.match(/TOLERANCE_METERS = (\d+)/)[1]), BOUNDARY_TOLERANCE_METERS);
+    });
+});
+
 describe('spot mapping plot guard', () => {
     const spot = readFileSync(path.resolve('resources/js/pages/spot-mapping.js'), 'utf8');
 
     it('uses the boundary for the scope check and blocks outside map clicks', () => {
-        assert.match(spot, /isPointInBoundary\(LA_MEDALLA_BOUNDARY, lat, lng\)/);
+        assert.match(spot, /isPointWithinBoundaryTolerance\(LA_MEDALLA_BOUNDARY, lat, lng\)/);
         assert.match(spot, /OUTSIDE_SCOPE_MESSAGE = 'You cannot plot outside the Barangay La Medalla boundary\.'/);
         assert.match(
             spot,

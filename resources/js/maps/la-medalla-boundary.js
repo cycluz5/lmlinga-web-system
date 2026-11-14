@@ -75,6 +75,60 @@ export function isPointInBoundary(feature, lat, lng) {
 }
 
 /**
+ * Slack (metres) allowed beyond the indicative polygon edge. Keep in sync with
+ * App\Support\Geo\LaMedallaBoundary::TOLERANCE_METERS.
+ */
+export const BOUNDARY_TOLERANCE_METERS = 150;
+
+const METERS_PER_DEGREE_LAT = 111320;
+
+/** Distance in metres from a point to the segment a→b, in a local equirectangular projection. */
+function distanceToSegmentMeters(lat, lng, [ax, ay], [bx, by]) {
+    const mx = METERS_PER_DEGREE_LAT * Math.cos((lat * Math.PI) / 180);
+    const px = (lng - ax) * mx;
+    const py = (lat - ay) * METERS_PER_DEGREE_LAT;
+    const sx = (bx - ax) * mx;
+    const sy = (by - ay) * METERS_PER_DEGREE_LAT;
+    const lengthSq = sx * sx + sy * sy;
+    const t = lengthSq === 0 ? 0 : Math.max(0, Math.min(1, (px * sx + py * sy) / lengthSq));
+
+    return Math.hypot(px - t * sx, py - t * sy);
+}
+
+/** Shortest distance in metres from (lat, lng) to any boundary edge, or null when unreadable. */
+export function distanceToBoundaryMeters(feature, lat, lng) {
+    const rings = outerRings(feature);
+    if (!rings || !Number.isFinite(lat) || !Number.isFinite(lng)) {
+        return null;
+    }
+
+    let min = Infinity;
+    for (const ring of rings) {
+        for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+            min = Math.min(min, distanceToSegmentMeters(lat, lng, ring[j], ring[i]));
+        }
+    }
+
+    return min;
+}
+
+/**
+ * True when inside the boundary or within `meters` of its edge, false otherwise,
+ * null when the boundary or the point cannot be read.
+ */
+export function isPointWithinBoundaryTolerance(feature, lat, lng, meters = BOUNDARY_TOLERANCE_METERS) {
+    const inside = isPointInBoundary(feature, lat, lng);
+    if (inside === null) {
+        return null;
+    }
+    if (inside) {
+        return true;
+    }
+
+    return distanceToBoundaryMeters(feature, lat, lng) <= meters;
+}
+
+/**
  * Mask rings for the area outside the barangay: a world ring, then each outer boundary ring as a hole.
  * Rings are [latitude, longitude] for L.polygon. Returns null when the geometry cannot be read.
  */

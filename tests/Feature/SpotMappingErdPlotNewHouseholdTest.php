@@ -83,7 +83,7 @@ class SpotMappingErdPlotNewHouseholdTest extends TestCase
         $js = (string) file_get_contents(base_path('resources/js/pages/spot-mapping.js'));
 
         $this->assertStringContainsString('navigator.geolocation', $js);
-        $this->assertStringContainsString('getCurrentPosition', $js);
+        $this->assertStringContainsString('watchPosition', $js);
         $this->assertStringContainsString('isClientOffline', $js);
         $this->assertStringContainsString('gpsPlotPlan', $js);
         $this->assertStringContainsString("You're offline. Click on the map to plot the household location.", $js);
