@@ -453,6 +453,227 @@ def apply_corrections(out_dir):
     print(f"corrections applied, {missing} not found")
 
 
+# ------------------------------------------------- structure alignment ---
+# The Bikol file must have the same layout as the Tagalog file (fallback:
+# English): same number of lines, same headings (case and "- " marker), same
+# bullets, same blank lines. Only line breaks, "- " markers, heading case and
+# blank lines change. The Bikol words are never touched (checked below).
+import math
+import os
+
+SENT_SPLIT = re.compile(r'(?<=[.!?])\s+(?=[A-Z“"(\d])')
+MAX_GROUP = 4
+JOIN_PENALTY = 1.5      # per extra unit when lines are merged / split
+ROLE_PENALTY = 2.0      # heading-like vs sentence-like mismatch
+GAP_PENALTY = 4.0       # a line that exists in only one of the two files
+# Off by default: RagService reads an ALL-CAPS line as a new top-level section, so upper-casing
+# Bikol sub-headings (e.g. stroke causes) hides the content under them. Set BCL_UPPER_HEADINGS=1 to copy the case.
+UPPER_HEADINGS = os.environ.get("BCL_UPPER_HEADINGS", "0") == "1"
+FLAG_COST = 3.0         # mean cost per unit above this goes to the report
+
+
+def parse_units(text):
+    """Non-blank lines as (prefix, text, blank_after)."""
+    units = []
+    for line in text.lstrip("﻿").split("\n"):
+        if not line.strip():
+            if units:
+                units[-1][2] = True
+            continue
+        s = line.strip()
+        if s.startswith("- "):
+            units.append(["- ", s[2:].strip(), False])
+        else:
+            units.append(["", s, False])
+    return units
+
+
+def heading_like(t):
+    return len(t) <= 60 and not t.endswith((".", ";", ",")) and len(t.split()) <= 9
+
+
+def label_like(t):
+    """A heading or a 'label:' / 'question?' line: it must stay on its own line."""
+    if heading_like(t) or t.endswith((":", "?")):
+        return True
+    words = re.findall(r"[A-Za-zÑñ]+", t.lower())
+    return (len(t) <= 80 and len(words) <= 12 and not t.endswith((".", ";", ","))
+            and bool(words) and words[-1] not in HEAD_SMALL_END)
+
+
+def is_all_caps(t):
+    letters = [c for c in t if c.isalpha()]
+    return len(letters) >= 3 and all(c.isupper() for c in letters)
+
+
+def best_split(sentences, targets, r):
+    """Cut sentences into len(targets) consecutive groups; cost vs target lengths."""
+    k, n = len(targets), len(sentences)
+    if n < k:
+        return None
+    INF = float("inf")
+    D = [[INF] * (n + 1) for _ in range(k + 1)]
+    P = [[0] * (n + 1) for _ in range(k + 1)]
+    D[0][0] = 0
+    for g in range(1, k + 1):
+        for j in range(g, n + 1):
+            for i in range(g - 1, j):
+                if D[g - 1][i] == INF:
+                    continue
+                lb = sum(len(s) for s in sentences[i:j])
+                d = math.log((lb + 5) / (r * (targets[g - 1] + 5)))
+                c = D[g - 1][i] + (d / 0.4) ** 2
+                if c < D[g][j]:
+                    D[g][j], P[g][j] = c, i
+    cuts, j = [], n
+    for g in range(k, 0, -1):
+        i = P[g][j]
+        cuts.append((i, j))
+        j = i
+    cuts.reverse()
+    return D[k][n], cuts
+
+
+def align_units(tmpl, bcl):
+    """Gale-Church style DP. Returns (mean cost, list of beads)."""
+    T = [u[1] for u in tmpl]
+    B = [u[1] for u in bcl]
+    r = (sum(map(len, B)) + 1) / (sum(map(len, T)) + 1)
+    n, m = len(T), len(B)
+    INF = float("inf")
+    D = [[INF] * (m + 1) for _ in range(n + 1)]
+    back = [[None] * (m + 1) for _ in range(n + 1)]
+    D[0][0] = 0
+    sents = [SENT_SPLIT.split(b) for b in B]
+    for i in range(n + 1):
+        for j in range(m + 1):
+            if D[i][j] == INF:
+                continue
+            for a in range(1, MAX_GROUP + 1):
+                for b in range(1, MAX_GROUP + 1):
+                    if a > 1 and b > 1:
+                        continue
+                    ni, nj = i + a, j + b
+                    if ni > n or nj > m:
+                        continue
+                    if a == 1 and b == 1:
+                        lt, lb = len(T[i]), len(B[j])
+                        d = math.log((lb + 5) / (r * (lt + 5)))
+                        c = (d / 0.4) ** 2
+                        if heading_like(T[i]) != heading_like(B[j]):
+                            c += ROLE_PENALTY
+                    elif a == 1:  # one template line <- several Bikol lines (join)
+                        # Never glue a heading (or a "label:" line) onto the line after it.
+                        if any(label_like(x) for x in B[j:nj - 1]) or any(label_like(x) for x in B[j + 1:nj]):
+                            continue
+                        lt = len(T[i])
+                        lb = sum(len(x) for x in B[j:nj])
+                        d = math.log((lb + 5) / (r * (lt + 5)))
+                        c = (d / 0.4) ** 2 + JOIN_PENALTY * (b - 1)
+                    else:  # several template lines <- one Bikol line (split)
+                        res = best_split(sents[j], [len(x) for x in T[i:ni]], r)
+                        if res is None:
+                            continue
+                        c = res[0] + JOIN_PENALTY * (a - 1)
+                    if D[i][j] + c < D[ni][nj]:
+                        D[ni][nj] = D[i][j] + c
+                        back[ni][nj] = (i, j)
+            # a template line with no Bikol line, or a Bikol line with no template line
+            for ni, nj in ((i + 1, j), (i, j + 1)):
+                if ni <= n and nj <= m and D[i][j] + GAP_PENALTY < D[ni][nj]:
+                    D[ni][nj] = D[i][j] + GAP_PENALTY
+                    back[ni][nj] = (i, j)
+    if D[n][m] == INF:
+        return None
+    beads, i, j = [], n, m
+    while (i, j) != (0, 0):
+        pi, pj = back[i][j]
+        beads.append((pi, i, pj, j))
+        i, j = pi, pj
+    beads.reverse()
+    return D[n][m] / max(n, 1), beads, r, sents
+
+
+def render_aligned(tmpl, bcl, beads, r, sents):
+    out = []
+
+    def emit(u, text):
+        if UPPER_HEADINGS and is_all_caps(u[1]):
+            text = text.upper()
+        out.append(u[0] + text)
+        if u[2]:
+            out.append("")
+
+    for (i0, i1, j0, j1) in beads:
+        a, b = i1 - i0, j1 - j0
+        if b == 0:      # template line the Bikol text does not have: skip it
+            if tmpl[i0][2] and out and out[-1] != "":
+                out.append("")
+            continue
+        if a == 0:      # extra Bikol line: keep it as it is
+            u = bcl[j0]
+            out.append(u[0] + u[1])
+            if u[2]:
+                out.append("")
+            continue
+        if a == 1:
+            emit(tmpl[i0], " ".join(x[1] for x in bcl[j0:j1]))
+        else:
+            _, cuts = best_split(sents[j0], [len(tmpl[i][1]) for i in range(i0, i1)], r)
+            for u, (s, e) in zip(tmpl[i0:i1], cuts):
+                emit(u, " ".join(sents[j0][s:e]))
+    return "\n".join(out).rstrip("\n") + "\n"
+
+
+def words_of(text):
+    return [w.lower() for w in WORD.findall(text)]
+
+
+def align_bcl(out_dir):
+    out_dir = Path(out_dir)
+    report = []
+    for bp in sorted((out_dir / "bcl").rglob("*.txt")):
+        rel = bp.relative_to(out_dir / "bcl")
+        bcl_text = bp.read_text(encoding="utf-8")
+        bcl = parse_units(bcl_text)
+        cands = {}
+        for lang in ("tl", "en"):
+            tp = out_dir / lang / rel
+            if tp.exists():
+                tmpl = parse_units(tp.read_text(encoding="utf-8"))
+                res = align_units(tmpl, bcl) if tmpl and bcl else None
+                if res:
+                    cands[lang] = (tmpl, res)
+        if not cands:
+            report.append([str(rel).replace("\\", "/"), "", len(bcl), "", "", "", "NO ALIGNMENT"])
+            continue
+        # Tagalog is the basis; English only when Tagalog clearly fits worse.
+        pick = "tl" if "tl" in cands else "en"
+        if "tl" in cands and "en" in cands and cands["en"][1][0] < 0.7 * cands["tl"][1][0]:
+            pick = "en"
+        tmpl, (cost, beads, r, sents) = cands[pick]
+        new_text = render_aligned(tmpl, bcl, beads, r, sents)
+        gaps = sum(1 for (i0, i1, j0, j1) in beads if i1 == i0 or j1 == j0)
+        status = "ok"
+        if words_of(new_text) != words_of(bcl_text):
+            status = "WORDS CHANGED - not written"
+        elif gaps:
+            status = f"CHECK ({gaps} line(s) only in one file) - written"
+        elif cost > FLAG_COST:
+            status = "CHECK (weak alignment) - written"
+        if status != "WORDS CHANGED - not written":
+            bp.write_text(new_text, encoding="utf-8", newline="\n")
+        report.append([str(rel).replace("\\", "/"), pick, len(bcl), len(tmpl),
+                       "%.2f" % cost, ("%.2f" % cands["en"][1][0]) if "en" in cands else "", status])
+    with open(out_dir / "_structure_report.csv", "w", newline="", encoding="utf-8-sig") as f:
+        w = csv.writer(f)
+        w.writerow(["file", "template", "bcl_lines_before", "template_lines", "cost_per_line",
+                    "en_cost_per_line", "status"])
+        w.writerows(report)
+    bad = [x for x in report if x[-1] != "ok"]
+    print(f"structure aligned: {len(report) - len(bad)} ok, {len(bad)} to check (_structure_report.csv)")
+
+
 # ---------------------------------------------------------------- main ---
 def main(out_dir):
     out_dir = Path(out_dir)
@@ -507,6 +728,7 @@ def main(out_dir):
 
     write_all()
     apply_corrections(out_dir)
+    align_bcl(out_dir)
 
     # Hand-fixed files replace the converted ones (e.g. en/other/diarrhea_2.txt:
     # the PDF's English column for that topic is in Tagalog).

@@ -1,0 +1,74 @@
+﻿file,template,bcl_lines_before,template_lines,cost_per_line,en_cost_per_line,status
+child_care/autism.txt,tl,21,21,0.23,10.69,ok
+child_care/baby_is_a_champion.txt,tl,28,29,0.32,0.79,CHECK (1 line(s) only in one file) - written
+child_care/breastfeeding_tips.txt,tl,39,17,5.34,8.80,CHECK (18 line(s) only in one file) - written
+child_care/chickenpox.txt,tl,28,31,0.57,0.87,CHECK (1 line(s) only in one file) - written
+child_care/deworming.txt,tl,6,6,0.03,0.13,ok
+child_care/first_1000_days_nutrition.txt,en,33,32,0.92,0.92,CHECK (1 line(s) only in one file) - written
+child_care/first_1000_days_nutrition_2.txt,tl,28,28,0.04,0.15,ok
+child_care/malnutrition.txt,tl,34,38,1.32,13.32,CHECK (3 line(s) only in one file) - written
+child_care/measles.txt,tl,15,15,0.69,1.02,CHECK (1 line(s) only in one file) - written
+child_care/micronutrient_deficiency.txt,en,7,7,0.33,0.33,ok
+child_care/newborn_hearing_screening.txt,tl,40,40,0.29,0.57,ok
+child_care/pneumonia.txt,tl,16,17,0.58,2.67,CHECK (1 line(s) only in one file) - written
+child_care/puberty_teen_boy.txt,tl,55,56,0.21,1.09,CHECK (1 line(s) only in one file) - written
+child_care/save_your_baby_mental_retardation.txt,en,49,54,0.84,0.84,CHECK (6 line(s) only in one file) - written
+family_planning/family_planning_facts.txt,tl,51,51,0.20,0.54,ok
+family_planning/family_planning_faq.txt,tl,91,88,0.35,0.47,CHECK (3 line(s) only in one file) - written
+family_planning/one_child_is_enough.txt,en,40,41,0.38,0.38,CHECK (1 line(s) only in one file) - written
+maternal_care/menopause.txt,tl,17,19,0.70,4.97,ok
+maternal_care/pre_term_birth.txt,tl,15,15,0.61,3.47,ok
+maternal_care/tetanus.txt,en,27,27,1.17,1.17,CHECK (1 line(s) only in one file) - written
+other/allergic_rhinitis.txt,tl,15,16,1.11,1.47,ok
+other/asthma.txt,tl,13,13,0.01,0.16,ok
+other/blood_donation.txt,tl,65,64,0.89,0.80,CHECK (5 line(s) only in one file) - written
+other/breast_cancer.txt,tl,20,20,0.03,2.25,ok
+other/cholera.txt,tl,21,18,1.42,1.74,CHECK (2 line(s) only in one file) - written
+other/chronic_kidney_disease.txt,tl,32,22,2.98,2.85,CHECK (14 line(s) only in one file) - written
+other/common_cold.txt,tl,16,16,0.17,0.33,ok
+other/constipation.txt,tl,73,80,0.39,1.08,CHECK (3 line(s) only in one file) - written
+other/cough.txt,tl,59,59,0.24,0.92,CHECK (1 line(s) only in one file) - written
+other/deafness.txt,tl,9,10,0.47,0.50,ok
+other/dementia.txt,tl,27,40,2.17,1.60,CHECK (12 line(s) only in one file) - written
+other/dengue.txt,tl,52,39,3.02,2.53,CHECK (18 line(s) only in one file) - written
+other/diabetes.txt,tl,31,29,0.12,0.55,ok
+other/diarrhea.txt,tl,71,69,0.54,0.99,CHECK (4 line(s) only in one file) - written
+other/diarrhea_2.txt,tl,16,17,1.44,1.62,ok
+other/epilepsy.txt,en,47,43,0.99,0.99,CHECK (4 line(s) only in one file) - written
+other/fever.txt,tl,40,44,0.38,1.17,CHECK (2 line(s) only in one file) - written
+other/foodborne_illness.txt,tl,20,20,0.56,0.87,ok
+other/gender_identity.txt,tl,20,19,0.11,0.23,ok
+other/gout.txt,tl,44,46,0.38,0.79,CHECK (2 line(s) only in one file) - written
+other/handwashing.txt,tl,30,31,0.46,0.74,CHECK (1 line(s) only in one file) - written
+other/headache.txt,en,14,16,0.76,0.76,CHECK (1 line(s) only in one file) - written
+other/healthy_teeth.txt,tl,40,34,1.22,1.11,CHECK (8 line(s) only in one file) - written
+other/heart_attack.txt,tl,31,32,0.98,1.56,CHECK (1 line(s) only in one file) - written
+other/hepatitis.txt,tl,18,18,0.59,0.49,ok
+other/high_blood_pressure.txt,tl,44,46,0.37,0.51,CHECK (1 line(s) only in one file) - written
+other/hiv_and_aids.txt,en,29,27,1.43,1.43,CHECK (1 line(s) only in one file) - written
+other/hypertension.txt,en,42,40,1.31,1.31,CHECK (6 line(s) only in one file) - written
+other/influenza.txt,tl,30,35,1.32,1.27,ok
+other/influenza_rainy_season.txt,tl,44,44,0.49,0.50,ok
+other/kidney_cancer.txt,tl,39,39,0.24,0.79,ok
+other/leptospirosis.txt,tl,10,11,0.46,2.31,ok
+other/liver_cancer.txt,tl,42,42,0.21,0.64,ok
+other/low_back_pain.txt,tl,30,32,1.36,3.74,CHECK (2 line(s) only in one file) - written
+other/low_blood_pressure.txt,tl,98,98,0.59,0.92,CHECK (7 line(s) only in one file) - written
+other/lung_cancer.txt,en,23,23,1.28,1.28,CHECK (2 line(s) only in one file) - written
+other/malaria.txt,tl,23,26,1.63,1.94,CHECK (4 line(s) only in one file) - written
+other/nausea_vomiting.txt,tl,18,20,1.57,1.66,CHECK (1 line(s) only in one file) - written
+other/obesity.txt,tl,10,10,0.85,1.09,ok
+other/ovarian_cancer.txt,tl,16,16,0.17,0.49,ok
+other/pinggang_pinoy.txt,tl,24,24,0.02,0.40,ok
+other/rabies.txt,tl,22,26,1.83,5.12,CHECK (7 line(s) only in one file) - written
+other/rashes.txt,tl,14,14,1.31,1.82,ok
+other/runny_nose.txt,tl,88,94,0.65,1.14,CHECK (8 line(s) only in one file) - written
+other/seven_healthy_habits.txt,tl,69,72,0.29,0.42,CHECK (3 line(s) only in one file) - written
+other/smoking.txt,tl,64,57,2.38,1.99,CHECK (14 line(s) only in one file) - written
+other/sore_throat.txt,tl,90,87,0.73,1.18,CHECK (7 line(s) only in one file) - written
+other/stress.txt,tl,15,14,1.09,2.02,CHECK (2 line(s) only in one file) - written
+other/stroke.txt,tl,49,47,0.88,2.74,CHECK (4 line(s) only in one file) - written
+other/ten_kumainments.txt,en,98,99,0.71,0.71,CHECK (4 line(s) only in one file) - written
+other/toothache.txt,tl,79,76,0.35,0.74,CHECK (4 line(s) only in one file) - written
+other/tuberculosis_proper_coughing.txt,tl,24,24,0.74,0.53,ok
+other/uti_urinary_tract_infection.txt,tl,15,16,1.36,1.67,ok
