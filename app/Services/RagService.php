@@ -158,6 +158,7 @@ class RagService
         'alin', 'amo', 'amu', 'oo', 'buku', 'boko', 'bokong', 'usad', 'osad', 'diri', 'hindi', 'pwede', 'ana', 'ang', 'an',
         'a', 'na', 'sa', 'ka', 'kana', 'kan', 'kin', 'kung', 'mga', 'manga', 'para', 'ng', 'ag',
         'gibuhon', 'maiwasan', 'makaiwas', 'gawin', 'gawa', 'ito', 'adi',
+        'pamahalaan', 'pamahalaon', 'pamamahala',
         'with', 'what', 'where', 'when', 'who', 'why', 'how', 'this', 'that',
         // Short particles that must never act as acronym/keywords
         'ba', 'da', 'di', 'pa', 'po', 'ay', 'or', 'to', 'is', 'be', 'of', 'on',
@@ -168,7 +169,8 @@ class RagService
     {
         preg_match_all('/[a-zA-Z]+/', mb_strtolower($question), $matches);
         $keywords = array_values(array_filter($matches[0], function ($w) {
-            return mb_strlen($w) >= 4 && !in_array($w, $this->stopwords, true);
+            return (mb_strlen($w) >= 4 || $this->isBikolTopicIdentityToken($w))
+                && !in_array($w, $this->stopwords, true);
         }));
 
         foreach ($this->extractAcronymCandidates($question) as $acronym) {
@@ -984,7 +986,9 @@ class RagService
     {
         $token = mb_strtolower(trim($token), 'UTF-8');
 
-        return $token === 'milestone';
+        // "obo" (Iriga) / "ubo" (Tagalog) = cough: only three letters, so let them through explicitly.
+        // (They are matched through config/bikol_topic_aliases.php, not as concept equivalents of each other.)
+        return in_array($token, ['milestone', 'obo', 'ubo'], true);
     }
 
     /**
@@ -1016,12 +1020,12 @@ class RagService
      */
     protected function isUsableBikolRetrieveTopicKeyword(string $keyword): bool
     {
-        if (mb_strlen($keyword) < 4) {
-            return false;
-        }
-
         if ($this->isBikolTopicIdentityToken($keyword)) {
             return true;
+        }
+
+        if (mb_strlen($keyword) < 4) {
+            return false;
         }
 
         return !$this->isWeakScheduleTopicAnchor($keyword);
@@ -2932,6 +2936,10 @@ protected function buildBikolAnswerFromContext(
             )
         ) {
             $selectedParts = $this->selectBikolDefinitionFallback($currentContent);
+            if ($selectedParts === [] && $intent === 'definition') {
+                // The document has no "Ono ana X?" heading: its opening paragraph is the definition.
+                $selectedParts = $this->selectBikolIntroFallback($currentContent);
+            }
             $contributingSources = $selectedParts !== [] ? [$currentSource] : [];
         }
     }
@@ -3338,6 +3346,55 @@ protected function selectBikolDefinitionFallback(string $content): array
 }
 
 /**
+ * Definition for documents that open with the topic title and an intro paragraph instead
+ * of an "Ono ana X?" heading (e.g. dementia, asthma): the first one or two sentence lines
+ * at the start of the document, before any list or further heading.
+ *
+ * @return list<string>
+ */
+protected function selectBikolIntroFallback(string $content): array
+{
+    $lines = preg_split('/\R+/u', $content) ?: [];
+    $lines = array_values(array_filter(array_map('trim', $lines), fn ($line) => $line !== ''));
+    $bulleted = $this->isBikolFullyBulletedDocument($lines);
+
+    $collected = [];
+
+    foreach ($lines as $line) {
+        if ($bulleted) {
+            $line = trim(preg_replace('/^-\s+/u', '', $line) ?? $line);
+        }
+
+        $lower = mb_strtolower($line);
+        $isBody = !str_starts_with($line, '-')
+            && !str_ends_with($line, '?')
+            && !str_ends_with($line, ':')
+            && (preg_match('/[.!)”"]$/u', $line) === 1 || mb_strlen($line) >= 90)
+            && !$this->isBikolAllCapsHeading($line)
+            && mb_strlen($line) >= 50
+            && count(preg_split('/\s+/u', $line) ?: []) >= 8;
+
+        if (!$isBody) {
+            // Titles and section labels before the intro are skipped; after it they end it.
+            if ($collected !== []) {
+                break;
+            }
+            if (!$this->isBikolHeadingLikeLine($line, $lower) && !$this->isSkippableBikolHeadingLine($line, $lower)) {
+                break;
+            }
+            continue;
+        }
+
+        $collected[] = $line;
+        if (count($collected) >= 2) {
+            break;
+        }
+    }
+
+    return $collected;
+}
+
+/**
  * True for Bikol benefits/purpose section headings only.
  * Body sentences that merely mention "benepisyo" must NOT match
  * (e.g. FAQ answers about pills that say "dagdag na benepisyo").
@@ -3638,6 +3695,9 @@ protected function detectBikolIntentByRules(string $question): string
     if (
         str_contains($q, 'gibuhon') ||
         str_contains($q, 'gigibuhon') ||
+        str_contains($q, 'pamahalaan') ||
+        str_contains($q, 'pamahalaon') ||
+        str_contains($q, 'pamamahala') ||
         str_contains($q, 'bulong') ||
         str_contains($q, 'gamot') ||
         str_contains($q, 'kontrol') ||
@@ -5040,6 +5100,13 @@ protected function isBikolSymptomsHeading(string $lower): bool
         || str_contains($lower, 'palatandaan')
         || str_contains($lower, 'sintomas')
         || str_contains($lower, 'sinyales')
+        // "Mga Mamatian" = symptoms; "Pamahalaan ana mga Mamatian" is management, not symptoms.
+        || (
+            str_contains($lower, 'mamatian')
+            && !str_contains($lower, 'pamahalaan')
+            && !str_contains($lower, 'pamamahala')
+            && !str_contains($lower, 'bulong')
+        )
         || str_contains($lower, 'pag-uugali')
         || str_contains($lower, 'pag uugali');
 }
@@ -5121,6 +5188,7 @@ protected function isBikolTreatmentHeading(string $lower): bool
         || str_contains($lower, 'interbensyon')
         || str_contains($lower, 'intervention')
         || str_contains($lower, 'pamamahala')
+        || str_contains($lower, 'pamahalaan')
         || str_contains($lower, 'binubulong');
 }
 
@@ -5180,18 +5248,28 @@ protected function extractBikolSections(
 
     $lines = preg_split('/\R+/u', $content);
 
+    // Some documents start every line with "- ", headings included (they follow the
+    // Tagalog layout). There the bullet says nothing, so the two checks that match the
+    // start of a heading ("Ono ana ...?" and "Diyagnosis") look at the line without it.
+    // Every other check keeps the original line, so short list items are not mistaken for headings.
+    $bulletedDocument = $this->isBikolFullyBulletedDocument($lines);
+
     $results = [];
     $currentSection = 'general';
     $startedDefinition = false;
 
-    foreach ($lines as $line) {
-        $line = trim($line);
+    foreach ($lines as $rawLine) {
+        $rawLine = trim($rawLine);
 
-        if ($line === '') {
+        if ($rawLine === '') {
             continue;
         }
 
-        $lower = mb_strtolower($line);
+        $rawLower = mb_strtolower($rawLine);
+        $line = $rawLine;
+        $lower = $rawLower;
+        $headLine = $bulletedDocument ? trim(preg_replace('/^-\s+/u', '', $rawLine) ?? $rawLine) : $rawLine;
+        $headLower = $bulletedDocument ? mb_strtolower($headLine) : $rawLower;
 
         /*
         |--------------------------------------------------------------------------
@@ -5210,7 +5288,7 @@ protected function extractBikolSections(
         // Definition: "Uno a <topic>?" / "Uno ana <topic>?" / "Uno man ana <topic>?"
         // For definition intent, lock to the first heading; later UNO A/ANA FAQs
         // are peer stops (handled above). Nested mixed-case "Uno a …" stays in-body.
-        if ($this->isBikolDefinitionHeading($lower)) {
+        if ($this->isBikolDefinitionHeading($headLower)) {
             $nestedDefinitionChild = $intent === 'definition'
                 && $startedDefinition
                 && !$this->isBikolPeerHeadingBoundary($line, $lower);
@@ -5246,8 +5324,8 @@ protected function extractBikolSections(
 
         // Early detection / diagnosis / screening
         if (
-            $this->isBikolHeadingLikeLine($line, $lower)
-            && $this->isBikolDiagnosisHeading($lower)
+            $this->isBikolHeadingLikeLine($headLine, $headLower)
+            && $this->isBikolDiagnosisHeading($headLower)
         ) {
             $currentSection = 'diagnosis';
             continue;
@@ -5300,7 +5378,7 @@ protected function extractBikolSections(
         }
 
         // Generic short heading / ALL-CAPS label ends the previous section.
-        if ($this->isBikolGenericSectionBoundary($line, $lower)) {
+        if ($this->isBikolGenericSectionBoundary($rawLine, $rawLower)) {
             $currentSection = 'general';
             continue;
         }
@@ -5308,7 +5386,7 @@ protected function extractBikolSections(
         // Benefits: stop at FAQ questions, numbered topics, and new subsections.
         if (
             $currentSection === 'benefits'
-            && $this->isBikolBenefitsEndBoundary($line, $lower)
+            && $this->isBikolBenefitsEndBoundary($rawLine, $rawLower)
         ) {
             $currentSection = 'general';
             continue;
@@ -5317,7 +5395,7 @@ protected function extractBikolSections(
         // Schedule / warning: stop when a new unrelated block begins.
         if (
             in_array($currentSection, ['schedule', 'warning'], true)
-            && $this->isBikolScheduleOrWarningEndBoundary($line, $lower)
+            && $this->isBikolScheduleOrWarningEndBoundary($rawLine, $rawLower)
             && !(
                 ($currentSection === 'schedule' && $this->isBikolScheduleHeading($line, $lower, $question))
                 || ($currentSection === 'warning' && $this->isBikolWarningHeading($line, $lower))
@@ -5334,11 +5412,35 @@ protected function extractBikolSections(
         */
 
         if ($currentSection === $intent) {
-            $results[] = $line;
+            $results[] = $rawLine;
         }
     }
 
     return $results;
+}
+
+/**
+ * True when (almost) every non-blank line starts with "- ", i.e. the bullet is layout, not a list marker.
+ *
+ * @param  list<string>  $lines
+ */
+protected function isBikolFullyBulletedDocument(array $lines): bool
+{
+    $nonBlank = array_values(array_filter(
+        array_map('trim', $lines),
+        static fn (string $line): bool => $line !== ''
+    ));
+
+    if (count($nonBlank) < 5) {
+        return false;
+    }
+
+    $bulleted = count(array_filter(
+        $nonBlank,
+        static fn (string $line): bool => preg_match('/^-\s+\S/u', $line) === 1
+    ));
+
+    return $bulleted / count($nonBlank) >= 0.9;
 }
 
 /**

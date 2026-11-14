@@ -20,6 +20,13 @@ return [
     'diarrhea' => ['pagtatae', 'lbm', 'nag-uudo-udo'],
     'diarrhea_2' => ['pagtatae', 'lbm', 'nag-uudo-udo'],
     'fever' => ['lagnat', 'kalintura', 'kalintora'],
+    'asthma' => ['hika'],
+    'cough' => ['ubo', 'obo'],
+    'tetanus' => ['tetano'],
+    'constipation' => ['tibi'],
+    'influenza' => ['trangkaso'],
+    'pneumonia' => ['pulmonya'],
+    'tuberculosis_proper_coughing' => ['tb', 'tuberkulosis'],
     'breastfeeding_tips' => [
         'breastfeeding', 'pagpapasuso', 'pagpapasoso', 'magpasoso', 'magpasuso',
         'nagpapasoso', 'nursing',
