@@ -107,6 +107,9 @@ return [
         'model' => env('BIKOL_CHAT_MODEL', 'lmlinga-bikol-chat'),
         'base_url' => env('BIKOL_CHAT_BASE_URL', env('OLLAMA_BASE_URL', 'http://127.0.0.1:11434')),
         'timeout' => (int) env('BIKOL_CHAT_TIMEOUT', 60),
+        // Send the real time/date ("[Oras: 8:00 PM | Aldow: Sabado | Petsa: ...]") with each message.
+        // Turn on only after installing the model trained with ml/bikol-chat notebook v3.
+        'send_context' => (bool) env('BIKOL_CHAT_SEND_CONTEXT', false),
     ],
 
 ];

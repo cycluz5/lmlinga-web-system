@@ -2,6 +2,9 @@
 
     python make_notebook.py
 
+Version 3 (2026-11-14): + Stage 1 on the verified Iriga health text (iriga_text.csv, translation_pairs.csv),
++ "situational" chats where the app sends the real time/date in a context line
+([Oras: ... | Aldow: ... | Petsa: ...]), + the test checks that time answers match the context.
 Version 2 (2026-11-12): Gemma 3 4B (4-bit LoRA), Stage 1 on Rinconada sentences (downloaded in Colab
 from Hugging Face, spelling changed to the team's), Stage 2 on checked chats + checked conversations.
 Version 1 (Gemma 3 1B + Central Bikol) scored 6/63 same reply -> replaced.
@@ -31,23 +34,26 @@ def code(text, tag=None):
 
 
 md("""
-# LMLinga Rinconada chat model — training (version 2)
+# LMLinga Rinconada chat model — training (version 3)
 
 This notebook teaches an AI model (**Gemma 3 4B**) to **talk naturally in Rinconada / Bikol-Iriga**
-(greetings, feelings, daily life, school, family, holidays…).
+(greetings, feelings, daily life, school, family, holidays, and the **time / date / day**).
 
 ⚠️ **Small talk only.** Health questions still go to the chatbot's health-answer path (RAG, the checked
 health documents). Serious messages (no hope / hurt myself) always get the team's fixed checked reply.
 
 **Before you start:** **Runtime → Change runtime type → T4 GPU → Save**.
 
-**Then:** **Runtime → Run all**. When Step 2 asks, upload these 2 files
+**Then:** **Runtime → Run all**. When Step 2 asks, upload these 5 files
 (from `Desktop\\datasets\\colab_upload_chat`):
 
 - `chat_pairs.csv` — 293 checked chats (one message + one reply)
 - `dialogs.csv` — 45 checked conversations (back and forth)
+- `situational.csv` — chats about time / date / day (the app sends the real time in a context line)
+- `iriga_text.csv` — your verified Bikol-Iriga health text (Stage 1: learn Iriga words and grammar)
+- `translation_pairs.csv` — English/Tagalog ↔ Iriga pairs from your verified datasets (Stage 1)
 
-The Rinconada sentences for Stage 1 are downloaded automatically.
+More Rinconada sentences for Stage 1 are downloaded automatically.
 
 Takes about **45–60 minutes**. At the end the notebook downloads:
 
@@ -72,14 +78,15 @@ if importlib.util.find_spec("unsloth") is None:
 print("unsloth installed OK")
 """)
 
-md("## Step 2 — Upload the 2 data files")
+md("## Step 2 — Upload the 5 data files")
 code("""
 import os, glob, shutil
+DATA_FILES = ["chat_pairs.csv", "dialogs.csv", "situational.csv", "iriga_text.csv", "translation_pairs.csv"]
 ON_KAGGLE = "KAGGLE_KERNEL_RUN_TYPE" in os.environ   # (Colab also has a /kaggle folder now)
 files = None
 if ON_KAGGLE:  # Kaggle: the 2 files were added with "Add Input" (they are under /kaggle/input)
     os.makedirs("/tmp/bikol", exist_ok=True)   # big work files go here (more disk space)
-    for name in ["chat_pairs.csv", "dialogs.csv"]:
+    for name in DATA_FILES:
         found = glob.glob(f"/kaggle/input/**/{name}", recursive=True)
         if found:
             shutil.copy(found[0], f"/tmp/bikol/{name}")
@@ -88,7 +95,7 @@ if ON_KAGGLE:  # Kaggle: the 2 files were added with "Add Input" (they are under
 else:
     try:
         from google.colab import files  # running on Colab
-        print("Choose 2 files: chat_pairs.csv and dialogs.csv")
+        print("Choose the 5 files:", ", ".join(DATA_FILES))
         files.upload()
         DATA_DIR = "."
     except ImportError:  # running on a normal computer (only for checking the data steps)
@@ -102,7 +109,7 @@ def give(name):
         shutil.copy(name, "/kaggle/working/")
         print("Saved to Output:", name)
 
-for name in ["chat_pairs.csv", "dialogs.csv"]:
+for name in DATA_FILES:
     print(name, "OK" if os.path.exists(os.path.join(DATA_DIR, name)) else "MISSING - upload it")
 """, tag="data")
 
@@ -112,7 +119,9 @@ md("""
 You normally do **not** need to change these.
 """)
 code("""
-BASE_MODEL = "unsloth/gemma-3-4b-it"   # Gemma 3 4B, already knows how to chat in many languages
+BASE_MODEL = "unsloth/gemma-3-4b-it"   # Gemma 3 4B: tested, works with the Modelfile below.
+# The app's English/Tagalog chat uses Gemma 4 (cloud, 31B = too big to train here). A small Gemma 4 could be
+# tried by changing BASE_MODEL, but its chat template / Modelfile were NOT tested: keep Gemma 3 4B first.
 MAX_LEN = 1024
 SEED = 3407
 
@@ -122,8 +131,11 @@ RINCONADA_FILE = "rinconada_bikol_english_cleaned.csv"
 PRETRAIN_EPOCHS = 2      # 0 = skip Stage 1
 PRETRAIN_LR = 5e-5       # small, so the model does not forget how to chat
 
-# Stage 2: your checked chats + conversations
+# Stage 2: your checked chats + conversations + situational (time/date) chats
 CHAT_EPOCHS = 3
+# situational.csv stays "draft" until the team checks bikol_situational_REVIEW.xlsx.
+# Set True to train on the drafts anyway (to try the time/date feature before the team has checked it).
+INCLUDE_DRAFT_SITUATIONAL = False
 CHAT_LR = 2e-4
 
 MODEL_NAME = "lmlinga-bikol-chat"
@@ -144,9 +156,26 @@ code("""
 import csv, random, re
 random.seed(SEED)
 
-def read_csv(name):
+def read_csv(name, statuses=("reviewed",)):
     with open(os.path.join(DATA_DIR, name), encoding="utf-8") as f:
-        return [r for r in csv.DictReader(f) if r.get("status", "reviewed") == "reviewed"]
+        return [r for r in csv.DictReader(f) if r.get("status", "reviewed") in statuses]
+
+# --- the context line the app puts in front of every message (same format as BikolSmallTalkService.php) ---
+import datetime as dt
+DAYS = ["Lunes", "Martes", "Miyerkoles", "Huwebes", "Biyernes", "Sabado", "Dominggo"]
+MONTHS = ["Enero", "Pebrero", "Marso", "Abril", "Mayo", "Hunyo", "Hulyo", "Agosto", "Setyembre",
+          "Oktubre", "Nobyembre", "Disyembre"]
+def context_line(now):
+    h12 = now.hour % 12 or 12
+    return (f"[Oras: {h12}:{now.minute:02d} {'AM' if now.hour < 12 else 'PM'} | Aldow: {DAYS[now.weekday()]} | "
+            f"Petsa: {MONTHS[now.month - 1]} {now.day}, {now.year}]")
+def random_now():
+    base = dt.datetime(2026, 1, 1) + dt.timedelta(days=random.randrange(0, 700))
+    return base.replace(hour=random.randrange(0, 24), minute=random.choice([0, 0, 0, 5, 15, 30, 45, 55]))
+def with_context(conv):
+    \"\"\"Put a context line before the first person message (the app always does this).\"\"\"
+    (role, text), *rest = conv
+    return [(role, context_line(random_now()) + "\\n" + text)] + rest
 
 # --- single chats: hide the last way of saying it (conversations with 3+ ways) ---
 pairs = read_csv("chat_pairs.csv")
@@ -167,8 +196,15 @@ for r in read_csv("dialogs.csv"):
     turns.setdefault(int(r["dialog_id"]), []).append((int(r["turn"]), role, r["text"]))
 train_dialogs = [[(role, text) for _, role, text in sorted(t)] for _, t in sorted(turns.items())]
 
-train_convs = train_chats + train_dialogs
-print(f"Learn from: {len(train_chats)} chats + {len(train_dialogs)} conversations = {len(train_convs)}")
+# --- situational chats: the context line is already stored with each one ---
+sit_rows = read_csv("situational.csv", ("reviewed", "draft") if INCLUDE_DRAFT_SITUATIONAL else ("reviewed",))
+train_sit = [[("user", r["context"] + "\\n" + r["user"]), ("assistant", r["bot"])] for r in sit_rows]
+if not train_sit:
+    print("NOTE: no reviewed situational chats yet -> time/date answers are NOT trained "
+          "(team checks bikol_situational_REVIEW.xlsx, or set INCLUDE_DRAFT_SITUATIONAL = True)")
+
+train_convs = [with_context(c) for c in train_chats + train_dialogs] + train_sit
+print(f"Learn from: {len(train_chats)} chats + {len(train_dialogs)} conversations + {len(train_sit)} situational = {len(train_convs)}")
 print(f"Test (hidden ways of saying it): {len(test_pairs)} pairs")
 
 def team_spelling(text):
@@ -193,6 +229,17 @@ if PRETRAIN_EPOCHS > 0:
 random.shuffle(rinconada)
 paragraphs = [" ".join(rinconada[i:i + 5]) for i in range(0, len(rinconada), 5)]
 print(f"Rinconada sentences: {len(rinconada)} -> {len(paragraphs)} short paragraphs")
+
+# --- your verified Iriga health text + translation pairs (only to learn Iriga words and grammar) ---
+with open(os.path.join(DATA_DIR, "iriga_text.csv"), encoding="utf-8") as f:
+    iriga_text = [r["text"].strip() for r in csv.DictReader(f) if r["text"].strip()]
+with open(os.path.join(DATA_DIR, "translation_pairs.csv"), encoding="utf-8") as f:
+    pair_texts = [("English" if r["language"] == "en" else "Tagalog", r["source"].strip(), r["bikol_iriga"].strip())
+                  for r in csv.DictReader(f)]
+paragraphs += iriga_text
+paragraphs += [f"{lang}: {src}\\nBikol-Iriga: {bcl}" for lang, src, bcl in pair_texts]
+random.shuffle(paragraphs)
+print(f"Verified Iriga text: {len(iriga_text)} chunks + {len(pair_texts)} translation pairs -> Stage 1 has {len(paragraphs)} texts")
 if paragraphs:
     print("Example:", paragraphs[0][:200], "...")
 """)
@@ -225,7 +272,8 @@ tokenizer = get_chat_template(tokenizer, chat_template="gemma-3")
 md("""
 ## Step 6 — Stage 1: read Rinconada sentences
 
-The model reads real Rinconada text so it gets used to the words and grammar.
+The model reads real Rinconada text (sentences + your verified Iriga health text) so it gets used to the words and grammar.
+This is only for **language**: health facts are NOT answered by this model, they come from the RAG documents.
 """)
 code("""
 from datasets import Dataset
@@ -309,8 +357,9 @@ NEW_MESSAGES = [
     "Paalam na, matorog na ako. Salamat sa pakikiistorya!",
 ]
 
-def ask(message, max_new_tokens=128):
-    msgs = [{"role": "user", "content": message}]
+def ask(message, max_new_tokens=128, now=None):
+    # the app always sends the real time/date in front of the message
+    msgs = [{"role": "user", "content": context_line(now or random_now()) + "\\n" + message}]
     text = tokenizer.apply_chat_template(msgs, tokenize=False, add_generation_prompt=True)
     inputs = tokenizer(text, return_tensors="pt", add_special_tokens=False).to(model.device)
     out = model.generate(**inputs, max_new_tokens=max_new_tokens, do_sample=False)
@@ -336,6 +385,34 @@ for msg in NEW_MESSAGES:
     rows.append({"test": "new", "message": msg, "model_reply": got, "checked_reply": "",
                  "similarity": "", "not_team_words": bad_words(got), "team_ok": "", "team_fix": ""})
 
+# --- time / date check: the answer must contain the time/day/date from the context line ---
+HOUR_WORDS = {1: "ona", 2: "dos", 3: "tres", 4: "kuwatro", 5: "singko", 6: "sais", 7: "siyete", 8: "otso",
+              9: "nuwebe", 10: "dies", 11: "onse", 12: "dose"}
+TIME_QUESTIONS = ["Ono nang oras?", "What time is it?", "Anong oras na?", "Pirang oras na?"]
+DAY_QUESTIONS = ["Ono ngowan na aldow?", "What day is it today?"]
+DATE_QUESTIONS = ["Ono a petsa ngowan?", "What's the date today?"]
+time_ok = day_ok = date_ok = 0
+N_TIME = 12
+for i in range(N_TIME):
+    now = random_now()
+    h12 = now.hour % 12 or 12
+    for kind, q in (("time", TIME_QUESTIONS[i % 4]), ("day", DAY_QUESTIONS[i % 2]), ("date", DATE_QUESTIONS[i % 2])):
+        got = ask(q, now=now)
+        if kind == "time":
+            ok = (f"{h12}:{now.minute:02d}" in got) if now.minute else (f"{'ala' if h12 == 1 else 'alas'} {HOUR_WORDS[h12]}" in got.lower() or f"{h12}:00" in got)
+            time_ok += ok
+        elif kind == "day":
+            ok = DAYS[now.weekday()].lower() in got.lower()
+            day_ok += ok
+        else:
+            ok = DAYS[now.weekday()].lower() in got.lower() and MONTHS[now.month - 1].lower() in got.lower() and str(now.day) in got
+            date_ok += ok
+        rows.append({"test": f"{kind}-check", "message": context_line(now) + " " + q, "model_reply": got,
+                     "checked_reply": "", "similarity": "OK" if ok else "WRONG",
+                     "not_team_words": bad_words(got), "team_ok": "", "team_fix": ""})
+print(f"Time/date check (does the answer use the real time in the context line?): "
+      f"time {time_ok}/{N_TIME}   day {day_ok}/{N_TIME}   date {date_ok}/{N_TIME}")
+
 for r in rows:
     flag = f"   ⚠ {r['not_team_words']}" if r["not_team_words"] else ""
     print(f"[{r['test']}] {r['message']}\\n   -> {r['model_reply']}{flag}")
@@ -352,7 +429,7 @@ give("bikol_chat_test_results.csv")
 """)
 code("""
 # Try it yourself: change these messages and run this cell again.
-for message in ["Kumusta ika?", "Napagal ako ngowan.", "Ono a ngaran mo?", "Paalam!"]:
+for message in ["Kumusta ika?", "Napagal ako ngowan.", "Ono a ngaran mo?", "What time is it?", "Paalam!"]:
     print(f"{message}\\n   -> {ask(message)}")
 """)
 
@@ -444,6 +521,6 @@ old = UPLOAD / "bcl_sentences.txt"   # version 1 file, not used any more
 if old.exists():
     old.unlink()
 shutil.copy(out, UPLOAD / out.name)
-for name in ["chat_pairs.csv", "dialogs.csv"]:
+for name in ["chat_pairs.csv", "dialogs.csv", "situational.csv", "iriga_text.csv", "translation_pairs.csv"]:
     shutil.copy(HERE / "dataset" / name, UPLOAD / name)
 print("upload folder ->", UPLOAD, sorted(p.name for p in UPLOAD.iterdir()))
