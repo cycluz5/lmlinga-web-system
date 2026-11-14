@@ -11,6 +11,11 @@ namespace App\Support\Geo;
  */
 final class LaMedallaBoundary
 {
+    /** Keep in sync with BOUNDARY_TOLERANCE_METERS in resources/js/maps/la-medalla-boundary.js. */
+    public const TOLERANCE_METERS = 150;
+
+    private const METERS_PER_DEGREE_LAT = 111320;
+
     /** @var array<string, list<list<array{0: float, 1: float}>>|null> */
     private static array $ringsByPath = [];
 
@@ -37,6 +42,49 @@ final class LaMedallaBoundary
         }
 
         return false;
+    }
+
+    /**
+     * Like contains(), but also accepts points within TOLERANCE_METERS of the polygon edge
+     * (the polygon is indicative, so real border houses and GPS error fall just outside it).
+     */
+    public static function containsWithTolerance(float $lat, float $lng, ?float $meters = null, ?string $path = null): ?bool
+    {
+        $inside = self::contains($lat, $lng, $path);
+        if ($inside !== false) {
+            return $inside;
+        }
+
+        $distance = self::distanceToEdgeMeters($lat, $lng, $path);
+
+        return $distance !== null && $distance <= ($meters ?? self::TOLERANCE_METERS);
+    }
+
+    /** Shortest distance in metres from the point to any boundary edge, or null when unreadable. */
+    public static function distanceToEdgeMeters(float $lat, float $lng, ?string $path = null): ?float
+    {
+        $rings = self::outerRings($path ?? self::path());
+        if ($rings === null) {
+            return null;
+        }
+
+        $metersPerDegreeLng = self::METERS_PER_DEGREE_LAT * cos(deg2rad($lat));
+        $min = INF;
+        foreach ($rings as $ring) {
+            for ($i = 0, $j = count($ring) - 1; $i < count($ring); $j = $i++) {
+                [$ax, $ay] = $ring[$j];
+                [$bx, $by] = $ring[$i];
+                $px = ($lng - $ax) * $metersPerDegreeLng;
+                $py = ($lat - $ay) * self::METERS_PER_DEGREE_LAT;
+                $sx = ($bx - $ax) * $metersPerDegreeLng;
+                $sy = ($by - $ay) * self::METERS_PER_DEGREE_LAT;
+                $lengthSq = $sx * $sx + $sy * $sy;
+                $t = $lengthSq == 0.0 ? 0.0 : max(0.0, min(1.0, ($px * $sx + $py * $sy) / $lengthSq));
+                $min = min($min, hypot($px - $t * $sx, $py - $t * $sy));
+            }
+        }
+
+        return $min;
     }
 
     public static function forgetCache(): void
