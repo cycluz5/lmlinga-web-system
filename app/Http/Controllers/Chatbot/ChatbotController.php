@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Chatbot;
 use App\Http\Controllers\Controller;
 use App\Models\ChatbotConversation;
 use App\Models\ChatbotMessage;
+use App\Services\BikolSmallTalkService;
 use App\Services\RagService;
 use App\Services\TagalogConversationService;
 use App\Support\ResidentAuthenticator;
@@ -95,7 +96,11 @@ class ChatbotController extends Controller
                 }
             }
 
-            $result = $rag->ask($question, $language, $category, $topicHint);
+            // Time/date questions (Bikol) go to the fine-tuned Bikol-Iriga model; everything else is RAG.
+            $result = $language === 'bcl'
+                ? app(BikolSmallTalkService::class)->timeDateResult($question)
+                : null;
+            $result ??= $rag->ask($question, $language, $category, $topicHint);
             $resolvedLanguage = $result['language'] ?? $language;
 
             Log::info('Chatbot response', [
