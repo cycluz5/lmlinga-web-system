@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\WithinBarangayBoundary;
 use App\Support\DatabaseSchemaGuard;
 use App\Support\HouseholdNumber;
 use App\Support\HouseholdZoneResolver;
@@ -33,7 +34,11 @@ trait ValidatesHouseholdShell
                 : ['nullable', 'string', 'max:150'],
             'date_registered' => ['required', 'date', 'date_format:Y-m-d', 'before_or_equal:today'],
             'address' => ['nullable', 'string', 'max:255'],
-            'latitude' => ['nullable', 'numeric', 'between:-90,90'],
+            // Batch 5: a new or changed household location must be inside the La Medalla boundary.
+            'latitude' => [
+                'nullable', 'numeric', 'between:-90,90',
+                new WithinBarangayBoundary('longitude', ...$this->storedHouseholdCoordinates()),
+            ],
             'longitude' => ['nullable', 'numeric', 'between:-180,180'],
             'accomplished_by' => ['nullable', 'string', 'max:160'],
             'household_type' => ['nullable', 'string', 'max:50'],
@@ -46,6 +51,17 @@ trait ValidatesHouseholdShell
         }
 
         return $rules;
+    }
+
+    /**
+     * Coordinates already stored for the household being edited (re-saving them unchanged is allowed).
+     * Create has none; UpdateHouseholdRequest overrides this.
+     *
+     * @return array{0: float|null, 1: float|null}
+     */
+    protected function storedHouseholdCoordinates(): array
+    {
+        return [null, null];
     }
 
     protected function prepareHouseholdShellForValidation(bool $allowHouseholdNo = false): void

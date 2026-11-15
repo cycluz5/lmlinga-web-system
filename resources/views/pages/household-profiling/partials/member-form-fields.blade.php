@@ -48,7 +48,7 @@
             <input
                 type="text"
                 id="lml-hh-last-name"
-                name="last_name"
+                name="last_name" @if (! empty($nameSuggest)) data-lml-name-suggest="person" data-lml-name-suggest-url="{{ route('staff.name-suggestions') }}" @endif
                 class="lml-hh-member-form__control lml-focus-ring"
                 placeholder="Last name"
                 autocomplete="family-name"
@@ -66,7 +66,7 @@
             <input
                 type="text"
                 id="lml-hh-first-name"
-                name="first_name"
+                name="first_name" @if (! empty($nameSuggest)) data-lml-name-suggest="person" data-lml-name-suggest-url="{{ route('staff.name-suggestions') }}" @endif
                 class="lml-hh-member-form__control lml-focus-ring"
                 placeholder="First name"
                 autocomplete="given-name"
@@ -82,7 +82,7 @@
             <input
                 type="text"
                 id="lml-hh-middle-name"
-                name="middle_name"
+                name="middle_name" @if (! empty($nameSuggest)) data-lml-name-suggest="person" data-lml-name-suggest-url="{{ route('staff.name-suggestions') }}" @endif
                 class="lml-hh-member-form__control lml-focus-ring"
                 placeholder="Middle name"
                 autocomplete="additional-name"

@@ -395,15 +395,21 @@ class LanguageManagementTermsTest extends TestCase
         $this->get(route('dashboard'))->assertOk()->assertDontSee(route('language-management.index'), false);
     }
 
-    public function test_chatbot_behaviour_is_unchanged_by_approved_terms(): void
+    /**
+     * Batch 6 wires approved terms into the chatbot ONLY as a prompt glossary in RagService (D-T6 step; see
+     * ChatbotApprovedDataTest). They still never create canned conversation replies, and the Bikol conversation
+     * service and prompt texts are unchanged. (Previously this test asserted no wiring at all.)
+     */
+    public function test_approved_terms_reach_the_chatbot_only_as_a_prompt_glossary(): void
     {
         $version = $this->submittedTerm(['term' => 'placeholder-greeting']);
         $this->workflow()->approve($this->linguist(), $version);
 
-        // D-T6: approved terms are not wired into the chatbot yet.
         $this->assertSame(['type' => 'none'], app(BikolConversationService::class)->resolve('placeholder-greeting'));
-        foreach (['app/Services/RagService.php', 'app/Services/BikolConversationService.php', 'app/Services/Prompts/BikolPrompts.php'] as $file) {
+        foreach (['app/Services/BikolConversationService.php', 'app/Services/Prompts/BikolPrompts.php'] as $file) {
             $this->assertStringNotContainsString('ApprovedBikolTerms', (string) file_get_contents(base_path($file)), $file);
         }
+        $this->assertStringContainsString('\App\Support\ApprovedBikolTerms::all()', (string) file_get_contents(base_path('app/Services/RagService.php')));
+        $this->assertStringContainsString('placeholder-greeting', (string) app(\App\Services\RagService::class)->approvedTermsGlossary());
     }
 }

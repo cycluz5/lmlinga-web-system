@@ -191,7 +191,7 @@
                             <th scope="col">Actions</th>
                         </tr>
                     </thead>
-                    <tbody data-eh-tbody>
+                    <tbody data-lml-paginate="eh-row" data-lml-paginate-label="households" data-eh-tbody>
                         @forelse ($rows as $row)
                             @php
                                 $presence = $row['toilet_presence'] ?? 'unknown';

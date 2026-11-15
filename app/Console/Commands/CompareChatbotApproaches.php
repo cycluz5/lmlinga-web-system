@@ -151,7 +151,7 @@ class CompareChatbotApproaches extends Command
             $approaches[] = match ($key) {
                 'current' => new CurrentSystemApproach($rag->withChatSettings($this->option('provider'), $this->option('model'))),
                 'model_only' => ModelOnlyApproach::fromConfig($this->option('provider'), $this->option('model')),
-                'approved_context' => new ApprovedContextApproach,
+                'approved_context' => ApprovedContextApproach::fromConfig($this->option('provider'), $this->option('model')),
                 default => throw new InvalidArgumentException("Unknown approach \"{$key}\" (use current, model_only, approved_context)."),
             };
         }
@@ -201,6 +201,8 @@ class CompareChatbotApproaches extends Command
             }
             $endpoint = match (true) {
                 $approach instanceof ModelOnlyApproach => $approach->endpoint(),
+                // Batch 6: B uses the same endpoint as A, so the cloud guard applies to it too.
+                $approach instanceof ApprovedContextApproach => $approach->endpoint(),
                 default => $rag->withChatSettings($this->option('provider'), $this->option('model'))->chatSettings()['endpoint'],
             };
             if ($endpoint['provider'] === OllamaChatEndpoint::CLOUD) {

@@ -31,11 +31,21 @@ class SpotMappingBoundaryCheckParityTest extends TestCase
         $this->assertSame([], $mismatches);
     }
 
-    public function test_server_still_accepts_any_valid_coordinate_and_has_no_boundary_rule(): void
+    /**
+     * Batch 5 (panel requirement, SM-03) replaced the Phase 3A "warn only, never reject" policy: every Spot
+     * Mapping and household location input must now carry the server-side boundary rule. (This test previously
+     * asserted the opposite — that no request referenced the boundary.)
+     */
+    public function test_every_location_input_enforces_the_boundary_rule_on_the_server(): void
     {
-        foreach (['UpdateSpotMappingCoordinatesRequest', 'StoreSpotMappingHouseholdRequest', 'IssueSpotMappingHandoffRequest'] as $request) {
+        foreach ([
+            'UpdateSpotMappingCoordinatesRequest',
+            'StoreSpotMappingHouseholdRequest',
+            'IssueSpotMappingHandoffRequest',
+            'ValidatesHouseholdShell',
+        ] as $request) {
             $source = (string) file_get_contents(app_path("Http/Requests/{$request}.php"));
-            $this->assertStringNotContainsString('BarangayBoundary', $source, $request);
+            $this->assertStringContainsString('new WithinBarangayBoundary(', $source, $request);
         }
     }
 }

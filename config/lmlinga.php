@@ -87,13 +87,16 @@ return [
     | MultiPolygon, [longitude, latitude], properties.source required). Only
     | authoritative data may be placed here — see resources/geo/README.md.
     | Until a valid file exists, Spot Mapping shows a warning and no point is
-    | treated as inside the barangay (fail closed). Coordinate enforcement on
-    | save is a later step (SM-03) and is not active.
+    | treated as inside the barangay (fail closed). Batch 5 (SM-03): new and
+    | changed Spot Mapping / household coordinates are rejected on the server
+    | when outside this boundary (App\Rules\WithinBarangayBoundary).
+    | LMLINGA_GEOFENCE_ENFORCE=false is the rollback switch.
     |
     */
 
     'geofence' => [
         'boundary_path' => env('LMLINGA_BOUNDARY_PATH', base_path('resources/geo/la-medalla-boundary.geojson')),
+        'enforce' => (bool) env('LMLINGA_GEOFENCE_ENFORCE', true),
     ],
 
     /*
@@ -108,12 +111,32 @@ return [
         'ttl_minutes' => min(120, max(1, (int) env('LMLINGA_DEMO_LOCATION_TTL_MINUTES', 120))),
     ],
 
+    /*
+     | Batch 1 — health-worker email ownership verification. Admin-created staff accounts stay unusable until
+     | the worker enters a 6-digit code emailed to the account address (fixed 5-minute expiry,
+     | StaffEmailVerificationService::EXPIRY_MINUTES). Accounts that existed before this feature are not
+     | affected. enabled=false restores immediate use of newly created accounts (rollback switch).
+     */
+    'staff_email_verification' => [
+        'enabled' => (bool) env('LMLINGA_STAFF_EMAIL_VERIFICATION', true),
+        'max_attempts' => 5,
+        'resend_cooldown_seconds' => 60,
+        'max_sends_per_hour' => 5,
+        'pending_session_minutes' => 30,
+        'reverify_on_email_change' => (bool) env('LMLINGA_STAFF_REVERIFY_ON_EMAIL_CHANGE', true),
+        // Named rate limiters (AppServiceProvider), per IP + pending account.
+        'send_per_10_minutes' => (int) env('LMLINGA_STAFF_EMAIL_OTP_SEND_PER_10_MINUTES', 5),
+        'verify_per_10_minutes' => (int) env('LMLINGA_STAFF_EMAIL_OTP_VERIFY_PER_10_MINUTES', 10),
+    ],
+
     'resident_email_verification' => [
         'enabled' => (bool) env('LMLINGA_RESIDENT_EMAIL_VERIFICATION', true),
         'max_attempts' => 5,
         'resend_cooldown_seconds' => 60,
         'max_resends' => 3,
         'pending_registration_minutes' => 30,
+        // Batch 6 two-step registration: minutes allowed for step 2 (name + zone) after the email is verified.
+        'details_minutes' => 30,
         'emails_per_hour_per_address' => 5,
         // Named rate limiters (AppServiceProvider), per resident account or IP.
         'send_per_10_minutes' => (int) env('LMLINGA_EMAIL_OTP_SEND_PER_10_MINUTES', 5),
@@ -121,8 +144,19 @@ return [
     ],
 
     /*
-     | SR-07 chatbot dataset uploads (Admin) reviewed by a Linguist. Approved datasets are NOT used by
-     | the chatbot yet: indexing/activation needs a separate approval.
+     | Batch 6 — the resident chatbot uses the Bikol-Iriga terms a Linguist approved (Language Management) as a
+     | glossary in its prompt. Only approved, non-retired terms; no change while none are approved.
+     | LMLINGA_CHATBOT_APPROVED_TERMS=false turns it off (rollback).
+     */
+    'chatbot' => [
+        'approved_terms_in_prompt' => (bool) env('LMLINGA_CHATBOT_APPROVED_TERMS', true),
+        'approved_terms_max' => 80,
+    ],
+
+    /*
+     | SR-07 chatbot dataset uploads (Admin) reviewed by a Linguist. Batch 6: approved datasets are used by
+     | `chatbot:compare` Approach B (context-based, approved datasets only). The resident chatbot's corpus
+     | (resources/health_docs) is unchanged; indexing approved datasets into it needs a separate approval.
      */
     'chatbot_datasets' => [
         'max_kilobytes' => 100,

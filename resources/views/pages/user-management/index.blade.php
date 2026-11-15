@@ -134,6 +134,10 @@
                 role="list"
                 aria-label="Health workers"
                 data-um-grid
+                data-lml-paginate="hw-card"
+                data-lml-paginate-label="health workers"
+                data-lml-paginate-key="workers_page"
+                data-lml-paginate-size="12"
             >
                 @foreach ($healthWorkers as $worker)
                     <x-lml.user-management.health-worker-card
@@ -143,6 +147,7 @@
                         :zone="$worker['zone']"
                         :status="$worker['status']"
                         :photo="$worker['photo'] ?? null"
+                        :email-pending="(bool) ($worker['email_verification_pending'] ?? false)"
                     />
                 @endforeach
             </div>

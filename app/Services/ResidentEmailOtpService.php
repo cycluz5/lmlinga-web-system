@@ -54,6 +54,9 @@ final class ResidentEmailOtpService
 
     public const ALREADY_VERIFIED = 'already_verified';
 
+    /** Batch 6: email verified in step 1; name and zone (step 2) are still needed before an account exists. */
+    public const DETAILS_REQUIRED = 'details_required';
+
     public static function enabled(): bool
     {
         return (bool) config('lmlinga.resident_email_verification.enabled', true);
@@ -80,11 +83,15 @@ final class ResidentEmailOtpService
     {
         $email = trim((string) $validated['email']);
 
+        // Batch 6 two-step registration: step 1 carries only email + password; name and zone are added in
+        // step 2 (completeRegistration) after the email is verified. A request that already includes them
+        // (single-form shape) still creates the account right after verification.
         $pending = [
-            'first_name' => (string) $validated['first_name'],
-            'middle_name' => (string) $validated['middle_name'],
-            'last_name' => (string) $validated['last_name'],
-            'zone' => (string) $validated['zone'],
+            'first_name' => (string) ($validated['first_name'] ?? ''),
+            'middle_name' => (string) ($validated['middle_name'] ?? ''),
+            'last_name' => (string) ($validated['last_name'] ?? ''),
+            'zone' => (string) ($validated['zone'] ?? ''),
+            'email_verified_at' => 0,
             'email' => $email,
             'password_hash' => Hash::make((string) $validated['password']),
             'email_taken' => $this->emailBelongsToAccount($email),
@@ -123,7 +130,7 @@ final class ResidentEmailOtpService
     public function resendRegistration(?string $token): string
     {
         $pending = $this->pending($token);
-        if ($pending === null) {
+        if ($pending === null || $this->emailAlreadyVerified($pending)) {
             return self::MISSING;
         }
 
@@ -153,11 +160,25 @@ final class ResidentEmailOtpService
                 return self::MISSING;
             }
 
+            if ($this->emailAlreadyVerified($pending)) {
+                return self::DETAILS_REQUIRED;
+            }
+
             $check = $this->checkCode($pending, $code);
             if ($check !== self::VERIFIED) {
                 $this->putPending((string) $token, $pending);
 
                 return $check;
+            }
+
+            // Two-step: the email is proven, but no account exists until step 2 supplies name and zone.
+            if (! $this->hasDetails($pending)) {
+                $pending['email_verified_at'] = now()->getTimestamp();
+                $pending['code_hash'] = null;
+                $pending['expires_at'] = 0;
+                $this->putPending((string) $token, $pending);
+
+                return self::DETAILS_REQUIRED;
             }
 
             $created = $this->createVerifiedAccount($pending);
@@ -171,6 +192,82 @@ final class ResidentEmailOtpService
 
             return self::VERIFIED;
         });
+    }
+
+    /**
+     * Batch 6 step 2: add name and zone to a registration whose email was verified, then create the account.
+     * Refuses (MISSING) when there is no pending registration, its email was not verified, or the details
+     * window has passed — so an account can never be created without a verified email.
+     *
+     * @param  array{first_name: string, middle_name: string, last_name: string, zone: string}  $details
+     */
+    public function completeRegistration(?string $token, array $details): string
+    {
+        if ($this->pending($token) === null) {
+            return self::MISSING;
+        }
+
+        return Cache::lock($this->pendingKey((string) $token).':lock', 10)->block(5, function () use ($token, $details): string {
+            $pending = $this->pending($token);
+            if ($pending === null || ! $this->emailAlreadyVerified($pending)) {
+                return self::MISSING;
+            }
+
+            if ((int) $pending['email_verified_at'] + $this->detailsMinutes() * 60 < now()->getTimestamp()) {
+                $this->forgetPending($token);
+
+                return self::MISSING;
+            }
+
+            $pending['first_name'] = (string) $details['first_name'];
+            $pending['middle_name'] = (string) $details['middle_name'];
+            $pending['last_name'] = (string) $details['last_name'];
+            $pending['zone'] = (string) $details['zone'];
+
+            $created = $this->createVerifiedAccount($pending);
+            $this->forgetPending($token);
+
+            if (! $created) {
+                return self::INVALID;
+            }
+
+            Log::info('resident.email_otp.registration_verified', ['email' => $this->emailFingerprint($pending['email'])]);
+
+            return self::VERIFIED;
+        });
+    }
+
+    /** True when step 1 (email ownership) is done and step 2 (name + zone) is still needed. */
+    public function awaitingDetails(?string $token): bool
+    {
+        $pending = $this->pending($token);
+
+        return $pending !== null
+            && $this->emailAlreadyVerified($pending)
+            && (int) $pending['email_verified_at'] + $this->detailsMinutes() * 60 >= now()->getTimestamp();
+    }
+
+    /**
+     * @param  array<string, mixed>  $pending
+     */
+    private function emailAlreadyVerified(array $pending): bool
+    {
+        return (int) ($pending['email_verified_at'] ?? 0) > 0;
+    }
+
+    /**
+     * @param  array<string, mixed>  $pending
+     */
+    private function hasDetails(array $pending): bool
+    {
+        return trim((string) ($pending['first_name'] ?? '')) !== ''
+            && trim((string) ($pending['last_name'] ?? '')) !== ''
+            && trim((string) ($pending['zone'] ?? '')) !== '';
+    }
+
+    private function detailsMinutes(): int
+    {
+        return max(1, (int) config('lmlinga.resident_email_verification.details_minutes', 30));
     }
 
     public function forgetPending(?string $token): void

@@ -7,6 +7,8 @@ import './offline/offline-prepare';
 import './offline/offline-related-warmup';
 import './offline/offline-hp-bootstrap';
 import './offline/offline-hp-live';
+import './components/table-pagination';
+import './components/name-suggest';
 import './pages/dashboard-sidebar';
 import './pages/staff-login';
 import './pages/dashboard-home';

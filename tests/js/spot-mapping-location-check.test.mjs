@@ -105,19 +105,24 @@ describe('panel wording never blocks saving', () => {
         assert.equal(d.adviceText, '');
     });
 
-    it('near the edge: a note, still no confirmation', () => {
+    // Batch 5 (SM-03): the server now rejects new locations outside the boundary, so a new pin outside — even just
+    // outside — is a warning that says it cannot be saved (these tests previously expected "you can still save").
+    it('near the edge: a warning that the new pin cannot be saved, no tick-box', () => {
         const d = check.describeLocationCheck({ feature, lat: near.lat, lng: near.lng, source: 'gps', accuracy: 10 });
-        assert.equal(d.level, 'note');
+        assert.equal(d.level, 'warn');
         assert.equal(d.needsConfirm, false);
-        assert.match(d.boundaryText, /^Just outside the indicative La Medalla boundary \(about \d+ m\)\. The boundary is approximate; you can still save\.$/);
+        assert.equal(
+            d.boundaryText,
+            `Just outside the indicative La Medalla boundary (about ${d.boundary.distanceMeters} m). ${check.OUTSIDE_CANNOT_SAVE}`,
+        );
+        assert.doesNotMatch(d.boundaryText, /still save/);
     });
 
-    it('clearly outside: a warning and a tick-box, never a rejection', () => {
+    it('clearly outside: a warning that the new pin cannot be saved, no tick-box', () => {
         const d = check.describeLocationCheck({ feature, lat: far.lat, lng: far.lng, source: 'gps', accuracy: 10 });
         assert.equal(d.level, 'warn');
-        assert.equal(d.needsConfirm, true);
-        assert.match(d.boundaryText, /^Outside the indicative La Medalla boundary \(about .+ away\)\. Check the location before saving\.$/);
-        assert.doesNotMatch(JSON.stringify(d), /cannot save|not allowed|rejected|blocked/i);
+        assert.equal(d.needsConfirm, false);
+        assert.match(d.boundaryText, /^Outside the indicative La Medalla boundary \(about .+ away\)\. Locations outside the boundary cannot be saved\. Move the pin inside La Medalla\.$/);
     });
 
     it('weak / rough GPS: advice to try again, saving still allowed', () => {
@@ -214,8 +219,8 @@ describe('saved-household wording (Phase 3B)', () => {
         assert.doesNotMatch(nr.boundaryText, /still save/);
     });
 
-    it('new pins keep the saving wording', () => {
+    it('new pins outside are told they cannot be saved (Batch 5)', () => {
         const out = check.describeLocationCheck({ feature, lat: far.lat, lng: far.lng, source: 'gps', accuracy: 5, isTemp: true });
-        assert.match(out.boundaryText, /Check the location before saving\.$/);
+        assert.match(out.boundaryText, /cannot be saved\. Move the pin inside La Medalla\.$/);
     });
 });

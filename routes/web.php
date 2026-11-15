@@ -70,6 +70,13 @@ Route::post('/chatbot/register/resend', [ResidentRegistrationVerificationControl
     ->name('chatbot.register.resend');
 Route::post('/chatbot/register/cancel', [ResidentRegistrationVerificationController::class, 'cancel'])
     ->name('chatbot.register.cancel');
+// Batch 6 two-step registration, step 2 of 2: name + zone after the email is verified (account created here).
+Route::get('/chatbot/register/details', [ResidentRegistrationVerificationController::class, 'details'])
+    ->middleware('auth.nocache')
+    ->name('chatbot.register.details');
+Route::post('/chatbot/register/details', [ResidentRegistrationVerificationController::class, 'storeDetails'])
+    ->middleware('throttle:lmlinga-resident-email-otp-verify')
+    ->name('chatbot.register.details.store');
 Route::view('/chatbot/login', 'pages.chatbot.login')->name('chatbot.login');
 Route::post('/chatbot/login', [ResidentLoginController::class, 'store'])->name('chatbot.login.store');
 Route::post('/chatbot/logout', [ResidentLoginController::class, 'destroy'])->name('chatbot.logout');
@@ -194,6 +201,46 @@ Route::post('/reset-password', [
     \App\Http\Controllers\Auth\ForgotPasswordController::class,
     'update',
 ])->middleware('throttle:6,1')->name('password.update');
+
+/*
+ | Batch 1 — health-worker email verification. Guest step reached only after the correct password for an
+ | account whose email is still pending; no authenticated session exists until verification succeeds.
+ */
+Route::get('/staff/verify-email', [
+    \App\Http\Controllers\Auth\StaffEmailVerificationController::class,
+    'show',
+])->middleware('auth.nocache')->name('staff.email-verification.show');
+
+Route::post('/staff/verify-email', [
+    \App\Http\Controllers\Auth\StaffEmailVerificationController::class,
+    'verify',
+])->middleware('throttle:lmlinga-staff-email-otp-verify')->name('staff.email-verification.verify');
+
+Route::post('/staff/verify-email/resend', [
+    \App\Http\Controllers\Auth\StaffEmailVerificationController::class,
+    'resend',
+])->middleware('throttle:lmlinga-staff-email-otp-send')->name('staff.email-verification.resend');
+
+Route::post('/staff/verify-email/cancel', [
+    \App\Http\Controllers\Auth\StaffEmailVerificationController::class,
+    'cancel',
+])->name('staff.email-verification.cancel');
+
+/*
+ | Batch 4 — scoped name suggestions (JSON) for staff name-entry fields. Staff only; zone scoping and the
+ | role check are enforced in StaffNameSuggestionService. Never used by guest, resident or chatbot pages.
+ */
+Route::get('/staff/name-suggestions', [
+    \App\Http\Controllers\StaffNameSuggestionController::class,
+    'residents',
+])->middleware([
+    'auth',
+    'staff.account-usable',
+    'staff.password-current',
+    'ui.role',
+    'auth.nocache',
+    'throttle:lmlinga-name-suggest',
+])->name('staff.name-suggestions');
 
 /*
  | Voluntary staff password change — authenticated staff only.

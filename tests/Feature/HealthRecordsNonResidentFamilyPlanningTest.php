@@ -235,7 +235,9 @@ class HealthRecordsNonResidentFamilyPlanningTest extends TestCase
         );
         $this->assertStringNotContainsString('Non - Residents Client', $html);
         $this->assertStringContainsString('Total FP Patients', $html);
-        $this->assertStringContainsString('data-hr-fp-add', $html);
+        // No Add button on the summary, as HealthRecordsFamilyPlanningTest::test_export_control_exists_without_add_button
+        // requires. This line previously asserted the opposite, contradicting that test and every recorded view.
+        $this->assertStringNotContainsString('data-hr-fp-add', $html);
     }
 
     public function test_household_profiling_family_planning_remains_separate(): void

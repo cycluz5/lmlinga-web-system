@@ -307,6 +307,15 @@
                                 </span>
                             </dd>
                         </div>
+                        @if (! empty($worker['email_verification_pending']))
+                            <div class="lml-hw-view__field" data-hw-email-pending>
+                                <dt>Email Verification</dt>
+                                <dd>
+                                    <span class="lml-hw-view__status lml-hw-view__status--inactive">Pending</span>
+                                    <span>The worker must enter the code sent to this email at first login.</span>
+                                </dd>
+                            </div>
+                        @endif
                     </dl>
                 </section>
 

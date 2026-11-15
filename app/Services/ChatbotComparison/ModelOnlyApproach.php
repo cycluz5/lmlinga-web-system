@@ -86,6 +86,17 @@ final class ModelOnlyApproach implements ComparisonApproach
         return $this->model;
     }
 
+    /** Batch 6: shared with Approach B so both use exactly the same model settings. */
+    public function timeout(): int
+    {
+        return $this->timeout;
+    }
+
+    public function keepAlive(): string
+    {
+        return $this->keepAlive;
+    }
+
     /**
      * @return array<string, mixed>
      */

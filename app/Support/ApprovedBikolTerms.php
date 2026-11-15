@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Schema;
  * SR-05 read-only list of Linguist-approved Bikol-Iriga terms — the only source the chatbot may use.
  *
  * Returns approved versions of terms that are not retired. Drafts, submitted, rejected and superseded
- * versions are never included. Not called by the chatbot yet (D-T6): wiring it into RagService
- * (retrieval aliases and/or a prompt glossary, behind a default-off setting) is a later approved step.
+ * versions are never included. Batch 6: used by RagService::approvedTermsGlossary() as a prompt glossary
+ * (setting lmlinga.chatbot.approved_terms_in_prompt, default on; D-T6 had proposed default-off).
  */
 final class ApprovedBikolTerms
 {

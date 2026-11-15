@@ -28,6 +28,26 @@ class UpdateHouseholdRequest extends FormRequest
     }
 
     /**
+     * Batch 5: the edited household's current coordinates, so an unchanged location is not re-checked.
+     *
+     * @return array{0: float|null, 1: float|null}
+     */
+    protected function storedHouseholdCoordinates(): array
+    {
+        $householdNo = $this->route('householdNo');
+        if (! is_string($householdNo) || $householdNo === '') {
+            return [null, null];
+        }
+
+        $household = \App\Models\Household::query()->where('household_no', $householdNo)->first();
+        if ($household === null || ! is_numeric($household->latitude) || ! is_numeric($household->longitude)) {
+            return [null, null];
+        }
+
+        return [(float) $household->latitude, (float) $household->longitude];
+    }
+
+    /**
      * Coordinates are a pair on update: neither, both valid, or both null/blank.
      * Omitted != clear (R02-B).
      */

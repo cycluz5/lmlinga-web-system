@@ -82,7 +82,7 @@
                             <th scope="col"><span class="visually-hidden">Actions</span></th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody data-lml-paginate="lml-dataset-row" data-lml-paginate-label="datasets">
                         @foreach ($rows as $row)
                             <tr data-lml-dataset-row>
                                 <td class="fw-semibold">{{ $row['title'] }}</td>

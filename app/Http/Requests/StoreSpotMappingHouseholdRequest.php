@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\WithinBarangayBoundary;
 use App\Support\DemoHouseholdWaterSupply;
 use App\Support\HouseholdNumber;
 use App\Support\HouseholdZoneResolver;
@@ -90,7 +91,8 @@ class StoreSpotMappingHouseholdRequest extends FormRequest
                 DemoHouseholdWaterSupply::HOUSEHOLD_TYPE_NON_NHTS,
             ])],
             'date_registered' => ['required', 'date', 'date_format:Y-m-d', 'before_or_equal:today'],
-            'lat' => ['required', 'numeric', 'between:-90,90'],
+            // Batch 5: new households may only be plotted inside the La Medalla boundary (also covers offline sync).
+            'lat' => ['required', 'numeric', 'between:-90,90', new WithinBarangayBoundary('lng')],
             'lng' => ['required', 'numeric', 'between:-180,180'],
             'consent' => ['required', 'accepted'],
             'client_marker_id' => ['nullable', 'string', 'max:128'],

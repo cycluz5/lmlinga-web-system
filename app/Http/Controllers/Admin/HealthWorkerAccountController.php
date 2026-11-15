@@ -55,6 +55,7 @@ class HealthWorkerAccountController extends Controller
     {
         $user = $this->accounts->createFromSlimForm($request->validated());
 
+        // Message text unchanged; the worker card shows "Email: Pending verification" (Batch 1).
         return redirect()
             ->route('user-management.index', ['tab' => 'workers'])
             ->with('status', 'Health Worker account created successfully.');

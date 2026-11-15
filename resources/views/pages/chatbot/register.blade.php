@@ -77,20 +77,36 @@
                         </h1>
                     </header>
 
+                    @php
+                        // Batch 6 two-step registration: step 1 = email + password (+ email code), step 2 = name + zone.
+                        $isDetailsStep = ($step ?? 'credentials') === 'details';
+                    @endphp
+                    <p class="lml-chatbot-register__footer" data-lml-register-step="{{ $isDetailsStep ? '2' : '1' }}">
+                        Step {{ $isDetailsStep ? '2' : '1' }} of 2 —
+                        {{ $isDetailsStep ? 'Your name and zone' : 'Email and password (we will send a code to verify your email)' }}
+                    </p>
+                    @if ($isDetailsStep && session('success'))
+                        <p class="lml-chatbot-register__footer" role="status">{{ session('success') }}</p>
+                    @endif
+
                     {{--
                         Resident registration: POST + CSRF only. Credentials never in the URL.
-                        Owned by Chatbot\ResidentRegistrationController@store (chatbot.register.store).
+                        Step 1: Chatbot\ResidentRegistrationController@store (chatbot.register.store).
+                        Step 2: Chatbot\ResidentRegistrationVerificationController@storeDetails (chatbot.register.details.store).
                         Single-submit guard below disables the button after the first valid submit.
                     --}}
                     <form
                         class="lml-chatbot-register__form"
-                        action="{{ route('chatbot.register.store') }}"
-                        data-lml-page-loader="Creating your account…"
+                        action="{{ $isDetailsStep ? route('chatbot.register.details.store') : route('chatbot.register.store') }}"
+                        data-lml-page-loader="{{ $isDetailsStep ? 'Creating your account…' : 'Sending your verification code…' }}"
                         method="post"
                         novalidate
                         data-lml-register-form
                     >
                         @csrf
+
+                        @if ($isDetailsStep)
+                        <p class="lml-chatbot-register__footer">Verified email: <strong>{{ $maskedEmail ?? '' }}</strong></p>
 
                         <fieldset class="lml-chatbot-register__name-group">
                             <legend>
@@ -169,6 +185,7 @@
                                 class="lml-chatbot-register__control w-100"
                             />
                         </x-lml.form-group>
+                        @else
 
                         <x-lml.form-group
                             label="Email"
@@ -213,6 +230,7 @@
                                 class="lml-chatbot-register__control w-100"
                             />
                         </x-lml.form-group>
+                        @endif
 
                         <div class="lml-chatbot-register__actions">
                             <button
@@ -220,7 +238,7 @@
                                 class="lml-chatbot-register__submit lml-focus-ring"
                                 data-lml-register-submit
                             >
-                                Register
+                                {{ $isDetailsStep ? 'Create Account' : 'Continue' }}
                             </button>
 
                             <p class="lml-chatbot-register__footer">

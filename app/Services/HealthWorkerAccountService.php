@@ -128,8 +128,16 @@ final class HealthWorkerAccountService
 
             $user->appointments()->create($appointmentData);
 
+            // Batch 1: the new account is unusable until the worker proves ownership of this email.
+            $this->emailVerification()->markPending($user);
+
             return $user->fresh(['currentAppointment']);
         });
+    }
+
+    private function emailVerification(): StaffEmailVerificationService
+    {
+        return app(StaffEmailVerificationService::class);
     }
 
     /**
@@ -182,7 +190,11 @@ final class HealthWorkerAccountService
                 $profile['must_change_password'] = true;
             }
 
+            $previousEmail = strtolower(trim((string) $user->email));
+
             $user->fill($profile);
+
+            $emailChanged = strtolower(trim((string) $user->email)) !== $previousEmail;
 
             $previousPhotoPath = $user->photo_path;
             $storedPhotoPath = $this->applyProfilePhoto($user, $data);
@@ -204,6 +216,16 @@ final class HealthWorkerAccountService
                 ];
 
                 $this->syncAppointment($user, $employment);
+
+                // Batch 1: a changed email must be proven again before the account is usable. Never applied
+                // to the last usable Admin, so an email typo cannot lock everyone out of User Management.
+                if (
+                    $emailChanged
+                    && (bool) config('lmlinga.staff_email_verification.reverify_on_email_change', true)
+                    && ! ($this->isActiveAdmin($user->fresh(['currentAppointment'])) && $this->countOtherActiveAdmins((int) $user->id) === 0)
+                ) {
+                    $this->emailVerification()->markPending($user);
+                }
             } catch (\Throwable $exception) {
                 if (is_string($storedPhotoPath) && $storedPhotoPath !== '') {
                     StaffProfilePhotoStorage::deleteManaged($storedPhotoPath);
@@ -590,8 +612,12 @@ final class HealthWorkerAccountService
 
     public function countOtherActiveAdmins(int $exceptUserId): int
     {
+        // Batch 1: an Admin whose email is still unverified cannot sign in, so it is not a usable admin.
+        $pendingIds = $this->emailVerification()->pendingUserIds();
+
         return User::query()
             ->whereKeyNot($exceptUserId)
+            ->when($pendingIds !== [], static fn ($query) => $query->whereKeyNot($pendingIds))
             ->where('status', StaffAccountStatus::ACTIVE)
             ->whereHas('currentAppointment', static function ($query): void {
                 $query->whereIn('role', UserManagementErdMode::appointmentRoleMatchValues(StaffRole::ADMIN));

@@ -100,14 +100,14 @@ class HouseholdProfilingCoordinatePreservationTest extends TestCase
         $this->put(
             route('household-profiling.update', ['householdNo' => 'HH-853']),
             $this->shellPayload([
-                'latitude' => '13.39000000',
-                'longitude' => '123.44000000',
+                'latitude' => '13.38300000',
+                'longitude' => '123.43090000',
             ])
         )->assertRedirect();
 
         $household->refresh();
-        $this->assertSame('13.39000000', (string) $household->latitude);
-        $this->assertSame('123.44000000', (string) $household->longitude);
+        $this->assertSame('13.38300000', (string) $household->latitude);
+        $this->assertSame('123.43090000', (string) $household->longitude);
     }
 
     public function test_update_with_explicit_null_pair_clears_both_coordinates(): void
@@ -152,7 +152,7 @@ class HouseholdProfilingCoordinatePreservationTest extends TestCase
             ->put(
                 route('household-profiling.update', ['householdNo' => 'HH-856']),
                 $this->shellPayload([
-                    'latitude' => '13.39000000',
+                    'latitude' => '13.38300000',
                 ])
             )
             ->assertRedirect(route('household-profiling.edit', ['householdNo' => 'HH-856']))
@@ -171,7 +171,7 @@ class HouseholdProfilingCoordinatePreservationTest extends TestCase
             ->put(
                 route('household-profiling.update', ['householdNo' => 'HH-857']),
                 $this->shellPayload([
-                    'longitude' => '123.44000000',
+                    'longitude' => '123.43090000',
                 ])
             )
             ->assertRedirect(route('household-profiling.edit', ['householdNo' => 'HH-857']))
@@ -190,7 +190,7 @@ class HouseholdProfilingCoordinatePreservationTest extends TestCase
             ->put(
                 route('household-profiling.update', ['householdNo' => 'HH-858']),
                 $this->shellPayload([
-                    'latitude' => '13.39000000',
+                    'latitude' => '13.38300000',
                     'longitude' => null,
                 ])
             )
@@ -211,7 +211,7 @@ class HouseholdProfilingCoordinatePreservationTest extends TestCase
                 route('household-profiling.update', ['householdNo' => 'HH-859']),
                 $this->shellPayload([
                     'latitude' => null,
-                    'longitude' => '123.44000000',
+                    'longitude' => '123.43090000',
                 ])
             )
             ->assertRedirect()
@@ -252,15 +252,15 @@ class HouseholdProfilingCoordinatePreservationTest extends TestCase
 
         $this->postJson(route('spot-mapping.plot'), [
             'household_no' => 'HH-860',
-            'lat' => 13.39110000,
-            'lng' => 123.44110000,
+            'lat' => 13.38410000,
+            'lng' => 123.43140000,
             'consent' => true,
             'confirm_replot' => true,
         ])->assertOk();
 
         $household->refresh();
-        $this->assertSame('13.39110000', (string) $household->latitude);
-        $this->assertSame('123.44110000', (string) $household->longitude);
+        $this->assertSame('13.38410000', (string) $household->latitude);
+        $this->assertSame('123.43140000', (string) $household->longitude);
     }
 
     public function test_r01c_pending_create_then_spot_mapping_plot_still_works(): void

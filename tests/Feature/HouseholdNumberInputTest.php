@@ -34,8 +34,8 @@ class HouseholdNumberInputTest extends TestCase
             'street' => 'Layuan St.',
             'date_registered' => '2026-01-15',
             'address' => '123 Layuan St., Brgy. La Medalla',
-            'latitude' => '7.12345678',
-            'longitude' => '125.12345678',
+            'latitude' => '13.37800000',
+            'longitude' => '123.43200000',
             'accomplished_by' => 'Maria BHW',
         ], $overrides);
     }

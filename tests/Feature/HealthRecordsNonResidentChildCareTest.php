@@ -134,7 +134,10 @@ class HealthRecordsNonResidentChildCareTest extends TestCase
         $this->assertSame(1, preg_match_all('/>\s*Vitamin A\s*<\/a>/u', $html));
         $this->assertSame(1, preg_match_all('/>\s*Deworming\s*<\/a>/u', $html));
         $this->assertSame(1, preg_match_all('/>\s*Operation Timbang\s*<\/a>/u', $html));
-        $this->assertStringContainsString('data-hr-cc-add', $html);
+        // The summary has no Add button (records are added from Household Profiling); this matches
+        // HealthRecordsChildCareSummaryTest, HealthRecordsVitaminATest and HealthRecordsOperationTimbangTest.
+        // This line previously asserted the opposite, contradicting those tests and every recorded view.
+        $this->assertStringNotContainsString('data-hr-cc-add', $html);
         $this->assertStringContainsString('data-hr-cc-export', $html);
     }
 

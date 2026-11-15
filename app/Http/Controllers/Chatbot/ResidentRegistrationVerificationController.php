@@ -48,6 +48,13 @@ class ResidentRegistrationVerificationController extends Controller
                 ->with('success', 'Email verified. Account created successfully. You can now log in.');
         }
 
+        // Batch 6: email verified; no account yet — step 2 collects name and zone.
+        if ($outcome === ResidentEmailOtpService::DETAILS_REQUIRED) {
+            return redirect()
+                ->route('chatbot.register.details')
+                ->with('success', 'Email verified. Now enter your name and zone to finish creating your account.');
+        }
+
         if ($outcome === ResidentEmailOtpService::MISSING) {
             return redirect()->route('chatbot.register')->withErrors(['email' => self::RESTART_MESSAGE]);
         }
@@ -75,6 +82,42 @@ class ResidentRegistrationVerificationController extends Controller
             ResidentEmailOtpService::RESEND_LIMIT, ResidentEmailOtpService::ADDRESS_LIMIT => 'You have reached the maximum number of code requests. Please try again later.',
             default => 'We could not send the verification email. Please try again.',
         });
+    }
+
+    /**
+     * Batch 6 step 2 of 2: name and zone. Reachable only after the email code was verified in this session.
+     */
+    public function details(Request $request): View|RedirectResponse
+    {
+        $token = $this->token($request);
+        if (! $this->emailOtp->awaitingDetails($token)) {
+            return redirect()->route('chatbot.register')->withErrors(['email' => self::RESTART_MESSAGE]);
+        }
+
+        return view('pages.chatbot.register', [
+            'step' => 'details',
+            'maskedEmail' => ResidentEmailOtpService::maskEmail((string) ($this->emailOtp->pending($token)['email'] ?? '')),
+        ]);
+    }
+
+    public function storeDetails(Request $request): RedirectResponse
+    {
+        $token = $this->token($request);
+        if (! $this->emailOtp->awaitingDetails($token)) {
+            return redirect()->route('chatbot.register')->withErrors(['email' => self::RESTART_MESSAGE]);
+        }
+
+        $validated = $request->validate(ResidentRegistrationController::detailsRules());
+        $outcome = $this->emailOtp->completeRegistration($token, $validated);
+        $request->session()->forget(ResidentEmailOtpService::SESSION_PENDING_TOKEN);
+
+        if ($outcome === ResidentEmailOtpService::VERIFIED) {
+            return redirect()
+                ->route('chatbot.login')
+                ->with('success', 'Account created successfully. You can now log in.');
+        }
+
+        return redirect()->route('chatbot.register')->withErrors(['email' => self::RESTART_MESSAGE]);
     }
 
     public function cancel(Request $request): RedirectResponse

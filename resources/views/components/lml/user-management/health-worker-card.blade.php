@@ -11,6 +11,7 @@
     'zone' => '',
     'status' => '',
     'photo' => null,
+    'emailPending' => false,
 ])
 
 @php
@@ -210,6 +211,12 @@
                 {{ $statusLabel }}
             </dd>
         </div>
+        @if ($emailPending)
+            <div class="lml-hw-card__row" data-hw-email-pending>
+                <dt>Email</dt>
+                <dd class="lml-hw-card__status lml-hw-card__status--inactive">Pending verification</dd>
+            </div>
+        @endif
     </dl>
 
     <div class="lml-hw-card__actions">

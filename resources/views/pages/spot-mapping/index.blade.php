@@ -482,7 +482,7 @@
                             <input
                                 id="lml-spot-map-head-first"
                                 type="text"
-                                name="first_name"
+                                name="first_name" data-lml-name-suggest="person" data-lml-name-suggest-heading="Registered residents with a similar name — check before creating a new household" data-lml-name-suggest-url="{{ route('staff.name-suggestions') }}"
                                 class="lml-spot-map__control lml-focus-ring"
                                 data-spot-map-head-first
                                 maxlength="100"
@@ -510,7 +510,7 @@
                             <input
                                 id="lml-spot-map-head-middle"
                                 type="text"
-                                name="middle_name"
+                                name="middle_name" data-lml-name-suggest="person" data-lml-name-suggest-url="{{ route('staff.name-suggestions') }}"
                                 class="lml-spot-map__control lml-focus-ring"
                                 data-spot-map-head-middle
                                 maxlength="100"
@@ -528,7 +528,7 @@
                             <input
                                 id="lml-spot-map-head-last"
                                 type="text"
-                                name="last_name"
+                                name="last_name" data-lml-name-suggest="person" data-lml-name-suggest-url="{{ route('staff.name-suggestions') }}"
                                 class="lml-spot-map__control lml-focus-ring"
                                 data-spot-map-head-last
                                 maxlength="100"

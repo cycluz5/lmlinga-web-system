@@ -295,15 +295,21 @@ class SpotMappingDemoLocationTest extends TestCase
         $this->postJson(route('spot-mapping.plot'), [])->assertStatus(422);
     }
 
-    public function test_real_plotting_is_not_restricted_by_the_indicative_boundary(): void
+    public function test_real_plotting_is_restricted_to_the_boundary(): void
     {
-        // SM-03 is NOT enabled: a real save outside the indicative polygon is still accepted by the existing rules.
+        // Batch 5 (SM-03 enabled; replaces the Phase 3A "not restricted" guard): a real save outside the polygon is
+        // rejected on the server and nothing is stored; a save inside is accepted.
         Household::factory()->create(['household_no' => 'HH-903', 'zone' => 'Zone 2', 'street' => 'Layuan St.', 'date_registered' => '2026-01-15', 'latitude' => null, 'longitude' => null]);
         $this->admin();
 
         $this->postJson(route('spot-mapping.plot'), ['household_no' => 'HH-903', 'lat' => 13.47453212, 'lng' => 123.37216972, 'consent' => true])
+            ->assertStatus(422)
+            ->assertJsonPath('message', \App\Rules\WithinBarangayBoundary::OUTSIDE_MESSAGE);
+        $this->assertNull(Household::query()->where('household_no', 'HH-903')->value('latitude'));
+
+        $this->postJson(route('spot-mapping.plot'), ['household_no' => 'HH-903', 'lat' => 13.3811, 'lng' => 123.4306, 'consent' => true])
             ->assertOk();
-        $this->assertEquals(13.47453212, (float) Household::query()->where('household_no', 'HH-903')->value('latitude'));
+        $this->assertEquals(13.3811, (float) Household::query()->where('household_no', 'HH-903')->value('latitude'));
     }
 
     public function test_gate_turned_off_drops_leftover_state(): void

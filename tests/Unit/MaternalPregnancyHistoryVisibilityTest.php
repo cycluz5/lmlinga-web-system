@@ -88,9 +88,16 @@ class MaternalPregnancyHistoryVisibilityTest extends TestCase
         }
     }
 
-    public function test_ab_is_immediately_visible_and_does_not_use_date_terminated(): void
+    /*
+     * Current #15 rule (DemoMaternalCare::isVisibleInPregnancyHistory doc, and the end-to-end
+     * MaternalCarePregnancyHistoryGateTest::test_ab_and_fd_follow_the_same_42_day_gate_as_live_birth):
+     * every completed outcome (FT/PT/FD/AB) waits 42 inclusive days from its delivery date; an outcome with no
+     * date has nothing to gate from and stays in the continuing journey; Trans-Out is immediately visible.
+     * The two tests below previously expected the earlier rule (AB/FD/no-outcome visible at once), which
+     * contradicted both the helper and the end-to-end test.
+     */
+    public function test_ab_uses_date_terminated_with_the_same_42_day_gate_and_is_not_mutated(): void
     {
-        $today = Carbon::parse('2026-10-20')->startOfDay();
         $episode = $this->episode('completed', [
             'outcome' => 'AB',
             'datetime' => '',
@@ -98,33 +105,28 @@ class MaternalPregnancyHistoryVisibilityTest extends TestCase
             'abortion_date' => '2026-10-20',
         ]);
 
-        $this->assertTrue(DemoMaternalCare::isVisibleInPregnancyHistory($episode, $today));
+        $this->assertFalse(DemoMaternalCare::isVisibleInPregnancyHistory($episode, Carbon::parse('2026-10-20')->startOfDay()));
+        $this->assertFalse(DemoMaternalCare::isVisibleInPregnancyHistory($episode, Carbon::parse('2026-11-30')->startOfDay()));
+        $this->assertTrue(DemoMaternalCare::isVisibleInPregnancyHistory($episode, Carbon::parse('2026-12-01')->startOfDay()));
         $this->assertSame('2026-10-20', $episode['delivery']['date_terminated']);
     }
 
-    public function test_fd_trans_out_and_non_ft_pt_completed_are_immediately_visible(): void
+    public function test_trans_out_is_immediately_visible_and_undated_outcomes_stay_in_the_journey(): void
     {
         $today = Carbon::parse('2026-10-20')->startOfDay();
+        $muchLater = Carbon::parse('2027-06-01')->startOfDay();
 
-        $this->assertTrue(DemoMaternalCare::isVisibleInPregnancyHistory(
-            $this->episode('completed', ['outcome' => 'FD']),
-            $today
-        ));
-        $this->assertTrue(DemoMaternalCare::isVisibleInPregnancyHistory(
-            $this->episode('transferred_out'),
-            $today
-        ));
-        $this->assertTrue(DemoMaternalCare::isVisibleInPregnancyHistory(
-            $this->episode('trans-out'),
-            $today
-        ));
-        $this->assertTrue(DemoMaternalCare::isVisibleInPregnancyHistory(
-            $this->episode('completed', []),
-            $today
-        ));
-        $this->assertTrue(DemoMaternalCare::isVisibleInPregnancyHistory(
-            $this->episode('completed', ['outcome' => 'UNK']),
-            $today
-        ));
+        $this->assertTrue(DemoMaternalCare::isVisibleInPregnancyHistory($this->episode('transferred_out'), $today));
+        $this->assertTrue(DemoMaternalCare::isVisibleInPregnancyHistory($this->episode('trans-out'), $today));
+
+        foreach ([['outcome' => 'FD'], [], ['outcome' => 'UNK']] as $delivery) {
+            $this->assertFalse(DemoMaternalCare::isVisibleInPregnancyHistory($this->episode('completed', $delivery), $today));
+            $this->assertFalse(DemoMaternalCare::isVisibleInPregnancyHistory($this->episode('completed', $delivery), $muchLater));
+        }
+
+        // FD with a date follows the same 42-day gate.
+        $datedFd = $this->episode('completed', ['outcome' => 'FD', 'date_terminated' => '2026-10-20']);
+        $this->assertFalse(DemoMaternalCare::isVisibleInPregnancyHistory($datedFd, Carbon::parse('2026-11-30')->startOfDay()));
+        $this->assertTrue(DemoMaternalCare::isVisibleInPregnancyHistory($datedFd, Carbon::parse('2026-12-01')->startOfDay()));
     }
 }

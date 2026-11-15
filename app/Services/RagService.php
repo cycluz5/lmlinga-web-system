@@ -2177,11 +2177,72 @@ protected function isPlaceholderValue($value): bool
 
     protected function buildMessages(string $context, string $question, string $language): array
     {
-        return match ($language) {
+        return $this->withApprovedTermsGlossary(match ($language) {
             'bcl' => $this->buildBikolMessages($context, $question),
             'tl'  => $this->buildTagalogMessages($context, $question),
             default => $this->buildEnglishMessages($context, $question),
-        };
+        });
+    }
+
+    /**
+     * Batch 6 (panel: "linguists review and verify terms before they are used by the chatbot", SR-05 D-T6).
+     * Adds ONE system message right after the first system message listing the Bikol-Iriga terms that a
+     * Linguist approved in Language Management (ApprovedBikolTerms: approved, non-retired versions only). The
+     * instruction is in English, so no Bikol text is authored here; the terms come only from the approved list.
+     * Nothing changes when there are no approved terms or when lmlinga.chatbot.approved_terms_in_prompt is false.
+     *
+     * @param  list<array{role: string, content: string}>  $messages
+     * @return list<array{role: string, content: string}>
+     */
+    public function withApprovedTermsGlossary(array $messages): array
+    {
+        $glossary = $this->approvedTermsGlossary();
+        if ($glossary === null || $messages === []) {
+            return $messages;
+        }
+
+        $insertAt = ($messages[0]['role'] ?? null) === 'system' ? 1 : 0;
+        array_splice($messages, $insertAt, 0, [['role' => 'system', 'content' => $glossary]]);
+
+        return $messages;
+    }
+
+    public function approvedTermsGlossary(): ?string
+    {
+        if (! (bool) config('lmlinga.chatbot.approved_terms_in_prompt', true)) {
+            return null;
+        }
+
+        try {
+            $terms = \App\Support\ApprovedBikolTerms::all();
+        } catch (\Throwable $e) {
+            Log::warning('chatbot.approved_terms.unavailable', ['error' => $e::class]);
+
+            return null;
+        }
+        if ($terms === []) {
+            return null;
+        }
+
+        $clean = static fn (?string $v): string => trim(mb_substr(preg_replace('/\s+/u', ' ', (string) $v) ?? '', 0, 160));
+        $lines = [];
+        foreach (array_slice($terms, 0, max(1, (int) config('lmlinga.chatbot.approved_terms_max', 80))) as $term) {
+            $word = $clean($term['term'] ?? '');
+            $meaning = $clean($term['english_meaning'] ?? '');
+            if ($word === '' || $meaning === '') {
+                continue;
+            }
+            $tagalog = $clean($term['tagalog_meaning'] ?? null);
+            $lines[] = '- '.$word.': '.$meaning.($tagalog !== '' ? ' (Tagalog: '.$tagalog.')' : '');
+        }
+        if ($lines === []) {
+            return null;
+        }
+
+        return "APPROVED BIKOL-IRIGA TERMS (verified by the barangay linguist in LMLinga Language Management).\n"
+            .'Use them to understand Bikol-Iriga words in the question. When you answer in Bikol-Iriga, prefer these approved terms. '
+            .'Do not invent other meanings, and still answer only from the CONTEXT.'."\n"
+            .implode("\n", $lines);
     }
 
     protected function buildBikolMessages(string $context, string $question): array
@@ -2430,6 +2491,8 @@ protected function regenerateBikolFromContext(
             'content' => "CONTEXT:\n{$context}\n\nHAPOT:\n{$question}",
         ],
     ];
+
+    $messages = $this->withApprovedTermsGlossary($messages);
 
     $response = $this->ollamaChatRequest([
         'model' => $this->chatModel,

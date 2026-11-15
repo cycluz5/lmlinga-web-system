@@ -384,6 +384,23 @@ function closeOverlay(overlay) {
  * @param {{ window?: Window, timeoutMs?: number }} [options]
  * @returns {Promise<{ ok: boolean, reason?: string, checked?: string[], missing?: string[], version?: string }>}
  */
+/**
+ * Batch 6: release a request's MessageChannel once it has settled (success, timeout or failure). An open port
+ * left a listener behind on timeouts and kept Node test processes alive (offline-prepare.test.mjs never exited);
+ * browsers would only garbage-collect it later. Nothing more is expected on the channel after settling.
+ */
+function closeChannel(channel) {
+    if (!channel) {
+        return;
+    }
+    try {
+        channel.port1.onmessage = null;
+        channel.port1.close();
+    } catch {
+        // Already closed or not closable: nothing to release.
+    }
+}
+
 export function requestEnsureBuildAssets(worker, options = {}) {
     return new Promise((resolve) => {
         if (!worker || typeof worker.postMessage !== 'function') {
@@ -398,6 +415,7 @@ export function requestEnsureBuildAssets(worker, options = {}) {
                 return;
             }
             settled = true;
+            closeChannel(channel);
             resolve(payload && typeof payload === 'object'
                 ? payload
                 : { ok: false, reason: 'invalid-response', checked: [], missing: [] });
@@ -469,6 +487,7 @@ export function queryWarmupReady(worker, actorId, role, options = {}) {
                 return;
             }
             settled = true;
+            closeChannel(channel);
             resolve(payload);
         };
         const timer = setTimeout(() => finish({ ready: false, reason: 'timeout' }), timeoutMs);
@@ -558,9 +577,7 @@ export function requestWarmupWithProgress(options = {}) {
             settled = true;
             clearTimeout(timer);
             sw?.removeEventListener?.('message', onSwMessage);
-            if (channel) {
-                channel.port1.onmessage = null;
-            }
+            closeChannel(channel);
             onComplete?.(payload);
             resolve(payload);
         };

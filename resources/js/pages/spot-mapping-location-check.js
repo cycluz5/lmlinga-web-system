@@ -1,8 +1,9 @@
 /**
  * Spot Mapping location check (Phase 3A). Pure functions: no Leaflet, no network, no storage.
  *
- * - Boundary awareness uses the existing INDICATIVE La Medalla boundary GeoJSON. It only informs and warns;
- *   it never rejects a location (the server does not check the boundary either).
+ * - Boundary awareness uses the existing INDICATIVE La Medalla boundary GeoJSON. Batch 5 (SM-03): the server
+ *   now rejects new or changed locations outside it (App\Rules\WithinBarangayBoundary), so new pins outside are
+ *   told they cannot be saved. Already saved households only get "please check" wording.
  * - The inside test mirrors App\Support\Geo\BarangayBoundary::contains (ray casting, edges count as inside,
  *   holes excluded) so the page and the server agree.
  * - Source wording separates device GPS, hand-placed (unverified) and simulated Demo Mode locations.
@@ -171,9 +172,12 @@ export function locationKindLabel(kind) {
     return KIND_LABELS[kind] || KIND_LABELS.saved;
 }
 
+/** Batch 5: shown for new pins outside the boundary; matches the server's rejection. */
+export const OUTSIDE_CANNOT_SAVE = 'Locations outside the boundary cannot be saved. Move the pin inside La Medalla.';
+
 /**
- * Plain-language check shown in the plot panel. Never blocks saving; `needsConfirm` asks the health worker
- * to tick a box only when the point is clearly outside the indicative boundary.
+ * Plain-language check shown in the plot panel. New pins outside the boundary are told they cannot be saved
+ * (the server rejects them); `needsConfirm` is kept for compatibility and is always false.
  *
  * @returns {{ kind: string, kindLabel: string, accuracyText: string, boundaryText: string,
  *             adviceText: string, needsConfirm: boolean, level: 'ok'|'note'|'warn', boundary: object }}
@@ -202,15 +206,17 @@ export function describeLocationCheck({ feature = null, lat, lng, source = null,
         inside: 'Inside the indicative La Medalla boundary.',
         // Phase 3B: saved households get wording about checking, not saving (they are already saved).
         near: isTemp
-            ? `Just outside the indicative La Medalla boundary (about ${boundary.distanceMeters} m). The boundary is approximate; you can still save.`
+            ? `Just outside the indicative La Medalla boundary (about ${boundary.distanceMeters} m). ${OUTSIDE_CANNOT_SAVE}`
             : `Just outside the indicative La Medalla boundary (about ${boundary.distanceMeters} m). The boundary is approximate.`,
         outside: isTemp
-            ? `Outside the indicative La Medalla boundary (about ${formatDistance(boundary.distanceMeters)} away). Check the location before saving.`
+            ? `Outside the indicative La Medalla boundary (about ${formatDistance(boundary.distanceMeters)} away). ${OUTSIDE_CANNOT_SAVE}`
             : `Outside the indicative La Medalla boundary (about ${formatDistance(boundary.distanceMeters)} away). Please check this saved location.`,
         unchecked: 'Boundary not available, so the location was not checked.',
     }[boundary.status];
 
-    const warn = boundary.status === 'outside' || (source === 'gps' && level === 'rough');
+    // A new pin outside (or just outside) cannot be saved: always a warning.
+    const outsideNewPin = isTemp && (boundary.status === 'outside' || boundary.status === 'near');
+    const warn = boundary.status === 'outside' || outsideNewPin || (source === 'gps' && level === 'rough');
     const note = boundary.status === 'near' || source === 'manual' || (source === 'gps' && level !== 'good');
 
     return {
@@ -219,7 +225,8 @@ export function describeLocationCheck({ feature = null, lat, lng, source = null,
         accuracyText,
         boundaryText,
         adviceText,
-        needsConfirm: boundary.status === 'outside' && source !== 'simulated',
+        // Batch 5: no "save anyway" tick-box — the server rejects outside locations, so there is nothing to confirm.
+        needsConfirm: false,
         level: warn ? 'warn' : (note ? 'note' : 'ok'),
         boundary,
     };

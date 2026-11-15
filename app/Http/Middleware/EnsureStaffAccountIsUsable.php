@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\User;
+use App\Services\StaffEmailVerificationService;
 use App\Support\Offline\OfflineSyncException;
 use App\Support\StaffAuthenticator;
 use Closure;
@@ -36,6 +37,11 @@ class EnsureStaffAccountIsUsable
         $actor = User::query()->whereKey($actorId)->first();
 
         if (! $actor instanceof User || ! $actor->isActive()) {
+            return $this->rejectUnusableActorSession($request);
+        }
+
+        // Batch 1: an account whose email must be (re-)verified is not usable until it is.
+        if (app(StaffEmailVerificationService::class)->isPending($actor)) {
             return $this->rejectUnusableActorSession($request);
         }
 

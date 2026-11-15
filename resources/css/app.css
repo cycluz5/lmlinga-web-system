@@ -26,6 +26,8 @@
 @import './base/bootstrap-overrides.css';
 @import './base/components.css';
 @import './base/page-loader.css';
+@import './components/pagination.css';
+@import './components/name-suggest.css';
 @import './pages/landing.css';
 @import './pages/chatbot-landing.css';
 @import './pages/chatbot-register.css';

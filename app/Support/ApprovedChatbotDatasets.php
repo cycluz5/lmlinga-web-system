@@ -11,8 +11,9 @@ use Illuminate\Support\Facades\Schema;
  * SR-07 read-only list of Linguist-approved chatbot datasets — the only datasets a future indexer may use.
  *
  * Only approved versions of datasets that are not retired. Draft, submitted, rejected and superseded
- * versions, and every version of a retired dataset, are never included. Not called by the chatbot or by
- * `health:index`: indexing/activation needs a separate approval (the current health_docs corpus stays in use).
+ * versions, and every version of a retired dataset, are never included. Batch 6: read by `chatbot:compare`
+ * Approach B (ApprovedContextApproach). Not used by the resident chatbot or `health:index`: indexing approved
+ * datasets into the live corpus needs a separate approval (the current health_docs corpus stays in use).
  */
 final class ApprovedChatbotDatasets
 {

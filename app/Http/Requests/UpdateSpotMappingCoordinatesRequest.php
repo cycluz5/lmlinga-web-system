@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Household;
+use App\Rules\WithinBarangayBoundary;
 use App\Support\DemoCatalog;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -42,9 +44,13 @@ class UpdateSpotMappingCoordinatesRequest extends FormRequest
      */
     public function rules(): array
     {
+        [$storedLat, $storedLng] = $this->storedCoordinates();
+
         return [
             'household_no' => ['required', 'string', 'max:64', 'regex:/^[A-Za-z0-9\-]+$/'],
-            'lat' => ['required', 'numeric', 'between:-90,90'],
+            // Batch 5: a new or changed location must be inside the La Medalla boundary; re-saving the
+            // household's current location unchanged is still allowed.
+            'lat' => ['required', 'numeric', 'between:-90,90', new WithinBarangayBoundary('lng', $storedLat, $storedLng)],
             'lng' => ['required', 'numeric', 'between:-180,180'],
             // Workflow confirmation only — never persisted.
             'consent' => ['required', 'accepted'],
@@ -54,6 +60,26 @@ class UpdateSpotMappingCoordinatesRequest extends FormRequest
             'id' => ['prohibited'],
             'household_id' => ['prohibited'],
         ];
+    }
+
+    /**
+     * The household's currently stored coordinates (lookup only; never trusted for identity).
+     *
+     * @return array{0: float|null, 1: float|null}
+     */
+    private function storedCoordinates(): array
+    {
+        $householdNo = (string) $this->input('household_no', '');
+        if ($householdNo === '') {
+            return [null, null];
+        }
+
+        $household = Household::query()->where('household_no', $householdNo)->first();
+        if ($household === null || ! is_numeric($household->latitude) || ! is_numeric($household->longitude)) {
+            return [null, null];
+        }
+
+        return [(float) $household->latitude, (float) $household->longitude];
     }
 
     /**

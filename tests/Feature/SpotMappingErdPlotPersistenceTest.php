@@ -126,8 +126,8 @@ class SpotMappingErdPlotPersistenceTest extends TestCase
             'house_head' => 'Pedro L. Castillo',
             'household_type' => 'NHTS',
             'zone' => '5',
-            'lat' => 13.3855,
-            'lng' => 123.4345,
+            'lat' => 13.3841,
+            'lng' => 123.4312,
             'consent' => true,
         ];
     }
@@ -157,8 +157,8 @@ class SpotMappingErdPlotPersistenceTest extends TestCase
         ]));
 
         $after = DB::table('households')->where('household_id', $this->erdHouseholdId)->first();
-        $this->assertEqualsWithDelta(13.3855, (float) $after->latitude, 0.0000001);
-        $this->assertEqualsWithDelta(123.4345, (float) $after->longitude, 0.0000001);
+        $this->assertEqualsWithDelta(13.3841, (float) $after->latitude, 0.0000001);
+        $this->assertEqualsWithDelta(123.4312, (float) $after->longitude, 0.0000001);
     }
 
     public function test_household_no_resolves_to_authoritative_household_id_for_coordinate_update(): void
@@ -211,8 +211,8 @@ class SpotMappingErdPlotPersistenceTest extends TestCase
 
         $this->postJson(route('spot-mapping.plot'), [
             'household_no' => 'HH-404',
-            'lat' => 13.9999,
-            'lng' => 123.9999,
+            'lat' => 13.3830,
+            'lng' => 123.4309,
             'consent' => true,
         ])->assertStatus(422);
 

@@ -250,7 +250,7 @@
                                 </th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody data-lml-paginate="hr-va-row" data-lml-paginate-label="records">
                             @foreach ($rows as $row)
                                 <tr
                                     @class([

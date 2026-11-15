@@ -22,6 +22,17 @@ class StoreHealthWorkerRequest extends FormRequest
     }
 
     /**
+     * Batch 1: the service stores emails trimmed + lowercased, so validate the same form. Otherwise
+     * "Name@Gmail.com" passes the unique rule and then hits the database unique index (HTTP 500).
+     */
+    protected function prepareForValidation(): void
+    {
+        if (is_string($this->input('email'))) {
+            $this->merge(['email' => strtolower(trim($this->input('email')))]);
+        }
+    }
+
+    /**
      * @return array<string, mixed>
      */
     public function rules(): array

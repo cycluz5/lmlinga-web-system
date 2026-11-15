@@ -31,7 +31,12 @@ class ResidentRegistrationController extends Controller
 
         // No uniqueness rule here: the response must not reveal whether an email is registered.
         // A taken address gets a notice email instead of a code and can never create a second account.
-        $validated = $request->validate($this->rules(unique: false), $this->messages());
+        // Batch 6 two-step registration: the form now sends only email + password (step 1); name and zone are
+        // collected after the email is verified (step 2). A request that includes them is validated in full.
+        $rules = $this->hasDetailsInput($request)
+            ? $this->rules(unique: false)
+            : $this->credentialRules(unique: false);
+        $validated = $request->validate($rules, $this->messages());
 
         $result = $emailOtp->startRegistration($validated);
 
@@ -74,11 +79,43 @@ class ResidentRegistrationController extends Controller
      */
     private function rules(bool $unique): array
     {
+        return self::detailsRules() + $this->credentialRules($unique);
+    }
+
+    /**
+     * Step 2 fields (Batch 6), shared with ResidentRegistrationVerificationController.
+     *
+     * @return array<string, list<string>>
+     */
+    public static function detailsRules(): array
+    {
         return [
             'first_name' => ['required', 'string', 'max:255'],
             'middle_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'zone' => ['required', 'in:1,2,3,4,5'],
+        ];
+    }
+
+    private function hasDetailsInput(Request $request): bool
+    {
+        foreach (array_keys(self::detailsRules()) as $field) {
+            if ($request->exists($field)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Step 1 fields: email + password.
+     *
+     * @return array<string, mixed>
+     */
+    private function credentialRules(bool $unique): array
+    {
+        return [
             'email' => array_merge(
                 ['required', 'string', 'max:255', 'email', 'regex:'.self::GMAIL_PATTERN],
                 $unique ? ['unique:resident_accounts,email'] : []
