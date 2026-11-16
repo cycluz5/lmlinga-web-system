@@ -112,4 +112,13 @@ return [
         'send_context' => (bool) env('BIKOL_CHAT_SEND_CONTEXT', false),
     ],
 
+    /*
+    | Cloud AI mode (Bikol): gemma4:31b-cloud on ollama.com answers in Bikol.
+    | Needs OLLAMA_API_KEY. Health facts still come only from the verified documents.
+    */
+    'bikol_cloud_chat' => [
+        'model' => env('BIKOL_CLOUD_CHAT_MODEL', 'gemma4:31b-cloud'),
+        'timeout' => (int) env('BIKOL_CLOUD_CHAT_TIMEOUT', 60),
+    ],
+
 ];
