@@ -17,13 +17,17 @@ use Illuminate\Support\Facades\Gate;
  * SR-07 dataset workflow (same rules as SR-05 terms). Every status change: role check, status precondition
  * under a row lock, the change, one history event, one transaction.
  *
- * Admin: upload, replace (draft in place; otherwise a new draft version), submit, retire, restore, delete a
- * never-submitted draft. Linguist: approve / reject a submitted version — the only way a version becomes
- * Approved. The approved version stays current while a replacement is reviewed. Nothing here indexes or
- * activates a dataset for the chatbot.
+ * Admin: upload, replace, retire, restore, delete a draft. By default (config chatbot_datasets.require_review =
+ * false) an Admin save PUBLISHES the version at once: it becomes the approved version and the previous one is
+ * superseded, with one 'published' history event. With require_review = true the original flow applies: saves
+ * are drafts, an Admin submits them, and a Linguist approves or rejects (the only way a version becomes
+ * Approved). Writing the published text to the chatbot's document folder and indexing it is done by
+ * ChatbotDatasetPublisher after the transaction, never here.
  */
 class ChatbotDatasetWorkflow
 {
+    public const ACTION_PUBLISHED = 'published';
+
     public const ACTION_UPLOADED = 'uploaded';
 
     public const ACTION_IMPORTED = 'imported';
@@ -82,6 +86,7 @@ class ChatbotDatasetWorkflow
             ]);
             $version = $dataset->versions()->create($this->versionAttributes($meta, $inspection, $admin, 1, $meta['language']));
             $this->log($dataset, $version, $action, null, ChatbotDatasetCatalog::DRAFT, $admin);
+            $this->publishUnlessReviewRequired($dataset, $version, $admin);
 
             return $dataset;
         });
@@ -121,9 +126,16 @@ class ChatbotDatasetWorkflow
             $meta['original_filename'] ??= $source->original_filename;
             $this->assertNotDuplicate($inspection['sha256'], $dataset->id);
 
+            $live = $dataset->approvedVersion();
+            if (! $this->requiresReview() && $live !== null && $live->content_sha256 === $inspection['sha256']
+                && $live->title === $meta['title'] && $live->source_reference === $meta['source_reference']) {
+                throw new ChatbotDatasetWorkflowException('Nothing changed. Edit the title, source reference or file before saving.', 422, 'title');
+            }
+
             if ($open?->status === ChatbotDatasetCatalog::DRAFT) {
                 $open->fill($this->versionAttributes($meta, $inspection, $admin, $open->version_no, $dataset->language))->save();
                 $this->log($dataset, $open, self::ACTION_UPDATED, ChatbotDatasetCatalog::DRAFT, ChatbotDatasetCatalog::DRAFT, $admin);
+                $this->publishUnlessReviewRequired($dataset, $open, $admin);
 
                 return $open;
             }
@@ -132,6 +144,7 @@ class ChatbotDatasetWorkflow
                 $meta, $inspection, $admin, (int) $dataset->versions()->max('version_no') + 1, $dataset->language
             ));
             $this->log($dataset, $version, self::ACTION_REVISED, null, ChatbotDatasetCatalog::DRAFT, $admin);
+            $this->publishUnlessReviewRequired($dataset, $version, $admin);
 
             return $version;
         });
@@ -257,6 +270,7 @@ class ChatbotDatasetWorkflow
                 ]);
             }
             $this->log($dataset, $draft, self::ACTION_RESTORED, ChatbotDatasetCatalog::RETIRED, ChatbotDatasetCatalog::DRAFT, $admin);
+            $this->publishUnlessReviewRequired($dataset, $draft, $admin);
 
             return $dataset;
         });
@@ -290,6 +304,35 @@ class ChatbotDatasetWorkflow
 
             return false;
         });
+    }
+
+    public function requiresReview(): bool
+    {
+        return (bool) config('lmlinga.chatbot_datasets.require_review', false);
+    }
+
+    /**
+     * Admin publish without Linguist review: the draft becomes the approved version and the previous approved
+     * version is superseded. Same preconditions as submit (personal-data confirmation).
+     */
+    private function publishUnlessReviewRequired(ChatbotDataset $dataset, ChatbotDatasetVersion $version, User $admin): void
+    {
+        if ($this->requiresReview()) {
+            return;
+        }
+        if (! $version->no_personal_data_confirmed) {
+            throw new ChatbotDatasetWorkflowException('Confirm that the file contains no resident personal information before saving.', 422, 'no_personal_data_confirmed');
+        }
+
+        $previous = $dataset->versions()->where('status', ChatbotDatasetCatalog::APPROVED)->where('id', '!=', $version->id)->first();
+        if ($previous !== null) {
+            $previous->update(['status' => ChatbotDatasetCatalog::SUPERSEDED]);
+            $this->log($dataset, $previous, self::ACTION_SUPERSEDED, ChatbotDatasetCatalog::APPROVED, ChatbotDatasetCatalog::SUPERSEDED, $admin);
+        }
+        $version->update(['status' => ChatbotDatasetCatalog::APPROVED]);
+        $this->log($dataset, $version, self::ACTION_PUBLISHED, ChatbotDatasetCatalog::DRAFT, ChatbotDatasetCatalog::APPROVED, $admin, 'Published by the administrator.');
+        $dataset->touch();
+        DB::afterCommit(fn () => ApprovedChatbotDatasets::forget());
     }
 
     private function lock(ChatbotDataset $dataset): ChatbotDataset

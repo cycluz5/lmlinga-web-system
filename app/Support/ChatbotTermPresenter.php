@@ -153,6 +153,7 @@ final class ChatbotTermPresenter
                 ChatbotTermWorkflow::ACTION_UPDATED => 'Draft edited',
                 ChatbotTermWorkflow::ACTION_REVISED => 'New draft version',
                 ChatbotTermWorkflow::ACTION_SUBMITTED => 'Submitted for review',
+                ChatbotTermWorkflow::ACTION_PUBLISHED => 'Published for the chatbot',
                 ChatbotTermWorkflow::ACTION_APPROVED => 'Approved',
                 ChatbotTermWorkflow::ACTION_REJECTED => 'Rejected',
                 ChatbotTermWorkflow::ACTION_SUPERSEDED => 'Replaced by newer approved version',

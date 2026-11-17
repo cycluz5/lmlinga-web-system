@@ -79,7 +79,9 @@ class LanguageManagementController extends Controller
         $term = $this->attempt(fn () => $this->workflow->create($this->admin($request), $request->content()));
 
         return redirect()->route('language-management.show', ['termId' => $term->id])
-            ->with('status', 'Term saved as a draft. Submit it when it is ready for Linguist review.');
+            ->with('status', $this->workflow->requiresReview()
+                ? 'Term saved as a draft. Submit it when it is ready for Linguist review.'
+                : 'Term saved. The chatbot can use it now.');
     }
 
     public function show(string $termId): View
@@ -111,9 +113,11 @@ class LanguageManagementController extends Controller
         $term = $this->find($termId);
         $this->attempt(fn () => $this->workflow->saveDraft($this->admin($request), $term, $request->content()));
 
-        $message = $term->approvedVersion() !== null
-            ? 'Changes saved as a new draft. The approved version stays in use until the Linguist approves the new one.'
-            : 'Draft saved.';
+        $message = match (true) {
+            ! $this->workflow->requiresReview() => 'Changes saved. The chatbot uses the new version now.',
+            $term->approvedVersion() !== null => 'Changes saved as a new draft. The approved version stays in use until the Linguist approves the new one.',
+            default => 'Draft saved.',
+        };
 
         return redirect()->route('language-management.show', ['termId' => $term->id])->with('status', $message);
     }
@@ -136,7 +140,7 @@ class LanguageManagementController extends Controller
     {
         $term = $this->find($termId);
 
-        return $this->act($term, fn () => $this->workflow->restore($this->admin($request), $term), 'Term restored as a draft. Submit it for review before it can be used again.');
+        return $this->act($term, fn () => $this->workflow->restore($this->admin($request), $term), $this->workflow->requiresReview() ? 'Term restored as a draft. Submit it for review before it can be used again.' : 'Term restored. The chatbot can use it again.');
     }
 
     public function destroy(Request $request, string $termId): RedirectResponse

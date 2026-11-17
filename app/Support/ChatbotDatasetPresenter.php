@@ -6,6 +6,7 @@ use App\Models\ChatbotDataset;
 use App\Models\ChatbotDatasetEvent;
 use App\Models\ChatbotDatasetVersion;
 use App\Models\User;
+use App\Services\ChatbotDatasetPublisher;
 use App\Services\ChatbotDatasetWorkflow;
 use Illuminate\Support\Carbon;
 
@@ -41,6 +42,7 @@ final class ChatbotDatasetPresenter
             'id' => $dataset->id,
             'title' => (string) ($current?->title ?? ''),
             'language' => $dataset->language,
+            'category' => $dataset->category,
             'language_label' => ChatbotDatasetCatalog::LANGUAGES[$dataset->language] ?? $dataset->language,
             'category_label' => ChatbotDatasetCatalog::CATEGORIES[$dataset->category] ?? $dataset->category,
             'source_name' => $dataset->source_name,
@@ -85,6 +87,10 @@ final class ChatbotDatasetPresenter
             'can_restore' => $retired,
             'can_delete' => $open?->status === ChatbotDatasetCatalog::DRAFT,
             'deletes_whole_dataset' => $dataset->isNeverSubmittedDraft(),
+            'review_required' => (bool) config('lmlinga.chatbot_datasets.require_review', false),
+            // Chatbot health information: is the live text written for the chatbot, and searchable (indexed)?
+            'in_chatbot' => ! $retired && $approved !== null && app(ChatbotDatasetPublisher::class)->isWritten($dataset),
+            'indexed' => ! $retired && $approved !== null && app(ChatbotDatasetPublisher::class)->isIndexed($dataset),
         ];
     }
 
@@ -164,6 +170,7 @@ final class ChatbotDatasetPresenter
                 ChatbotDatasetWorkflow::ACTION_UPDATED => 'Draft changed',
                 ChatbotDatasetWorkflow::ACTION_REVISED => 'New draft version',
                 ChatbotDatasetWorkflow::ACTION_SUBMITTED => 'Submitted for review',
+                ChatbotDatasetWorkflow::ACTION_PUBLISHED => 'Published to the chatbot',
                 ChatbotDatasetWorkflow::ACTION_APPROVED => 'Approved',
                 ChatbotDatasetWorkflow::ACTION_REJECTED => 'Rejected',
                 ChatbotDatasetWorkflow::ACTION_SUPERSEDED => 'Replaced by newer approved version',

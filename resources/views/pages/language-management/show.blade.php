@@ -36,7 +36,7 @@
             @if ($term['can_edit'])
                 <a href="{{ route('language-management.edit', ['termId' => $term['id']]) }}" class="btn btn-outline-primary lml-focus-ring fw-medium">Edit</a>
             @endif
-            @if ($term['can_submit'])
+            @if ($term['can_submit'] && config('lmlinga.chatbot.terms_require_review'))
                 <form method="POST" action="{{ route('language-management.submit', ['termId' => $term['id']]) }}">
                     @csrf
                     <button type="submit" class="btn btn-primary lml-focus-ring fw-medium">Submit for review</button>
@@ -51,7 +51,7 @@
             @if ($term['can_restore'])
                 <form method="POST" action="{{ route('language-management.restore', ['termId' => $term['id']]) }}">
                     @csrf
-                    <button type="submit" class="btn btn-outline-primary lml-focus-ring fw-medium">Restore as draft</button>
+                    <button type="submit" class="btn btn-outline-primary lml-focus-ring fw-medium">{{ config('lmlinga.chatbot.terms_require_review') ? 'Restore as draft' : 'Restore term' }}</button>
                 </form>
             @endif
             @if ($term['can_delete'])

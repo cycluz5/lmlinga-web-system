@@ -21,7 +21,11 @@
             <div>
                 <h1 class="lml-language-management__title">{{ $term ? 'Edit term' : 'Add term' }}</h1>
                 <p class="lml-language-management__subtitle">
-                    Enter the term exactly as it should be reviewed. A Linguist checks it before the chatbot may use it.
+                    @if (config('lmlinga.chatbot.terms_require_review'))
+                        Enter the term exactly as it should be reviewed. A Linguist checks it before the chatbot may use it.
+                    @else
+                        Enter the term exactly as the chatbot should use it. Saving makes it available to the chatbot right away.
+                    @endif
                 </p>
             </div>
             <a href="{{ $term ? route('language-management.show', ['termId' => $term['id']]) : route('language-management.index') }}" class="btn btn-outline-secondary lml-focus-ring fw-medium">Cancel</a>
@@ -29,7 +33,9 @@
 
         @if ($term && $term['edit_creates_revision'])
             <div class="alert alert-info mb-0" role="note" data-lml-term-revision-note>
-                @if ($term['in_use'])
+                @if (! config('lmlinga.chatbot.terms_require_review'))
+                    Saving replaces the version the chatbot uses with this one. The earlier version and its history are kept.
+                @elseif ($term['in_use'])
                     Saving creates a new draft version. The approved version stays in use until a Linguist approves the new one.
                 @else
                     Saving creates a new draft version. The reviewed version and its history are kept.
@@ -101,7 +107,7 @@
             @endforeach
 
             <div class="lml-language-management__actions">
-                <button type="submit" class="btn btn-primary lml-focus-ring fw-medium">Save draft</button>
+                <button type="submit" class="btn btn-primary lml-focus-ring fw-medium">{{ config('lmlinga.chatbot.terms_require_review') ? 'Save draft' : 'Save term' }}</button>
             </div>
         </form>
     </div>

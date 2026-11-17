@@ -428,6 +428,11 @@ Route::middleware(['auth', 'staff.account-usable', 'staff.password-current', 'ui
             'store',
         ])->middleware('throttle:lmlinga-dataset-upload')->name('chatbot-datasets.store');
 
+        Route::post('/chatbot-datasets/import-existing', [
+            \App\Http\Controllers\Admin\ChatbotDatasetController::class,
+            'importExisting',
+        ])->middleware('throttle:lmlinga-dataset-upload')->name('chatbot-datasets.import-existing');
+
         Route::get('/chatbot-datasets/{datasetId}', [
             \App\Http\Controllers\Admin\ChatbotDatasetController::class,
             'show',
@@ -457,6 +462,11 @@ Route::middleware(['auth', 'staff.account-usable', 'staff.password-current', 'ui
             \App\Http\Controllers\Admin\ChatbotDatasetController::class,
             'restore',
         ])->where('datasetId', '[0-9]+')->name('chatbot-datasets.restore');
+
+        Route::post('/chatbot-datasets/{datasetId}/reindex', [
+            \App\Http\Controllers\Admin\ChatbotDatasetController::class,
+            'reindex',
+        ])->where('datasetId', '[0-9]+')->middleware('throttle:lmlinga-dataset-upload')->name('chatbot-datasets.reindex');
 
         Route::delete('/chatbot-datasets/{datasetId}', [
             \App\Http\Controllers\Admin\ChatbotDatasetController::class,

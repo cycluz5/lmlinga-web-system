@@ -171,6 +171,10 @@ return [
     'chatbot' => [
         'approved_terms_in_prompt' => (bool) env('LMLINGA_CHATBOT_APPROVED_TERMS', true),
         'approved_terms_max' => 80,
+
+        // Admin saves publish a term directly (no Linguist review). LMLINGA_TERMS_REQUIRE_REVIEW=true restores
+        // the review step: saves become drafts that a Linguist must approve.
+        'terms_require_review' => (bool) env('LMLINGA_TERMS_REQUIRE_REVIEW', false),
     ],
 
     /*
@@ -183,6 +187,14 @@ return [
         'min_characters' => 200,
         'max_line_length' => 5000,
         'uploads_per_hour' => (int) env('LMLINGA_DATASET_UPLOADS_PER_HOUR', 20),
+
+        // Admin saves publish directly (no Linguist review). LMLINGA_DATASETS_REQUIRE_REVIEW=true restores the
+        // review step: saves become drafts that a Linguist must approve.
+        'require_review' => (bool) env('LMLINGA_DATASETS_REQUIRE_REVIEW', false),
+
+        // Where published datasets are written for the chatbot: <path>/<language>/<category>/<source>.txt.
+        // Outside resources/ so deploys never overwrite it; the chatbot reads this folder as well as resources/health_docs.
+        'admin_docs_path' => storage_path('app/health_docs_admin'),
     ],
 
 ];

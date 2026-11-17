@@ -1,6 +1,7 @@
 {{--
     SR-05 Language Management — Admin only (route middleware ui.admin).
-    Terms are entered by an Admin and verified by a Linguist; only approved terms may be used by the chatbot.
+    Terms are entered and managed by an Admin. Without Linguist review (default) a saved term is used by the chatbot at once;
+    with lmlinga.chatbot.terms_require_review on, only terms a Linguist approved are used.
 --}}
 @extends('layouts.dashboard')
 
@@ -16,7 +17,11 @@
             <div>
                 <h1 class="lml-language-management__title">Bikol-Iriga terms</h1>
                 <p class="lml-language-management__subtitle">
-                    Add terms and submit them for Linguist review. Only approved terms may be used by the chatbot.
+                    @if (config('lmlinga.chatbot.terms_require_review'))
+                        Add terms and submit them for Linguist review. Only approved terms may be used by the chatbot.
+                    @else
+                        Add and manage Bikol-Iriga terms. A saved term is used by the chatbot right away.
+                    @endif
                 </p>
             </div>
             <a href="{{ route('language-management.create') }}" class="btn btn-primary lml-focus-ring fw-medium">

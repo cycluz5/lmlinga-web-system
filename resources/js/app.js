@@ -35,6 +35,7 @@ import './pages/user-management-edit';
 import './pages/user-management-create';
 import './pages/user-management-residents';
 import './pages/household-requests';
+import './pages/chatbot-datasets';
 import './pages/chatbot-main';
 import './pages/chatbot-household-request';
 import './pages/chatbot-household-sms';

@@ -41,6 +41,13 @@ class LanguageManagementTermsTest extends TestCase
     /** @var array<string, User> */
     private array $staff = [];
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        // These tests cover the Linguist review flow, which stays available behind this setting.
+        config(['lmlinga.chatbot.terms_require_review' => true]);
+    }
+
     private function admin(): User
     {
         return $this->staffAs(StaffRole::ADMIN, ['email' => 'lm.admin@example.test', 'username' => 'lm.admin']);
@@ -385,11 +392,10 @@ class LanguageManagementTermsTest extends TestCase
         $this->get('/language-review/terms/'.$version->id)->assertNotFound();
     }
 
-    public function test_sidebar_shows_language_management_to_admin_only(): void
+    public function test_language_management_is_not_in_the_sidebar_for_anyone(): void
     {
         $this->admin();
-        $this->get(route('language-management.index'))->assertOk()->assertSee('Language Management');
-        $this->get(route('dashboard'))->assertOk()->assertSee(route('language-management.index'), false);
+        $this->get(route('dashboard'))->assertOk()->assertDontSee(route('language-management.index'), false);
 
         $this->actingAsStaff(StaffRole::BHW, ['email' => 'side.bhw@example.test', 'username' => 'side.bhw']);
         $this->get(route('dashboard'))->assertOk()->assertDontSee(route('language-management.index'), false);

@@ -43,7 +43,7 @@ final class ChatbotTermStatus
         return match ($status) {
             self::DRAFT => 'Draft',
             self::SUBMITTED => 'Submitted for review',
-            self::APPROVED => 'Approved',
+            self::APPROVED => (bool) config('lmlinga.chatbot.terms_require_review', false) ? 'Approved' : 'Live',
             self::REJECTED => 'Rejected',
             self::SUPERSEDED => 'Superseded',
             self::RETIRED => 'Retired',

@@ -41,6 +41,8 @@ class ChatbotApprovedDataTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        // These tests cover the Linguist review flow, which stays available behind this setting.
+        config(['lmlinga.chatbot_datasets.require_review' => true, 'lmlinga.chatbot.terms_require_review' => true]);
         Http::preventStrayRequests();
         Storage::fake(ComparisonFiles::DISK);
         config(['services.ollama.api_key' => 'test-key-not-real-0000', 'services.ollama.base_url' => 'http://127.0.0.1:11434']);

@@ -24,10 +24,14 @@
 
         @if ($dataset && $dataset['edit_creates_revision'])
             <div class="alert alert-info mb-0" role="note" data-lml-dataset-revision-note>
-                @if ($dataset['approved'])
-                    Saving creates a new draft version. The approved version stays current until a Linguist approves the new one.
+                @if ($dataset['review_required'])
+                    @if ($dataset['approved'])
+                        Saving creates a new draft version. The approved version stays current until a Linguist approves the new one.
+                    @else
+                        Saving creates a new draft version. The reviewed version and its history are kept.
+                    @endif
                 @else
-                    Saving creates a new draft version. The reviewed version and its history are kept.
+                    Saving replaces the live text in the chatbot's health information with this version. The earlier version and its history are kept.
                 @endif
             </div>
         @endif
@@ -103,7 +107,7 @@
             </div>
 
             <div class="lml-language-management__actions">
-                <button type="submit" class="btn btn-primary lml-focus-ring fw-medium">Save draft</button>
+                <button type="submit" class="btn btn-primary lml-focus-ring fw-medium">{{ config('lmlinga.chatbot_datasets.require_review') ? 'Save draft' : 'Save and send to chatbot' }}</button>
             </div>
         </form>
     </div>

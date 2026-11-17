@@ -44,6 +44,11 @@ final class ChatbotDatasetCatalog
 
     public static function label(string $status): string
     {
+        // Without Linguist review an approved dataset is simply "Live" in the chatbot.
+        if ($status === self::APPROVED) {
+            return (bool) config('lmlinga.chatbot_datasets.require_review', false) ? 'Approved' : 'Live';
+        }
+
         return ChatbotTermStatus::label($status);
     }
 

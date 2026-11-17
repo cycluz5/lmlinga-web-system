@@ -24,6 +24,8 @@ use Illuminate\Support\Facades\Gate;
  */
 class ChatbotTermWorkflow
 {
+    public const ACTION_PUBLISHED = 'published';
+
     public const ACTION_CREATED = 'created';
 
     public const ACTION_UPDATED = 'updated';
@@ -65,6 +67,7 @@ class ChatbotTermWorkflow
                 'created_by_user_id' => $admin->getKey(),
             ]);
             $this->log($term, $version, self::ACTION_CREATED, null, ChatbotTermStatus::DRAFT, $admin);
+            $this->publishUnlessReviewRequired($term, $version, $admin);
 
             return $term;
         });
@@ -93,9 +96,15 @@ class ChatbotTermWorkflow
                 throw new ChatbotTermWorkflowException('This term is waiting for Linguist review and cannot be edited now.');
             }
 
+            $live = $term->approvedVersion();
+            if (! $this->requiresReview() && $live !== null && $this->sameContent($live->content(), $content)) {
+                throw new ChatbotTermWorkflowException('Nothing changed. Edit the term before saving.');
+            }
+
             if ($open?->status === ChatbotTermStatus::DRAFT) {
                 $open->fill($content)->save();
                 $this->log($term, $open, self::ACTION_UPDATED, ChatbotTermStatus::DRAFT, ChatbotTermStatus::DRAFT, $admin);
+                $this->publishUnlessReviewRequired($term, $open, $admin);
 
                 return $open;
             }
@@ -106,6 +115,7 @@ class ChatbotTermWorkflow
                 'created_by_user_id' => $admin->getKey(),
             ]);
             $this->log($term, $version, self::ACTION_REVISED, null, ChatbotTermStatus::DRAFT, $admin);
+            $this->publishUnlessReviewRequired($term, $version, $admin);
 
             return $version;
         });
@@ -228,6 +238,7 @@ class ChatbotTermWorkflow
                 ]);
             }
             $this->log($term, $draft, self::ACTION_RESTORED, ChatbotTermStatus::RETIRED, ChatbotTermStatus::DRAFT, $admin);
+            $this->publishUnlessReviewRequired($term, $draft, $admin);
 
             return $term;
         });
@@ -261,6 +272,32 @@ class ChatbotTermWorkflow
 
             return false;
         });
+    }
+
+    public function requiresReview(): bool
+    {
+        return (bool) config('lmlinga.chatbot.terms_require_review', false);
+    }
+
+    /**
+     * Admin publish without Linguist review: the draft becomes the approved version (the one the chatbot's
+     * glossary uses) and the previous approved version is superseded.
+     */
+    private function publishUnlessReviewRequired(ChatbotTerm $term, ChatbotTermVersion $version, User $admin): void
+    {
+        if ($this->requiresReview()) {
+            return;
+        }
+
+        $previous = $term->versions()->where('status', ChatbotTermStatus::APPROVED)->where('id', '!=', $version->id)->first();
+        if ($previous !== null) {
+            $previous->update(['status' => ChatbotTermStatus::SUPERSEDED]);
+            $this->log($term, $previous, self::ACTION_SUPERSEDED, ChatbotTermStatus::APPROVED, ChatbotTermStatus::SUPERSEDED, $admin);
+        }
+        $version->update(['status' => ChatbotTermStatus::APPROVED]);
+        $this->log($term, $version, self::ACTION_PUBLISHED, ChatbotTermStatus::DRAFT, ChatbotTermStatus::APPROVED, $admin, 'Published by the administrator.');
+        $term->touch();
+        DB::afterCommit(fn () => ApprovedBikolTerms::forget());
     }
 
     private function lock(ChatbotTerm $term): ChatbotTerm

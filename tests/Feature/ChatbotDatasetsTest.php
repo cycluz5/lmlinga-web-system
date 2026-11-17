@@ -36,6 +36,8 @@ class ChatbotDatasetsTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
+        // These tests cover the Linguist review flow, which stays available behind this setting.
+        config(['lmlinga.chatbot_datasets.require_review' => true]);
         Http::preventStrayRequests();
         Http::fake();
     }
@@ -407,11 +409,18 @@ class ChatbotDatasetsTest extends TestCase
         $this->actingAsStaff(StaffRole::BHW, ['email' => 'side.ds@example.test', 'username' => 'side.ds']);
         $this->get(route('dashboard'))->assertOk()->assertDontSee(route('chatbot-datasets.index'), false);
 
-        foreach (['app/Services/RagService.php', 'app/Console/Commands/IndexHealthDocs.php', 'app/Services/BikolConversationService.php'] as $file) {
+        foreach (['app/Console/Commands/IndexHealthDocs.php', 'app/Services/BikolConversationService.php'] as $file) {
             $source = (string) file_get_contents(base_path($file));
             foreach (['ApprovedChatbotDatasets', 'ChatbotDataset', 'chatbot_dataset'] as $needle) {
                 $this->assertStringNotContainsString($needle, $source, $file);
             }
+        }
+
+        // Admin-published datasets reach the chatbot as plain files in the admin folder (ChatbotDatasetPublisher).
+        // RagService only reads that folder; it never touches the dataset models, versions or review tables.
+        $rag = (string) file_get_contents(base_path('app/Services/RagService.php'));
+        foreach (['ApprovedChatbotDatasets', 'ChatbotDataset', 'chatbot_dataset_versions', 'chatbot_dataset_events', 'chatbot_datasets.require_review'] as $needle) {
+            $this->assertStringNotContainsString($needle, $rag, 'RagService.php');
         }
     }
 

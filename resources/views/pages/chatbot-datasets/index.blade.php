@@ -1,108 +1,169 @@
 {{--
-    SR-07 Chatbot Datasets — Admin only (route middleware ui.admin).
-    Uploaded datasets are reviewed by a Linguist. Approved datasets are not used by the chatbot until
-    dataset indexing is separately approved; the current chatbot knowledge base is unchanged.
+    Chatbot Datasets — Admin only (route middleware ui.admin).
+    The health information the chatbot answers from, grouped by language (English, Tagalog, Bikol-Iriga).
+    Saving a dataset sends it into the chatbot's health information; there is no Linguist review step unless
+    lmlinga.chatbot_datasets.require_review is on.
+    Layout follows the standard admin listings: tabs + toolbar (User Management), table (Household Requests),
+    rows paged by the shared pagination component (data-lml-paginate).
 --}}
 @extends('layouts.dashboard')
 
 @section('title', 'Chatbot Datasets - LMLinga')
 
+@php
+    $languageLabel = $languages[$language] ?? $language;
+@endphp
+
 @section('content')
-    <div class="lml-language-management" data-lml-chatbot-datasets>
+    <div class="lml-cd" data-lml-chatbot-datasets>
         @if (session('status'))
-            <div class="alert alert-success mb-0" role="status">{{ session('status') }}</div>
+            <p class="lml-cd__alert lml-cd__alert--success" role="status">{{ session('status') }}</p>
         @endif
 
-        <header class="lml-language-management__header">
-            <div>
-                <h1 class="lml-language-management__title">Chatbot datasets</h1>
-                <p class="lml-language-management__subtitle">
-                    Upload health information as .txt files and submit them for Linguist review.
-                    Approved datasets are not used by the chatbot yet; the current chatbot knowledge base is unchanged.
+        @if ($importable > 0)
+            <form method="POST" action="{{ route('chatbot-datasets.import-existing') }}" class="lml-cd__notice" data-lml-dataset-import>
+                @csrf
+                <p>
+                    <strong>{{ $importable }} existing chatbot document(s)</strong> are not listed here yet.
+                    Listing them lets you see and change them. The chatbot keeps using them as they are until you change one.
                 </p>
-            </div>
-            <a href="{{ route('chatbot-datasets.create') }}" class="btn btn-primary lml-focus-ring fw-medium">
-                <i class="bi bi-upload" aria-hidden="true"></i>
-                Upload Dataset
-            </a>
-        </header>
+                <div class="form-check">
+                    <input id="import-confirm" type="checkbox" name="no_personal_data_confirmed" value="1" required class="form-check-input @error('no_personal_data_confirmed') is-invalid @enderror">
+                    <label for="import-confirm" class="form-check-label">I confirm these documents contain no resident or patient personal information.</label>
+                    @error('no_personal_data_confirmed')<p class="lml-form-error">{{ $message }}</p>@enderror
+                </div>
+                <div>
+                    <button type="submit" class="lml-user-mgmt__add-btn lml-focus-ring">
+                        <i class="bi bi-journal-check" aria-hidden="true"></i>
+                        <span>Show existing documents</span>
+                    </button>
+                </div>
+            </form>
+        @endif
 
-        <nav class="lml-language-management__filters" aria-label="Filter datasets by status">
-            <a
-                href="{{ route('chatbot-datasets.index', array_filter(['q' => $search, 'language' => $language !== 'all' ? $language : null])) }}"
-                class="lml-language-management__filter{{ $status === 'all' ? ' is-active' : '' }}"
-                @if ($status === 'all') aria-current="page" @endif
-            >All <span>{{ $total }}</span></a>
-            @foreach ($filters as $filter)
+        <nav class="lml-user-mgmt__tabs" aria-label="Dataset languages">
+            @foreach ($languages as $key => $label)
                 <a
-                    href="{{ route('chatbot-datasets.index', array_filter(['status' => $filter, 'q' => $search, 'language' => $language !== 'all' ? $language : null])) }}"
-                    class="lml-language-management__filter{{ $status === $filter ? ' is-active' : '' }}"
-                    data-lml-dataset-filter="{{ $filter }}"
-                    @if ($status === $filter) aria-current="page" @endif
-                >{{ \App\Support\ChatbotDatasetCatalog::label($filter) }} <span>{{ $counts[$filter] ?? 0 }}</span></a>
+                    href="{{ route('chatbot-datasets.index', ['language' => $key]) }}"
+                    class="lml-user-mgmt__tab lml-focus-ring{{ $language === $key ? ' lml-user-mgmt__tab--active' : '' }}"
+                    data-lml-dataset-language="{{ $key }}"
+                    @if ($language === $key) aria-current="page" @endif
+                >
+                    <span>{{ $label }}</span>
+                    <span class="lml-cd__count">{{ $languageCounts[$key] ?? 0 }}</span>
+                </a>
             @endforeach
         </nav>
 
-        <form method="GET" action="{{ route('chatbot-datasets.index') }}" class="lml-language-management__search" role="search">
-            @if ($status !== 'all')
-                <input type="hidden" name="status" value="{{ $status }}">
-            @endif
-            <label for="chatbot-datasets-language" class="visually-hidden">Language</label>
-            <select id="chatbot-datasets-language" name="language" class="form-select lml-form-control">
-                <option value="all">All languages</option>
-                @foreach ($languages as $key => $label)
-                    <option value="{{ $key }}" @selected($language === $key)>{{ $label }}</option>
-                @endforeach
-            </select>
-            <label for="chatbot-datasets-search" class="visually-hidden">Search datasets</label>
-            <input id="chatbot-datasets-search" type="search" name="q" value="{{ $search }}" maxlength="160"
-                class="form-control lml-form-control" placeholder="Search title">
-            <button type="submit" class="btn btn-outline-primary lml-focus-ring fw-medium">Search</button>
-        </form>
+        <div class="lml-user-mgmt__toolbar" role="search" aria-label="Filter {{ $languageLabel }} datasets">
+            <div class="lml-user-mgmt__search">
+                <i class="bi bi-search lml-user-mgmt__search-icon" aria-hidden="true"></i>
+                <label class="visually-hidden" for="lml-cd-search">Search dataset</label>
+                <input
+                    type="search"
+                    id="lml-cd-search"
+                    class="lml-user-mgmt__search-input"
+                    placeholder="Search dataset"
+                    autocomplete="off"
+                    maxlength="160"
+                    data-cd-search
+                >
+            </div>
 
-        @if (count($rows) === 0)
-            <p class="lml-language-management__empty" data-lml-chatbot-datasets-empty>
-                <i class="bi bi-inbox" aria-hidden="true"></i>
-                @if ($total === 0)
-                    No datasets yet. Use "Upload Dataset" to add the first one.
-                @else
-                    No datasets match this filter.
+            <div class="lml-user-mgmt__toolbar-end">
+                <div class="lml-user-mgmt__category">
+                    <label class="visually-hidden" for="lml-cd-category">Category</label>
+                    <select id="lml-cd-category" class="lml-user-mgmt__category-select" data-cd-category>
+                        <option value="all" selected>All Categories</option>
+                        @foreach ($categories as $key => $label)
+                            <option value="{{ $key }}">{{ $label }}</option>
+                        @endforeach
+                    </select>
+                    <i class="bi bi-chevron-down lml-user-mgmt__category-icon" aria-hidden="true"></i>
+                </div>
+
+                @if (count($statusOptions) > 1)
+                    <div class="lml-user-mgmt__category">
+                        <label class="visually-hidden" for="lml-cd-status">Status</label>
+                        <select id="lml-cd-status" class="lml-user-mgmt__category-select" data-cd-status>
+                            <option value="all" selected>All Statuses</option>
+                            @foreach ($statusOptions as $key => $label)
+                                <option value="{{ $key }}">{{ $label }}</option>
+                            @endforeach
+                        </select>
+                        <i class="bi bi-chevron-down lml-user-mgmt__category-icon" aria-hidden="true"></i>
+                    </div>
                 @endif
-            </p>
-        @else
-            <div class="table-responsive">
-                <table class="table lml-language-management__table align-middle">
+
+                <a href="{{ route('chatbot-datasets.create', ['language' => $language]) }}" class="lml-user-mgmt__add-btn lml-focus-ring" data-lml-dataset-add>
+                    <i class="bi bi-plus-lg" aria-hidden="true"></i>
+                    <span>Add Dataset</span>
+                </a>
+            </div>
+        </div>
+
+        @if (count($rows) > 0)
+            <div class="lml-hr-table-wrap" data-cd-table-wrap>
+                <table class="lml-hr-table lml-cd-table">
+                    <caption class="visually-hidden">{{ $languageLabel }} chatbot datasets by title, category and status</caption>
                     <thead>
                         <tr>
                             <th scope="col">Title</th>
-                            <th scope="col">Language</th>
                             <th scope="col">Category</th>
                             <th scope="col">Status</th>
                             <th scope="col">Last updated</th>
-                            <th scope="col"><span class="visually-hidden">Actions</span></th>
+                            <th scope="col"><span class="visually-hidden">View</span></th>
                         </tr>
                     </thead>
                     <tbody data-lml-paginate="lml-dataset-row" data-lml-paginate-label="datasets">
                         @foreach ($rows as $row)
-                            <tr data-lml-dataset-row>
-                                <td class="fw-semibold">{{ $row['title'] }}</td>
-                                <td>{{ $row['language_label'] }}</td>
-                                <td>{{ $row['category_label'] }}</td>
-                                <td>
-                                    <span class="lml-term-status lml-term-status--{{ $row['status'] }}">{{ $row['status_label'] }}</span>
+                            <tr
+                                class="lml-hr-table__row"
+                                data-lml-dataset-row
+                                data-cd-title="{{ $row['title'] }}"
+                                data-cd-source="{{ $row['source_name'] }}"
+                                data-cd-category="{{ $row['category'] }}"
+                                data-cd-status="{{ $row['status'] }}"
+                            >
+                                <td class="lml-hr-table__cell" data-label="Title">
+                                    <span class="lml-hr-table__name">{{ $row['title'] }}</span>
+                                    <span class="lml-cd__source">{{ $row['source_name'] }}</span>
+                                </td>
+                                <td class="lml-hr-table__cell lml-hr-table__cell--zone" data-label="Category">{{ $row['category_label'] }}</td>
+                                <td class="lml-hr-table__cell" data-label="Status">
+                                    <span class="lml-hr-table__status lml-cd__status--{{ $row['status'] }}" data-lml-dataset-status="{{ $row['status'] }}">{{ $row['status_label'] }}</span>
                                     @if ($row['revision_label'])
-                                        <span class="lml-term-status lml-term-status--revision">{{ $row['revision_label'] }}</span>
+                                        <span class="lml-cd__status-note">{{ $row['revision_label'] }}</span>
                                     @endif
                                 </td>
-                                <td>{{ $row['updated_at'] }}</td>
-                                <td class="text-end">
-                                    <a href="{{ route('chatbot-datasets.show', ['datasetId' => $row['id']]) }}" class="btn btn-outline-secondary btn-sm lml-focus-ring">View</a>
+                                <td class="lml-hr-table__cell" data-label="Last updated">{{ $row['updated_at'] }}</td>
+                                <td class="lml-hr-table__cell lml-hr-table__cell--actions" data-label="View">
+                                    <a
+                                        href="{{ route('chatbot-datasets.show', ['datasetId' => $row['id']]) }}"
+                                        class="lml-hr-table__view-btn lml-focus-ring"
+                                        aria-label="View dataset {{ $row['title'] }}"
+                                    >
+                                        <i class="bi bi-eye" aria-hidden="true"></i>
+                                        <span>View</span>
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
+
+            <p class="lml-hr__empty" role="status" aria-live="polite" hidden data-cd-empty data-lml-chatbot-datasets-empty>
+                No {{ $languageLabel }} datasets match your search or filters.
+            </p>
+        @else
+            <p class="lml-hr__empty" role="status" data-lml-chatbot-datasets-empty>
+                @if ($total === 0 && $importable > 0)
+                    No datasets are listed yet. Use "Show existing documents" above to list the ones the chatbot already has, or "Add Dataset" to add a new one.
+                @else
+                    No {{ $languageLabel }} datasets yet. Use "Add Dataset" to add one.
+                @endif
+            </p>
         @endif
     </div>
 @endsection

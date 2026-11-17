@@ -100,15 +100,8 @@
             'roles' => ['admin', 'bhw', 'bns', 'bspo'],
         ],
         [
-            // SR-05: Admin adds Bikol-Iriga terms; a Linguist reviews them in Language Review.
-            'key' => 'language-management',
-            'label' => 'Language Management',
-            'icon' => 'bi-translate',
-            'href' => $resolveNamedHref(['language-management.index']),
-            'roles' => ['admin'],
-        ],
-        [
-            // SR-07: Admin uploads chatbot datasets; a Linguist reviews them in Language Review.
+            // Admin manages the chatbot's health information (existing documents and new datasets).
+            // The Language Management (Bikol-Iriga terms) tab was removed from the menu.
             'key' => 'chatbot-datasets',
             'label' => 'Chatbot Datasets',
             'icon' => 'bi-journal-text',

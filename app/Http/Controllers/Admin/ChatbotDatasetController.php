@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\LanguageManagement\SaveChatbotDatasetRequest;
 use App\Models\ChatbotDataset;
 use App\Models\User;
+use App\Services\ChatbotDatasetImporter;
+use App\Services\ChatbotDatasetPublisher;
 use App\Services\ChatbotDatasetWorkflow;
 use App\Support\ChatbotDatasetCatalog;
 use App\Support\ChatbotDatasetFileInspector;
@@ -18,75 +20,90 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 /**
- * SR-07 Chatbot Datasets (route middleware `ui.admin`): Admin uploads health datasets and submits them for
- * Linguist review. Admin never approves (D-7). Approved datasets are not used by the chatbot yet.
+ * Chatbot Datasets (route middleware `ui.admin`): the Admin adds health datasets in English, Tagalog or
+ * Bikol-Iriga. Saving publishes the dataset and sends it into the chatbot's health information space
+ * (ChatbotDatasetPublisher). With config chatbot_datasets.require_review = true the earlier flow applies:
+ * saves are drafts, submitted for Linguist review.
  */
 class ChatbotDatasetController extends Controller
 {
-    private const FILTERS = [
-        ChatbotDatasetCatalog::DRAFT, ChatbotDatasetCatalog::SUBMITTED, ChatbotDatasetCatalog::APPROVED,
-        ChatbotDatasetCatalog::REJECTED, ChatbotDatasetCatalog::RETIRED,
-    ];
-
     public function __construct(
         private readonly ChatbotDatasetWorkflow $workflow,
         private readonly ChatbotDatasetFileInspector $inspector,
+        private readonly ChatbotDatasetPublisher $publisher,
+        private readonly ChatbotDatasetImporter $importer,
     ) {
+    }
+
+    /** List the chatbot's existing documents as datasets (nothing in the chatbot itself changes). */
+    public function importExisting(Request $request): RedirectResponse
+    {
+        $request->validate(['no_personal_data_confirmed' => ['accepted']], [
+            'no_personal_data_confirmed.accepted' => 'Confirm that the existing documents contain no resident personal information.',
+        ]);
+
+        $counts = $this->importer->run($this->admin($request), true);
+
+        $message = $counts['new'] > 0
+            ? $counts['new'].' existing chatbot document(s) are now listed below.'
+            : 'The existing chatbot documents were already listed.';
+        if ($counts['blocked'] > 0) {
+            $message .= ' '.$counts['blocked'].' could not be listed (see the screening rules).';
+        }
+
+        return redirect()->route('chatbot-datasets.index')->with('status', $message);
     }
 
     public function index(Request $request): View
     {
-        $search = mb_strtolower(trim((string) $request->query('q', '')), 'UTF-8');
-        $status = (string) $request->query('status', 'all');
-        if (! in_array($status, self::FILTERS, true)) {
-            $status = 'all';
-        }
-        $language = (string) $request->query('language', 'all');
+        // One tab per language (English, Tagalog, Bikol-Iriga). Search, category and status filter in the browser
+        // (like the other admin listings) and the rows are paged by the shared pagination component.
+        $language = (string) $request->query('language', 'en');
         if (! array_key_exists($language, ChatbotDatasetCatalog::LANGUAGES)) {
-            $language = 'all';
+            $language = 'en';
         }
 
         $datasets = ChatbotDataset::query()
             ->with(['versions' => fn ($q) => $q->select(['id', 'chatbot_dataset_id', 'version_no', 'title', 'status'])])
-            ->orderByDesc('updated_at')
+            ->orderBy('category')
+            ->orderBy('source_name')
             ->get();
-        $counts = array_fill_keys(self::FILTERS, 0);
+
+        $languageCounts = array_fill_keys(array_keys(ChatbotDatasetCatalog::LANGUAGES), 0);
         $rows = [];
         foreach ($datasets as $dataset) {
-            $row = ChatbotDatasetPresenter::row($dataset);
-            foreach ($row['filters'] as $filter) {
-                $counts[$filter]++;
+            $languageCounts[$dataset->language] = ($languageCounts[$dataset->language] ?? 0) + 1;
+            if ($dataset->language === $language) {
+                $rows[] = ChatbotDatasetPresenter::row($dataset);
             }
-            if ($status !== 'all' && ! in_array($status, $row['filters'], true)) {
-                continue;
-            }
-            if ($language !== 'all' && $row['language'] !== $language) {
-                continue;
-            }
-            if ($search !== '' && ! str_contains(mb_strtolower($row['title'].' '.$row['source_name'], 'UTF-8'), $search)) {
-                continue;
-            }
-            $rows[] = $row;
+        }
+
+        $statusOptions = [];
+        foreach ($rows as $row) {
+            $statusOptions[$row['status']] = $row['status_label'];
         }
 
         return view('pages.chatbot-datasets.index', [
             'active' => 'chatbot-datasets',
             'pageTitle' => 'Chatbot Datasets',
-            'pageSubtitle' => 'Upload health information datasets and send them to a Linguist for review.',
+            'pageSubtitle' => 'The health information the chatbot answers from. Add a dataset or change an existing one.',
+            'importable' => $this->importer->pendingCount(),
             'rows' => $rows,
-            'counts' => $counts,
             'total' => $datasets->count(),
-            'search' => trim((string) $request->query('q', '')),
-            'status' => $status,
             'language' => $language,
-            'filters' => self::FILTERS,
             'languages' => ChatbotDatasetCatalog::LANGUAGES,
+            'languageCounts' => $languageCounts,
+            'categories' => ChatbotDatasetCatalog::CATEGORIES,
+            'statusOptions' => $statusOptions,
         ]);
     }
 
-    public function create(): View
+    public function create(Request $request): View
     {
-        return $this->formView(null, null);
+        // "Add Dataset" on a language tab opens the form with that language already chosen.
+        $language = (string) $request->query('language', '');
+
+        return $this->formView(null, null, array_key_exists($language, ChatbotDatasetCatalog::LANGUAGES) ? ['language' => $language] : []);
     }
 
     public function store(SaveChatbotDatasetRequest $request): RedirectResponse
@@ -101,8 +118,12 @@ class ChatbotDatasetController extends Controller
             'original_filename' => $file->getClientOriginalName(),
         ], $this->inspector->inspectUpload($file)));
 
-        return redirect()->route('chatbot-datasets.show', ['datasetId' => $dataset->id])
-            ->with('status', 'Dataset saved as a draft. Check the screening results, then submit it for Linguist review.');
+        if ($this->workflow->requiresReview()) {
+            return redirect()->route('chatbot-datasets.show', ['datasetId' => $dataset->id])
+                ->with('status', 'Dataset saved as a draft. Check the screening results, then submit it for Linguist review.');
+        }
+
+        return $this->publishedResponse($dataset, 'Dataset saved');
     }
 
     public function show(string $datasetId): View
@@ -139,6 +160,10 @@ class ChatbotDatasetController extends Controller
             'original_filename' => $file?->getClientOriginalName(),
         ], $file !== null ? $this->inspector->inspectUpload($file) : null));
 
+        if (! $this->workflow->requiresReview()) {
+            return $this->publishedResponse($dataset, 'Changes saved');
+        }
+
         $message = $dataset->approvedVersion() !== null
             ? 'Saved as a new draft version. The approved version stays current until the Linguist approves the new one.'
             : 'Draft saved.';
@@ -157,14 +182,36 @@ class ChatbotDatasetController extends Controller
     {
         $dataset = $this->find($datasetId);
 
-        return $this->act($dataset, fn () => $this->workflow->retire($this->admin($request), $dataset), 'Dataset retired. It can no longer be used as a chatbot source.');
+        return $this->act($dataset, function () use ($request, $dataset): void {
+            $this->workflow->retire($this->admin($request), $dataset);
+            $this->publisher->unpublish($dataset);
+        }, 'Dataset retired. It was removed from the chatbot.');
     }
 
     public function restore(Request $request, string $datasetId): RedirectResponse
     {
         $dataset = $this->find($datasetId);
+        if ($this->workflow->requiresReview()) {
+            return $this->act($dataset, fn () => $this->workflow->restore($this->admin($request), $dataset), 'Dataset restored as a draft. Submit it for review before it can be approved again.');
+        }
 
-        return $this->act($dataset, fn () => $this->workflow->restore($this->admin($request), $dataset), 'Dataset restored as a draft. Submit it for review before it can be approved again.');
+        try {
+            $this->workflow->restore($this->admin($request), $dataset);
+        } catch (ChatbotDatasetWorkflowException $e) {
+            $this->abortIfForbidden($e);
+
+            return redirect()->route('chatbot-datasets.show', ['datasetId' => $dataset->id])->with('error', $e->getMessage());
+        }
+
+        return $this->publishedResponse($dataset->fresh(), 'Dataset restored');
+    }
+
+    /** Try again to put the live text into the chatbot's index (for example after the AI model was unreachable). */
+    public function reindex(Request $request, string $datasetId): RedirectResponse
+    {
+        $this->admin($request);
+
+        return $this->publishedResponse($this->find($datasetId), 'Re-index requested');
     }
 
     public function destroy(Request $request, string $datasetId): RedirectResponse
@@ -186,7 +233,7 @@ class ChatbotDatasetController extends Controller
     /**
      * @param  array<string, mixed>|null  $detail
      */
-    private function formView(?ChatbotDataset $dataset, ?array $detail): View
+    private function formView(?ChatbotDataset $dataset, ?array $detail, array $defaults = []): View
     {
         $editing = $dataset !== null;
         $current = $dataset?->currentVersion();
@@ -196,13 +243,30 @@ class ChatbotDatasetController extends Controller
             'pageTitle' => 'Chatbot Datasets',
             'pageSubtitle' => $editing ? 'Change or replace a dataset.' : 'Upload a dataset.',
             'dataset' => $detail,
-            'values' => $editing ? ['title' => $current?->title, 'source_reference' => $current?->source_reference] : [],
+            'values' => $editing ? ['title' => $current?->title, 'source_reference' => $current?->source_reference] : $defaults,
             'languages' => ChatbotDatasetCatalog::LANGUAGES,
             'categories' => ChatbotDatasetCatalog::CATEGORIES,
             'maxKilobytes' => $this->inspector->maxKilobytes(),
             'action' => $editing ? route('chatbot-datasets.update', ['datasetId' => $dataset->id]) : route('chatbot-datasets.store'),
             'method' => $editing ? 'PUT' : 'POST',
         ]);
+    }
+
+    /** Send the live text to the chatbot and tell the Admin what happened. */
+    private function publishedResponse(ChatbotDataset $dataset, string $lead): RedirectResponse
+    {
+        $result = $this->publisher->publish($dataset);
+        $show = redirect()->route('chatbot-datasets.show', ['datasetId' => $dataset->id]);
+
+        if ($result['indexed']) {
+            return $show->with('status', $lead.' and sent to the chatbot health information. It is live now.');
+        }
+
+        if ($result['written']) {
+            return $show->with('status', $lead.'. '.$result['error'].' Press Re-index to try again.');
+        }
+
+        return $show->with('error', $lead.', but '.lcfirst((string) $result['error']));
     }
 
     private function act(ChatbotDataset $dataset, Closure $action, string $status): RedirectResponse

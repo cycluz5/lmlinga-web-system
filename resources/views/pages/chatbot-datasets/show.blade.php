@@ -23,19 +23,36 @@
                         <span class="lml-term-status lml-term-status--revision">{{ $dataset['revision_label'] }}</span>
                     @endif
                     <span class="lml-language-management__muted">
-                        {{ $dataset['language_label'] }} · {{ $dataset['category_label'] }} · {{ $dataset['source_name'] }} ·
-                        Not used by the chatbot until dataset indexing is approved.
+                        {{ $dataset['language_label'] }} · {{ $dataset['category_label'] }} · {{ $dataset['source_name'] }}
+                        @if (! $dataset['review_required'])
+                            ·
+                            @if ($dataset['retired'])
+                                Removed from the chatbot health information.
+                            @elseif ($dataset['indexed'])
+                                <strong data-lml-dataset-indexed>In the chatbot health information (indexed).</strong>
+                            @elseif ($dataset['in_chatbot'])
+                                <strong data-lml-dataset-waiting>Saved for the chatbot, waiting to be indexed.</strong>
+                            @endif
+                        @else
+                            · Not used by the chatbot until dataset indexing is approved.
+                        @endif
                     </span>
                 </p>
             </div>
-            <a href="{{ route('chatbot-datasets.index') }}" class="btn btn-outline-secondary lml-focus-ring fw-medium">Back to datasets</a>
+            <a href="{{ route('chatbot-datasets.index', ['language' => $dataset['language']]) }}" class="btn btn-outline-secondary lml-focus-ring fw-medium">Back to datasets</a>
         </header>
 
         <section class="lml-language-management__actions" aria-label="Dataset actions">
             @if ($dataset['can_edit'])
                 <a href="{{ route('chatbot-datasets.edit', ['datasetId' => $dataset['id']]) }}" class="btn btn-outline-primary lml-focus-ring fw-medium">Change or replace file</a>
             @endif
-            @if ($dataset['can_submit'])
+            @if (! $dataset['review_required'] && ! $dataset['retired'] && $dataset['in_chatbot'] && ! $dataset['indexed'])
+                <form method="POST" action="{{ route('chatbot-datasets.reindex', ['datasetId' => $dataset['id']]) }}">
+                    @csrf
+                    <button type="submit" class="btn btn-primary lml-focus-ring fw-medium" data-lml-dataset-reindex>Re-index</button>
+                </form>
+            @endif
+            @if ($dataset['can_submit'] && $dataset['review_required'])
                 <form method="POST" action="{{ route('chatbot-datasets.submit', ['datasetId' => $dataset['id']]) }}">
                     @csrf
                     <button type="submit" class="btn btn-primary lml-focus-ring fw-medium">Submit for review</button>
@@ -50,7 +67,7 @@
             @if ($dataset['can_restore'])
                 <form method="POST" action="{{ route('chatbot-datasets.restore', ['datasetId' => $dataset['id']]) }}">
                     @csrf
-                    <button type="submit" class="btn btn-outline-primary lml-focus-ring fw-medium">Restore as draft</button>
+                    <button type="submit" class="btn btn-outline-primary lml-focus-ring fw-medium">{{ $dataset['review_required'] ? 'Restore as draft' : 'Restore and send to chatbot' }}</button>
                 </form>
             @endif
             @if ($dataset['can_delete'])
