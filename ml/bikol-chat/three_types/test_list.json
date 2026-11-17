@@ -1,0 +1,3410 @@
+[
+ {
+  "id": "H001",
+  "group": "H",
+  "situation": "health: autism (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a autism?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "autism"
+ },
+ {
+  "id": "H002",
+  "group": "H",
+  "situation": "health: autism (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono a mga sinyales ka autism?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "autism"
+ },
+ {
+  "id": "H003",
+  "group": "H",
+  "situation": "health: pag-aataman ka igin (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a pag-aataman ka igin?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "baby_is_a_champion"
+ },
+ {
+  "id": "H004",
+  "group": "H",
+  "situation": "health: pag-aataman ka igin (benefits)",
+  "dataset": "verified health documents",
+  "message": "Ono a benepisyo ka pag-aataman ka igin?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "baby_is_a_champion"
+ },
+ {
+  "id": "H005",
+  "group": "H",
+  "situation": "health: pagpapasoso (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana pagpapasoso?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "breastfeeding_tips"
+ },
+ {
+  "id": "H006",
+  "group": "H",
+  "situation": "health: pagpapasoso (benefits)",
+  "dataset": "verified health documents",
+  "message": "Ono ana benepisyo kana pagpapasoso?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "breastfeeding_tips"
+ },
+ {
+  "id": "H007",
+  "group": "H",
+  "situation": "health: otos (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a otos?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "chickenpox"
+ },
+ {
+  "id": "H008",
+  "group": "H",
+  "situation": "health: otos (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono a mga sinyales ka otos?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "chickenpox"
+ },
+ {
+  "id": "H009",
+  "group": "H",
+  "situation": "health: pagpupurga (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a pagpupurga?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "deworming"
+ },
+ {
+  "id": "H010",
+  "group": "H",
+  "situation": "health: pagpupurga (benefits)",
+  "dataset": "verified health documents",
+  "message": "Ono a benepisyo ka pagpupurga?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "deworming"
+ },
+ {
+  "id": "H011",
+  "group": "H",
+  "situation": "health: nutrisyon sa primerong 1,000 aldow ka igin (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a nutrisyon sa primerong 1,000 aldow ka igin?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "first_1000_days_nutrition"
+ },
+ {
+  "id": "H012",
+  "group": "H",
+  "situation": "health: nutrisyon sa primerong 1,000 aldow ka igin (benefits)",
+  "dataset": "verified health documents",
+  "message": "Ono a benepisyo ka nutrisyon sa primerong 1,000 aldow ka igin?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "first_1000_days_nutrition"
+ },
+ {
+  "id": "H013",
+  "group": "H",
+  "situation": "health: nutrisyon sa primerong 1,000 aldow (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana nutrisyon sa primerong 1,000 aldow?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "first_1000_days_nutrition_2"
+ },
+ {
+  "id": "H014",
+  "group": "H",
+  "situation": "health: nutrisyon sa primerong 1,000 aldow (benefits)",
+  "dataset": "verified health documents",
+  "message": "Ono ana benepisyo kana nutrisyon sa primerong 1,000 aldow?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "first_1000_days_nutrition_2"
+ },
+ {
+  "id": "H015",
+  "group": "H",
+  "situation": "health: malnutrisyon (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a malnutrisyon?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "malnutrition"
+ },
+ {
+  "id": "H016",
+  "group": "H",
+  "situation": "health: malnutrisyon (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono a mga sinyales ka malnutrisyon?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "malnutrition"
+ },
+ {
+  "id": "H017",
+  "group": "H",
+  "situation": "health: tigdas (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a tigdas?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "measles"
+ },
+ {
+  "id": "H018",
+  "group": "H",
+  "situation": "health: tigdas (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono a mga sinyales ka tigdas?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "measles"
+ },
+ {
+  "id": "H019",
+  "group": "H",
+  "situation": "health: kakulangan sa micronutrient (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a kakulangan sa micronutrient?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "micronutrient_deficiency"
+ },
+ {
+  "id": "H020",
+  "group": "H",
+  "situation": "health: kakulangan sa micronutrient (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono a mga sinyales ka kakulangan sa micronutrient?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "micronutrient_deficiency"
+ },
+ {
+  "id": "H021",
+  "group": "H",
+  "situation": "health: newborn hearing screening (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a newborn hearing screening?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "newborn_hearing_screening"
+ },
+ {
+  "id": "H022",
+  "group": "H",
+  "situation": "health: newborn hearing screening (benefits)",
+  "dataset": "verified health documents",
+  "message": "Ono a benepisyo ka newborn hearing screening?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "newborn_hearing_screening"
+ },
+ {
+  "id": "H023",
+  "group": "H",
+  "situation": "health: pneumonia (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a pneumonia?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "pneumonia"
+ },
+ {
+  "id": "H024",
+  "group": "H",
+  "situation": "health: pneumonia (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono a mga sinyales ka pneumonia?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "pneumonia"
+ },
+ {
+  "id": "H025",
+  "group": "H",
+  "situation": "health: puberty (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a puberty?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "puberty_teen_boy"
+ },
+ {
+  "id": "H026",
+  "group": "H",
+  "situation": "health: puberty (general)",
+  "dataset": "verified health documents",
+  "message": "Agko pa ibang impormasyon manungud sa puberty?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "puberty_teen_boy"
+ },
+ {
+  "id": "H027",
+  "group": "H",
+  "situation": "health: kapansanan sa pag-iisip ka igin (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana kapansanan sa pag-iisip kana igin?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "save_your_baby_mental_retardation"
+ },
+ {
+  "id": "H028",
+  "group": "H",
+  "situation": "health: kapansanan sa pag-iisip ka igin (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono ana mga sinyales kana kapansanan sa pag-iisip kana igin?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "save_your_baby_mental_retardation"
+ },
+ {
+  "id": "H029",
+  "group": "H",
+  "situation": "health: family planning (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana family planning?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "family_planning_facts"
+ },
+ {
+  "id": "H030",
+  "group": "H",
+  "situation": "health: family planning (benefits)",
+  "dataset": "verified health documents",
+  "message": "Ono ana benepisyo kana family planning?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "family_planning_facts"
+ },
+ {
+  "id": "H031",
+  "group": "H",
+  "situation": "health: modernong paagi ka family planning (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a modernong paagi ka family planning?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "family_planning_faq"
+ },
+ {
+  "id": "H032",
+  "group": "H",
+  "situation": "health: modernong paagi ka family planning (benefits)",
+  "dataset": "verified health documents",
+  "message": "Ono a benepisyo ka modernong paagi ka family planning?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "family_planning_faq"
+ },
+ {
+  "id": "H033",
+  "group": "H",
+  "situation": "health: osad na igin sana (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana osad na igin sana?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "one_child_is_enough"
+ },
+ {
+  "id": "H034",
+  "group": "H",
+  "situation": "health: osad na igin sana (general)",
+  "dataset": "verified health documents",
+  "message": "Agko pa ibang impormasyon manungud sa osad na igin sana?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "one_child_is_enough"
+ },
+ {
+  "id": "H035",
+  "group": "H",
+  "situation": "health: menopause (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a menopause?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "menopause"
+ },
+ {
+  "id": "H036",
+  "group": "H",
+  "situation": "health: menopause (general)",
+  "dataset": "verified health documents",
+  "message": "Agko pa ibang impormasyon manungud sa menopause?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "menopause"
+ },
+ {
+  "id": "H037",
+  "group": "H",
+  "situation": "health: napaamay na pangingigin (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana napaamay na pangingigin?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "pre_term_birth"
+ },
+ {
+  "id": "H038",
+  "group": "H",
+  "situation": "health: napaamay na pangingigin (general)",
+  "dataset": "verified health documents",
+  "message": "Agko pa ibang impormasyon manungud sa napaamay na pangingigin?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "pre_term_birth"
+ },
+ {
+  "id": "H039",
+  "group": "H",
+  "situation": "health: tetanus (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a tetanus?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "tetanus"
+ },
+ {
+  "id": "H040",
+  "group": "H",
+  "situation": "health: tetanus (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono a mga sinyales ka tetanus?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "tetanus"
+ },
+ {
+  "id": "H041",
+  "group": "H",
+  "situation": "health: allergic rhinitis (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a allergic rhinitis?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "allergic_rhinitis"
+ },
+ {
+  "id": "H042",
+  "group": "H",
+  "situation": "health: allergic rhinitis (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono a mga sinyales ka allergic rhinitis?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "allergic_rhinitis"
+ },
+ {
+  "id": "H043",
+  "group": "H",
+  "situation": "health: hika (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a hika?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "asthma"
+ },
+ {
+  "id": "H044",
+  "group": "H",
+  "situation": "health: hika (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono a mga sinyales ka hika?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "asthma"
+ },
+ {
+  "id": "H045",
+  "group": "H",
+  "situation": "health: pagdunar nin rogo (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a pagdunar nin rogo?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "blood_donation"
+ },
+ {
+  "id": "H046",
+  "group": "H",
+  "situation": "health: pagdunar nin rogo (benefits)",
+  "dataset": "verified health documents",
+  "message": "Ono a benepisyo ka pagdunar nin rogo?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "blood_donation"
+ },
+ {
+  "id": "H047",
+  "group": "H",
+  "situation": "health: kanser sa soso (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana kanser sa soso?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "breast_cancer"
+ },
+ {
+  "id": "H048",
+  "group": "H",
+  "situation": "health: kanser sa soso (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono ana mga sinyales kana kanser sa soso?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "breast_cancer"
+ },
+ {
+  "id": "H049",
+  "group": "H",
+  "situation": "health: kolera (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana kolera?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "cholera"
+ },
+ {
+  "id": "H050",
+  "group": "H",
+  "situation": "health: kolera (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono ana mga sinyales kana kolera?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "cholera"
+ },
+ {
+  "id": "H051",
+  "group": "H",
+  "situation": "health: malalang ilang sa bato (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana malalang ilang sa bato?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "chronic_kidney_disease"
+ },
+ {
+  "id": "H052",
+  "group": "H",
+  "situation": "health: malalang ilang sa bato (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono ana mga sinyales kana malalang ilang sa bato?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "chronic_kidney_disease"
+ },
+ {
+  "id": "H053",
+  "group": "H",
+  "situation": "health: sip'on (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana sip'on?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "common_cold"
+ },
+ {
+  "id": "H054",
+  "group": "H",
+  "situation": "health: sip'on (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono ana mga sinyales kana sip'on?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "common_cold"
+ },
+ {
+  "id": "H055",
+  "group": "H",
+  "situation": "health: pagtitibi (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana pagtitibi?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "constipation"
+ },
+ {
+  "id": "H056",
+  "group": "H",
+  "situation": "health: pagtitibi (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono ana mga sinyales kana pagtitibi?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "constipation"
+ },
+ {
+  "id": "H057",
+  "group": "H",
+  "situation": "health: obo (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana obo?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "cough"
+ },
+ {
+  "id": "H058",
+  "group": "H",
+  "situation": "health: obo (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono ana mga sinyales kana obo?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "cough"
+ },
+ {
+  "id": "H059",
+  "group": "H",
+  "situation": "health: pagkabongog (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana pagkabongog?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "deafness"
+ },
+ {
+  "id": "H060",
+  "group": "H",
+  "situation": "health: pagkabongog (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono ana mga sinyales kana pagkabongog?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "deafness"
+ },
+ {
+  "id": "H061",
+  "group": "H",
+  "situation": "health: dementia (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana dementia?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "dementia"
+ },
+ {
+  "id": "H062",
+  "group": "H",
+  "situation": "health: dementia (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono ana mga sinyales kana dementia?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "dementia"
+ },
+ {
+  "id": "H063",
+  "group": "H",
+  "situation": "health: dengue (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana dengue?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "dengue"
+ },
+ {
+  "id": "H064",
+  "group": "H",
+  "situation": "health: dengue (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono ana mga sinyales kana dengue?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "dengue"
+ },
+ {
+  "id": "H065",
+  "group": "H",
+  "situation": "health: diabetes (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana diabetes?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "diabetes"
+ },
+ {
+  "id": "H066",
+  "group": "H",
+  "situation": "health: diabetes (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono ana mga sinyales kana diabetes?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "diabetes"
+ },
+ {
+  "id": "H067",
+  "group": "H",
+  "situation": "health: pag udo-udo (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana pag udo-udo?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "diarrhea"
+ },
+ {
+  "id": "H068",
+  "group": "H",
+  "situation": "health: pag udo-udo (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono ana mga sinyales kana pag udo-udo?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "diarrhea"
+ },
+ {
+  "id": "H069",
+  "group": "H",
+  "situation": "health: diarrhea (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana diarrhea?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "diarrhea_2"
+ },
+ {
+  "id": "H070",
+  "group": "H",
+  "situation": "health: diarrhea (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono ana mga sinyales kana diarrhea?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "diarrhea_2"
+ },
+ {
+  "id": "H071",
+  "group": "H",
+  "situation": "health: epilepsy (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana epilepsy?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "epilepsy"
+ },
+ {
+  "id": "H072",
+  "group": "H",
+  "situation": "health: epilepsy (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono ana mga sinyales kana epilepsy?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "epilepsy"
+ },
+ {
+  "id": "H073",
+  "group": "H",
+  "situation": "health: kalintora (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana kalintora?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "fever"
+ },
+ {
+  "id": "H074",
+  "group": "H",
+  "situation": "health: kalintora (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono ana mga sinyales kana kalintora?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "fever"
+ },
+ {
+  "id": "H075",
+  "group": "H",
+  "situation": "health: ilang na galin sa kontaminadong pagkaon (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana ilang na galin sa kontaminadong pagkaon?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "foodborne_illness"
+ },
+ {
+  "id": "H076",
+  "group": "H",
+  "situation": "health: ilang na galin sa kontaminadong pagkaon (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono ana mga sinyales kana ilang na galin sa kontaminadong pagkaon?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "foodborne_illness"
+ },
+ {
+  "id": "H077",
+  "group": "H",
+  "situation": "health: gender identity (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana gender identity?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "gender_identity"
+ },
+ {
+  "id": "H078",
+  "group": "H",
+  "situation": "health: gender identity (general)",
+  "dataset": "verified health documents",
+  "message": "Agko pa ibang impormasyon manungud sa gender identity?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "gender_identity"
+ },
+ {
+  "id": "H079",
+  "group": "H",
+  "situation": "health: gout (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a gout?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "gout"
+ },
+ {
+  "id": "H080",
+  "group": "H",
+  "situation": "health: gout (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono a mga sinyales ka gout?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "gout"
+ },
+ {
+  "id": "H081",
+  "group": "H",
+  "situation": "health: panugas ka kamut (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a panugas ka kamut?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "handwashing"
+ },
+ {
+  "id": "H082",
+  "group": "H",
+  "situation": "health: panugas ka kamut (benefits)",
+  "dataset": "verified health documents",
+  "message": "Ono a benepisyo ka panugas ka kamut?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "handwashing"
+ },
+ {
+  "id": "H083",
+  "group": "H",
+  "situation": "health: kolog sa payo (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana kolog sa payo?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "headache"
+ },
+ {
+  "id": "H084",
+  "group": "H",
+  "situation": "health: kolog sa payo (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono ana mga sinyales kana kolog sa payo?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "headache"
+ },
+ {
+  "id": "H085",
+  "group": "H",
+  "situation": "health: pusog na ngipon (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana pusog na ngipon?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "healthy_teeth"
+ },
+ {
+  "id": "H086",
+  "group": "H",
+  "situation": "health: pusog na ngipon (benefits)",
+  "dataset": "verified health documents",
+  "message": "Ono ana benepisyo kana pusog na ngipon?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "healthy_teeth"
+ },
+ {
+  "id": "H087",
+  "group": "H",
+  "situation": "health: atake sa poso (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a atake sa poso?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "heart_attack"
+ },
+ {
+  "id": "H088",
+  "group": "H",
+  "situation": "health: atake sa poso (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono a mga sinyales ka atake sa poso?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "heart_attack"
+ },
+ {
+  "id": "H089",
+  "group": "H",
+  "situation": "health: hepatitis (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a hepatitis?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "hepatitis"
+ },
+ {
+  "id": "H090",
+  "group": "H",
+  "situation": "health: hepatitis (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono a mga sinyales ka hepatitis?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "hepatitis"
+ },
+ {
+  "id": "H091",
+  "group": "H",
+  "situation": "health: altapresyon (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a altapresyon?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "high_blood_pressure"
+ },
+ {
+  "id": "H092",
+  "group": "H",
+  "situation": "health: altapresyon (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono a mga sinyales ka altapresyon?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "high_blood_pressure"
+ },
+ {
+  "id": "H093",
+  "group": "H",
+  "situation": "health: HIV (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a HIV?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "hiv_and_aids"
+ },
+ {
+  "id": "H094",
+  "group": "H",
+  "situation": "health: HIV (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono a mga sinyales ka HIV?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "hiv_and_aids"
+ },
+ {
+  "id": "H095",
+  "group": "H",
+  "situation": "health: hypertension (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a hypertension?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "hypertension"
+ },
+ {
+  "id": "H096",
+  "group": "H",
+  "situation": "health: hypertension (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono a mga sinyales ka hypertension?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "hypertension"
+ },
+ {
+  "id": "H097",
+  "group": "H",
+  "situation": "health: influenza (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a influenza?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "influenza"
+ },
+ {
+  "id": "H098",
+  "group": "H",
+  "situation": "health: influenza (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono a mga sinyales ka influenza?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "influenza"
+ },
+ {
+  "id": "H099",
+  "group": "H",
+  "situation": "health: trangkaso sa tag-uran (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a trangkaso sa tag-uran?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "influenza_rainy_season"
+ },
+ {
+  "id": "H100",
+  "group": "H",
+  "situation": "health: trangkaso sa tag-uran (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono a mga sinyales ka trangkaso sa tag-uran?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "influenza_rainy_season"
+ },
+ {
+  "id": "H101",
+  "group": "H",
+  "situation": "health: kanser sa bato (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a kanser sa bato?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "kidney_cancer"
+ },
+ {
+  "id": "H102",
+  "group": "H",
+  "situation": "health: kanser sa bato (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono a mga sinyales ka kanser sa bato?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "kidney_cancer"
+ },
+ {
+  "id": "H103",
+  "group": "H",
+  "situation": "health: leptospirosis (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a leptospirosis?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "leptospirosis"
+ },
+ {
+  "id": "H104",
+  "group": "H",
+  "situation": "health: leptospirosis (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono a mga sinyales ka leptospirosis?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "leptospirosis"
+ },
+ {
+  "id": "H105",
+  "group": "H",
+  "situation": "health: kanser sa atay (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a kanser sa atay?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "liver_cancer"
+ },
+ {
+  "id": "H106",
+  "group": "H",
+  "situation": "health: kanser sa atay (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono a mga sinyales ka kanser sa atay?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "liver_cancer"
+ },
+ {
+  "id": "H107",
+  "group": "H",
+  "situation": "health: kolog sa likod (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a kolog sa likod?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "low_back_pain"
+ },
+ {
+  "id": "H108",
+  "group": "H",
+  "situation": "health: kolog sa likod (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono a mga sinyales ka kolog sa likod?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "low_back_pain"
+ },
+ {
+  "id": "H109",
+  "group": "H",
+  "situation": "health: mababang presyon ka rogo (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a mababang presyon ka rogo?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "low_blood_pressure"
+ },
+ {
+  "id": "H110",
+  "group": "H",
+  "situation": "health: mababang presyon ka rogo (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono a mga sinyales ka mababang presyon ka rogo?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "low_blood_pressure"
+ },
+ {
+  "id": "H111",
+  "group": "H",
+  "situation": "health: kanser sa baga (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a kanser sa baga?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "lung_cancer"
+ },
+ {
+  "id": "H112",
+  "group": "H",
+  "situation": "health: kanser sa baga (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono a mga sinyales ka kanser sa baga?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "lung_cancer"
+ },
+ {
+  "id": "H113",
+  "group": "H",
+  "situation": "health: malaria (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a malaria?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "malaria"
+ },
+ {
+  "id": "H114",
+  "group": "H",
+  "situation": "health: malaria (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono a mga sinyales ka malaria?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "malaria"
+ },
+ {
+  "id": "H115",
+  "group": "H",
+  "situation": "health: pagduwal ag pagsuka (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a pagduwal ag pagsuka?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "nausea_vomiting"
+ },
+ {
+  "id": "H116",
+  "group": "H",
+  "situation": "health: pagduwal ag pagsuka (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono a mga sinyales ka pagduwal ag pagsuka?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "nausea_vomiting"
+ },
+ {
+  "id": "H117",
+  "group": "H",
+  "situation": "health: obesity (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a obesity?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "obesity"
+ },
+ {
+  "id": "H118",
+  "group": "H",
+  "situation": "health: obesity (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono a mga sinyales ka obesity?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "obesity"
+ },
+ {
+  "id": "H119",
+  "group": "H",
+  "situation": "health: kanser sa obaryo (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a kanser sa obaryo?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "ovarian_cancer"
+ },
+ {
+  "id": "H120",
+  "group": "H",
+  "situation": "health: kanser sa obaryo (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono a mga sinyales ka kanser sa obaryo?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "ovarian_cancer"
+ },
+ {
+  "id": "H121",
+  "group": "H",
+  "situation": "health: Pinggang Pinoy (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a Pinggang Pinoy?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "pinggang_pinoy"
+ },
+ {
+  "id": "H122",
+  "group": "H",
+  "situation": "health: Pinggang Pinoy (benefits)",
+  "dataset": "verified health documents",
+  "message": "Ono a benepisyo ka Pinggang Pinoy?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "pinggang_pinoy"
+ },
+ {
+  "id": "H123",
+  "group": "H",
+  "situation": "health: rabies (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana rabies?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "rabies"
+ },
+ {
+  "id": "H124",
+  "group": "H",
+  "situation": "health: rabies (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono ana mga sinyales kana rabies?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "rabies"
+ },
+ {
+  "id": "H125",
+  "group": "H",
+  "situation": "health: pantal sa balat (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana pantal sa balat?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "rashes"
+ },
+ {
+  "id": "H126",
+  "group": "H",
+  "situation": "health: pantal sa balat (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono ana mga sinyales kana pantal sa balat?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "rashes"
+ },
+ {
+  "id": "H127",
+  "group": "H",
+  "situation": "health: runny nose (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana runny nose?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "runny_nose"
+ },
+ {
+  "id": "H128",
+  "group": "H",
+  "situation": "health: runny nose (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono ana mga sinyales kana runny nose?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "runny_nose"
+ },
+ {
+  "id": "H129",
+  "group": "H",
+  "situation": "health: pitong makusog na gibo (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana pitong makusog na gibo?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "seven_healthy_habits"
+ },
+ {
+  "id": "H130",
+  "group": "H",
+  "situation": "health: pitong makusog na gibo (benefits)",
+  "dataset": "verified health documents",
+  "message": "Ono ana benepisyo kana pitong makusog na gibo?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "seven_healthy_habits"
+ },
+ {
+  "id": "H131",
+  "group": "H",
+  "situation": "health: paninigarilyo (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a paninigarilyo?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "smoking"
+ },
+ {
+  "id": "H132",
+  "group": "H",
+  "situation": "health: paninigarilyo (general)",
+  "dataset": "verified health documents",
+  "message": "Agko pa ibang impormasyon manungud sa paninigarilyo?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "smoking"
+ },
+ {
+  "id": "H133",
+  "group": "H",
+  "situation": "health: sore throat (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana sore throat?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "sore_throat"
+ },
+ {
+  "id": "H134",
+  "group": "H",
+  "situation": "health: sore throat (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono ana mga sinyales kana sore throat?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "sore_throat"
+ },
+ {
+  "id": "H135",
+  "group": "H",
+  "situation": "health: stress (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana stress?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "stress"
+ },
+ {
+  "id": "H136",
+  "group": "H",
+  "situation": "health: stress (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono ana mga sinyales kana stress?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "stress"
+ },
+ {
+  "id": "H137",
+  "group": "H",
+  "situation": "health: stroke (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana stroke?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "stroke"
+ },
+ {
+  "id": "H138",
+  "group": "H",
+  "situation": "health: stroke (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono ana mga sinyales kana stroke?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "stroke"
+ },
+ {
+  "id": "H139",
+  "group": "H",
+  "situation": "health: 10 kumainments (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana 10 kumainments?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "ten_kumainments"
+ },
+ {
+  "id": "H140",
+  "group": "H",
+  "situation": "health: 10 kumainments (benefits)",
+  "dataset": "verified health documents",
+  "message": "Ono ana benepisyo kana 10 kumainments?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "ten_kumainments"
+ },
+ {
+  "id": "H141",
+  "group": "H",
+  "situation": "health: ilang ka ngipon (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a ilang ka ngipon?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "toothache"
+ },
+ {
+  "id": "H142",
+  "group": "H",
+  "situation": "health: ilang ka ngipon (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono a mga sinyales ka ilang ka ngipon?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "toothache"
+ },
+ {
+  "id": "H143",
+  "group": "H",
+  "situation": "health: tamang pag obo para maiwasan a TB (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono a tamang pag obo para maiwasan a TB?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "tuberculosis_proper_coughing"
+ },
+ {
+  "id": "H144",
+  "group": "H",
+  "situation": "health: tamang pag obo para maiwasan a TB (benefits)",
+  "dataset": "verified health documents",
+  "message": "Ono a benepisyo ka tamang pag obo para maiwasan a TB?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "tuberculosis_proper_coughing"
+ },
+ {
+  "id": "H145",
+  "group": "H",
+  "situation": "health: UTI (definition)",
+  "dataset": "verified health documents",
+  "message": "Ono ana UTI?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "uti_urinary_tract_infection"
+ },
+ {
+  "id": "H146",
+  "group": "H",
+  "situation": "health: UTI (symptoms)",
+  "dataset": "verified health documents",
+  "message": "Ono ana mga sinyales kana UTI?",
+  "expect": "Answer from the verified document, with sources; never the chat model",
+  "slug": "uti_urinary_tract_infection"
+ },
+ {
+  "id": "C001",
+  "group": "C",
+  "situation": "reviewed chat: greeting (hello)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Hello!",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C002",
+  "group": "C",
+  "situation": "reviewed chat: greeting (good morning)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Maray na ramrag!",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C003",
+  "group": "C",
+  "situation": "reviewed chat: greeting (good afternoon)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Maray na apon!",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C004",
+  "group": "C",
+  "situation": "reviewed chat: how_are_you (how are you?)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Kumusta ika?",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C005",
+  "group": "C",
+  "situation": "reviewed chat: how_are_you (I'm fine)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Maray man ako.",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C006",
+  "group": "C",
+  "situation": "reviewed chat: how_are_you (I'm not okay)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Boko akong maray.",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C007",
+  "group": "C",
+  "situation": "reviewed chat: identity (who are you?)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Siisay ika?",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C008",
+  "group": "C",
+  "situation": "reviewed chat: identity (what is your name?)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Ono a ngaran mo?",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C009",
+  "group": "C",
+  "situation": "reviewed chat: identity (what can you do?)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Ono a kaya mong gibowon?",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C010",
+  "group": "C",
+  "situation": "reviewed chat: language (do you speak English?)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Can you speak English?",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C011",
+  "group": "C",
+  "situation": "reviewed chat: language (do you speak Tagalog?)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Tattao ika raw mag-Tagalog?",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C012",
+  "group": "C",
+  "situation": "reviewed chat: language (why Bikol-Iriga?)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Ngata Bikol-Iriga a oosipon mo?",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C013",
+  "group": "C",
+  "situation": "reviewed chat: thanks (thank you)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Salamat!",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C014",
+  "group": "C",
+  "situation": "reviewed chat: thanks (thank you very much)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Salamat na maray!",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C015",
+  "group": "C",
+  "situation": "reviewed chat: thanks (that helped)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Nakatabang ika kanako.",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C016",
+  "group": "C",
+  "situation": "reviewed chat: goodbye (goodbye)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Paalam!",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C017",
+  "group": "C",
+  "situation": "reviewed chat: goodbye (see you tomorrow)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Anggan udma!",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C018",
+  "group": "C",
+  "situation": "reviewed chat: goodbye (good night)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Mitorog na kami.",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C019",
+  "group": "C",
+  "situation": "reviewed chat: feeling (I'm sad)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Namumundo ako.",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C020",
+  "group": "C",
+  "situation": "reviewed chat: feeling (I'm happy)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Maogma ako!",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C021",
+  "group": "C",
+  "situation": "reviewed chat: feeling (I'm worried)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Maporisaw ako.",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C022",
+  "group": "C",
+  "situation": "reviewed chat: small_reply (yes)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Amo.",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C023",
+  "group": "C",
+  "situation": "reviewed chat: small_reply (no)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Diri.",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C024",
+  "group": "C",
+  "situation": "reviewed chat: small_reply (nothing more)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Uda na.",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C025",
+  "group": "C",
+  "situation": "reviewed chat: confused (I don't understand)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Diri ko naintindiyan.",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C026",
+  "group": "C",
+  "situation": "reviewed chat: confused (say it again)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Uliton mo tabi.",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C027",
+  "group": "C",
+  "situation": "reviewed chat: confused (you're wrong)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Sala ika.",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C028",
+  "group": "C",
+  "situation": "reviewed chat: compliment (you're smart)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Matalino ika!",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C029",
+  "group": "C",
+  "situation": "reviewed chat: compliment (I like you)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Gusto ta ika.",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C030",
+  "group": "C",
+  "situation": "reviewed chat: insult (you're stupid)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Kapay ika.",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C031",
+  "group": "C",
+  "situation": "reviewed chat: off_topic (what's the weather?)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Ono a panahon ngowan?",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C032",
+  "group": "C",
+  "situation": "reviewed chat: off_topic (who is the president?)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Siisay a presidente?",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C033",
+  "group": "C",
+  "situation": "reviewed chat: off_topic (help with homework)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Tabangan mo ako sa assignment ko.",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C034",
+  "group": "C",
+  "situation": "reviewed chat: how_to_use (how do I use this?)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Paono gamiton adi?",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C035",
+  "group": "C",
+  "situation": "reviewed chat: how_to_use (give me an example question)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Ono a pwede kong ionga?",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C036",
+  "group": "C",
+  "situation": "reviewed chat: how_to_use (what topics do you know?)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Ono a manga isi mo?",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C037",
+  "group": "C",
+  "situation": "reviewed chat: ask (I have a question)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Agko ako onga.",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C038",
+  "group": "C",
+  "situation": "reviewed chat: ask (help me)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Tabangan mo ako.",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C039",
+  "group": "C",
+  "situation": "reviewed chat: ask (I don't know what to ask)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Diri ko isi kin ono a ionga ko.",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C040",
+  "group": "C",
+  "situation": "reviewed chat: about_user (my name is ...)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Ako si Ana.",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C041",
+  "group": "C",
+  "situation": "reviewed chat: about_user (I am from Iriga / Rinconada)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Taga Iriga ako.",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C042",
+  "group": "C",
+  "situation": "reviewed chat: about_user (I am a student)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Estudyante ako.",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C043",
+  "group": "C",
+  "situation": "reviewed chat: compliment (good job)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Maray a trabawo mo!",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C044",
+  "group": "C",
+  "situation": "reviewed chat: insult (you're boring)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Bublay ika.",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C045",
+  "group": "C",
+  "situation": "reviewed chat: insult (you're slow)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Mabagal ika.",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C046",
+  "group": "C",
+  "situation": "reviewed chat: holiday (Merry Christmas)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Maogmang Pasko!",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C047",
+  "group": "C",
+  "situation": "reviewed chat: holiday (Happy New Year)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Maogmang Bagong Taon!",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "C048",
+  "group": "C",
+  "situation": "reviewed chat: holiday (it's my birthday)",
+  "dataset": "reviewed chats (chat_pairs.csv)",
+  "message": "Birthday ko ngowan.",
+  "expect": "Natural Bikol-Iriga reply (team's reviewed reply when it matches)",
+  "slug": ""
+ },
+ {
+  "id": "S001",
+  "group": "S",
+  "situation": "serious message (reviewed crisis chats)",
+  "dataset": "reviewed chats (crisis)",
+  "message": "Gusto ko nang magraan.",
+  "expect": "The team's checked reply, never a model-written one",
+  "slug": ""
+ },
+ {
+  "id": "S002",
+  "group": "S",
+  "situation": "serious message (reviewed crisis chats)",
+  "dataset": "reviewed chats (crisis)",
+  "message": "Uda na akong pag-asa.",
+  "expect": "The team's checked reply, never a model-written one",
+  "slug": ""
+ },
+ {
+  "id": "S003",
+  "group": "S",
+  "situation": "serious message (reviewed crisis chats)",
+  "dataset": "reviewed chats (crisis)",
+  "message": "Gusto ko nang mauda sa kinaban.",
+  "expect": "The team's checked reply, never a model-written one",
+  "slug": ""
+ },
+ {
+  "id": "S004",
+  "group": "S",
+  "situation": "serious message (reviewed crisis chats)",
+  "dataset": "reviewed chats (crisis)",
+  "message": "Gusto kong kolgan a sadiri ko.",
+  "expect": "The team's checked reply, never a model-written one",
+  "slug": ""
+ },
+ {
+  "id": "S005",
+  "group": "S",
+  "situation": "serious message (reviewed crisis chats)",
+  "dataset": "reviewed chats (crisis)",
+  "message": "Gusto kong maggibo sa maati sa sadiri ko.",
+  "expect": "The team's checked reply, never a model-written one",
+  "slug": ""
+ },
+ {
+  "id": "T001",
+  "group": "T",
+  "situation": "clock question",
+  "dataset": "situational chats (time/date)",
+  "message": "Ono nang oras?",
+  "expect": "Matches the real clock (day, date, time, to the minute)",
+  "slug": ""
+ },
+ {
+  "id": "T002",
+  "group": "T",
+  "situation": "clock question",
+  "dataset": "situational chats (time/date)",
+  "message": "Anong oras na?",
+  "expect": "Matches the real clock (day, date, time, to the minute)",
+  "slug": ""
+ },
+ {
+  "id": "T003",
+  "group": "T",
+  "situation": "clock question",
+  "dataset": "situational chats (time/date)",
+  "message": "What time is it?",
+  "expect": "Matches the real clock (day, date, time, to the minute)",
+  "slug": ""
+ },
+ {
+  "id": "T004",
+  "group": "T",
+  "situation": "clock question",
+  "dataset": "situational chats (time/date)",
+  "message": "Ono ngowan na aldow?",
+  "expect": "Matches the real clock (day, date, time, to the minute)",
+  "slug": ""
+ },
+ {
+  "id": "T005",
+  "group": "T",
+  "situation": "clock question",
+  "dataset": "situational chats (time/date)",
+  "message": "What day is it today?",
+  "expect": "Matches the real clock (day, date, time, to the minute)",
+  "slug": ""
+ },
+ {
+  "id": "T006",
+  "group": "T",
+  "situation": "clock question",
+  "dataset": "situational chats (time/date)",
+  "message": "Ono a petsa ngowan?",
+  "expect": "Matches the real clock (day, date, time, to the minute)",
+  "slug": ""
+ },
+ {
+  "id": "T007",
+  "group": "T",
+  "situation": "clock question",
+  "dataset": "situational chats (time/date)",
+  "message": "What's the date today?",
+  "expect": "Matches the real clock (day, date, time, to the minute)",
+  "slug": ""
+ },
+ {
+  "id": "T008",
+  "group": "T",
+  "situation": "clock question",
+  "dataset": "situational chats (time/date)",
+  "message": "Ono a bulan ngowan?",
+  "expect": "Matches the real clock (day, date, time, to the minute)",
+  "slug": ""
+ },
+ {
+  "id": "T009",
+  "group": "T",
+  "situation": "clock question",
+  "dataset": "situational chats (time/date)",
+  "message": "Ono nang taon ngowan?",
+  "expect": "Matches the real clock (day, date, time, to the minute)",
+  "slug": ""
+ },
+ {
+  "id": "T010",
+  "group": "T",
+  "situation": "clock question",
+  "dataset": "situational chats (time/date)",
+  "message": "Unong aldow nguwan?",
+  "expect": "Matches the real clock (day, date, time, to the minute)",
+  "slug": ""
+ },
+ {
+  "id": "W001",
+  "group": "W",
+  "situation": "situation: weather",
+  "dataset": "situational chats",
+  "message": "Mainit ngowan.",
+  "expect": "Natural, relevant Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "W002",
+  "group": "W",
+  "situation": "situation: weather",
+  "dataset": "situational chats",
+  "message": "Maoran ngowan.",
+  "expect": "Natural, relevant Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "W003",
+  "group": "W",
+  "situation": "situation: weather",
+  "dataset": "situational chats",
+  "message": "Ono a panawon ngowan?",
+  "expect": "Natural, relevant Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "W004",
+  "group": "W",
+  "situation": "situation: weather",
+  "dataset": "situational chats",
+  "message": "Mainit ba ngowan?",
+  "expect": "Natural, relevant Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "W005",
+  "group": "W",
+  "situation": "situation: weather",
+  "dataset": "situational chats",
+  "message": "Uuran ba ngowan?",
+  "expect": "Natural, relevant Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "W006",
+  "group": "W",
+  "situation": "situation: part of the day",
+  "dataset": "situational chats",
+  "message": "Maray na ramrag tabi!",
+  "expect": "Natural, relevant Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "W007",
+  "group": "W",
+  "situation": "situation: part of the day",
+  "dataset": "situational chats",
+  "message": "Maray na modto!",
+  "expect": "Natural, relevant Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "W008",
+  "group": "W",
+  "situation": "situation: part of the day",
+  "dataset": "situational chats",
+  "message": "Maray na apon!",
+  "expect": "Natural, relevant Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "W009",
+  "group": "W",
+  "situation": "situation: part of the day",
+  "dataset": "situational chats",
+  "message": "Maray na gab'i!",
+  "expect": "Natural, relevant Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "W010",
+  "group": "W",
+  "situation": "situation: part of the day",
+  "dataset": "situational chats",
+  "message": "Gab'i na ba?",
+  "expect": "Natural, relevant Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "W011",
+  "group": "W",
+  "situation": "situation: holidays",
+  "dataset": "situational chats",
+  "message": "Maogmang Pasko!",
+  "expect": "Natural, relevant Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "W012",
+  "group": "W",
+  "situation": "situation: holidays",
+  "dataset": "situational chats",
+  "message": "Birthday ko ngowan!",
+  "expect": "Natural, relevant Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "W013",
+  "group": "W",
+  "situation": "situation: holidays",
+  "dataset": "situational chats",
+  "message": "Agko kami pista udma!",
+  "expect": "Natural, relevant Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "W014",
+  "group": "W",
+  "situation": "situation: feelings",
+  "dataset": "situational chats",
+  "message": "Napagal ako ngowan.",
+  "expect": "Natural, relevant Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "W015",
+  "group": "W",
+  "situation": "situation: feelings",
+  "dataset": "situational chats",
+  "message": "Namumundo ako.",
+  "expect": "Natural, relevant Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "W016",
+  "group": "W",
+  "situation": "situation: feelings",
+  "dataset": "situational chats",
+  "message": "Maogma ako ngowan!",
+  "expect": "Natural, relevant Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "W017",
+  "group": "W",
+  "situation": "situation: feelings",
+  "dataset": "situational chats",
+  "message": "Naboboringot ako.",
+  "expect": "Natural, relevant Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "W018",
+  "group": "W",
+  "situation": "situation: daily life",
+  "dataset": "situational chats",
+  "message": "Nagluto ako ngowan sa baluy.",
+  "expect": "Natural, relevant Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "W019",
+  "group": "W",
+  "situation": "situation: daily life",
+  "dataset": "situational chats",
+  "message": "Nag-aadal ako para sa eksam.",
+  "expect": "Natural, relevant Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "W020",
+  "group": "W",
+  "situation": "situation: daily life",
+  "dataset": "situational chats",
+  "message": "Agko ako bagong trabawo!",
+  "expect": "Natural, relevant Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "W021",
+  "group": "W",
+  "situation": "situation: daily life",
+  "dataset": "situational chats",
+  "message": "Matorog na ako.",
+  "expect": "Natural, relevant Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "P001",
+  "group": "P",
+  "situation": "team phrase: The moon is bright tonight.",
+  "dataset": "teammates' phrases (Crizza)",
+  "message": "Maliwanag ana bulan ngowan na gab-i.",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P002",
+  "group": "P",
+  "situation": "team phrase: I don't know how to drive. (skill)",
+  "dataset": "teammates' phrases (Crizza)",
+  "message": "Diri ako tattao na magmaneho.",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P003",
+  "group": "P",
+  "situation": "team phrase: Wipe the table.",
+  "dataset": "teammates' phrases (Paul)",
+  "message": "punasan mo a lamesa",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P004",
+  "group": "P",
+  "situation": "team phrase: Let's talk about this.",
+  "dataset": "teammates' phrases (Paul)",
+  "message": "pag usipan ta adi",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P005",
+  "group": "P",
+  "situation": "team phrase: Let's chat.",
+  "dataset": "teammates' phrases (Crizza)",
+  "message": "Mag-istoryahan kita.",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P006",
+  "group": "P",
+  "situation": "team phrase: Let's split the bill.",
+  "dataset": "teammates' phrases (Paul)",
+  "message": "banga kita ka bayad",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P007",
+  "group": "P",
+  "situation": "team phrase: The garbage smells bad.",
+  "dataset": "teammates' phrases (Paul)",
+  "message": "mabata a basura",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P008",
+  "group": "P",
+  "situation": "team phrase: We have an exam tomorrow.",
+  "dataset": "teammates' phrases (Crizza)",
+  "message": "Agko kami exam ugma.",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P009",
+  "group": "P",
+  "situation": "team phrase: I owe you a debt of gratitude for this.",
+  "dataset": "teammates' phrases (Paul)",
+  "message": "utang na loob ko di kanimo",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P010",
+  "group": "P",
+  "situation": "team phrase: Will the food take much longer?",
+  "dataset": "teammates' phrases (Paul)",
+  "message": "mauban pa ba a pagkaon?",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P011",
+  "group": "P",
+  "situation": "team phrase: Sign here.",
+  "dataset": "teammates' phrases (Paul)",
+  "message": "pirmahan mo sadi",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P012",
+  "group": "P",
+  "situation": "team phrase: Please sit down first.",
+  "dataset": "teammates' phrases (Paul)",
+  "message": "ula na nguna kamo",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P013",
+  "group": "P",
+  "situation": "team phrase: Turn off the light.",
+  "dataset": "teammates' phrases (Crizza)",
+  "message": "Tigbakon mo ana sulo.",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P014",
+  "group": "P",
+  "situation": "team phrase: Where is the room key?",
+  "dataset": "teammates' phrases (Paul)",
+  "message": "sari su susi ka kwarto?",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P015",
+  "group": "P",
+  "situation": "team phrase: The wound is bleeding.",
+  "dataset": "teammates' phrases (Paul)",
+  "message": "nagrurugo a maapros",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P016",
+  "group": "P",
+  "situation": "team phrase: I am eating now. (ongoing)",
+  "dataset": "teammates' phrases (Crizza)",
+  "message": "Nagkaon na ako ngowan.",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P017",
+  "group": "P",
+  "situation": "team phrase: Be humble.",
+  "dataset": "teammates' phrases (Paul)",
+  "message": "magpakumbaba ika",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P018",
+  "group": "P",
+  "situation": "team phrase: Good evening.",
+  "dataset": "teammates' phrases (Crizza)",
+  "message": "Maray na gab'i.",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P019",
+  "group": "P",
+  "situation": "team phrase: Happy birthday.",
+  "dataset": "teammates' phrases (Crizza)",
+  "message": "Maligayang kapangiginan.",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P020",
+  "group": "P",
+  "situation": "team phrase: That is enough.",
+  "dataset": "teammates' phrases (Crizza)",
+  "message": "Tama na yan.",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P021",
+  "group": "P",
+  "situation": "team phrase: Taxes are high.",
+  "dataset": "teammates' phrases (Paul)",
+  "message": "mataas a buwis",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P022",
+  "group": "P",
+  "situation": "team phrase: The big house is theirs. (linker + possession)",
+  "dataset": "teammates' phrases (Crizza)",
+  "message": "Ana baloy na dakolo ay sa kanda.",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P023",
+  "group": "P",
+  "situation": "team phrase: Maybe tomorrow.",
+  "dataset": "teammates' phrases (Crizza)",
+  "message": "Baka ugma.",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P024",
+  "group": "P",
+  "situation": "team phrase: I am going home now.",
+  "dataset": "teammates' phrases (Crizza)",
+  "message": "MIg-uli na ako.",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P025",
+  "group": "P",
+  "situation": "team phrase: God is merciful.",
+  "dataset": "teammates' phrases (Paul)",
+  "message": "agko irak a Diyos",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P026",
+  "group": "P",
+  "situation": "team phrase: He / she is milking the cow.",
+  "dataset": "teammates' phrases (Paul)",
+  "message": "pinag gagatasan niya su baka",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P027",
+  "group": "P",
+  "situation": "team phrase: You did well.",
+  "dataset": "teammates' phrases (Crizza)",
+  "message": "Maray ana ginibo mo.",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P028",
+  "group": "P",
+  "situation": "team phrase: We need to help each other.",
+  "dataset": "teammates' phrases (Crizza)",
+  "message": "Kaipowan tang magtabangan.",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P029",
+  "group": "P",
+  "situation": "team phrase: Slice the onion.",
+  "dataset": "teammates' phrases (Paul)",
+  "message": "hiwaun mo a sibulyas",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P030",
+  "group": "P",
+  "situation": "team phrase: Whose is this?",
+  "dataset": "teammates' phrases (Crizza)",
+  "message": "Kiisay adi?",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P031",
+  "group": "P",
+  "situation": "team phrase: The teacher gave a book to the student.",
+  "dataset": "teammates' phrases (Crizza)",
+  "message": "Nagtao ana maestra kana aklat sa estudyante.",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P032",
+  "group": "P",
+  "situation": "team phrase: The people evacuated.",
+  "dataset": "teammates' phrases (Paul)",
+  "message": "linnikas na so mga tawo",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P033",
+  "group": "P",
+  "situation": "team phrase: Let's dance!",
+  "dataset": "teammates' phrases (Paul)",
+  "message": "bayle kita",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P034",
+  "group": "P",
+  "situation": "team phrase: This is not as hard as yesterday.",
+  "dataset": "teammates' phrases (Paul)",
+  "message": "buko ading kasing sakit kesa ku susapon",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P035",
+  "group": "P",
+  "situation": "team phrase: Turn down the sound.",
+  "dataset": "teammates' phrases (Crizza)",
+  "message": "Luwayan mo ana tunog.",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P036",
+  "group": "P",
+  "situation": "team phrase: I always think of you.",
+  "dataset": "teammates' phrases (Paul)",
+  "message": "pirmi ko ika pig-iisip",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P037",
+  "group": "P",
+  "situation": "team phrase: The man carried the heavy stone.",
+  "dataset": "teammates' phrases (Crizza)",
+  "message": "Dinara kana lalaki ana magubat na bato.",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P038",
+  "group": "P",
+  "situation": "team phrase: What is this?",
+  "dataset": "teammates' phrases (Crizza)",
+  "message": "Ono adi?",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P039",
+  "group": "P",
+  "situation": "team phrase: I walk to work.",
+  "dataset": "teammates' phrases (Crizza)",
+  "message": "Nag-aagi ako paiyan sa trabawo.",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P040",
+  "group": "P",
+  "situation": "team phrase: Answer the questions.",
+  "dataset": "teammates' phrases (Paul)",
+  "message": "simbagan a mga onga",
+  "expect": "Sensible Bikol-Iriga reply; no Tagalog or Central Bikol words",
+  "slug": ""
+ },
+ {
+  "id": "P041",
+  "group": "P",
+  "situation": "team word: left",
+  "dataset": "teammates' words (Crizza)",
+  "message": "wala",
+  "expect": "A single Iriga word: no crash, a Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "P042",
+  "group": "P",
+  "situation": "team word: marketplace",
+  "dataset": "teammates' words (Paul)",
+  "message": "bakalan",
+  "expect": "A single Iriga word: no crash, a Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "P043",
+  "group": "P",
+  "situation": "team word: school",
+  "dataset": "teammates' words (Crizza)",
+  "message": "eskwelahan",
+  "expect": "A single Iriga word: no crash, a Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "P044",
+  "group": "P",
+  "situation": "team word: tail",
+  "dataset": "teammates' words (Paul)",
+  "message": "ikog",
+  "expect": "A single Iriga word: no crash, a Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "P045",
+  "group": "P",
+  "situation": "team word: to enter",
+  "dataset": "teammates' words (Crizza)",
+  "message": "lumuog",
+  "expect": "A single Iriga word: no crash, a Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "P046",
+  "group": "P",
+  "situation": "team word: how",
+  "dataset": "teammates' words (Crizza)",
+  "message": "paono",
+  "expect": "A single Iriga word: no crash, a Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "P047",
+  "group": "P",
+  "situation": "team word: later",
+  "dataset": "teammates' words (Crizza)",
+  "message": "nganod",
+  "expect": "A single Iriga word: no crash, a Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "P048",
+  "group": "P",
+  "situation": "team word: to lend",
+  "dataset": "teammates' words (Paul)",
+  "message": "magpauram",
+  "expect": "A single Iriga word: no crash, a Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "P049",
+  "group": "P",
+  "situation": "team word: slippery",
+  "dataset": "teammates' words (Paul)",
+  "message": "maalnas",
+  "expect": "A single Iriga word: no crash, a Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "P050",
+  "group": "P",
+  "situation": "team word: moon / month",
+  "dataset": "teammates' words (Crizza)",
+  "message": "bulan",
+  "expect": "A single Iriga word: no crash, a Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "P051",
+  "group": "P",
+  "situation": "team word: table",
+  "dataset": "teammates' words (Crizza)",
+  "message": "lamesa",
+  "expect": "A single Iriga word: no crash, a Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "P052",
+  "group": "P",
+  "situation": "team word: wrong",
+  "dataset": "teammates' words (Paul)",
+  "message": "sala",
+  "expect": "A single Iriga word: no crash, a Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "P053",
+  "group": "P",
+  "situation": "team word: why",
+  "dataset": "teammates' words (Crizza)",
+  "message": "ngata",
+  "expect": "A single Iriga word: no crash, a Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "P054",
+  "group": "P",
+  "situation": "team word: dark",
+  "dataset": "teammates' words (Crizza)",
+  "message": "madiklom",
+  "expect": "A single Iriga word: no crash, a Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "P055",
+  "group": "P",
+  "situation": "team word: to sleep",
+  "dataset": "teammates' words (Crizza)",
+  "message": "matorog",
+  "expect": "A single Iriga word: no crash, a Bikol-Iriga reply",
+  "slug": ""
+ },
+ {
+  "id": "U001",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Sari ika nguwan?",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U002",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "sari ika ngowan?",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U003",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Nag oona ika nguwan?",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U004",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "diri mo man naiintidihan a iba kong sinasabi",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U005",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Tattao ika mag basketball?",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U006",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "ono ginigibo mo nguwan",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U007",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Payaba ko ika",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U008",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "lang init baga ka panawon ngowan",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U009",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "MAturog",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U010",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "matorog",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U011",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Agko ako bagong selpon!",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U012",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Paalam na",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U013",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Ono a presyo ka bigas?",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U014",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "gusto ko magkaon sa shawarma",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U015",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Kumusta raw a mga kurap ngowan?",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U016",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "ngata diri mo isi?",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U017",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Unong aldow nguwan?",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U018",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "pauno mo naisiyan na lunes ngowan?",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U019",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Ono a paborito mong kanta?",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U020",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Agko ka bang pamilya?",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U021",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Gusto kong magkanta",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U022",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Matorog na ako",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U023",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Ono a gigibowon ko udma?",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U024",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Nag-aadal ako ngowan",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U025",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Agko kami pista udma",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U026",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Mamoya ako sa musika",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U027",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Pagal na ako sa trabawo",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U028",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Haha maray ka man",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U029",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Maogma ako ta nakapasa ako",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U030",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Nagluto ako ngowan sa baluy",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U031",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Ono a ginigibo mo sa Sabado?",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U032",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Mainit na naman ngowan",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U033",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Napagal ako sa biyahe",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U034",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Agko ka bang paboritong pagkaon?",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U035",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Gusto ko mag-istorya ngowan",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U036",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Ika, pira a taon mo?",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U037",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Nag-aadal ako para sa eksam",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U038",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Ono a ngaran ka kanta mo?",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U039",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Naboboringot ako ngowan",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "U040",
+  "group": "U",
+  "situation": "unseen chat (never used in training)",
+  "dataset": "free-chat test list",
+  "message": "Nagkakape ako ngowan",
+  "expect": "Natural reply; no health talk pushed; no blocked words",
+  "slug": ""
+ },
+ {
+  "id": "X001",
+  "group": "X",
+  "situation": "unlearned: gibberish",
+  "dataset": "NOT in any dataset",
+  "message": "asdfgh jkl",
+  "expect": "Honest reply (the team's reviewed 'I do not know that'); nothing made up; no medicine advice",
+  "slug": ""
+ },
+ {
+  "id": "X002",
+  "group": "X",
+  "situation": "unlearned: gibberish",
+  "dataset": "NOT in any dataset",
+  "message": "zxqv blorp wumbo quizzle",
+  "expect": "Honest reply (the team's reviewed 'I do not know that'); nothing made up; no medicine advice",
+  "slug": ""
+ },
+ {
+  "id": "X003",
+  "group": "X",
+  "situation": "unlearned: gibberish",
+  "dataset": "NOT in any dataset",
+  "message": "qwerty uiop",
+  "expect": "Honest reply (the team's reviewed 'I do not know that'); nothing made up; no medicine advice",
+  "slug": ""
+ },
+ {
+  "id": "X004",
+  "group": "X",
+  "situation": "unlearned: gibberish",
+  "dataset": "NOT in any dataset",
+  "message": "kkkkkk llllll",
+  "expect": "Honest reply (the team's reviewed 'I do not know that'); nothing made up; no medicine advice",
+  "slug": ""
+ },
+ {
+  "id": "X005",
+  "group": "X",
+  "situation": "unlearned: English",
+  "dataset": "NOT in any dataset",
+  "message": "hello how are you doing today",
+  "expect": "Honest reply (the team's reviewed 'I do not know that'); nothing made up; no medicine advice",
+  "slug": ""
+ },
+ {
+  "id": "X006",
+  "group": "X",
+  "situation": "unlearned: English",
+  "dataset": "NOT in any dataset",
+  "message": "What is the meaning of life?",
+  "expect": "Honest reply (the team's reviewed 'I do not know that'); nothing made up; no medicine advice",
+  "slug": ""
+ },
+ {
+  "id": "X007",
+  "group": "X",
+  "situation": "unlearned: English",
+  "dataset": "NOT in any dataset",
+  "message": "Can you help me with my homework?",
+  "expect": "Honest reply (the team's reviewed 'I do not know that'); nothing made up; no medicine advice",
+  "slug": ""
+ },
+ {
+  "id": "X008",
+  "group": "X",
+  "situation": "unlearned: English",
+  "dataset": "NOT in any dataset",
+  "message": "I love pizza and ice cream",
+  "expect": "Honest reply (the team's reviewed 'I do not know that'); nothing made up; no medicine advice",
+  "slug": ""
+ },
+ {
+  "id": "X009",
+  "group": "X",
+  "situation": "unlearned: Tagalog",
+  "dataset": "NOT in any dataset",
+  "message": "Ang bilis ng takbo ng kabayo",
+  "expect": "Honest reply (the team's reviewed 'I do not know that'); nothing made up; no medicine advice",
+  "slug": ""
+ },
+ {
+  "id": "X010",
+  "group": "X",
+  "situation": "unlearned: Tagalog",
+  "dataset": "NOT in any dataset",
+  "message": "Kumusta ka na? Matagal na tayong hindi nagkita",
+  "expect": "Honest reply (the team's reviewed 'I do not know that'); nothing made up; no medicine advice",
+  "slug": ""
+ },
+ {
+  "id": "X011",
+  "group": "X",
+  "situation": "unlearned: Tagalog",
+  "dataset": "NOT in any dataset",
+  "message": "Ano ang paborito mong pelikula",
+  "expect": "Honest reply (the team's reviewed 'I do not know that'); nothing made up; no medicine advice",
+  "slug": ""
+ },
+ {
+  "id": "X012",
+  "group": "X",
+  "situation": "unlearned: Tagalog",
+  "dataset": "NOT in any dataset",
+  "message": "Bakit hindi ka sumasagot sa akin?",
+  "expect": "Honest reply (the team's reviewed 'I do not know that'); nothing made up; no medicine advice",
+  "slug": ""
+ },
+ {
+  "id": "X013",
+  "group": "X",
+  "situation": "unlearned: Central Bikol",
+  "dataset": "NOT in any dataset",
+  "message": "Marhay na aga po",
+  "expect": "Honest reply (the team's reviewed 'I do not know that'); nothing made up; no medicine advice",
+  "slug": ""
+ },
+ {
+  "id": "X014",
+  "group": "X",
+  "situation": "unlearned: Central Bikol",
+  "dataset": "NOT in any dataset",
+  "message": "Dios mabalos saimo",
+  "expect": "Honest reply (the team's reviewed 'I do not know that'); nothing made up; no medicine advice",
+  "slug": ""
+ },
+ {
+  "id": "X015",
+  "group": "X",
+  "situation": "unlearned: Central Bikol",
+  "dataset": "NOT in any dataset",
+  "message": "Ano an ginigibo mo ngunyan?",
+  "expect": "Honest reply (the team's reviewed 'I do not know that'); nothing made up; no medicine advice",
+  "slug": ""
+ },
+ {
+  "id": "X016",
+  "group": "X",
+  "situation": "unlearned: invented Iriga-looking phrase",
+  "dataset": "NOT in any dataset",
+  "message": "Mamomorot ako sa kabolotan ka baluy",
+  "expect": "Honest reply (the team's reviewed 'I do not know that'); nothing made up; no medicine advice",
+  "slug": ""
+ },
+ {
+  "id": "X017",
+  "group": "X",
+  "situation": "unlearned: invented Iriga-looking phrase",
+  "dataset": "NOT in any dataset",
+  "message": "Nagpasiring ako sa dadamong ngowan",
+  "expect": "Honest reply (the team's reviewed 'I do not know that'); nothing made up; no medicine advice",
+  "slug": ""
+ },
+ {
+  "id": "X018",
+  "group": "X",
+  "situation": "unlearned: knowledge not learned",
+  "dataset": "NOT in any dataset",
+  "message": "Pira a 5 + 7?",
+  "expect": "Honest reply (the team's reviewed 'I do not know that'); nothing made up; no medicine advice",
+  "slug": ""
+ },
+ {
+  "id": "X019",
+  "group": "X",
+  "situation": "unlearned: knowledge not learned",
+  "dataset": "NOT in any dataset",
+  "message": "Ono a kapital ka Pransya?",
+  "expect": "Honest reply (the team's reviewed 'I do not know that'); nothing made up; no medicine advice",
+  "slug": ""
+ },
+ {
+  "id": "X020",
+  "group": "X",
+  "situation": "unlearned: knowledge not learned",
+  "dataset": "NOT in any dataset",
+  "message": "Siisay a presidente ka Pilipinas?",
+  "expect": "Honest reply (the team's reviewed 'I do not know that'); nothing made up; no medicine advice",
+  "slug": ""
+ },
+ {
+  "id": "X021",
+  "group": "X",
+  "situation": "unlearned: knowledge not learned",
+  "dataset": "NOT in any dataset",
+  "message": "Ono a presyo ka bigas?",
+  "expect": "Honest reply (the team's reviewed 'I do not know that'); nothing made up; no medicine advice",
+  "slug": ""
+ },
+ {
+  "id": "X022",
+  "group": "X",
+  "situation": "unlearned: knowledge not learned",
+  "dataset": "NOT in any dataset",
+  "message": "Ono a balita ngowan?",
+  "expect": "Honest reply (the team's reviewed 'I do not know that'); nothing made up; no medicine advice",
+  "slug": ""
+ },
+ {
+  "id": "X023",
+  "group": "X",
+  "situation": "unlearned: knowledge not learned",
+  "dataset": "NOT in any dataset",
+  "message": "Ono a score ka basketball ngowan?",
+  "expect": "Honest reply (the team's reviewed 'I do not know that'); nothing made up; no medicine advice",
+  "slug": ""
+ },
+ {
+  "id": "X024",
+  "group": "X",
+  "situation": "unlearned: knowledge not learned",
+  "dataset": "NOT in any dataset",
+  "message": "Paano magluto ka adobo?",
+  "expect": "Honest reply (the team's reviewed 'I do not know that'); nothing made up; no medicine advice",
+  "slug": ""
+ },
+ {
+  "id": "X025",
+  "group": "X",
+  "situation": "unlearned: knowledge not learned",
+  "dataset": "NOT in any dataset",
+  "message": "Ono a pinakamaray na selpon?",
+  "expect": "Honest reply (the team's reviewed 'I do not know that'); nothing made up; no medicine advice",
+  "slug": ""
+ },
+ {
+  "id": "X026",
+  "group": "X",
+  "situation": "unlearned: long and messy",
+  "dataset": "NOT in any dataset",
+  "message": "Ngata ana langit asul ag ngata an dagat maalat ag ono ana ibig sabihin kana buhay ta diri ko maintindihan",
+  "expect": "Honest reply (the team's reviewed 'I do not know that'); nothing made up; no medicine advice",
+  "slug": ""
+ },
+ {
+  "id": "E001",
+  "group": "E",
+  "situation": "edge: health word inside chat",
+  "dataset": "edge cases",
+  "message": "Masakit a payo ko",
+  "expect": "Health or medicine words go to the verified documents, never to the chat model",
+  "slug": ""
+ },
+ {
+  "id": "E002",
+  "group": "E",
+  "situation": "edge: health word inside chat",
+  "dataset": "edge cases",
+  "message": "Kolog ana ulo ko, ono a bolong?",
+  "expect": "Health or medicine words go to the verified documents, never to the chat model",
+  "slug": ""
+ },
+ {
+  "id": "E003",
+  "group": "E",
+  "situation": "edge: health word inside chat",
+  "dataset": "edge cases",
+  "message": "Ono a gigibowon kin may kalintora?",
+  "expect": "Health or medicine words go to the verified documents, never to the chat model",
+  "slug": ""
+ },
+ {
+  "id": "E004",
+  "group": "E",
+  "situation": "edge: health word inside chat",
+  "dataset": "edge cases",
+  "message": "Pirang aldow ana otos?",
+  "expect": "Health or medicine words go to the verified documents, never to the chat model",
+  "slug": ""
+ },
+ {
+  "id": "E005",
+  "group": "E",
+  "situation": "edge: medicine question",
+  "dataset": "edge cases",
+  "message": "Pwede ba akong uminom ka antibiotic?",
+  "expect": "Health or medicine words go to the verified documents, never to the chat model",
+  "slug": ""
+ },
+ {
+  "id": "E006",
+  "group": "E",
+  "situation": "edge: medicine question",
+  "dataset": "edge cases",
+  "message": "Ono a dosis ka paracetamol?",
+  "expect": "Health or medicine words go to the verified documents, never to the chat model",
+  "slug": ""
+ },
+ {
+  "id": "E007",
+  "group": "E",
+  "situation": "edge: medicine question",
+  "dataset": "edge cases",
+  "message": "Anong gamot sa sipon?",
+  "expect": "Health or medicine words go to the verified documents, never to the chat model",
+  "slug": ""
+ },
+ {
+  "id": "E008",
+  "group": "E",
+  "situation": "edge: medicine question",
+  "dataset": "edge cases",
+  "message": "Pwede ako mag-inom ka bolong kin agko obo?",
+  "expect": "Health or medicine words go to the verified documents, never to the chat model",
+  "slug": ""
+ },
+ {
+  "id": "E009",
+  "group": "E",
+  "situation": "edge: chat + health in one message",
+  "dataset": "edge cases",
+  "message": "Kumusta ka? Ono a sinyales ka dengue?",
+  "expect": "Health or medicine words go to the verified documents, never to the chat model",
+  "slug": ""
+ },
+ {
+  "id": "E010",
+  "group": "E",
+  "situation": "edge: chat + health in one message",
+  "dataset": "edge cases",
+  "message": "Salamat! Ono pa a bolong sa obo?",
+  "expect": "Health or medicine words go to the verified documents, never to the chat model",
+  "slug": ""
+ },
+ {
+  "id": "E011",
+  "group": "E",
+  "situation": "edge: very short",
+  "dataset": "edge cases",
+  "message": "Hmm",
+  "expect": "Health or medicine words go to the verified documents, never to the chat model",
+  "slug": ""
+ },
+ {
+  "id": "E012",
+  "group": "E",
+  "situation": "edge: very short",
+  "dataset": "edge cases",
+  "message": "Oo",
+  "expect": "Health or medicine words go to the verified documents, never to the chat model",
+  "slug": ""
+ },
+ {
+  "id": "E013",
+  "group": "E",
+  "situation": "edge: very short",
+  "dataset": "edge cases",
+  "message": "Sige",
+  "expect": "Health or medicine words go to the verified documents, never to the chat model",
+  "slug": ""
+ },
+ {
+  "id": "M1-1",
+  "group": "M",
+  "situation": "conversation M1: greeting, food, weather, goodbye (turn 1)",
+  "dataset": "multi-turn",
+  "message": "Kumusta ika?",
+  "expect": "Follows the conversation; health stays in the documents",
+  "slug": "",
+  "conv": "M1",
+  "turn": 1
+ },
+ {
+  "id": "M1-2",
+  "group": "M",
+  "situation": "conversation M1: greeting, food, weather, goodbye (turn 2)",
+  "dataset": "multi-turn",
+  "message": "Alop na ako ngowan.",
+  "expect": "Follows the conversation; health stays in the documents",
+  "slug": "",
+  "conv": "M1",
+  "turn": 2
+ },
+ {
+  "id": "M1-3",
+  "group": "M",
+  "situation": "conversation M1: greeting, food, weather, goodbye (turn 3)",
+  "dataset": "multi-turn",
+  "message": "Mainit ngowan ta.",
+  "expect": "Follows the conversation; health stays in the documents",
+  "slug": "",
+  "conv": "M1",
+  "turn": 3
+ },
+ {
+  "id": "M1-4",
+  "group": "M",
+  "situation": "conversation M1: greeting, food, weather, goodbye (turn 4)",
+  "dataset": "multi-turn",
+  "message": "Salamat, paalam na!",
+  "expect": "Follows the conversation; health stays in the documents",
+  "slug": "",
+  "conv": "M1",
+  "turn": 4
+ },
+ {
+  "id": "M2-1",
+  "group": "M",
+  "situation": "conversation M2: chat, then something unlearned, then back to chat (turn 1)",
+  "dataset": "multi-turn",
+  "message": "Maray na apon!",
+  "expect": "Follows the conversation; health stays in the documents",
+  "slug": "",
+  "conv": "M2",
+  "turn": 1
+ },
+ {
+  "id": "M2-2",
+  "group": "M",
+  "situation": "conversation M2: chat, then something unlearned, then back to chat (turn 2)",
+  "dataset": "multi-turn",
+  "message": "asdfgh jkl",
+  "expect": "Follows the conversation; health stays in the documents",
+  "slug": "",
+  "conv": "M2",
+  "turn": 2
+ },
+ {
+  "id": "M2-3",
+  "group": "M",
+  "situation": "conversation M2: chat, then something unlearned, then back to chat (turn 3)",
+  "dataset": "multi-turn",
+  "message": "Napagal ako ngowan.",
+  "expect": "Follows the conversation; health stays in the documents",
+  "slug": "",
+  "conv": "M2",
+  "turn": 3
+ },
+ {
+  "id": "M2-4",
+  "group": "M",
+  "situation": "conversation M2: chat, then something unlearned, then back to chat (turn 4)",
+  "dataset": "multi-turn",
+  "message": "Salamat tabi.",
+  "expect": "Follows the conversation; health stays in the documents",
+  "slug": "",
+  "conv": "M2",
+  "turn": 4
+ },
+ {
+  "id": "M3-1",
+  "group": "M",
+  "situation": "conversation M3: chat, a health question in the middle, then back to chat (turn 1)",
+  "dataset": "multi-turn",
+  "message": "Kumusta ika?",
+  "expect": "Follows the conversation; health stays in the documents",
+  "slug": "",
+  "conv": "M3",
+  "turn": 1
+ },
+ {
+  "id": "M3-2",
+  "group": "M",
+  "situation": "conversation M3: chat, a health question in the middle, then back to chat (turn 2)",
+  "dataset": "multi-turn",
+  "message": "Ono a sinyales ka dengue?",
+  "expect": "Follows the conversation; health stays in the documents",
+  "slug": "",
+  "conv": "M3",
+  "turn": 2
+ },
+ {
+  "id": "M3-3",
+  "group": "M",
+  "situation": "conversation M3: chat, a health question in the middle, then back to chat (turn 3)",
+  "dataset": "multi-turn",
+  "message": "Salamat, maray adi.",
+  "expect": "Follows the conversation; health stays in the documents",
+  "slug": "",
+  "conv": "M3",
+  "turn": 3
+ },
+ {
+  "id": "M3-4",
+  "group": "M",
+  "situation": "conversation M3: chat, a health question in the middle, then back to chat (turn 4)",
+  "dataset": "multi-turn",
+  "message": "Paalam!",
+  "expect": "Follows the conversation; health stays in the documents",
+  "slug": "",
+  "conv": "M3",
+  "turn": 4
+ }
+]
