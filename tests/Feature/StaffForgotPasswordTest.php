@@ -106,7 +106,7 @@ class StaffForgotPasswordTest extends TestCase
         Notification::assertSentTo($bhw, ResetPassword::class);
     }
 
-    public function test_unknown_email_does_not_expose_account_existence(): void
+    public function test_unknown_email_is_reported_as_not_registered(): void
     {
         Notification::fake();
         $known = $this->createStaff(StaffRole::ADMIN, [
@@ -117,8 +117,8 @@ class StaffForgotPasswordTest extends TestCase
             ->post(route('password.email'), ['email' => 'nobody@example.test']);
 
         $unknown->assertRedirect(route('password.request'))
-            ->assertSessionHas('status', ForgotPasswordController::SENT_MESSAGE)
-            ->assertSessionDoesntHaveErrors();
+            ->assertSessionHasErrors(['email' => ForgotPasswordController::NOT_REGISTERED_MESSAGE])
+            ->assertSessionMissing('status');
         Notification::assertNothingSent();
         $this->assertDatabaseMissing('password_reset_tokens', [
             'email' => 'nobody@example.test',
@@ -391,5 +391,20 @@ class StaffForgotPasswordTest extends TestCase
             return str_contains($url, '/reset-password/'.$notification->token)
                 && str_contains($url, 'email=');
         });
+    }
+
+    public function test_inactive_account_is_told_a_link_cannot_be_sent_and_gets_no_email(): void
+    {
+        Notification::fake();
+        $inactive = $this->createStaff(StaffRole::BHW, [
+            'email' => 'inactive.reset@example.test',
+            'status' => \App\Support\StaffAccountStatus::INACTIVE,
+        ]);
+
+        $this->from(route('password.request'))
+            ->post(route('password.email'), ['email' => $inactive->email])
+            ->assertSessionHasErrors(['email' => ForgotPasswordController::NOT_ELIGIBLE_MESSAGE]);
+
+        Notification::assertNothingSent();
     }
 }
