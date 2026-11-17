@@ -477,6 +477,58 @@
     </div>
 </div>
 
+                {{-- FOD comparison: switch between the two chatbot approaches. --}}
+                <div
+                    class="lml-chatbot-main__modes"
+                    role="group"
+                    aria-label="Chatbot type"
+                    data-lml-modes
+                >
+                    <span class="lml-chatbot-main__modes-label">Chatbot:</span>
+                    <button
+                        type="button"
+                        class="lml-chatbot-main__mode-btn lml-focus-ring"
+                        data-lml-mode="context"
+                        aria-pressed="false"
+                        disabled
+                        title="Not available on the Cloud AI branch"
+                    >
+                        <i class="bi bi-journal-text" aria-hidden="true"></i>
+                        Context-based
+                    </button>
+                    <button
+                        type="button"
+                        class="lml-chatbot-main__mode-btn lml-focus-ring"
+                        data-lml-mode="ai"
+                        aria-pressed="false"
+                        disabled
+                        title="Not available on the Cloud AI branch"
+                    >
+                        <i class="bi bi-cpu" aria-hidden="true"></i>
+                        Local AI model
+                    </button>
+                    <button
+                        type="button"
+                        class="lml-chatbot-main__mode-btn lml-chatbot-main__mode-btn--active lml-focus-ring"
+                        data-lml-mode="cloud"
+                        aria-pressed="true"
+                        title="Cloud Gemma answers in Bikol; health info comes from the verified documents (needs internet)"
+                    >
+                        <i class="bi bi-cloud" aria-hidden="true"></i>
+                        Cloud AI (Gemma)
+                    </button>
+                </div>
+
+                <p
+                    class="lml-chatbot-main__mode-status"
+                    data-lml-mode-status
+                    role="status"
+                    aria-live="polite"
+                >
+                    <i class="bi bi-cloud" aria-hidden="true"></i>
+                    <span data-lml-mode-status-text>The chatbot is using Cloud AI (Gemma)</span>
+                </p>
+
                 <form
                     class="lml-chatbot-main__composer"
                     data-lml-composer

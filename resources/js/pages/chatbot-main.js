@@ -1698,6 +1698,7 @@ function appendMessage(role, text, points = [], title = null, language = null, i
                 other.classList.toggle('lml-chatbot-main__lang-btn--active', active);
                 other.setAttribute('aria-pressed', active ? 'true' : 'false');
             });
+            updateModeBarVisibility();
             if (langLive) {
                 langLive.textContent = `Language changed to ${btn.dataset.lmlLang}`;
             }
@@ -1731,10 +1732,81 @@ function syncLanguageButton(languageCode) {
         );
     });
 
+    updateModeBarVisibility();
+
     if (langLive) {
         langLive.textContent = `Language changed to ${targetLabel}`;
     }
 }
+
+/** Chatbot type: 'cloud' (default on this branch, Cloud AI Gemma), 'ai' or 'context'. */
+function getSelectedMode() {
+    const activeBtn = root.querySelector('[data-lml-mode].lml-chatbot-main__mode-btn--active');
+    const mode = activeBtn ? activeBtn.dataset.lmlMode : 'cloud';
+    return ['context', 'ai', 'cloud'].includes(mode) ? mode : 'cloud';
+}
+
+/**
+ * The chatbot-type buttons and their status line belong to Bikol – Iriga only.
+ * English and Tagalog keep working exactly as before, so the switch is hidden for them.
+ */
+function updateModeBarVisibility() {
+    const isBikol = getSelectedLanguageCode() === 'bcl';
+    root.querySelectorAll('[data-lml-modes], [data-lml-mode-status]').forEach((el) => {
+        el.hidden = !isBikol;
+    });
+}
+
+/** Text and icon shown under the buttons so the user knows which chatbot is answering. */
+const MODE_STATUS = {
+    ai: { text: 'The chatbot is using AI Local Model', icon: 'bi-cpu' },
+    context: { text: 'The chatbot is using Context-based (verified datasets only, no AI)', icon: 'bi-journal-text' },
+    cloud: { text: 'The chatbot is using Cloud AI (Gemma)', icon: 'bi-cloud' },
+};
+
+function setSelectedMode(mode) {
+    root.querySelectorAll('[data-lml-mode]').forEach((btn) => {
+        const active = btn.dataset.lmlMode === mode;
+        btn.classList.toggle('lml-chatbot-main__mode-btn--active', active);
+        btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+    });
+    const status = MODE_STATUS[mode];
+    const statusEl = root.querySelector('[data-lml-mode-status]');
+    if (status && statusEl) {
+        const textEl = statusEl.querySelector('[data-lml-mode-status-text]');
+        const iconEl = statusEl.querySelector('i');
+        if (textEl) {
+            textEl.textContent = status.text;
+        }
+        if (iconEl) {
+            iconEl.className = 'bi ' + status.icon;
+        }
+    }
+    try {
+        localStorage.setItem('lmlChatbotMode', mode);
+    } catch (e) {
+        // storage blocked: the switch still works for this page
+    }
+}
+
+root.querySelectorAll('[data-lml-mode]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+        setSelectedMode(btn.dataset.lmlMode);
+        if (langLive) {
+            langLive.textContent = `Chatbot changed to ${btn.textContent.trim()}`;
+        }
+    });
+});
+
+try {
+    const savedMode = localStorage.getItem('lmlChatbotMode');
+    // Only buttons that are not disabled can be used (a disabled mode saved earlier falls back to 'cloud').
+    const usable = Array.from(root.querySelectorAll('[data-lml-mode]:not([disabled])')).map((b) => b.dataset.lmlMode);
+    setSelectedMode(usable.includes(savedMode) ? savedMode : 'cloud');
+} catch (e) {
+    setSelectedMode('cloud');
+}
+updateModeBarVisibility();
 
 function getSelectedLanguageCode() {
     const activeBtn = root.querySelector('[data-lml-lang].lml-chatbot-main__lang-btn--active');
@@ -1786,6 +1858,7 @@ if (composer && composerInput) {
                 body: JSON.stringify({
                     question: text,
                     language: getSelectedLanguageCode(),
+                    mode: getSelectedMode(),
                     conversation_id: currentConversationId,
                 }),
             });
@@ -1802,7 +1875,22 @@ if (data.language) {
 }
 
 removeTypingIndicator();
-appendMessage('assistant', data.answer, data.points, data.title, data.language, data.is_conversation === true);
+const answerEl = appendMessage('assistant', data.answer, data.points, data.title, data.language, data.is_conversation === true);
+if (answerEl && data.mode) {
+    const bubble = answerEl.querySelector('.lml-chatbot-main__bubble');
+    const time = bubble ? bubble.querySelector('.lml-chatbot-main__bubble-time') : null;
+    if (bubble) {
+        const tag = document.createElement('span');
+        tag.className = 'lml-chatbot-main__mode-tag';
+        const modeNames = {
+            context: 'Context-based',
+            ai: 'Local AI model',
+            cloud: 'Cloud AI (Gemma)',
+        };
+        tag.textContent = 'Answered by: ' + (data.answered_by || modeNames[data.mode] || 'Context-based');
+        bubble.insertBefore(tag, time);
+    }
+}
             await refreshConversationList();
             markConversationRowActive(currentConversationId);
         } catch (error) {

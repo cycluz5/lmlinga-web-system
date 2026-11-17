@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Chatbot;
 use App\Http\Controllers\Controller;
 use App\Models\ChatbotConversation;
 use App\Models\ChatbotMessage;
+use App\Services\BikolCloudChatService;
+use App\Services\BikolSmallTalkService;
 use App\Services\RagService;
 use App\Services\TagalogConversationService;
 use App\Support\ResidentAuthenticator;
@@ -23,7 +25,18 @@ class ChatbotController extends Controller
             'language'        => 'nullable|string|in:en,tl,bcl',
             'category'        => 'nullable|string|in:child_care,family_planning,maternal_care,other',
             'conversation_id' => 'nullable|integer|exists:chatbot_conversations,conversation_id',
+            'mode'            => 'nullable|string|in:context,ai,cloud',
         ]);
+
+        // FOD comparison switch: "context" = verified datasets + rules,
+        // "ai" = locally trained Bikol-Iriga AI model, "cloud" = trained model
+        // + cloud Gemma explains the verified answer.
+        $mode = $request->input('mode', 'cloud');
+        // The switch is for Bikol only; English and Tagalog keep the original pipeline.
+        if ($request->input('language', 'bcl') !== 'bcl') {
+            $mode = 'context';
+        }
+        $rag->setAnswerMode($mode);
 
         // Pulled from the session by EnsureResidentChatbotAccount middleware —
         // never trust a client-supplied account_id for who is asking.
@@ -33,7 +46,7 @@ class ChatbotController extends Controller
         $category = $request->input('category');
         $question = $request->input('question');
 
-        return DB::transaction(function () use ($request, $rag, $language, $category, $question, $accountId) {
+        return DB::transaction(function () use ($request, $rag, $language, $category, $question, $accountId, $mode) {
 
             $conversation = $request->filled('conversation_id')
                 ? ChatbotConversation::where('account_id', $accountId)
@@ -88,12 +101,22 @@ class ChatbotController extends Controller
                 }
             }
 
-            $result = $rag->ask($question, $language, $category, $topicHint);
+            // Time/date questions (Bikol): Cloud mode -> cloud Gemma; otherwise the fine-tuned
+            // Bikol-Iriga model. Everything else is RAG.
+            $smallTalk = app(BikolSmallTalkService::class);
+            $result = null;
+            if ($language === 'bcl' && $smallTalk->seriousReply($question) === null) {
+                $result = $mode === 'cloud' && $smallTalk->isTimeOrDateQuestion($question)
+                    ? app(BikolCloudChatService::class)->result($question)
+                    : $smallTalk->timeDateResult($question);
+            }
+            $result ??= $rag->ask($question, $language, $category, $topicHint);
             $resolvedLanguage = $result['language'] ?? $language;
 
             Log::info('Chatbot response', [
     'question' => $question,
     'selected_language' => $language,
+    'mode' => $mode,
     'resolved_language' => $result['language'] ?? $language,
     'answer' => $result['answer'],
     'points' => $result['points'],
@@ -123,6 +146,8 @@ return response()->json([
     'sources'         => $result['sources'],
     'language'        => $resolvedLanguage,
     'is_conversation' => (bool) ($result['is_conversation'] ?? false),
+    'mode'            => $mode,
+    'answered_by'     => $result['answered_by'] ?? null,
 ]);
         });
     }

@@ -10,7 +10,7 @@ class IndexHealthDocs extends Command
 {
     protected $signature = 'health:index
                             {--if-empty : Only index when the health_chunks table has no rows}';
-    protected $description = 'Embed and index all files in resources/health_docs into the health_chunks table';
+    protected $description = 'Embed and index all files in resources/health_docs_v2 (services.health_docs.path) into the health_chunks table';
 
     public function handle(RagService $rag): int
     {
