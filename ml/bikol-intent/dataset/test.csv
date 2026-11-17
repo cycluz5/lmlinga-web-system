@@ -1,183 +1,187 @@
 question,intent
-"Ono a pagkabongog, tabi?",definition
-Ono an pagkabongog?,definition
-Ono an pneumonia?,definition
-Ono a preterm birth,definition
-Ono an HIV?,definition
-Ono an kanser sa atay?,definition
-Ono a kahulugan ka kakulangan sa micronutrient?,definition
-Ono a purga?,definition
-Ono a dengue?,definition
-Ono an kanser sa soso?,definition
-Ono a buut sabiyun ka hika?,definition
-"ono a pills,",definition
-Ono an kolera?,definition
-"ono man a paninigarilyo,?",definition
-Ono tabi a family planning,definition
-Ono a high blood?,definition
-Ono a test sa TB?,definition
-Ono an pagtao sa rogo?,definition
+Ono an pulmonya?,definition
+Ono a sip'on?,definition
+Ono man a altapresyon,definition
+Ono an pagpupurga?,definition
+ono a olod?,definition
 Ono an tetano?,definition
-"Ono a epilepsy, tabi?",definition
-Ipaliwanag mo tabi kin ono a malaria,definition
-Ono a stroke?,definition
-Ono an pagpapasoso?,definition
-Ono an TB?,definition
-Ono a bitamina?,definition
-Ono an pagbabakuna?,definition
-Ono a pagpupurga?,definition
-Ono a pagpapasoso?,definition
-Ono an check-up?,definition
-Ono a TB?,definition
-Ono a kalintora?,definition
-Ono a epilepsy?,definition
-Ono a olod?,definition
-Ono a autism?,definition
-Ono an autism?,definition
-"Ono a altapresyon,?",definition
-Ono a gout?,definition
+Ono an rabies?,definition
+Ono raw a TB?,definition
+Ono an kombulsyon?,definition
+Ono an stroke?,definition
+Ono a disenterya?,definition
+Ono a test sa TB?,definition
+Ono a pneumonia?,definition
+Ono a trangkaso?,definition
+Ono a bakuna?,definition
+Ono a altapresyon?,definition
+ono a check-up ka mabrus,definition
+Ono an atake sa poso?,definition
+Ono an check-up ka mabrus?,definition
+Ono an ilang sa bato?,definition
+Ono a kanser sa atay?,definition
+Ono a malnutrisyon?,definition
+Ono a obo?,definition
+Ono a rayuma?,definition
+Ipaliwanag mo tabi kin ono a disenterya,definition
+ono a hepatitis?,definition
+Ono an dengue?,definition
+Ono an newborn screening?,definition
+Ono a buut sabiyun ka pagtao sa rogo?,definition
+Ono an bitamina?,definition
+Ono man a atake sa poso?,definition
+Ono a check-up?,definition
+Ono an bakuna kontra tetano?,definition
 Ono tabi a menopause?,definition
-Ono a mga senyales ka atake sa poso?,symptoms
-Ono a tanda kin agko kanser sa soso,symptoms
-Ono a namamatian ka agko diabetes?,symptoms
-Ono a sintomas ka kakulangan sa micronutrient?,symptoms
+Ono a epilepsiya?,definition
+Ono an Pinggang Pinoy?,definition
+"Ono man a paninigarilyo, tabi?",definition
+Ono an sobisobi?,definition
+Ono tabi a altapresyon?,definition
+Ono an olod?,definition
+Ono an sip'on?,definition
+"Ono man a menopause, tabi?",definition
+Ono a namamatian ka agko pantal,symptoms
 Ono a mga senyales ka high blood?,symptoms
-ono a mga sinyales ka tb?,symptoms
-Ono a mga sinyales ka autism?,symptoms
-Ono a namamatian ka agko malnutrisyon?,symptoms
-Ono raw a namamatian ka nagkaka-rabies,symptoms
-Ono a mga tanda ka pagkabongog sa igin?,symptoms
-Ono tabi a sintomas ka gout?,symptoms
-ono a namamatian ka agko epilepsy?,symptoms
-Ono a mga tanda ka sip'on sa igin?,symptoms
-ono a mga senyales ka pneumonia?,symptoms
-Ono a tanda kin agko rabies?,symptoms
-Ono a namamatian ka agko pagkabongog?,symptoms
-sari raw nakokoko a sip'on?,causes
-ono tabi a kwasa ka hika?,causes
-ono a dahilan ka olod?,causes
-Ngata tabi nagkaka-tuberkulosis a tawo?,causes
-Ngata tabi nagkaka-kolog sa likod a tawo?,causes
-ono a dahilan ka epilepsy,causes
-Ono a rason ka HIV?,causes
-Paono nakokoko a altapresyon?,causes
-Ngata nagka-olod a agom ko?,causes
+Ono a mga sinyales ka sipon?,symptoms
+Ono a mga tanda ka altapresyon sa igen,symptoms
+ono a sintomas ka hiv?,symptoms
+ono a mga sinyales ka hepatitis?,symptoms
+ono a sintomas ka dementia?,symptoms
+Ono a namamatian ka agko nailo sa pagkaon?,symptoms
+ono a mga tanda ka dengue sa igin?,symptoms
+Ono a mga senyales ka epilepsy,symptoms
+Ono a mga senyales ka kombulsyon?,symptoms
+Ono a senyales ka gender identity?,symptoms
+ono a mga tanda ka hika sa igin?,symptoms
+Ono a mga tanda ka kanser sa atay sa igen?,symptoms
+Ono a namamatian ka agko kanser sa soso,symptoms
+Ono a sinyales ka paninigarilyo?,symptoms
 Sari raw nakokoko a altapresyon?,causes
-ono raw a dahilan ka olod,causes
-Ngata tabi nagkaka-kanser sa atay a tawo?,causes
-ono a kwasa ka malnutrisyon?,causes
-Ono a dahilan ka atake sa poso?,causes
-Ngata tabi nagkaka-trangkaso a tawo?,causes
-Sari raw nakokoko a autism?,causes
-paono tabi malikayan a kolera?,management
-Paono ko asikasowon a igin na agko malnutrisyon?,management
-Paono malikayan a ilang sa bato?,management
-Ono a paglikay sa rabies?,management
-Ono a kaipowan kong gibowon kin agko kanser sa soso a mabrus?,management
-ono a kaipowan kong gibowon kin agko rabies a igin,management
-Ono tabi a bolong sa malaria ka igin?,management
+Ngata nagkakaagko paninigarilyo?,causes
+Ono a rason ka rabies?,causes
+Ngata tabi nagkaka-kolog sa likod a tawo?,causes
+Ngata nagka-pulmonya a agom ko?,causes
+ngata nagkakaagko olod?,causes
+Sari raw nakokoko a kolog sa likod?,causes
+sari raw nakokoko a sip'on?,causes
+Ono a rason ka HIV?,causes
+ono a rason ka trangkaso?,causes
+Ono a rason ka kombulsyon?,causes
+Ono a kwasa ka autism?,causes
+ngata nagkakaagko gout,causes
+Ngata nagka-sip'on a igin ko?,causes
+Paono nakokoko a gout?,causes
+Ngata nagkakaagko pantal,causes
+ono a maray na gibowon tanganing diri magka-epilepsiya?,management
+ono a kaipowan kong gibowon kin agko autism a mabrus?,management
+Ono a maray na gibowon tanganing diri magka-pagkabongog,management
+Ono a kaipowan kong gibowon kin agko trangkaso ako?,management
+Ono tabi a bolong sa diabetes ka igen?,management
+Paono malikayan a sip'on?,management
+ono a maray na gibowon tanganing diri magka-kombulsyon?,management
+paono malikayan a dengue?,management
+Paono ko asikasowon a mabrus na agko flu?,management
 Ono a kaipowan kong gibowon kin agko kakulangan sa micronutrient a igin ko?,management
-ono a bolong sa diabetes,management
-paono tabi malikayan a kanser sa baga?,management
-Ono a maray na gibowon tanganing diri magka-kolog sa likod,management
-Ono a bolong sa hepatitis ka igin?,management
-Ono a bolong sa hika?,management
-ono a paglikay sa hepatitis?,management
-Agko bolong sa epilepsy,management
-paono malikayan a pulmonya?,management
-Sari pwedeng magpa-test sa TB?,diagnosis
-sari pwedeng magpa-purga?,diagnosis
+Ono a maray na gibowon tanganing diri magka-hika?,management
+Ono a maray na gibowon tanganing diri magka-obo?,management
+Paono maparay a sip'on?,management
+Ono tabi a bolong sa atake sa poso ka igin?,management
+Ono a paglikay sa epilepsy?,management
+Ono a kaipowan kong gibowon kin agko epilepsy a igin ko?,management
+Sari pwedeng magpa-test para sa obo?,diagnosis
+Sari pwedeng magpa-check-up?,diagnosis
+paono maisiyan kin agko flu?,diagnosis
+Paono maisiyan kin agko stroke?,diagnosis
+Paono sinusuri a pantal?,diagnosis
 Ono a test para maisiyan a kolera?,diagnosis
-Sari pwedeng magpa-hearing screening?,diagnosis
-Sari pwedeng magpa-family planning?,diagnosis
-Paono sinusuri a kakulangan sa micronutrient?,diagnosis
-Paono maisiyan kin agko obo?,diagnosis
-Paono ko masisigoro kin agko ako dengue,diagnosis
-Kaipowan pa magpa-check-up para maisiyan a sip'on,diagnosis
-Ono a test para maisiyan a ilang sa bato?,diagnosis
-Sari pwedeng magpa-test para sa sip'on?,diagnosis
+ono a test para maisiyan a hepatitis,diagnosis
+Paono sinusuri a sip'on?,diagnosis
+paono ko masisigoro kin agko ako pneumonia?,diagnosis
 Agko test para sa kalintora?,diagnosis
-Paono maisiyan kin agko kanser sa soso?,diagnosis
-Sari pwedeng magpa-test para sa tetano?,diagnosis
-Kaipowan pa magpa-check-up para maisiyan a rabies?,diagnosis
-Paono maiisiyan kin agko pulmonya a igin?,diagnosis
-ngata kaipowan a pagbabakuna?,benefits
-Ono a pakinabang ka pagpupurga?,benefits
-Ono a maray sa igen ka pag-ogas ka kamut,benefits
+kaipowan pa magpa-check-up para maisiyan a disenterya?,diagnosis
+sari pwedeng magpa-test para sa rabies?,diagnosis
+kaipowan pa magpa-check-up para maisiyan a hiv?,diagnosis
+ono a test para maisiyan a epilepsy?,diagnosis
+Paono ko masisigoro kin agko ako dengue,diagnosis
+Paono maiisiyan kin agko gout a igin ko?,diagnosis
+ngata maray a bitamina?,benefits
+Ono a maray na naitatabang ka pagpapakusug sa awak?,benefits
+Ngata importante a pagtao sa rogo?,benefits
+Ono tabi a benepisyo ka check-up ka mabrus?,benefits
 ngata importante a newborn screening?,benefits
-ngata importante a newborn hearing screening?,benefits
-ono tabi a pakinabang ka newborn screening sa awak?,benefits
-Ngata importante a bakuna,benefits
-Ngata kaipowan a newborn hearing screening?,benefits
-Ngata maray a family planning?,benefits
-Ngata importante a family planning?,benefits
-ono a benepisyo ka pagpapasoso?,benefits
-Ono a pakinabang ka Pinggang Pinoy?,benefits
-Ono a benepisyo ka pagpapakusug sa awak,benefits
+Ngata importante a pills?,benefits
 Ngata importante a pagpupurga?,benefits
-ngata kaipowan a bitamina?,benefits
-Ono a maray na naitatabang ka newborn screening?,benefits
-ono a mingyari kin magka-malaria a mabrus?,effects
-Agko side effect a Pinggang Pinoy?,effects
-Agko side effect a bakuna?,effects
-Ono a mingyari sa igin kin diri magpa-newborn screening?,effects
-ono a epekto ka gout sa awak?,effects
-Ono a mingyari sa igin kin diri magpa-test sa HIV?,effects
-ono a mingyari sa igin kin diri magpa-bakuna?,effects
-Ono a mingyari sa igin kin diri magpa-family planning?,effects
-ono a epekto ka paninigarilyo sa mabrus?,effects
-Ono a mingyari kin diri mabolong a trangkaso?,effects
-ono a komplikasyon ka kanser sa atay?,effects
-Ono a komplikasyon ka hepatitis?,effects
-Ono a epekto ka pagbabakuna?,effects
-Ono a epekto ka dengue sa awak,effects
-Ono a mingyari kin diri mabolong a ilang sa bato?,effects
-Ono a epekto ka stroke sa awak?,effects
-kono a sunod na bakuna,schedule
-Sa pirang bulan na edad a bakuna?,schedule
-Pirang beses sa taon a pagpupurga?,schedule
-Kono dapat a bakuna sa trangkaso?,schedule
-Onong aldow a newborn hearing screening sa health center?,schedule
-kono dapat a check-up ka mabrus?,schedule
+Ono a pakinabang ka pagpupurga?,benefits
+Ono a pakinabang ka check-up ka mabrus?,benefits
+Ono tabi a benepisyo ka pagpupurga,benefits
+ono a pakinabang ka pag-ogas ka kamut,benefits
+Ngata maray a family planning?,benefits
+Ngata kaipowan a pagtao sa rogo?,benefits
+Ono tabi a benepisyo ka family planning,benefits
+ono a pakinabang ka bakuna sa awak?,benefits
+ono a benepisyo ka pagpapakusug sa awak?,benefits
+Ono a epekto ka bakuna?,effects
+Ono a epekto ka epilepsy sa awak,effects
+ono a epekto ka pagbabakuna?,effects
+ono a mingyari sa igen kin diri magpa-hearing screening?,effects
+Ono a komplikasyon ka dengue,effects
+ono a komplikasyon ka autism,effects
+Ono a mingyari kin magka-sipon a mabrus?,effects
+Ono a epekto ka maray na pagkaun?,effects
+Ono raw a mingyari kin pabayaan a gout,effects
+ono a mingyari kin diri mabolong a autism?,effects
+Ono a epekto ka check-up ka mabrus?,effects
+Ono a epekto ka newborn hearing screening?,effects
+Ono a epekto ka pagpupurga?,effects
+Ono a mingyari kin diri mabolong a gout?,effects
+ono raw a mingyari kin pabayaan a rabies?,effects
+ono a mingyari sa igin kin diri magpa-test sa hiv?,effects
+Kono tabi pwede a pagpupurga ka talaginun?,schedule
 Pirang beses sa taon a newborn hearing screening?,schedule
-Sa pirang bulan na edad a bakuna kontra tetano?,schedule
-onong edad pwede a pills?,schedule
-Onong edad pwede a bakuna sa trangkaso?,schedule
-Kono tabi pwede a bakuna sa trangkaso ka talaginun?,schedule
-Kono a sunod na bakuna kontra tetano?,schedule
-Onong aldow a pills sa health center?,schedule
-Onong aldow a bitamina sa health center?,schedule
-pirang beses kaipowan a pagpupurga?,schedule
-Pirang beses sa taon a bakuna kontra tetano?,schedule
-Delikado na raw kin nagkokombolsyon a igin ko?,warning
+Kono a sunod na newborn screening,schedule
+Kono a iskedyul ka bakuna kontra tetano,schedule
+Kono a sunod na check-up ka mabrus?,schedule
+Sa pirang bulan na edad a pagbakuna ka igin,schedule
+kono a iskedyul ka check-up ka mabrus?,schedule
+Sa pirang bulan na edad a bakuna?,schedule
+Kono dapat a pagbakuna ka igen?,schedule
+pirang beses kaipowan a bakuna sa trangkaso?,schedule
+Kono dapat a pills?,schedule
+Pirang beses kaipowan a pills,schedule
+Pirang beses sa taon a check-up ka mabrus?,schedule
+Pirang beses sa taon a newborn screening?,schedule
+Sa pirang bulan na edad a pills?,schedule
+onong aldow a bakuna sa trangkaso sa health center,schedule
+"Agko rogo sa obo ko, kaipowan na magpabayad sa doktor?",warning
+"Kinagat sa ayam ako, ono a gibowon ko?",warning
+Nakainom sa ilo a igin. Delikado na?,warning
+"Makulug a ruruggan ko, ono a dapat kong gibowon?",warning
+Kono kaipowan omiyan sa ospital kin agko dengue?,warning
+"Maispid na tabang tabi, kinagat sa ayam a igin ko",warning
 "Maispid na tabang tabi, nangubugkubug a gorang",warning
-"makulug saigo a payo ko sagkud agko pagkalibong, kaipowan na magpabayad sa doktor",warning
-"sakit sa pag-inga a igin ko, ono a dapat kong gibowon",warning
+Delikado na raw kin nagkokombolsyon a igen ko,warning
+kono kaipowan omiyan sa ospital kin agko tetano?,warning
+"Maispid na tabang, diri nagkaun a igin ko sa tolong aldow",warning
+Ono a delikadong senyales ka TB?,warning
+"Mataas a kalintora ka igin ko, dapat na omiyan sa ospital?",warning
 "maispid na tabang tabi, rinorogo a mabrus",warning
-Kaipowan na tabi magpakonsulta kin mahihimatay a agom ko,warning
-"Diri nagkaun a igin ko sa tolong aldow, ono a dapat kong gibowon?",warning
-"maispid na tabang, mahihimatay a agom ko",warning
-"Maispid na tabang tabi, kinagat sa ayam a igen ko",warning
-"Maispid na tabang tabi, mataas a kalintora ka igin ko",warning
-"Nakainom sa ilo a igin, ono a gibowon ko?",warning
-Delikado na raw kin kinagat sa sawa a agom ko,warning
-Kaipowan na tabi magpakonsulta kin makulug saigo a payo ko sagkud agko pagkalibong?,warning
-"Isinoka a igin ko sagkud maluya, ono a gibowon ko?",warning
-Kono kaipowan omiyan sa ospital kin agko kolog sa likod,warning
-"kinagat sa sawa a agom ko, ono a dapat kong gibowon",warning
-agko newborn screening sa health center?,general
-Siisay a pwedeng magka-TB?,general
-Pira a bayad sa bitamina?,general
-Sari tabi a health center sa barangay?,general
-Sari makukua a libreng pagpupurga sa barangay?,general
-siisay a dapat kong ipabayad kin agko high blood?,general
-Siisay a pwedeng magpa-newborn screening?,general
-agko newborn hearing screening sa health center?,general
-Siisay a pwedeng magka-gout?,general
-Siisay a pwedeng magpa-pills,general
-Siisay a pwedeng magka-HIV?,general
-Naooyon raw a igin sa newborn screening?,general
-Siisay a pwedeng magka-dementia?,general
-Agko pagtao sa rogo sa health center?,general
-Libre raw a pagpupurga?,general
+"Isinoka a igin ko sagkud maluya, ono a dapat kong gibowon?",warning
+"maispid na tabang tabi, isinoka a igin ko sagkud maluya",warning
+"Makulug a ruruggan ko, ono tabi a gibowon ko?",warning
+Siisay a pwedeng magpa-family planning?,general
+Sari makukua a libreng bakuna sa barangay?,general
 sari makukua a libreng pagpapasoso sa barangay?,general
+Siisay a pwedeng magka-malnutrisyon?,general
+siisay a dapat kong ipabayad kin agko tetano,general
+Sari makukua a libreng pills sa barangay?,general
+Naooyon raw a igin sa pills?,general
+Naooyon raw a igin sa newborn hearing screening,general
+Libre raw a bakuna?,general
+Siisay a dapat kong ipabayad kin agko hika?,general
+Siisay a pwedeng magka-HIV,general
+Libre raw a newborn screening?,general
+Agko libreng tabang para sa agko epilepsy?,general
+Siisay a pwedeng magka-ilang sa bato?,general
+Siisay a dapat kong ipabayad kin agko epilepsiya?,general
+Pira a bayad sa pagbabakuna,general
