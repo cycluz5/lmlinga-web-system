@@ -56,6 +56,7 @@ class NormalizationGuardChatbotConversationOrderingTest extends TestCase
 
         // No network: the answer content is irrelevant to ordering.
         $this->mock(RagService::class, function (MockInterface $mock): void {
+            $mock->shouldReceive('setAnswerMode')->andReturnNull();
             $mock->shouldReceive('deriveTopicHintFromText')->andReturn(null);
             $mock->shouldReceive('ask')->andReturn([
                 'title' => null,

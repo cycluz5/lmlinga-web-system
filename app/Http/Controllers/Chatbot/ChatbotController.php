@@ -7,7 +7,6 @@ use App\Models\ChatbotConversation;
 use App\Models\ChatbotMessage;
 use App\Services\BikolCloudChatService;
 use App\Services\BikolSmallTalkService;
-use App\Services\BikolSmallTalkService;
 use App\Services\RagService;
 use App\Services\TagalogConversationService;
 use App\Support\ResidentAuthenticator;
@@ -119,7 +118,16 @@ class ChatbotController extends Controller
                         ->get(['sender', 'message_text'])
                         ->reverse()
                 ));
-                $result = $smallTalk->timeDateResult($question) ?? $smallTalk->unrelatedResult($question);
+                if ($mode === 'cloud') {
+                    // Cloud AI (Gemma): time/date questions are answered by Gemma with the real clock. Every other
+                    // message goes to RAG; when no document answers it, RagService hands it to Gemma (normal chat).
+                    // Serious messages keep their fixed checked reply (handled first in RagService::ask).
+                    if ($smallTalk->seriousReply($question) === null && $smallTalk->isTimeOrDateQuestion($question)) {
+                        $result = app(BikolCloudChatService::class)->result($question);
+                    }
+                } else {
+                    $result = $smallTalk->timeDateResult($question) ?? $smallTalk->unrelatedResult($question);
+                }
             }
             $result ??= $rag->ask($question, $language, $category, $topicHint);
             $resolvedLanguage = $result['language'] ?? $language;

@@ -2013,19 +2013,6 @@ if ($language === 'bcl') {
         $result = $retold;
     }
 
-    // No health answer found in the documents -> small talk model.
-    if (empty($result['sources']) && ($result['answer'] ?? '') === $this->noContextMessage('bcl')) {
-        $smallTalk = $this->bikolSmallTalkResult($question);
-        if ($smallTalk !== null) {
-            return $smallTalk;
-        }
-    }
-
-    // "Cloud AI" mode: Gemma explains the verified answer conversationally.
-    if ($this->answerMode === 'cloud' && !empty($result['sources'])) {
-        $result = $this->conversationalBikolAnswer($question, $result);
-    }
-
     $result['language'] = $language;
     $result['is_conversation'] = false;
 
@@ -2406,27 +2393,6 @@ protected function isPlaceholderValue($value): bool
         ];
     }
 
-    /**
-     * Reply from the fine-tuned Bikol-Iriga small-talk model (never used for
-     * health answers), or null when the model is off or unreachable.
-     */
-    protected function bikolSmallTalkResult(string $question): ?array
-    {
-        $answer = app(BikolSmallTalkService::class)->reply($question);
-        if ($answer === null) {
-            return null;
-        }
-
-        return [
-            'title' => null,
-            'answer' => $answer,
-            'points' => [],
-            'sources' => [],
-            'language' => 'bcl',
-            'is_conversation' => true,
-        ];
-    }
-
     protected function noContextMessage(string $language): string
     {
         return match ($language) {
@@ -2754,126 +2720,6 @@ protected function conversationalBikolAnswer(string $question, array $verified):
         'answer' => implode("\n\n", $lines),
         'points' => [],
         'answered_by' => BikolCloudChatService::ANSWERED_BY . ' + verified health info',
-    ]);
-}
-
-/**
- * Last safety net for model output: Naga-Bikol / Tagalog words -> team's Iriga spelling.
- */
-protected function fixBikolIrigaSpelling(string $text): string
-{
-    $map = [
-        'iyo' => 'amo', 'igwa' => 'agko', 'sarong' => 'osad', 'asin' => 'ag', 'kun' => 'kin',
-        'kung' => 'kin', 'saimo' => 'kanimo', 'sakuya' => 'kanako', 'sako' => 'kanako', 'nin' => 'kana',
-        'ano' => 'ono', 'uno' => 'ono', 'paano' => 'paono', 'pauno' => 'paono', 'ang' => 'ana',
-        'mayo' => 'uda', 'lagnat' => 'kalintora', 'kalintura' => 'kalintora', 'tubig' => 'tobig',
-        'sintomas' => 'sinyales', 'usad' => 'osad', 'rugo' => 'rogo', 'dugo' => 'rogo',
-        'dapit' => 'manungod', 'tungkol' => 'manungod',
-        'aldaw' => 'aldow', 'marhay' => 'maray', 'satuya' => 'kanato', 'satuyang' => 'kanatong',
-        'kaipuhan' => 'kaipowan', 'kaipuhang' => 'kaipowan', 'an' => 'ana', 'kan' => 'kana',
-        'hali' => 'galin', 'tataramon' => 'sarita', 'gabos' => 'ngamin',
-    ];
-
-    return preg_replace_callback('/\b\p{L}+\b/u', function ($m) use ($map) {
-        $word = $m[0];
-        $lower = mb_strtolower($word, 'UTF-8');
-        if (!isset($map[$lower])) {
-            return $word;
-        }
-        $new = $map[$lower];
-        if (mb_strtoupper($word, 'UTF-8') === $word && mb_strlen($word) > 1) {
-            return mb_strtoupper($new, 'UTF-8');
-        }
-
-        return mb_substr($word, 0, 1) !== mb_strtolower(mb_substr($word, 0, 1)) ? mb_strtoupper(mb_substr($new, 0, 1)) . mb_substr($new, 1) : $new;
-    }, $text) ?? $text;
-}
-
-/**
- * Local AI model mode (Bikol): Gemma re-tells the VERIFIED answer in friendly
- * Bikol-Iriga. Facts come only from $verified (taken from the linguist-verified
- * dataset); afterwards fixBikolIrigaSpelling() changes leftover Naga-Bikol words.
- * On any problem the verified answer is returned unchanged.
- */
-protected function conversationalBikolAnswer(string $question, array $verified): array
-{
-    $facts = trim(implode("\n", array_filter([
-        trim((string) ($verified['answer'] ?? '')),
-        implode("\n", array_map(fn ($p) => '- ' . trim((string) $p), (array) ($verified['points'] ?? []))),
-    ])));
-    if ($facts === '') {
-        return $verified;
-    }
-
-    $system = "Ika ay LMLinga, health chatbot kana health center sa Iriga City.\n"
-        . "Magsimbag SANA sa Bikol-Iriga (Rinconada). BOKO Naga Bikol, BOKO Tagalog.\n"
-        . "Pirmi gamiton: ana (boko 'an/ang'), kana (boko 'kan/nin/ng'), ono (boko 'ano/uno'), "
-        . "paono (boko 'pano/paano'), agko (boko 'igwa/may'), uda (boko 'mayo/wala'), osad (boko 'sarong/isa'), "
-        . "ag (boko 'asin/at'), kin (boko 'kun/kung'), amo (boko 'iyo/oo'), kanimo (boko 'saimo/sa iyo'), "
-        . "kanako (boko 'sakuya'), diri (=don't), boko (=no/not), kalintora (=fever), tobig (=water), "
-        . "sinyales (=symptoms), otos (=chickenpox), rogo (=blood), aldow (boko 'aldaw'), "
-        . "maray (boko 'marhay'), kanato/kanatong (boko 'satuya/satuyang'), kaipowan (boko 'kaipuhan').\n"
-        . "Diri magbati (uda 'Maray na aldow', uda 'Hello'): direkta sa simbag.\n"
-        . "Gamiton SANA ana impormasyon sa VERIFIED ANSWER. Diri magdagdag ka bagong impormasyon, "
-        . "numero, o bulong na uda adi.\n"
-        . "Magsarita na bana osad na mabuot na health worker na nakikipag-ulay sa taga-barangay:\n"
-        . "1. Osad o darwang mainit na sentence na direktang nagsisimbag sa HAPOT gamit ana sadiring sarita "
-        . "(boko kopya kana listahan).\n"
-        . "2. Ana mga importanteng punto bilang listahan na nagpupuon sa '- '. Pwede ading paiklion o "
-        . "sabihon sa mas simpleng paagi, pero pareho ana kahulugan.\n"
-        . "3. Osad na maikling pangtapos na sentence (halimbawa: magpakonsulta sa health center kin "
-        . "nagmamalala), basta diri bagong impormasyong medikal.\n"
-        . "Diri gamiton ana markdown na **bold** o #.";
-
-    try {
-        $response = Http::timeout(60)->withToken((string) $this->ollamaApiKey)
-            ->post($this->usesOllamaCloud() ? "{$this->ollamaCloudUrl}/api/chat" : "{$this->ollamaBaseUrl}/api/chat", [
-                'model' => $this->chatModel,
-                'stream' => false,
-                'keep_alive' => '30m',
-                'options' => ['temperature' => 0.2, 'num_predict' => 600],
-                'messages' => [
-                    ['role' => 'system', 'content' => $system],
-                    ['role' => 'user', 'content' => "VERIFIED ANSWER:\n{$facts}\n\nHAPOT:\n{$question}"],
-                ],
-            ]);
-        $text = $response->successful() ? trim((string) $response->json('message.content')) : '';
-    } catch (\Throwable $e) {
-        Log::warning('Bikol conversational answer failed, using verified answer', ['error' => $e->getMessage()]);
-        $text = '';
-    }
-
-    // Cloud AI is fully online: no offline fallback. Tell the user instead.
-    if ($text === '' || mb_strlen($text) < 20) {
-        return [
-            'title' => null,
-            'answer' => 'Diri makakonekta sa Cloud AI (Gemma). Siguraduhon na agko internet ag uliton ulit.',
-            'points' => [],
-            'sources' => [],
-            'answered_by' => 'Cloud AI (Gemma) - offline',
-        ];
-    }
-
-    $text = $this->fixBikolIrigaSpelling(str_replace(['**', '##', '#'], '', $text));
-    // Drop a greeting the model may still add ("Maray na aldow!").
-    $text = preg_replace('/^\s*(?:dios\s+)?maray\s+na\s+(?:aldow|aga|banggi|hapon)\s*[!.,]?\s*/iu', '', $text) ?? $text;
-
-    // Keep the model's order: intro, list, closing sentence. Points are written
-    // as "• " lines inside the answer so the closing line stays at the end.
-    $lines = [];
-    foreach (preg_split('/\R/u', $text) ?: [] as $line) {
-        $line = trim($line);
-        if ($line === '') {
-            continue;
-        }
-        $lines[] = preg_match('/^(?:[-*•]|\d+[.)])\s*(.+)$/u', $line, $m) === 1
-            ? '• ' . trim($m[1])
-            : $line;
-    }
-
-    return array_merge($verified, [
-        'answer' => implode("\n\n", $lines),
-        'points' => [],
     ]);
 }
 
