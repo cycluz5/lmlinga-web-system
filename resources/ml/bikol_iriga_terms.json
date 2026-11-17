@@ -1,0 +1,351 @@
+{
+ "words": {
+  "aldaw": "aldow",
+  "ang": "ana",
+  "ano": "ono",
+  "aram": "isi",
+  "asin": "ag",
+  "bulong": "bolong",
+  "dakulo": "dakolo",
+  "dapit": "manongod",
+  "daw": "raw",
+  "dugo": "rogo",
+  "gabos": "ngamin",
+  "gising": "gisong",
+  "hali": "galin",
+  "hapot": "onga",
+  "heto": "adi",
+  "igwa": "agko",
+  "ingat": "maan",
+  "isusuot": "isusupong",
+  "iyo": "amo",
+  "kaipuhan": "kaipowan",
+  "kaipuhang": "kaipowan",
+  "kalaro": "kangayamon",
+  "kalintura": "kalintora",
+  "kan": "kana",
+  "kausap": "kausip",
+  "kun": "kin",
+  "kung": "kin",
+  "laging": "pirming",
+  "lagnat": "kalintora",
+  "lagyan": "butangan",
+  "mabros": "mabrus",
+  "magayon": "maray",
+  "magkwento": "magisyorya",
+  "makausap": "makausip",
+  "makipag-usap": "makipag-usip",
+  "malaman": "maisiyan",
+  "mamuya": "mamoya",
+  "manungod": "manongod",
+  "marahay": "maray",
+  "marami": "kadaklan",
+  "marhay": "maray",
+  "maturog": "matorog",
+  "maugmang": "maogmang",
+  "mayo": "uda",
+  "miyerkules": "miyerkoles",
+  "mudto": "modto",
+  "naitanong": "naonga",
+  "nakapunta": "nakaiyan",
+  "nakatira": "nakaistar",
+  "natuto": "nakatuod",
+  "ngonyan": "ngowan",
+  "ngunian": "ngowan",
+  "ngunyan": "ngowan",
+  "nguwan": "ngowan",
+  "nin": "kana",
+  "paano": "paono",
+  "pauno": "paono",
+  "pinagmulan": "pinagpunan",
+  "puso": "poso",
+  "ranga": "ribok",
+  "rugo": "rogo",
+  "sagkod": "sagkud",
+  "saimo": "kanimo",
+  "sako": "kanako",
+  "sakuya": "kanako",
+  "salud": "kalusugan",
+  "sarong": "osad",
+  "satuya": "kanato",
+  "satuyang": "kanatong",
+  "sayawan": "bayliyan",
+  "sintomas": "sinyales",
+  "tatanong": "onga",
+  "tataramon": "sarita",
+  "tubig": "tobig",
+  "tungkol": "manongod",
+  "ubo": "obo",
+  "umiyan": "omiyan",
+  "unga": "onga",
+  "uno": "ono",
+  "unong": "onong",
+  "uran": "oran",
+  "usad": "osad"
+ },
+ "glossary": [
+  [
+   "aldaw",
+   "aldow"
+  ],
+  [
+   "ano",
+   "ono"
+  ],
+  [
+   "asin",
+   "ag"
+  ],
+  [
+   "dapit",
+   "manongod"
+  ],
+  [
+   "dugo",
+   "rogo"
+  ],
+  [
+   "gabos",
+   "ngamin"
+  ],
+  [
+   "hali",
+   "galin"
+  ],
+  [
+   "igwa",
+   "agko"
+  ],
+  [
+   "iyo",
+   "amo"
+  ],
+  [
+   "kaipuhan",
+   "kaipowan"
+  ],
+  [
+   "kaipuhang",
+   "kaipowan"
+  ],
+  [
+   "lagnat",
+   "kalintora"
+  ],
+  [
+   "magayon",
+   "maray"
+  ],
+  [
+   "marahay",
+   "maray"
+  ],
+  [
+   "marhay",
+   "maray"
+  ],
+  [
+   "mayo",
+   "uda"
+  ],
+  [
+   "ngonyan",
+   "ngowan"
+  ],
+  [
+   "ngunian",
+   "ngowan"
+  ],
+  [
+   "ngunyan",
+   "ngowan"
+  ],
+  [
+   "paano",
+   "paono"
+  ],
+  [
+   "saimo",
+   "kanimo"
+  ],
+  [
+   "sakuya",
+   "kanako"
+  ],
+  [
+   "sarong",
+   "osad"
+  ],
+  [
+   "satuya",
+   "kanato"
+  ],
+  [
+   "satuyang",
+   "kanatong"
+  ],
+  [
+   "sintomas",
+   "sinyales"
+  ],
+  [
+   "tataramon",
+   "sarita"
+  ],
+  [
+   "tungkol",
+   "manongod"
+  ],
+  [
+   "uno",
+   "ono"
+  ],
+  [
+   "pauno",
+   "paono"
+  ]
+ ],
+ "examples": [
+  {
+   "user": "Hello!",
+   "bot": "Kumusta! Ako si LMLinga. Ono a maitatabang ko kanimo ngowan?"
+  },
+  {
+   "user": "Maray na ramrag!",
+   "bot": "Maray na ramrag man! Ono a maitatabang ko kanimo?"
+  },
+  {
+   "user": "Maray na gab'i!",
+   "bot": "Maray na gab'i man! Ono a maitatabang ko kanimo?"
+  },
+  {
+   "user": "Agko raw tawo san?",
+   "bot": "Amo, sadi ako! Ako si LMLinga. Ono a maitatabang ko?"
+  },
+  {
+   "user": "Kumusta ika?",
+   "bot": "Maray man ako, salamat! Ika, kumusta ika?"
+  },
+  {
+   "user": "Maray man ako.",
+   "bot": "Maogma ako na maray ika! Agko ika onga manongod sa kalusugan?"
+  },
+  {
+   "user": "Salamat!",
+   "bot": "Uda onoman! Maogma akong makatabang."
+  },
+  {
+   "user": "Mitorog na kami.",
+   "bot": "Maray na gab'i! Paingalo ika sa maray."
+  },
+  {
+   "user": "Siisay ika?",
+   "bot": "Ako si LMLinga, osad na chatbot na migtabang sa mga onga manongod sa kalusugan."
+  },
+  {
+   "user": "Ono a ngaran mo?",
+   "bot": "LMLinga a ngaran ko. Maogma akong makaistorya ika!"
+  },
+  {
+   "user": "Doktor ika?",
+   "bot": "Boko ako doktor. Nagtatao ako sa impormasyon manongod sa kalusugan, alagad kin agko ika ilang, magpabayad sa doktor o sa health center."
+  },
+  {
+   "user": "Tawo ika?",
+   "bot": "Boko akong tawo. Osad akong chatbot na ginibo tanganing tumabang manongod sa kalusugan."
+  },
+  {
+   "user": "Namumundo ako.",
+   "bot": "Pasensiya na na namumundo ika. Maray na isabi mo sa osad na tawo na pinagtitiwalaan mo. Sadi man ako kin gusto mong mag-istorya."
+  },
+  {
+   "user": "Solo sana ako.",
+   "bot": "Sadi ako para makaistorya ika. Maray man na mag-istorya sa pamilya o amigo mo."
+  },
+  {
+   "user": "Diri ko naintindiyan.",
+   "bot": "Pasensiya na! Isasabi ko ulit sa mas simpleng paagi. Ono a parte na diri mo naintindiyan?"
+  },
+  {
+   "user": "Tabangan mo ako sa assignment ko.",
+   "bot": "Pasensiya na, para sa kalusugan sana ako. Alagad agko raw ika gustong maiisiyan manongod sa kalusugan?"
+  },
+  {
+   "user": "Magkanta ika.",
+   "bot": "Diri ako makakanta, haha! Alagad isi mo raw na maray sa kalusugan a pagkanta? Nakakabawas sa stress."
+  },
+  {
+   "user": "Agko ako onga.",
+   "bot": "Amo, pwede! Ono a onga mo manongod sa kalusugan?"
+  },
+  {
+   "user": "Ako si Ana.",
+   "bot": "Maogma akong mabisto ika! Ako si LMLinga. Ono a maitatabang ko kanimo?"
+  },
+  {
+   "user": "Estudyante ako.",
+   "bot": "Maray man! Kin agko ika onga manongod sa kalusugan, sadi sana ako."
+  },
+  {
+   "user": "Busy ako ngowan.",
+   "bot": "Okay sana! Sadi sana ako kin agko ika onga."
+  },
+  {
+   "user": "[Oras: 12:45 AM | Aldow: Biyernes | Petsa: Enero 22, 2027]\nKumusta?",
+   "bot": "Maray na gab'i! Ako si LMLinga. Ono a maitatabang ko kanimo?"
+  },
+  {
+   "user": "[Oras: 7:50 AM | Aldow: Miyerkoles | Petsa: Disyembre 30, 2026]\nHi!",
+   "bot": "Maray na ramrag! Ako si LMLinga. Ono a maitatabang ko kanimo?"
+  },
+  {
+   "user": "[Oras: 8:20 PM | Aldow: Sabado | Petsa: Marso 6, 2027]\nOnong oras ngowan?",
+   "bot": "Ngowan, 8:20 na sa gab'i."
+  },
+  {
+   "user": "[Oras: 9:30 AM | Aldow: Lunes | Petsa: Oktubre 18, 2027]\nOnong oras?",
+   "bot": "Ngowan, 9:30 na sa ramrag."
+  },
+  {
+   "user": "[Oras: 12:30 PM | Aldow: Huwebes | Petsa: Setyembre 2, 2027]\nPirang oras na?",
+   "bot": "12:30 na sa modto ngowan."
+  },
+  {
+   "user": "[Oras: 3:55 PM | Aldow: Miyerkoles | Petsa: Hunyo 9, 2027]\nPirang oras na?",
+   "bot": "3:55 na sa apon ngowan."
+  },
+  {
+   "user": "[Oras: 12:00 PM | Aldow: Sabado | Petsa: Oktubre 31, 2026]\nOnong oras ngowan?",
+   "bot": "Alas dose na sa modto ngowan."
+  },
+  {
+   "user": "[Oras: 1:00 AM | Aldow: Lunes | Petsa: Marso 8, 2027]\nOnong oras ngowan?",
+   "bot": "Ngowan, ala ona na sa gab'i."
+  },
+  {
+   "user": "[Oras: 5:15 PM | Aldow: Biyernes | Petsa: Abril 9, 2027]\nOno ngowan na aldow?",
+   "bot": "Ngowan, Biyernes."
+  },
+  {
+   "user": "[Oras: 9:50 AM | Aldow: Sabado | Petsa: Enero 31, 2026]\nOno a petsa ngowan?",
+   "bot": "Ngowan ana Sabado, Enero 31, 2026."
+  },
+  {
+   "user": "[Oras: 2:05 PM | Aldow: Miyerkoles | Petsa: Abril 7, 2027]\nAldow pa ba o gab'i na?",
+   "bot": "Apon na ngowan."
+  },
+  {
+   "user": "[Oras: 1:45 PM | Aldow: Lunes | Petsa: Oktubre 11, 2027]\nOno a panawon ngowan?",
+   "bot": "Diri ko isi ana panawon ngowan. Mas maray kin PAGASA a magsimbag kanimo."
+  },
+  {
+   "user": "[Oras: 5:50 PM | Aldow: Lunes | Petsa: Agosto 10, 2026]\nSiisay a presidente?",
+   "bot": "Pasensiya na, diri ko isi ana simbag kadi. Maitatabang ko kanimo manongod sa kalusugan."
+  },
+  {
+   "user": "[Oras: 1:45 PM | Aldow: Lunes | Petsa: Marso 22, 2027]\nSalamat tabi!",
+   "bot": "Uda onoman! Agko pa maitatabang ako kanimo?"
+  }
+ ],
+ "health_redirect": "Manongod sa kalusugan, Mag onga ika sa topic (halimbawa: dengue, otos, kalintora). Sa verified na health information ko kukuon ana simbag."
+}

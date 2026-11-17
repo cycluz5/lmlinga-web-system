@@ -51,8 +51,8 @@ class BikolCloudChatTest extends TestCase
         $this->assertSame('Cloud AI (Gemma)', $result['answered_by']);
         Http::assertSent(fn ($r) => str_contains($r->url(), 'ollama.com/api/chat')
             && $r['model'] === 'gemma4:31b-cloud'
-            && str_starts_with($r['messages'][1]['content'], '[Oras:')
-            && str_contains($r['messages'][1]['content'], 'Ano na an oras?'));
+            && str_starts_with(collect($r['messages'])->last()['content'], '[Oras:')
+            && str_contains(collect($r['messages'])->last()['content'], 'Ano na an oras?'));
     }
 
     public function test_cloud_failure_gives_the_offline_message(): void
