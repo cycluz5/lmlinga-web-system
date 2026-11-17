@@ -153,29 +153,61 @@ class RagService
     }
 
     protected array $stopwords = [
-        'uno', 'ono', 'ano', 'sarin', 'sari', 'saan', 'kuno', 'kailan', 'isay', 'sino',
-        'ngata', 'tangata', 'bakit', 'pauno', 'paono', 'paano', 'pira', 'magkano', 'ilan', 'arin',
-        'alin', 'amo', 'amu', 'oo', 'buku', 'boko', 'bokong', 'usad', 'osad', 'diri', 'hindi', 'pwede', 'ana', 'ang', 'an',
-        'a', 'na', 'sa', 'ka', 'kana', 'kan', 'kin', 'kung', 'mga', 'manga', 'para', 'ng', 'ag',
+        'uno', 'ano', 'sarin', 'sari', 'saan', 'kuno', 'kailan', 'isay', 'sino',
+        'ngata', 'tangata', 'bakit', 'pauno', 'paano', 'pira', 'magkano', 'ilan', 'arin',
+        'alin', 'amo', 'amu', 'oo', 'buku', 'hindi', 'pwede', 'ana', 'ang', 'an',
+        'a', 'na', 'sa', 'ka', 'kan', 'kin', 'mga', 'para', 'ng',
         'gibuhon', 'maiwasan', 'makaiwas', 'gawin', 'gawa', 'ito', 'adi',
-        'pamahalaan', 'pamahalaon', 'pamamahala',
         'with', 'what', 'where', 'when', 'who', 'why', 'how', 'this', 'that',
         // Short particles that must never act as acronym/keywords
         'ba', 'da', 'di', 'pa', 'po', 'ay', 'or', 'to', 'is', 'be', 'of', 'on',
         'in', 'at', 'as', 'if', 'we', 'me', 'my', 'he', 'do', 'so', 'no', 'ok',
     ];
 
-    protected function extractKeywords(string $question): array
+    /**
+     * Extra stopwords for Bikol-Iriga questions only. English and Tagalog keep the
+     * original list above, so their keyword extraction is the same as before.
+     */
+    protected array $bikolStopwords = [
+        'ono', 'paono', 'boko', 'bokong', 'usad', 'osad', 'diri', 'kana', 'kung', 'manga', 'ag',
+        'pamahalaan', 'pamahalaon', 'pamamahala', 'malikayan',
+    ];
+
+    protected function stopwordsFor(?string $language): array
     {
+        return $language === 'bcl'
+            ? array_merge($this->stopwords, $this->bikolStopwords)
+            : $this->stopwords;
+    }
+
+    /**
+     * $language is passed only by the Bikol-aware callers; with null (English, Tagalog)
+     * the result is exactly what it was before the Bikol-Iriga work.
+     */
+    protected function extractKeywords(string $question, ?string $language = null): array
+    {
+        $bikol = $language === 'bcl';
+        $stopwords = $this->stopwordsFor($language);
+
         preg_match_all('/[a-zA-Z]+/', mb_strtolower($question), $matches);
-        $keywords = array_values(array_filter($matches[0], function ($w) {
-            return (mb_strlen($w) >= 4 || $this->isBikolTopicIdentityToken($w))
-                && !in_array($w, $this->stopwords, true);
+        $keywords = array_values(array_filter($matches[0], function ($w) use ($bikol, $stopwords) {
+            return (mb_strlen($w) >= 4 || ($bikol && $this->isBikolTopicIdentityToken($w)))
+                && !in_array($w, $stopwords, true);
         }));
 
-        foreach ($this->extractAcronymCandidates($question) as $acronym) {
+        foreach ($this->extractAcronymCandidates($question, $language) as $acronym) {
             if (!in_array($acronym, $keywords, true)) {
                 $keywords[] = $acronym;
+            }
+        }
+
+        // Multi-word Bikol aliases ("atake sa poso") become one marker token that
+        // the alias matching in retrieve()/deriveTopicHintFromText() recognises.
+        if ($bikol) {
+            foreach ($this->bikolPhraseAliasMarkers($question) as $marker) {
+                if (!in_array($marker, $keywords, true)) {
+                    $keywords[] = $marker;
+                }
             }
         }
 
@@ -186,15 +218,16 @@ class RagService
      * Short medical-style acronyms (e.g. ASD, BCG) kept for retrieval.
      * Case is taken from the original question when possible.
      */
-    protected function extractAcronymCandidates(string $question): array
+    protected function extractAcronymCandidates(string $question, ?string $language = null): array
     {
+        $stopwords = $this->stopwordsFor($language);
         $candidates = [];
 
         // Strong signal: already-uppercase tokens in the raw question.
         if (preg_match_all('/\b[A-Z]{2,5}\b/', $question, $upperMatches)) {
             foreach ($upperMatches[0] as $token) {
                 $lower = mb_strtolower($token);
-                if (!in_array($lower, $this->stopwords, true)) {
+                if (!in_array($lower, $stopwords, true)) {
                     $candidates[] = $lower;
                 }
             }
@@ -205,7 +238,7 @@ class RagService
         if (preg_match_all('/\b[A-Za-z]{3,4}\b/', $question, $shortMatches)) {
             foreach ($shortMatches[0] as $token) {
                 $lower = mb_strtolower($token);
-                if (in_array($lower, $this->stopwords, true)) {
+                if (in_array($lower, $stopwords, true)) {
                     continue;
                 }
                 // Skip ordinary words that happen to be 3–4 letters unless uppercase.
@@ -277,8 +310,8 @@ class RagService
             }
         }
 
-        $keywords = $this->extractKeywords($text);
-        $acronyms = $this->extractAcronymCandidates($text);
+        $keywords = $this->extractKeywords($text, $language);
+        $acronyms = $this->extractAcronymCandidates($text, $language);
         if ($language === 'en') {
             $acronyms = array_values(array_filter(
                 $acronyms,
@@ -315,11 +348,13 @@ class RagService
         $strongKeywords = array_values(array_filter(
             $keywords,
             function ($kw) use ($language) {
-                if (mb_strlen($kw) < 4) {
-                    return false;
-                }
+                // Short Bikol topic words (ubo, obo, flu) must win over the 4-letter minimum,
+                // otherwise "Ono ana ubo?" asked after "hika" inherits the old topic.
                 if ($language === 'bcl' && $this->isBikolTopicIdentityToken($kw)) {
                     return true;
+                }
+                if (mb_strlen($kw) < 4) {
+                    return false;
                 }
                 if ($language === 'en') {
                     if (
@@ -334,6 +369,10 @@ class RagService
                     if ($this->isTagalogNonMedicalFollowUpToken($kw)) {
                         return false;
                     }
+                }
+
+                if ($language === 'bcl' && $kw === 'sinyales') {
+                    return false; // "symptoms" in Bikol-Iriga, never a topic
                 }
 
                 return !$this->isWeakExplicitTopicAnchor($kw);
@@ -386,8 +425,16 @@ class RagService
             $slugKeywords = [];
             $contentKeywords = [];
 
+            // Only the configured aliases (not title-derived tokens such as "symptoms").
+            $aliasTokens = $language === 'bcl'
+                ? array_map(
+                    static fn ($a) => mb_strtolower(preg_replace('/[\s\-]+/u', '', (string) $a) ?? '', 'UTF-8'),
+                    (array) config('bikol_topic_aliases.' . pathinfo((string) $file->source_file, PATHINFO_FILENAME), [])
+                )
+                : [];
+
             foreach ($strongKeywords as $kw) {
-                if (str_contains($slug, $kw)) {
+                if (str_contains($slug, $kw) || in_array($kw, $aliasTokens, true)) {
                     $score += 10 + mb_strlen($kw);
                     $slugKeywords[] = $kw;
                 }
@@ -972,7 +1019,7 @@ class RagService
 
         return in_array($keyword, [
             'importante', 'ngata', 'igen', 'agko', 'ataman', 'aatamanon',
-            'gibuhon', 'senyales', 'sintomas', 'sinyales', 'palatandaan', 'katangian',
+            'gibuhon', 'senyales', 'sintomas', 'palatandaan', 'katangian',
             'dahilan', 'rason', 'benepisyo', 'benipisyo', 'ngaya',
             'maiwasan', 'makaiwas', 'likay', 'malikayan', 'pauno', 'paono', 'paano',
         ], true);
@@ -988,7 +1035,40 @@ class RagService
 
         // "obo" (Iriga) / "ubo" (Tagalog) = cough: only three letters, so let them through explicitly.
         // (They are matched through config/bikol_topic_aliases.php, not as concept equivalents of each other.)
-        return in_array($token, ['milestone', 'obo', 'ubo'], true);
+        if (in_array($token, ['milestone', 'obo', 'ubo'], true)) {
+            return true;
+        }
+
+        // Any other short alias configured in config/bikol_topic_aliases.php (flu, tb, lbm, ...).
+        return $token !== '' && mb_strlen($token) < 4 && in_array($token, $this->bikolShortTopicAliases(), true);
+    }
+
+    /** @var list<string>|null */
+    protected ?array $bikolShortTopicAliasCache = null;
+
+    /**
+     * Configured aliases shorter than 4 letters. They would otherwise be dropped
+     * by the 4-letter keyword minimum.
+     *
+     * @return list<string>
+     */
+    protected function bikolShortTopicAliases(): array
+    {
+        if ($this->bikolShortTopicAliasCache !== null) {
+            return $this->bikolShortTopicAliasCache;
+        }
+
+        $short = [];
+        foreach ((array) config('bikol_topic_aliases', []) as $aliases) {
+            foreach ((array) $aliases as $alias) {
+                $alias = mb_strtolower(trim((string) $alias), 'UTF-8');
+                if ($alias !== '' && mb_strlen($alias) < 4) {
+                    $short[] = $alias;
+                }
+            }
+        }
+
+        return $this->bikolShortTopicAliasCache = array_values(array_unique($short));
     }
 
     /**
@@ -1163,7 +1243,7 @@ class RagService
         }
 
         $identityTokens = $this->expandTagalogTopicTokensForIdentity(
-            $this->extractBikolTopicTitleTokens($content, $sourceFile)
+            $this->extractBikolTopicTitleTokens($content, $sourceFile, false)
         );
 
         return $this->bikolHeadingTokenOverlap($topicTokens, $identityTokens) !== [];
@@ -1445,7 +1525,8 @@ class RagService
                     $fullText = $resolveFullText($chunk);
                     $titleTokens = $this->extractBikolTopicTitleTokens(
                         $fullText,
-                        (string) $chunk->source_file
+                        (string) $chunk->source_file,
+                        $language === 'bcl'
                     );
                     $score = 0;
                     $hasTitleOverlap = false;
@@ -1475,7 +1556,7 @@ class RagService
                         if (
                             !$hasTitleOverlap
                             && mb_strlen($kw) >= 4
-                            && !$this->isBikolSemanticIntentCueToken($kw)
+                            && !$this->isBikolSemanticIntentCueToken($kw, $language === 'bcl')
                             && !(
                                 $language === 'tl'
                                 && $this->isTagalogSupportIntentCueToken($kw)
@@ -1553,7 +1634,7 @@ class RagService
             'similarity' => 0.0,
         ]);
 
-        $keywords = $this->extractKeywords($searchText);
+        $keywords = $this->extractKeywords($searchText, $language);
         if (preg_match_all('/\b\d{3,4}\b/u', mb_strtolower($searchText), $numericMatches) > 0) {
             foreach ($numericMatches[0] as $num) {
                 if (!in_array($num, $keywords, true)) {
@@ -1561,7 +1642,7 @@ class RagService
                 }
             }
         }
-        $acronyms = $this->extractAcronymCandidates($searchText);
+        $acronyms = $this->extractAcronymCandidates($searchText, $language);
         if ($language === 'bcl' && $this->isBikolScheduleQuestion(mb_strtolower($question))) {
             $ageCueForRetrieve = $this->extractAgeCueFromQuestion($question);
         }
@@ -1588,8 +1669,8 @@ class RagService
         // Topic carry-over: if the combined query missed, anchor on the hint alone.
         // Do not fall through to unconstrained embedding (that caused wrong-doc follow-ups).
         if ($topicHint !== null && $topicHint !== '') {
-            $hintKeywords = $this->extractKeywords($topicHint);
-            $hintAcronyms = $this->extractAcronymCandidates($topicHint);
+            $hintKeywords = $this->extractKeywords($topicHint, $language);
+            $hintAcronyms = $this->extractAcronymCandidates($topicHint, $language);
             $hintMatches = $matchByKeywords($keywordSeed, $hintKeywords, $hintAcronyms);
 
             if ($hintMatches->isNotEmpty()) {
@@ -1698,9 +1779,12 @@ class RagService
     set_time_limit(180);
 
     // "Ono ana kalintora? / Ono ana dengue?" -> answer each question, one reply.
-    $subQuestions = $this->splitMultipleQuestions($question);
-    if (count($subQuestions) > 1) {
-        return $this->askMultiple($subQuestions, $language, $category, $topicHint);
+    // Bikol-Iriga only: English and Tagalog keep answering one message at a time.
+    if ($language === 'bcl') {
+        $subQuestions = $this->splitMultipleQuestions($question);
+        if (count($subQuestions) > 1) {
+            return $this->askMultiple($subQuestions, $language, $category, $topicHint);
+        }
     }
 
     $detectedLanguage = $this->detectLanguageFromQuestion($question, $language);
@@ -1835,6 +1919,17 @@ class RagService
     $this->retrieveInvoked = true;
     $retrieveQuestion = in_array($language, ['en', 'tl'], true) ? $pipelineQuestion : $question;
     $retrieval = $this->retrieve($retrieveQuestion, $language, $category, $effectiveTopicHint);
+
+    // A Bikol question that names its own topic should not fail just because the
+    // selected category (e.g. child_care) does not contain that topic's file.
+    if (
+        $language === 'bcl'
+        && $category
+        && empty($retrieval['chunks'])
+        && $this->questionHasExplicitTopic($question, 'bcl', null)
+    ) {
+        $retrieval = $this->retrieve($retrieveQuestion, $language, null, $effectiveTopicHint);
+    }
 $chunks = $retrieval['chunks'];
 
 if (empty($chunks)) {
@@ -2358,6 +2453,9 @@ protected function isPlaceholderValue($value): bool
             'prevention' => "Prevention of {$topic}",
             'treatment' => "Treatment of {$topic}",
             'benefits' => "Benefits of {$topic}",
+            'diagnosis' => "Assessment of {$topic}",
+            'care' => "Care for {$topic}",
+            'factors' => "Risk Factors for {$topic}",
             default => "{$topic} Information",
         };
     }
@@ -3592,6 +3690,12 @@ protected function detectBikolIntent(string $question): string
         return 'warning';
     }
 
+    // The word "diyagnosis" names the section outright; the trained model has not
+    // seen it and answers "definition" (Local AI / Cloud AI modes).
+    if (preg_match('/\b(diyagnosis|diagnosis)\b/u', mb_strtolower($question)) === 1) {
+        return 'diagnosis';
+    }
+
     if ($this->answerMode !== 'context' && config('services.bikol_intent.enabled', true)) {
         $prediction = BikolIntentClassifier::fromConfig()->predict($question);
         if (
@@ -3640,6 +3744,8 @@ protected function detectBikolIntentByRules(string $question): string
     if (
         str_contains($q, 'maisihan') ||
         str_contains($q, 'pagkaisi') ||
+        str_contains($q, 'diyagnosis') ||
+        str_contains($q, 'diagnosis') ||
         str_contains($q, 'early detection') ||
         str_contains($q, 'pagsukol') ||
         str_contains($q, 'monitor') ||
@@ -5446,7 +5552,7 @@ protected function isBikolFullyBulletedDocument(array $lines): bool
 /**
  * Matching-only tokens for heading-keyword fallback (length >= 3).
  */
-protected function extractBikolHeadingMatchTokens(string $text): array
+protected function extractBikolHeadingMatchTokens(string $text, bool $bikol = true): array
 {
     $text = mb_strtolower($text, 'UTF-8');
     $text = preg_replace('/[\s\-_\/]+/u', ' ', $text) ?? $text;
@@ -5454,7 +5560,7 @@ protected function extractBikolHeadingMatchTokens(string $text): array
 
     preg_match_all('/[\p{L}\p{N}]+/u', $text, $matches);
 
-    $weak = array_values(array_unique(array_merge($this->stopwords, [
+    $weak = array_values(array_unique(array_merge($bikol ? $this->stopwordsFor('bcl') : $this->stopwords, [
         'kung', 'igen', 'agko', 'dapat', 'gigibuhon',
     ])));
 
@@ -5473,7 +5579,7 @@ protected function extractBikolHeadingMatchTokens(string $text): array
                 continue;
             }
             if (
-                ($this->isWeakScheduleTopicAnchor($word) || $this->isWeakExplicitTopicAnchor($word))
+                ($this->isWeakScheduleTopicAnchor($word) || $this->isWeakExplicitTopicAnchor($word) || ($bikol && $word === 'sinyales'))
                 && !$this->isBikolTopicIdentityToken($word)
             ) {
                 continue;
@@ -5488,11 +5594,17 @@ protected function extractBikolHeadingMatchTokens(string $text): array
 /**
  * Intent words that must not count as leftover topic names.
  */
-protected function isBikolSemanticIntentCueToken(string $token): bool
+protected function isBikolSemanticIntentCueToken(string $token, bool $bikol = true): bool
 {
     $token = mb_strtolower(trim($token), 'UTF-8');
     if ($token === '') {
         return false;
+    }
+
+    // Cue words added for Bikol-Iriga; English/Tagalog callers pass $bikol = false
+    // and keep the earlier list.
+    if (!$bikol && in_array($token, ['diyagnosis', 'diagnosis', 'binubulong', 'sinyales', 'kwasa', 'peligro', 'igin'], true)) {
+        return $this->isWeakExplicitTopicAnchor($token) || $this->isWeakScheduleTopicAnchor($token);
     }
 
     if ($this->isBikolTopicIdentityToken($token)) {
@@ -5505,6 +5617,9 @@ protected function isBikolSemanticIntentCueToken(string $token): bool
 
     return in_array($token, [
         'malikayan',
+        'diyagnosis',
+        'diagnosis',
+        'binubulong',
         'paglikay',
         'pagbulong',
         'pambulung',
@@ -5553,6 +5668,15 @@ protected function isBikolConfidentCurrentTopic(
     string $sourceFile,
     string $content
 ): bool {
+    // The question names this file's topic by one of its multi-word aliases
+    // ("atake sa poso" for heart_attack.txt).
+    if (
+        $sourceFile !== ''
+        && $this->stripBikolPhraseAliases($question, $sourceFile) !== $this->normalizeBikolPhraseText($question)
+    ) {
+        return true;
+    }
+
     $topicTokens = $this->bikolQuestionTopicTokens($question);
     if ($topicTokens === []) {
         return false;
@@ -5574,7 +5698,7 @@ protected function bikolManagementHeadingMatchesQuestion(string $lower, ?string 
 
     $q = mb_strtolower($question, 'UTF-8');
     $asksPrevention = preg_match('/\b(likay|iwas|maiwasan|maiiwasan|malikayan)\b/u', $q) === 1;
-    $asksTreatment = preg_match('/\b(aatamanon|ataman|bulong|gamot)\b/u', $q) === 1;
+    $asksTreatment = preg_match('/\b(aatamanon|ataman|bulong|binubulong|pagbulong|gamot)\b/u', $q) === 1;
     $prevention = $this->isBikolPreventionHeading($lower);
     $treatment = $this->isBikolTreatmentHeading($lower);
 
@@ -5612,10 +5736,10 @@ protected function bikolHeadingMatchesSemanticIntent(
  *
  * @return list<string>
  */
-protected function extractBikolTopicTitleTokens(string $content = '', string $sourceFile = ''): array
+protected function extractBikolTopicTitleTokens(string $content = '', string $sourceFile = '', bool $withAliases = true): array
 {
     $slug = strtolower(str_replace(['.txt', '_'], ['', ' '], $sourceFile));
-    $tokens = $this->extractBikolHeadingMatchTokens($slug);
+    $tokens = $this->extractBikolHeadingMatchTokens($slug, $withAliases);
     $bannerLabels = [
         'pang', 'unang', 'pangunahing', 'pangunahong', 'paksa', 'main', 'topic',
     ];
@@ -5633,7 +5757,7 @@ protected function extractBikolTopicTitleTokens(string $content = '', string $so
             continue;
         }
 
-        foreach ($this->extractBikolHeadingMatchTokens($line) as $token) {
+        foreach ($this->extractBikolHeadingMatchTokens($line, $withAliases) as $token) {
             if (in_array($token, $bannerLabels, true)) {
                 continue;
             }
@@ -5642,7 +5766,11 @@ protected function extractBikolTopicTitleTokens(string $content = '', string $so
         break;
     }
 
-    return array_values(array_unique(array_merge($tokens, $this->bikolTopicAliasTokens($sourceFile))));
+    // Other names of the topic (config/bikol_topic_aliases.php) only count for Bikol-Iriga questions;
+    // English and Tagalog scoring uses the slug and banner tokens as before.
+    return array_values(array_unique(
+        $withAliases ? array_merge($tokens, $this->bikolTopicAliasTokens($sourceFile)) : $tokens
+    ));
 }
 
 /** @var array<string, list<string>> */
@@ -5688,7 +5816,12 @@ protected function bikolTopicAliasTokens(string $sourceFile): array
     }
 
     $slug = pathinfo($file, PATHINFO_FILENAME);
-    $titles = array_merge($titles, (array) config('bikol_topic_aliases.' . $slug, []));
+    // Phrase aliases are kept whole (see bikolPhraseAliasMarkers): their separate
+    // words must not become aliases, or "poso"/"ilang" alone would select the topic.
+    $titles = array_merge($titles, array_filter(
+        (array) config('bikol_topic_aliases.' . $slug, []),
+        fn ($alias) => !$this->isBikolPhraseAlias((string) $alias)
+    ));
 
     $tokens = [];
     foreach ($titles as $title) {
@@ -5704,6 +5837,82 @@ protected function bikolTopicAliasTokens(string $sourceFile): array
     return $this->bikolTopicAliasCache[$file] = array_values(array_unique(array_filter($tokens)));
 }
 
+/** Lower-case letters/digits only, single spaces ("Atake sa poso?" -> "atake sa poso"). */
+protected function normalizeBikolPhraseText(string $text): string
+{
+    $text = mb_strtolower($text, 'UTF-8');
+    $text = preg_replace("/[^\\p{L}\\p{N}]+/u", ' ', str_replace(["'", '’'], '', $text)) ?? '';
+
+    return trim($text);
+}
+
+protected function isBikolPhraseAlias(string $alias): bool
+{
+    return str_contains($this->normalizeBikolPhraseText($alias), ' ');
+}
+
+/**
+ * Marker token of a phrase alias: the phrase without spaces ("atake sa poso" ->
+ * "atakesaposo"). Also added to the topic's alias tokens, so the existing
+ * single-token alias matching finds the file.
+ */
+protected function bikolPhraseMarker(string $phrase): string
+{
+    return str_replace(' ', '', $this->normalizeBikolPhraseText($phrase));
+}
+
+/**
+ * Marker tokens of the phrase aliases found (as whole words) in $text.
+ *
+ * @return list<string>
+ */
+protected function bikolPhraseAliasMarkers(string $text): array
+{
+    $normalized = ' ' . $this->normalizeBikolPhraseText($text) . ' ';
+    if (trim($normalized) === '') {
+        return [];
+    }
+
+    $markers = [];
+    foreach ((array) config('bikol_topic_aliases', []) as $aliases) {
+        foreach ((array) $aliases as $alias) {
+            if (!$this->isBikolPhraseAlias((string) $alias)) {
+                continue;
+            }
+            $phrase = $this->normalizeBikolPhraseText((string) $alias);
+            if (str_contains($normalized, ' ' . $phrase . ' ')) {
+                $markers[] = $this->bikolPhraseMarker($phrase);
+            }
+        }
+    }
+
+    return array_values(array_unique($markers));
+}
+
+/** Remove the phrase aliases of $sourceFile from $question (they are the topic name, not a leftover word). */
+protected function stripBikolPhraseAliases(string $question, string $sourceFile): string
+{
+    $slug = pathinfo(basename(trim($sourceFile)), PATHINFO_FILENAME);
+    $normalized = ' ' . $this->normalizeBikolPhraseText($question) . ' ';
+
+    // longest phrase first, so "alangkaw na presyon kana rogo" is removed whole, not only "alangkaw na presyon"
+    $aliases = array_values(array_filter(
+        (array) config('bikol_topic_aliases.' . $slug, []),
+        fn ($alias) => $this->isBikolPhraseAlias((string) $alias)
+    ));
+    usort($aliases, fn ($a, $b) => mb_strlen((string) $b) <=> mb_strlen((string) $a));
+
+    foreach ($aliases as $alias) {
+        $normalized = str_replace(
+            ' ' . $this->normalizeBikolPhraseText((string) $alias) . ' ',
+            ' ',
+            $normalized
+        );
+    }
+
+    return trim($normalized);
+}
+
 /**
  * Query heading-match tokens that are not already in the topic slug or title.
  *
@@ -5714,6 +5923,10 @@ protected function extractBikolRemainingHeadingSectionTokens(
     string $sourceFile = '',
     string $content = ''
 ): array {
+    if ($sourceFile !== '') {
+        $question = $this->stripBikolPhraseAliases($question, $sourceFile);
+    }
+
     $queryTokens = $this->extractBikolHeadingMatchTokens($question);
     if ($queryTokens === []) {
         return [];
@@ -6656,7 +6869,7 @@ protected function englishDocumentCompatibleWithTopic(
         }
     }
 
-    $identityTokens = $this->extractBikolTopicTitleTokens($content, $sourceFile);
+    $identityTokens = $this->extractBikolTopicTitleTokens($content, $sourceFile, false);
     if ($this->bikolHeadingTokenOverlap($topicTokens, $identityTokens) !== []) {
         return true;
     }
@@ -6712,6 +6925,23 @@ protected function detectEnglishSupportIntent(string $question): string
         return 'benefits';
     }
 
+    // Intents for questions the exact words above miss ("How is X assessed?", "What care can help...?",
+    // "What factors make a child more likely...?"). Each reads its own section when the document has one and
+    // otherwise falls back to the definition, which is what "general" questions received before.
+    if (preg_match('/\b(?:factors?\s+(?:make|that|which|can|may|increase|raise)|more\s+likely)\b/u', $q) === 1) {
+        return 'factors';
+    }
+
+    if (preg_match('/^\s*what\s+(?:is|are)\b/u', $q) !== 1) {
+        if (preg_match('/\b(?:diagnos(?:e|ed|es|is|ing)|assess(?:ed|es|ment|ing)?|detected|screened)\b/u', $q) === 1) {
+            return 'diagnosis';
+        }
+
+        if (preg_match('/\b(?:interventions?|management|manage[sd]?|managing|care\s+(?:for|and)|caring\s+for|help(?:s|ed|ing)?)\b/u', $q) === 1) {
+            return 'care';
+        }
+    }
+
     if (preg_match('/^\s*what\s+(?:is|are)\b/u', $q) === 1) {
         return 'definition';
     }
@@ -6732,6 +6962,7 @@ protected function extractEnglishSectionsByIntent(string $content): array
         'symptoms' => [],
         'prevention' => [],
         'treatment' => [],
+        'diagnosis' => [],
         'benefits' => [],
         'other' => [],
     ];
@@ -6847,8 +7078,16 @@ protected function matchEnglishSectionHeadingIntent(string $line, string $lower)
     }
 
     // Known boundaries that end prior medical sections without being answer buckets.
+    // Assessment / diagnosis sections get their own bucket (they used to be lumped into "other", which is never sent).
     if (preg_match(
-        '/^(?:transmission|mode\s+of\s+transmission|assessment(?:\s+and\s+care)?|diagnosis|important\s+reminder|facts?\s+and\s+myths|what\s+should\s+you\s+do|what\s+to\s+do)\b/u',
+        '/^(?:assessment|diagnosis|screening|how\s+is\s+.+\s+(?:diagnosed|assessed|detected))\b/u',
+        $lower
+    ) === 1) {
+        return 'diagnosis';
+    }
+
+    if (preg_match(
+        '/^(?:transmission|mode\s+of\s+transmission|important\s+reminder|facts?\s+and\s+myths|what\s+should\s+you\s+do|what\s+to\s+do)\b/u',
         $lower
     ) === 1) {
         return 'other';
@@ -6862,7 +7101,7 @@ protected function matchEnglishSectionHeadingIntent(string $line, string $lower)
  *
  * @return array{text: string, buckets: list<string>}
  */
-protected function selectEnglishContextSections(string $content, string $intent): array
+protected function selectEnglishContextSections(string $content, string $intent, string $question = '', string $sourceFile = ''): array
 {
     $sections = $this->extractEnglishSectionsByIntent($content);
 
@@ -6883,6 +7122,9 @@ protected function selectEnglishContextSections(string $content, string $intent)
         'prevention' => ['prevention'],
         'treatment' => ['treatment'],
         'benefits' => ['benefits'],
+        'diagnosis' => ['diagnosis'],
+        'care' => ['treatment', 'diagnosis'],
+        'factors' => ['causes'],
         'definition' => ['definition'],
         'general' => ['definition'],
         default => ['definition'],
@@ -6899,10 +7141,96 @@ protected function selectEnglishContextSections(string $content, string $intent)
         $used[] = $key;
     }
 
+    // The headings do not always name what was asked ("Who is at risk...?", "Does the vaccine protect...?",
+    // "What virus causes...?"). For general questions, or when the requested section is missing, add the
+    // section whose text shares the most words with the question. Strict intents that already have their
+    // section are left exactly as they were.
+    if (($intent === 'general' || $parts === []) && trim($question) !== '') {
+        foreach ($this->englishSectionsByQuestionOverlap($sections, $question, $sourceFile, $used) as $key => $body) {
+            $parts[] = $body;
+            $used[] = $key;
+        }
+    }
+
+    // New intents never return less than before: no matching section -> the definition, like "general".
+    if ($parts === [] && in_array($intent, ['diagnosis', 'care', 'factors'], true)) {
+        $body = trim((string) ($sections['definition'] ?? ''));
+        if ($body !== '') {
+            $parts[] = $body;
+            $used[] = 'definition';
+        }
+    }
+
     return [
         'text' => trim(implode("\n\n", $parts)),
         'buckets' => $used,
     ];
+}
+
+/**
+ * Up to two sections (never the definition) whose text shares words with the question.
+ *
+ * @param  array<string, string>  $sections
+ * @param  list<string>  $exclude  bucket names already used
+ * @return array<string, string>
+ */
+protected function englishSectionsByQuestionOverlap(array $sections, string $question, string $sourceFile, array $exclude): array
+{
+    $filler = [
+        'what', 'which', 'when', 'where', 'does', 'should', 'could', 'would', 'about', 'their', 'there', 'these', 'those',
+        'with', 'from', 'have', 'that', 'this', 'your', 'they', 'been', 'into', 'than', 'then', 'long', 'many', 'much',
+        'more', 'most', 'some', 'also', 'after', 'before', 'during', 'give', 'take', 'while', 'every', 'each', 'like',
+        'make', 'made', 'help', 'need', 'know', 'tell', 'mean', 'means',
+    ];
+    $slugWords = preg_split('/[^a-z0-9]+/u', mb_strtolower(pathinfo($sourceFile, PATHINFO_FILENAME), 'UTF-8')) ?: [];
+    $stem = static function (string $w): string {
+        foreach (['ing', 'ed', 'es', 's'] as $suffix) {
+            if (mb_strlen($w, 'UTF-8') > 5 && str_ends_with($w, $suffix)) {
+                return mb_substr($w, 0, -mb_strlen($suffix, 'UTF-8'), 'UTF-8');
+            }
+        }
+
+        return $w;
+    };
+
+    preg_match_all('/[a-z]{4,}/u', mb_strtolower($question, 'UTF-8'), $m);
+    $wanted = [];
+    foreach ($m[0] as $w) {
+        if (in_array($w, $filler, true) || in_array($w, $this->stopwords, true) || in_array($w, $slugWords, true)) {
+            continue;
+        }
+        $wanted[$stem($w)] = true;
+    }
+    if ($wanted === []) {
+        return [];
+    }
+
+    $scored = [];
+    $order = 0;
+    foreach ($sections as $key => $body) {
+        $order++;
+        if ($key === 'definition' || in_array($key, $exclude, true) || trim((string) $body) === '') {
+            continue;
+        }
+        preg_match_all('/[a-z]{4,}/u', mb_strtolower((string) $body, 'UTF-8'), $bm);
+        $have = [];
+        foreach ($bm[0] as $w) {
+            $have[$stem($w)] = true;
+        }
+        $score = count(array_intersect_key($wanted, $have));
+        if ($score >= 1) {
+            $scored[] = ['key' => $key, 'score' => $score, 'order' => $order];
+        }
+    }
+
+    usort($scored, fn ($a, $b) => [$b['score'], $a['order']] <=> [$a['score'], $b['order']]);
+
+    $out = [];
+    foreach (array_slice($scored, 0, 2) as $row) {
+        $out[$row['key']] = trim((string) $sections[$row['key']]);
+    }
+
+    return $out;
 }
 
 /**
@@ -6961,7 +7289,7 @@ protected function scopeEnglishChunksForMistral(array $chunks, string $question)
             continue;
         }
 
-        $selected = $this->selectEnglishContextSections($fullContent, $intent);
+        $selected = $this->selectEnglishContextSections($fullContent, $intent, $question, $sourceFile);
         if ($selected['text'] === '') {
             continue;
         }
@@ -7062,7 +7390,7 @@ protected function extractTagalogQuestionTopics(string $question): array
 protected function extractTagalogTopicTokens(string $text): array
 {
     $tokens = [];
-    foreach ($this->extractBikolHeadingMatchTokens($text) as $token) {
+    foreach ($this->extractBikolHeadingMatchTokens($text, false) as $token) {
         if ($this->isTagalogSupportIntentCueToken((string) $token)) {
             continue;
         }
@@ -7085,8 +7413,8 @@ protected function isTagalogSupportIntentCueToken(string $token): bool
 
     return in_array($token, [
         'gamot', 'gamit', 'gamutin', 'ginagamot', 'paggamot', 'pagamot', 'gamutan', 'lunas', 'treatment',
-        'sintomas', 'senyales', 'sinyales', 'palatandaan',
-        'iwas', 'iwasan', 'maiwasan', 'maiiwasan', 'pagiwas', 'likayan',
+        'sintomas', 'senyales', 'palatandaan',
+        'iwas', 'iwasan', 'maiwasan', 'maiiwasan', 'pagiwas',
         'sanhi', 'dahilan', 'dahil', 'benepisyo', 'benipisyo',
         'kapag', 'dapat', 'gawin', 'gawa', 'gagawin',
         'paano', 'bakit', 'ano', 'tungkol', 'para', 'may',
@@ -7156,7 +7484,7 @@ protected function tagalogDocumentSupportsQuestion(
     string $intent,
     array $topics
 ): bool {
-    $titleTokens = $this->extractBikolTopicTitleTokens($content, $sourceFile);
+    $titleTokens = $this->extractBikolTopicTitleTokens($content, $sourceFile, false);
     $primary = $topics['primary'];
     $constraints = $topics['constraints'];
 
