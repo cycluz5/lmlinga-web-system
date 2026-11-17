@@ -5,7 +5,31 @@
  */
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import { createLaMedallaBaseMap, LA_MEDALLA_CENTER, LA_MEDALLA_ZOOM } from '../maps/la-medalla-base';
+import {
+    createLaMedallaBaseMap,
+    LA_MEDALLA_BOUNDARY,
+    LA_MEDALLA_CENTER,
+    LA_MEDALLA_ZOOM,
+} from '../maps/la-medalla-base';
+import {
+    distanceToBoundaryMeters,
+    isPointWithinBoundaryTolerance,
+} from '../maps/la-medalla-boundary';
+import {
+    betterGpsFix,
+    gpsFixGoodEnough,
+    outsideBoundaryGpsMessage,
+} from './spot-mapping-gps-fix';
+import {
+    currentSessionToken,
+    GEO_BLOCKED_MESSAGE,
+    GEO_CONSENT_CONFIRM_TEXT,
+    GEO_CONSENT_MANUAL_MESSAGE,
+    geolocationPermissionState,
+    hasGeoConsent,
+    rememberGeoConsent,
+    sessionStore,
+} from './spot-mapping-geo-consent';
 import { isClientOffline, isNetworkFailure } from '../offline/offline-forms';
 import { OFFLINE_EVENTS } from '../offline/offline-status.js';
 import { initSpotMappingExport } from './spot-mapping-export';
@@ -28,8 +52,7 @@ const DEMO_ZOOM = LA_MEDALLA_ZOOM;
 const GPS_ZOOM = 17;
 const DEMO_SCOPE_RADIUS_METERS = 2000;
 
-const OUTSIDE_SCOPE_MESSAGE =
-    'You appear to be outside Barangay La Medalla. Household plotting is limited to Barangay La Medalla.';
+const OUTSIDE_SCOPE_MESSAGE = 'You cannot plot outside the Barangay La Medalla boundary.';
 
 const GENERIC_PLOT_FAILURE =
     'Unable to register this household. Check the details and try again.';
@@ -176,9 +199,9 @@ function createMarkerIcon(data, selected = false, accessibleName = '', count = 1
     return L.divIcon({
         className: 'lml-spot-map__marker-wrap',
         html: `<span class="lml-spot-map__marker ${zoneClass} ${statusClass}${selectedClass}" aria-label="${escapeAttr(label)}">${countBadge}<i class="bi ${iconClass}" aria-hidden="true"></i></span>`,
-        iconSize: [24, 24],
-        iconAnchor: [12, 12],
-        popupAnchor: [0, -12],
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
+        popupAnchor: [0, -16],
     });
 }
 
@@ -241,11 +264,16 @@ function distanceMeters(lat1, lng1, lat2, lng2) {
 }
 
 /**
- * UI-only demo scope check against DEMO_CENTER + DEMO_SCOPE_RADIUS_METERS.
- * Swap this helper later for polygon / GIS / backend geofencing without
- * changing the GPS success / manual fallback workflow.
+ * Plot scope check against the (indicative) Barangay La Medalla boundary polygon.
+ * The server enforces the same boundary (App\Rules\WithinLaMedallaBoundary).
+ * Falls back to DEMO_CENTER + DEMO_SCOPE_RADIUS_METERS only if the boundary cannot be read.
  */
 function isWithinDemoScope(lat, lng) {
+    const inBoundary = isPointWithinBoundaryTolerance(LA_MEDALLA_BOUNDARY, lat, lng);
+    if (inBoundary !== null) {
+        return inBoundary;
+    }
+
     const [centerLat, centerLng] = DEMO_CENTER;
     return distanceMeters(centerLat, centerLng, lat, lng) <= DEMO_SCOPE_RADIUS_METERS;
 }
@@ -464,6 +492,9 @@ function initSpotMapping() {
     const overlay = root.querySelector('[data-spot-map-overlay]');
     const overlayIcon = root.querySelector('[data-spot-map-overlay-icon]');
     const overlayText = root.querySelector('[data-spot-map-overlay-text]');
+    const geoConsentDialog = root.querySelector('[data-spot-map-geo-consent]');
+    const geoConsentAllowBtn = root.querySelector('[data-spot-map-geo-consent-allow]');
+    const geoConsentManualBtn = root.querySelector('[data-spot-map-geo-consent-manual]');
     const panel = root.querySelector('[data-spot-map-panel]');
     const noteEl = root.querySelector('[data-spot-map-note]');
     const closeBtn = root.querySelector('[data-spot-map-close]');
@@ -1234,9 +1265,9 @@ function initSpotMapping() {
             items.push(data);
         });
 
-        const groups = buildOverlapGroups(items, {
-            getLayerPoint: (lat, lng) => map.latLngToLayerPoint(L.latLng(lat, lng)),
-        });
+        // Like the Dashboard map, nearby houses are drawn separately. Only houses at exactly the
+        // same coordinates are grouped (count badge), because one would otherwise hide the other.
+        const groups = buildOverlapGroups(items);
         const plan = planOverlapVisuals(groups);
         const layers = applyOverlapLayerPlan(plan, {
             householdLayers: new Set(markerById.keys()),
@@ -1457,9 +1488,12 @@ function initSpotMapping() {
      * Outside-scope GPS: announce the restriction via setPlacing, then swap to the
      * standard placement cue after 2.8s so demos can continue without re-tapping Plot.
      */
-    function enterOutsideScopeFallback(requestId) {
+    function enterOutsideScopeFallback(requestId, fix = {}) {
         setLocating(false);
-        setPlacing(true, OUTSIDE_SCOPE_MESSAGE);
+        setPlacing(true, outsideBoundaryGpsMessage(OUTSIDE_SCOPE_MESSAGE, {
+            ...fix,
+            distanceMeters: distanceToBoundaryMeters(LA_MEDALLA_BOUNDARY, fix.lat, fix.lng),
+        }));
         focusMapCanvas();
 
         window.setTimeout(() => {
@@ -1490,7 +1524,7 @@ function initSpotMapping() {
             inScope: isWithinDemoScope(lat, lng),
         });
         if (!plan.flyTo) {
-            enterOutsideScopeFallback(requestId);
+            enterOutsideScopeFallback(requestId, { lat, lng, accuracy });
             return;
         }
 
@@ -1529,6 +1563,7 @@ function initSpotMapping() {
         closePanel();
         locateRequestId += 1;
         const requestId = locateRequestId;
+        stopGpsWatch();
 
         setPlacing(false);
 
@@ -1538,6 +1573,79 @@ function initSpotMapping() {
             return;
         }
 
+        geolocationPermissionState(navigator).then((state) => {
+            if (requestId !== locateRequestId) {
+                return;
+            }
+
+            // Blocked in the browser: it will not prompt again, so explain how to unblock.
+            if (state === 'denied') {
+                enterManualFallback(GEO_BLOCKED_MESSAGE);
+                return;
+            }
+
+            // Ask in-app before touching the device GPS (once per login session).
+            if (hasGeoConsent(sessionStore(), currentSessionToken())) {
+                requestGpsLocation(requestId, plan);
+                return;
+            }
+
+            askGeoConsent(requestId, plan);
+        });
+    }
+
+    function askGeoConsent(requestId, plan) {
+        const allow = () => {
+            if (requestId !== locateRequestId) {
+                return;
+            }
+            rememberGeoConsent(sessionStore(), currentSessionToken());
+            requestGpsLocation(requestId, plan);
+        };
+        const placeManually = () => {
+            if (requestId !== locateRequestId) {
+                return;
+            }
+            enterManualFallback(GEO_CONSENT_MANUAL_MESSAGE, 'info');
+        };
+
+        if (!geoConsentDialog || typeof geoConsentDialog.showModal !== 'function') {
+            if (window.confirm(GEO_CONSENT_CONFIRM_TEXT)) {
+                allow();
+            } else {
+                placeManually();
+            }
+            return;
+        }
+
+        let choice = 'manual';
+        const onAllow = () => {
+            choice = 'allow';
+            geoConsentDialog.close();
+        };
+        const onManual = () => {
+            choice = 'manual';
+            geoConsentDialog.close();
+        };
+        // Esc, the Manual button and Allow all end in 'close'; decide there exactly once.
+        const onClose = () => {
+            geoConsentAllowBtn?.removeEventListener('click', onAllow);
+            geoConsentManualBtn?.removeEventListener('click', onManual);
+            if (choice === 'allow') {
+                allow();
+            } else {
+                placeManually();
+            }
+        };
+
+        geoConsentAllowBtn?.addEventListener('click', onAllow);
+        geoConsentManualBtn?.addEventListener('click', onManual);
+        geoConsentDialog.addEventListener('close', onClose, { once: true });
+        geoConsentDialog.showModal();
+        geoConsentAllowBtn?.focus();
+    }
+
+    function requestGpsLocation(requestId, plan) {
         setLocating(true);
         showOverlay(plan.overlay, {
             mode: plan.overlayMode,
@@ -1551,11 +1659,64 @@ function initSpotMapping() {
             return;
         }
 
-        navigator.geolocation.getCurrentPosition(
-            (position) => handleGpsSuccess(position, requestId),
-            (error) => handleGpsError(error, requestId),
+        // Listen briefly and keep the most accurate fix: the first fix on a phone is often a
+        // coarse Wi-Fi/cell estimate that lands outside the barangay.
+        stopGpsWatch();
+        let best = null;
+        let finished = false;
+        const finish = (run) => {
+            if (finished) {
+                return;
+            }
+            finished = true;
+            stopGpsWatch();
+            run();
+        };
+
+        gpsWatchTimer = window.setTimeout(() => {
+            finish(() => {
+                if (best) {
+                    handleGpsSuccess(best, requestId);
+                } else {
+                    handleGpsError({ code: 3 }, requestId);
+                }
+            });
+        }, GEO_OPTIONS.timeout);
+
+        gpsWatchId = navigator.geolocation.watchPosition(
+            (position) => {
+                if (requestId !== locateRequestId) {
+                    finish(() => {});
+                    return;
+                }
+                best = betterGpsFix(best, position);
+                if (gpsFixGoodEnough(best)) {
+                    finish(() => handleGpsSuccess(best, requestId));
+                }
+            },
+            (error) => {
+                // Keep waiting if we already have a fix; only fail when there is none.
+                if (best) {
+                    return;
+                }
+                finish(() => handleGpsError(error, requestId));
+            },
             GEO_OPTIONS,
         );
+    }
+
+    let gpsWatchId = null;
+    let gpsWatchTimer = null;
+
+    function stopGpsWatch() {
+        if (gpsWatchId !== null) {
+            navigator.geolocation?.clearWatch?.(gpsWatchId);
+            gpsWatchId = null;
+        }
+        if (gpsWatchTimer !== null) {
+            window.clearTimeout(gpsWatchTimer);
+            gpsWatchTimer = null;
+        }
     }
 
     function applyStats(stats) {
@@ -1690,6 +1851,15 @@ function initSpotMapping() {
         }
 
         const { lat, lng } = event.latlng;
+        if (!isWithinDemoScope(lat, lng)) {
+            // Stay in placing mode so the user can click again inside the boundary.
+            showOverlay(OUTSIDE_SCOPE_MESSAGE, {
+                mode: 'error',
+                icon: 'bi-exclamation-triangle-fill',
+            });
+            return;
+        }
+
         const tempData = placeTemporaryMarker(lat, lng, { source: 'manual' });
         setPlacing(false);
         openPanel(tempData, selectedPendingHousehold ? plotExistingBtn : plotBtn);

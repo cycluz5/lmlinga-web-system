@@ -61,7 +61,7 @@
                         <th scope="col">Action</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody data-lml-paginate="dr-row" data-lml-paginate-label="death requests">
                     @foreach ($requests as $request)
                         <tr
                             class="lml-hr-table__row"

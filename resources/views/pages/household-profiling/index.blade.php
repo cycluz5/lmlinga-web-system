@@ -163,7 +163,7 @@
                             <th scope="col">Actions</th>
                         </tr>
                     </thead>
-                    <tbody data-hh-tbody>
+                    <tbody data-lml-paginate="hh-row" data-lml-paginate-label="households" data-hh-tbody>
                         @foreach ($demoHouseholds as $household)
                             @php
                                 $rowSource = $household['source'] ?? 'db';

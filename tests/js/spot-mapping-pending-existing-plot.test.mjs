@@ -65,7 +65,7 @@ describe('spot mapping existing pending household plot', () => {
 
     it('still uses GPS then manual map-click for placing', () => {
         assert.match(spotSource, /function startGpsPlot\(\)/);
-        assert.match(spotSource, /navigator\.geolocation\.getCurrentPosition/);
+        assert.match(spotSource, /navigator\.geolocation\.watchPosition/);
         assert.match(spotSource, /placeTemporaryMarker\(lat, lng, \{ source: 'manual' \}\)/);
         assert.match(spotSource, /data-spot-map-plot-existing/);
     });

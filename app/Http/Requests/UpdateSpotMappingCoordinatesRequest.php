@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\WithinLaMedallaBoundary;
 use App\Support\DemoCatalog;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -44,7 +45,7 @@ class UpdateSpotMappingCoordinatesRequest extends FormRequest
     {
         return [
             'household_no' => ['required', 'string', 'max:64', 'regex:/^[A-Za-z0-9\-]+$/'],
-            'lat' => ['required', 'numeric', 'between:-90,90'],
+            'lat' => ['required', 'numeric', 'between:-90,90', new WithinLaMedallaBoundary],
             'lng' => ['required', 'numeric', 'between:-180,180'],
             // Workflow confirmation only — never persisted.
             'consent' => ['required', 'accepted'],

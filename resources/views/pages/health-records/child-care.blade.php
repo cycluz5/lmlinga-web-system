@@ -231,7 +231,7 @@
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
-                        <tbody data-hr-cc-tbody>
+                        <tbody data-lml-paginate="hr-cc-row" data-lml-paginate-label="children" data-hr-cc-tbody>
                             @foreach ($rows as $row)
                                 <tr
                                     data-hr-cc-row

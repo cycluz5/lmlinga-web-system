@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Rules\DeliverableEmailDomain;
+use App\Rules\PhilippineMobileNumber;
 use App\Support\StaffAccountStatus;
 use App\Support\StaffRole;
 use App\Support\StrongPassword;
@@ -32,8 +34,8 @@ class StoreHealthWorkerRequest extends FormRequest
             'first_name' => ['required', 'string', 'max:100'],
             'last_name' => ['required', 'string', 'max:100'],
             'middle_name' => ['nullable', 'string', 'max:100'],
-            'email' => ['required', 'email', 'max:255', Rule::unique($userTable, 'email')],
-            'mobile' => ['required', 'string', 'max:20'],
+            'email' => ['required', 'email', 'max:255', Rule::unique($userTable, 'email'), new DeliverableEmailDomain],
+            'mobile' => ['required', 'string', 'max:20', new PhilippineMobileNumber],
             'role' => ['required', 'string', Rule::in(['BHW', 'BNS', 'BSPO', 'Admin', ...StaffRole::ALL])],
             'status' => ['required', 'string', Rule::in(StaffAccountStatus::ALL)],
             'password' => StrongPassword::laravelRules(),

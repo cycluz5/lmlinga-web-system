@@ -75,7 +75,7 @@
                     @endif
                 </tr>
             </thead>
-            <tbody data-hr-mc-tbody>
+            <tbody data-lml-paginate="hr-mc-row" data-lml-paginate-label="records" data-hr-mc-tbody>
                 @foreach ($rows as $row)
                     @php
                         $viewUrl = (string) ($row['view_url'] ?? '');
