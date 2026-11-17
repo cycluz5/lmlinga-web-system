@@ -1,0 +1,72 @@
+{
+    "type": "Feature",
+    "properties": {
+        "source": "INDICATIVE boundary — NAMRIA/PSA Philippines Subnational Administrative Boundaries (COD-AB, cod-ab-phl, CC BY-IGO) via faeldon/philippines-json-maps v1.1.0 (hires); not a legal or survey boundary",
+        "name": "Barangay La Medalla, Iriga City, Camarines Sur (PSGC 0501716006) — indicative",
+        "version": "cod-ab-phl v03 / philippines-json-maps v1.1.0 (PSGC 2026-3Q)",
+        "retrieved_at": "2026-10-30",
+        "status": "indicative — for demonstration only; not for authoritative enforcement until confirmed by the Iriga City Planning and Development Office / DENR-LMB / NAMRIA",
+        "license": "CC BY-IGO 3.0 (data: NAMRIA, PSA; published by OCHA on HDX); repackaging scripts MIT",
+        "attribution": "Contains data from NAMRIA and the Philippine Statistics Authority via OCHA HDX (https://data.humdata.org/dataset/cod-ab-phl) and https://github.com/faeldon/philippines-json-maps",
+        "psgc": "0501716006",
+        "hdx_pcode": "PH0501716006",
+        "source_file": "geojson/municities/hires/bgysubmuns-municity-501716000.0.1.json (release geojson-hires.zip, SHA-256 verified)",
+        "source_area_km2_epsg32651": 4.25954,
+        "crs": "WGS 84 longitude/latitude (EPSG:4326), reprojected by the source from EPSG:32651"
+    },
+    "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+            [
+                [
+                    123.4474802530001,
+                    13.366884872000073
+                ],
+                [
+                    123.44335931500008,
+                    13.372033081000037
+                ],
+                [
+                    123.44317618800007,
+                    13.37368764300004
+                ],
+                [
+                    123.42892477300008,
+                    13.386891177000052
+                ],
+                [
+                    123.42693644300005,
+                    13.38415490200003
+                ],
+                [
+                    123.42026729200005,
+                    13.381535080000047
+                ],
+                [
+                    123.43145186800005,
+                    13.361063343000067
+                ],
+                [
+                    123.43280213500009,
+                    13.363097290000042
+                ],
+                [
+                    123.43929871800005,
+                    13.361226229000065
+                ],
+                [
+                    123.44286690000003,
+                    13.364514088000021
+                ],
+                [
+                    123.44557336600008,
+                    13.36478847200004
+                ],
+                [
+                    123.4474802530001,
+                    13.366884872000073
+                ]
+            ]
+        ]
+    }
+}

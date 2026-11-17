@@ -216,7 +216,7 @@
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
-                        <tbody data-hr-dw-tbody>
+                        <tbody data-lml-paginate="hr-dw-row" data-lml-paginate-label="records" data-hr-dw-tbody>
                             @foreach ($rows as $row)
                                 <tr
                                     data-hr-dw-row

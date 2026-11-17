@@ -345,7 +345,7 @@
                                 <th scope="col">Status</th>
                             </tr>
                         </thead>
-                        <tbody data-hr-ot-tbody>
+                        <tbody data-lml-paginate="hr-ot-row" data-lml-paginate-label="records" data-hr-ot-tbody>
                             @foreach ($rows as $row)
                                 <tr
                                     data-hr-ot-row

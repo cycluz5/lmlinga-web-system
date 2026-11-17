@@ -500,6 +500,9 @@ gunzip -c /var/backups/lmlinga/db-YYYY-MM-DD-HHMM.sql.gz | sudo mariadb lmlinga
 
 ## Deploying updates
 
+Merges to `main` deploy automatically once GitHub Actions is set up; see [DEPLOYMENT_CICD.md](DEPLOYMENT_CICD.md).
+The steps below are the manual equivalent, for a first deploy or when the automatic one can't be used.
+
 Back up as `ec2-user`, then switch to the app user:
 
 ```bash
