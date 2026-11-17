@@ -500,7 +500,9 @@
                         class="lml-chatbot-main__mode-btn lml-focus-ring"
                         data-lml-mode="ai"
                         aria-pressed="false"
-                        title="Uses the locally trained Bikol-Iriga AI model to understand the question"
+                        disabled
+                        aria-disabled="true"
+                        title="Not available yet"
                     >
                         <i class="bi bi-cpu" aria-hidden="true"></i>
                         Local AI model
@@ -510,7 +512,9 @@
                         class="lml-chatbot-main__mode-btn lml-focus-ring"
                         data-lml-mode="cloud"
                         aria-pressed="false"
-                        title="Trained Bikol-Iriga AI model + cloud Gemma explains the verified answer (needs internet)"
+                        disabled
+                        aria-disabled="true"
+                        title="Not available yet"
                     >
                         <i class="bi bi-cloud" aria-hidden="true"></i>
                         Cloud AI (Gemma)

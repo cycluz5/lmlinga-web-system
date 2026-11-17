@@ -1701,6 +1701,7 @@ function appendMessage(role, text, points = [], title = null, language = null, i
             if (langLive) {
                 langLive.textContent = `Language changed to ${btn.dataset.lmlLang}`;
             }
+            syncModesVisibility();
         });
     });
 
@@ -1734,13 +1735,25 @@ function syncLanguageButton(languageCode) {
     if (langLive) {
         langLive.textContent = `Language changed to ${targetLabel}`;
     }
+
+    syncModesVisibility();
 }
 
 /** Chatbot type for the FOD comparison: 'context' or 'ai'. */
 function getSelectedMode() {
     const activeBtn = root.querySelector('[data-lml-mode].lml-chatbot-main__mode-btn--active');
     const mode = activeBtn ? activeBtn.dataset.lmlMode : 'context';
-    return ['context', 'ai', 'cloud'].includes(mode) ? mode : 'context';
+    // Local AI model and Cloud AI are switched off for now: only Context-based is usable.
+    return mode === 'context' ? mode : 'context';
+}
+
+/** The Chatbot-type switch (Context-based / Local AI model / Cloud AI) is for Bikol – Iriga only. */
+function syncModesVisibility() {
+    const modes = root.querySelector('[data-lml-modes]');
+    if (!modes) {
+        return;
+    }
+    modes.hidden = getSelectedLanguageCode() !== 'bcl';
 }
 
 function setSelectedMode(mode) {
@@ -1767,12 +1780,15 @@ root.querySelectorAll('[data-lml-mode]').forEach((btn) => {
 
 try {
     const savedMode = localStorage.getItem('lmlChatbotMode');
-    if (['context', 'ai', 'cloud'].includes(savedMode)) {
+    // A mode saved earlier ("ai"/"cloud") is ignored while those two are disabled.
+    if (savedMode === 'context') {
         setSelectedMode(savedMode);
     }
 } catch (e) {
     // ignore
 }
+
+syncModesVisibility();
 
 function getSelectedLanguageCode() {
     const activeBtn = root.querySelector('[data-lml-lang].lml-chatbot-main__lang-btn--active');
@@ -1824,7 +1840,7 @@ if (composer && composerInput) {
                 body: JSON.stringify({
                     question: text,
                     language: getSelectedLanguageCode(),
-                    mode: getSelectedMode(),
+                    mode: getSelectedLanguageCode() === 'bcl' ? getSelectedMode() : 'context',
                     conversation_id: currentConversationId,
                 }),
             });
