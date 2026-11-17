@@ -25,19 +25,25 @@ use function Illuminate\Support\defer;
  * Staff/admin password recovery against App\Models\User (users or user_management).
  * Does not use ResidentAccount or chatbot reset routes.
  *
- * Batch 2 (panel refinement): reset tokens are created and mailed ONLY for registered, eligible accounts
- * (active, not deleted, email ownership verified per Batch 1). Every request gets the same response, and the
- * mail is sent after the response (defer), so neither the message nor the response time reveals whether an
- * email is registered. An explicit "Email is not registered" message is intentionally NOT shown: it would let
- * anyone test which addresses belong to health workers (account enumeration). The generic message tells a
- * genuine worker what to do instead.
+ * Batch 2 (panel refinement), updated for refinement item 2: reset tokens are created and mailed ONLY for registered,
+ * eligible accounts (active, not deleted, email ownership verified per Batch 1). An email that is not a registered
+ * health-worker account is told so ("not registered") instead of silently getting a success message, because a
+ * mistyped or dummy address must not look like it worked. Trade-off, accepted on purpose: this reveals whether an
+ * address belongs to a health worker, so the per-address and per-IP rate limits stay in force for every request and
+ * the endpoint stays outside the authenticated area. The mail is still sent after the response (defer).
  */
 class ForgotPasswordController extends Controller
 {
-    public const SENT_MESSAGE = 'If an account matches that email, password reset instructions have been sent. '
-        .'If no email arrives within a few minutes, check your spam folder or contact your barangay administrator.';
+    public const SENT_MESSAGE = 'Password reset instructions have been sent to your email. '
+        .'If nothing arrives within a few minutes, check your spam folder or contact your barangay administrator.';
 
     /** Per-address limit, applied to registered and unregistered addresses alike. */
+    public const NOT_REGISTERED_MESSAGE = 'This email is not registered as a health worker account. Check the address, or ask your barangay administrator to create your account.';
+
+    public const NOT_ELIGIBLE_MESSAGE = 'A password reset link cannot be sent for this account right now. Contact your barangay administrator.';
+
+    public const TOO_MANY_MESSAGE = 'Too many reset requests for this email. Please wait about 15 minutes before trying again.';
+
     public const MAX_REQUESTS_PER_EMAIL = 3;
 
     public const EMAIL_WINDOW_SECONDS = 900;
@@ -71,23 +77,32 @@ class ForgotPasswordController extends Controller
             self::EMAIL_WINDOW_SECONDS,
         );
 
-        if ($withinLimit) {
-            $user = User::query()
-                ->whereRaw('LOWER(email) = ?', [$email])
-                ->first();
-
-            if ($user instanceof User && self::isEligibleForReset($user)) {
-                $resetEmail = $user->getEmailForPasswordReset();
-                // After the response is sent: response time is the same for registered and unknown emails.
-                defer(static function () use ($resetEmail): void {
-                    try {
-                        Password::sendResetLink(['email' => $resetEmail]);
-                    } catch (Throwable $e) {
-                        Log::warning('staff.password_reset.delivery_failed', ['error' => $e::class]);
-                    }
-                });
-            }
+        if (! $withinLimit) {
+            // Same message for every address, so the limit itself says nothing about the account.
+            return back()->withInput($request->only('email'))->withErrors(['email' => self::TOO_MANY_MESSAGE]);
         }
+
+        $user = User::query()
+            ->whereRaw('LOWER(email) = ?', [$email])
+            ->first();
+
+        if (! $user instanceof User) {
+            return back()->withInput($request->only('email'))->withErrors(['email' => self::NOT_REGISTERED_MESSAGE]);
+        }
+
+        if (! self::isEligibleForReset($user)) {
+            return back()->withInput($request->only('email'))->withErrors(['email' => self::NOT_ELIGIBLE_MESSAGE]);
+        }
+
+        $resetEmail = $user->getEmailForPasswordReset();
+        // After the response is sent, so a slow mail server does not slow the page.
+        defer(static function () use ($resetEmail): void {
+            try {
+                Password::sendResetLink(['email' => $resetEmail]);
+            } catch (Throwable $e) {
+                Log::warning('staff.password_reset.delivery_failed', ['error' => $e::class]);
+            }
+        });
 
         return back()->with('status', self::SENT_MESSAGE);
     }

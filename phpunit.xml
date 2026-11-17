@@ -21,6 +21,9 @@
         <env name="APP_ENV" value="testing"/>
         <env name="APP_MAINTENANCE_DRIVER" value="file"/>
         <env name="BCRYPT_ROUNDS" value="4"/>
+        <env name="LMLINGA_STAFF_EMAIL_DNS_CHECK" value="false"/>
+        <env name="LMLINGA_STAFF_EMAIL_MAILBOX_PROBE" value="false"/>
+        <env name="LMLINGA_STAFF_MOBILE_DUMMY_CHECK" value="false"/>
         <env name="CACHE_STORE" value="array"/>
         <!-- <env name="DB_CONNECTION" value="sqlite"/> -->
         <!-- <env name="DB_DATABASE" value=":memory:"/> -->

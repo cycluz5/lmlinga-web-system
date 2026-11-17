@@ -85,38 +85,34 @@ class StaffForgotPasswordEligibilityTest extends TestCase
         Notification::assertSentTo($user, ResetPassword::class);
     }
 
-    public function test_unregistered_email_gets_no_token_no_email_and_the_identical_response(): void
+    public function test_unregistered_email_is_told_it_is_not_registered_and_gets_no_token_or_email(): void
     {
         $this->staff('someone.real@example.test');
 
-        $unknown = $this->requestReset('nobody.here@example.test');
-        $known = $this->requestReset('someone.real@example.test');
+        $this->requestReset('nobody.here@example.test')
+            ->assertRedirect(route('password.request'))
+            ->assertSessionHasErrors(['email' => ForgotPasswordController::NOT_REGISTERED_MESSAGE])
+            ->assertSessionMissing('status');
 
-        foreach ([$unknown, $known] as $response) {
-            $response->assertRedirect(route('password.request'))
-                ->assertSessionHas('status', ForgotPasswordController::SENT_MESSAGE)
-                ->assertSessionDoesntHaveErrors();
-        }
-        $this->assertSame($unknown->getStatusCode(), $known->getStatusCode());
         $this->assertSame(0, $this->tokenCount('nobody.here@example.test'));
-        Notification::assertSentTimes(ResetPassword::class, 1);
+        Notification::assertNothingSent();
     }
 
-    public function test_generic_message_never_names_the_address_or_says_not_registered(): void
+    public function test_not_registered_message_is_shown_on_the_page_and_kept_in_the_input(): void
     {
-        $message = ForgotPasswordController::SENT_MESSAGE;
+        $this->requestReset('dummy.person@example.test');
 
-        $this->assertStringNotContainsStringIgnoringCase('not registered', $message);
-        $this->assertStringNotContainsStringIgnoringCase('does not exist', $message);
-        $this->requestReset('nobody.here@example.test');
-        $this->get(route('password.request'))->assertOk()->assertDontSee('nobody.here@example.test');
+        $this->get(route('password.request'))
+            ->assertOk()
+            ->assertSee(ForgotPasswordController::NOT_REGISTERED_MESSAGE);
     }
 
     public function test_inactive_account_gets_no_token_and_no_email(): void
     {
         $user = $this->staff('inactive.reset@example.test', ['status' => StaffAccountStatus::INACTIVE]);
 
-        $this->requestReset($user->email)->assertSessionHas('status', ForgotPasswordController::SENT_MESSAGE);
+        $this->requestReset($user->email)
+            ->assertSessionHasErrors(['email' => ForgotPasswordController::NOT_ELIGIBLE_MESSAGE]);
 
         $this->assertSame(0, $this->tokenCount($user->email));
         Notification::assertNothingSent();
@@ -127,7 +123,8 @@ class StaffForgotPasswordEligibilityTest extends TestCase
         $user = $this->staff('pending.reset@gmail.com');
         app(StaffEmailVerificationService::class)->markPending($user);
 
-        $this->requestReset($user->email)->assertSessionHas('status', ForgotPasswordController::SENT_MESSAGE);
+        $this->requestReset($user->email)
+            ->assertSessionHasErrors(['email' => ForgotPasswordController::NOT_ELIGIBLE_MESSAGE]);
 
         $this->assertSame(0, $this->tokenCount($user->email));
         Notification::assertNothingSent();
@@ -151,18 +148,31 @@ class StaffForgotPasswordEligibilityTest extends TestCase
 
     // ------------------------------------------------------------------ limits
 
-    public function test_per_address_limit_applies_equally_to_registered_and_unregistered_addresses(): void
+    public function test_per_address_limit_applies_to_registered_addresses_with_one_message(): void
     {
         $user = $this->staff('limited.reset@example.test');
 
-        for ($i = 0; $i < ForgotPasswordController::MAX_REQUESTS_PER_EMAIL + 1; $i++) {
+        for ($i = 0; $i < ForgotPasswordController::MAX_REQUESTS_PER_EMAIL; $i++) {
             $this->travel(61)->seconds(); // past the broker's own 60 s per-user throttle
             $this->requestReset($user->email)->assertSessionHas('status', ForgotPasswordController::SENT_MESSAGE);
-            $this->requestReset('ghost.address@example.test')->assertSessionHas('status', ForgotPasswordController::SENT_MESSAGE);
         }
 
+        $this->travel(61)->seconds();
+        $this->requestReset($user->email)
+            ->assertSessionHasErrors(['email' => ForgotPasswordController::TOO_MANY_MESSAGE]);
+
         Notification::assertSentTimes(ResetPassword::class, ForgotPasswordController::MAX_REQUESTS_PER_EMAIL);
-        $this->assertSame(0, $this->tokenCount('ghost.address@example.test'));
+    }
+
+    public function test_per_address_limit_also_applies_to_unregistered_addresses(): void
+    {
+        for ($i = 0; $i < ForgotPasswordController::MAX_REQUESTS_PER_EMAIL; $i++) {
+            $this->requestReset('ghost.address@example.test')
+                ->assertSessionHasErrors(['email' => ForgotPasswordController::NOT_REGISTERED_MESSAGE]);
+        }
+
+        $this->requestReset('ghost.address@example.test')
+            ->assertSessionHasErrors(['email' => ForgotPasswordController::TOO_MANY_MESSAGE]);
     }
 
     public function test_per_ip_route_throttle_still_applies(): void

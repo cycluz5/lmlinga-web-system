@@ -262,7 +262,7 @@ class AdminHealthWorkerDeleteTest extends TestCase
         $this->from(route('password.request'))
             ->post(route('password.email'), ['email' => 'delete.reset@example.test'])
             ->assertRedirect(route('password.request'))
-            ->assertSessionHas('status', ForgotPasswordController::SENT_MESSAGE);
+            ->assertSessionHasErrors(['email' => ForgotPasswordController::NOT_REGISTERED_MESSAGE]);
 
         Notification::assertNothingSent();
         Notification::assertNotSentTo(

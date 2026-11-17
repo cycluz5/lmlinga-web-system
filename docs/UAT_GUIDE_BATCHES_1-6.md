@@ -66,6 +66,10 @@ Open **http://127.0.0.1:8091/login** and sign in with `SUPER_ADMIN_EMAIL` / `SUP
 
 ### Batch 1 — Health-worker email verification
 1. Admin creates a BHW with a temporary password → card shows **Email: Pending verification**.
+   An address on a domain with no mail server (e.g. `name@gmial.co`) is rejected: "This email address cannot receive mail…".
+   A made-up Gmail address (`zzqx.nobody@gmail.com`) is rejected too: "This Gmail address does not exist…" (the system asks Gmail's
+   mail server; no email is sent). If that check cannot be made (port 25 blocked), the address is accepted and stays pending.
+   Mobile numbers must be Philippine format (09XXXXXXXXX / +639XXXXXXXXX); placeholders such as `09000000000` or `09123456789` are rejected.
 2. Same email in capitals again → "already been taken". `not-an-email` → "valid email address".
 3. Log out; BHW logs in with a **wrong** password → generic error, no code sent.
 4. BHW logs in with the **right** password → **Verify Your Email** page; dashboard is not reachable.
@@ -75,9 +79,10 @@ Open **http://127.0.0.1:8091/login** and sign in with `SUPER_ADMIN_EMAIL` / `SUP
 8. Admin edits a worker's email → that worker must verify the new address at next login.
 
 ### Batch 2 — Staff forgot password
-1. `/forgot-password` with a registered email and with an unregistered one → **same** message both times.
-2. Only the registered address gets a reset link in the log. Reset works; old password stops working.
-3. Inactive or pending-verification accounts get no link.
+1. `/forgot-password` with an unregistered email → "This email is not registered as a health worker account…"; no link is created.
+2. A registered address → "Password reset instructions have been sent…" and a reset link in the log. Reset works; old password stops working.
+3. Inactive or pending-verification accounts → "A password reset link cannot be sent for this account right now…"; no link.
+4. More than 3 requests for one address in 15 minutes → "Too many reset requests…".
 
 ### Batch 3 — Pagination
 Open any long list (Household Profiling, Child Care, Family Planning, Household Requests…).
@@ -127,7 +132,7 @@ a prepared page).
 ## 6. Checklist (tick and screenshot for evidence)
 
 - [ ] Admin login · [ ] BHW created → pending badge · [ ] BHW blocked before code · [ ] code verifies → login
-- [ ] Forgot password: same message registered/unregistered · [ ] reset link works
+- [ ] Forgot password: "not registered" for unknown email, link only for registered · [ ] reset link works
 - [ ] Pagination on 3 lists · [ ] filters + paging together
 - [ ] Name suggestions appear for staff · [ ] not on chatbot registration
 - [ ] Plot inside saved · [ ] plot outside rejected (Sensors)
