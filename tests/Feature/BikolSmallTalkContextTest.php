@@ -59,13 +59,14 @@ class BikolSmallTalkContextTest extends TestCase
 
     public function test_time_question_goes_straight_to_the_model_and_health_is_left_to_rag(): void
     {
-        Http::fake(['*' => Http::response(['message' => ['content' => 'Alas otso na kana gab\'i.']])]);
+        Carbon::setTestNow(Carbon::parse('2026-11-14 20:00:00', 'Asia/Manila'));   // 8:00 PM, so this answer is right
+        Http::fake(['*' => Http::response(['message' => ['content' => 'Ngowan, alas otso na sa gab\'i.']])]);
         config(['services.bikol_chat.send_context' => true, 'services.bikol_chat.enabled' => true]);
 
         $service = new BikolSmallTalkService();
         $result = $service->timeDateResult('Ono nang oras?');
 
-        $this->assertSame("Alas otso na kana gab'i.", $result['answer']);
+        $this->assertSame("Ngowan, alas otso na sa gab'i.", $result['answer']);
         $this->assertTrue($result['is_conversation']);
         $this->assertSame('Bikol-Iriga LLM (fine-tuned)', $result['answered_by']);
 

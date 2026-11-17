@@ -110,6 +110,26 @@ return [
         // Send the real time/date ("[Oras: 8:00 PM | Aldow: Sabado | Petsa: ...]") with each message.
         // Turn on only after installing the model trained with ml/bikol-chat notebook v3.
         'send_context' => (bool) env('BIKOL_CHAT_SEND_CONTEXT', false),
+        // "Health or chat?" gate (ml/bikol-chat/train_gate.py): unrelated messages go to the trained model,
+        // health stays in RAG. Below the confidence limit the message goes to RAG.
+        // Model used by the "Cloud AI (Gemma)" button for unrelated messages.
+        'cloud_model' => env('BIKOL_CHAT_CLOUD_MODEL', 'gemma4:31b-cloud'),
+        // More natural chat (BikolSmallTalkService): ask the model this many times and keep the best answer (1 = off),
+        // and send this many earlier exchanges of the conversation with the new message (0 = off).
+        'candidates' => (int) env('BIKOL_CHAT_CANDIDATES', 3),
+        'history_turns' => (int) env('BIKOL_CHAT_HISTORY_TURNS', 3),
+        // How long Ollama keeps the chat model in memory after the last message (avoids a slow first reply after idle time).
+        'keep_alive' => env('BIKOL_CHAT_KEEP_ALIVE', '30m'),
+        // Reviewed replies: a message your team already answered (or a very close one) gets the team's own reply.
+        // reviewed_min = team-reviewed messages, reviewed_min_auto = machine-made but filter-checked ones (stricter).
+        // Unlearned messages (gibberish, English, Tagalog, Central Bikol) get the team's reviewed "I do not know that" reply.
+        'unlearned_enabled' => (bool) env('BIKOL_UNLEARNED_REPLY', true),
+        'reviewed_enabled' => (bool) env('BIKOL_REVIEWED_REPLIES', true),
+        'reviewed_min' => (float) env('BIKOL_REVIEWED_MIN', 0.82),
+        'reviewed_min_auto' => (float) env('BIKOL_REVIEWED_MIN_AUTO', 0.97),   // machine-made replies: practically exact matches only
+        'gate_enabled' => (bool) env('BIKOL_CHAT_GATE_ENABLED', true),
+        'gate_model_path' => env('BIKOL_CHAT_GATE_MODEL_PATH', base_path('resources/ml/bikol_gate_model.json')),
+        'gate_min_confidence' => (float) env('BIKOL_CHAT_GATE_MIN_CONFIDENCE', 0.75),
     ],
 
 ];
