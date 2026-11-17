@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Validation\Rule;
 
 
 class ChatbotController extends Controller
@@ -25,7 +26,11 @@ class ChatbotController extends Controller
             'language'        => 'nullable|string|in:en,tl,bcl',
             'category'        => 'nullable|string|in:child_care,family_planning,maternal_care,other',
             'conversation_id' => 'nullable|integer|exists:chatbot_conversations,conversation_id',
-            'mode'            => 'nullable|string|in:context,ai,cloud',
+            // Bikol - Iriga: the resident must choose a chatbot type; there is no default.
+            'mode'            => [Rule::requiredIf(fn () => ($request->input('language') ?? 'bcl') === 'bcl'), 'nullable', 'string', 'in:context,ai,cloud'],
+        ], [
+            'mode.required' => 'Choose a chatbot type first: Context-based, Local AI model or Cloud AI (Gemma).',
+            'mode.in'       => 'Choose a chatbot type first: Context-based, Local AI model or Cloud AI (Gemma).',
         ]);
 
         // FOD comparison switch: "context" = verified datasets + rules,
@@ -34,9 +39,8 @@ class ChatbotController extends Controller
         // The switch is for Bikol-Iriga only; English and Tagalog always use the
         // original pipeline, whatever "mode" the request carries.
         $language = $request->input('language', 'bcl');
-        // Local AI model ("ai") and Cloud AI ("cloud") are switched off for now: always "context".
-        // To turn them back on, use `$request->input('mode', 'context')` for Bikol again.
-        $mode = 'context';
+        // Bikol - Iriga uses the type the resident chose (required above); English and Tagalog have none.
+        $mode = $language === 'bcl' ? (string) $request->input('mode') : 'context';
         $rag->setAnswerMode($mode);
         // Same switch for unrelated (non-health) messages: ai = trained model, cloud = Gemma, context = no AI.
         BikolSmallTalkService::useMode($mode);
