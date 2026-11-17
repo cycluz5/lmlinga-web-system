@@ -1687,6 +1687,7 @@ function appendMessage(role, text, points = [], title = null, language = null, i
         newChatBtn.addEventListener('click', () => {
             setActiveSidebarTab('new-chat');
             resetConversation();
+            setSelectedMode(null);
             closeMobileSidebar();
         });
     }
@@ -1702,7 +1703,6 @@ function appendMessage(role, text, points = [], title = null, language = null, i
             if (langLive) {
                 langLive.textContent = `Language changed to ${btn.dataset.lmlLang}`;
             }
-            syncModesVisibility();
         });
     });
 
@@ -1738,15 +1738,32 @@ function syncLanguageButton(languageCode) {
     if (langLive) {
         langLive.textContent = `Language changed to ${targetLabel}`;
     }
-
-    syncModesVisibility();
 }
 
-/** Chatbot type: 'cloud' (default on this branch, Cloud AI Gemma), 'ai' or 'context'. */
+/** Chatbot type chosen by the resident: 'context', 'ai' or 'cloud'. null until one is chosen (there is no default). */
 function getSelectedMode() {
     const activeBtn = root.querySelector('[data-lml-mode].lml-chatbot-main__mode-btn--active');
-    const mode = activeBtn ? activeBtn.dataset.lmlMode : 'cloud';
-    return ['context', 'ai', 'cloud'].includes(mode) ? mode : 'cloud';
+    const mode = activeBtn ? activeBtn.dataset.lmlMode : null;
+    return ['context', 'ai', 'cloud'].includes(mode) ? mode : null;
+}
+
+/**
+ * For Bikol - Iriga the message box and the send button stay off until a chatbot type is chosen.
+ * English and Tagalog have no chatbot types and are never blocked.
+ */
+function updateComposerAvailability() {
+    if (!composerInput) {
+        return;
+    }
+    const needsType = getSelectedLanguageCode() === 'bcl' && getSelectedMode() === null;
+    if (composerInput.dataset.lmlPlaceholder === undefined) {
+        composerInput.dataset.lmlPlaceholder = composerInput.placeholder;
+    }
+    composerInput.disabled = needsType;
+    composerInput.placeholder = needsType ? 'Choose a chatbot type first...' : composerInput.dataset.lmlPlaceholder;
+    if (sendBtn) {
+        sendBtn.disabled = needsType || askPending;
+    }
 }
 
 /**
@@ -1758,23 +1775,29 @@ function updateModeBarVisibility() {
     root.querySelectorAll('[data-lml-modes], [data-lml-mode-status]').forEach((el) => {
         el.hidden = !isBikol;
     });
+    updateComposerAvailability();
 }
 
 /** Text and icon shown under the buttons so the user knows which chatbot is answering. */
 const MODE_STATUS = {
+    none: { text: 'Choose a chatbot type to start chatting', icon: 'bi-hand-index-thumb' },
     ai: { text: 'The chatbot is using AI Local Model', icon: 'bi-cpu' },
     context: { text: 'The chatbot is using Context-based (verified datasets only, no AI)', icon: 'bi-journal-text' },
     cloud: { text: 'The chatbot is using Cloud AI (Gemma)', icon: 'bi-cloud' },
 };
 
+/** mode = 'context' | 'ai' | 'cloud', or null to clear the choice (nothing selected). */
 function setSelectedMode(mode) {
     root.querySelectorAll('[data-lml-mode]').forEach((btn) => {
-        const active = btn.dataset.lmlMode === mode;
+        const active = mode !== null && btn.dataset.lmlMode === mode;
         btn.classList.toggle('lml-chatbot-main__mode-btn--active', active);
         btn.setAttribute('aria-pressed', active ? 'true' : 'false');
     });
-    const status = MODE_STATUS[mode];
+    const status = MODE_STATUS[mode === null ? 'none' : mode];
     const statusEl = root.querySelector('[data-lml-mode-status]');
+    if (statusEl) {
+        statusEl.dataset.state = mode === null ? 'none' : 'selected';
+    }
     if (status && statusEl) {
         const textEl = statusEl.querySelector('[data-lml-mode-status-text]');
         const iconEl = statusEl.querySelector('i');
@@ -1785,11 +1808,7 @@ function setSelectedMode(mode) {
             iconEl.className = 'bi ' + status.icon;
         }
     }
-    try {
-        localStorage.setItem('lmlChatbotMode', mode);
-    } catch (e) {
-        // storage blocked: the switch still works for this page
-    }
+    updateComposerAvailability();
 }
 
 root.querySelectorAll('[data-lml-mode]').forEach((btn) => {
@@ -1801,14 +1820,8 @@ root.querySelectorAll('[data-lml-mode]').forEach((btn) => {
     });
 });
 
-try {
-    const savedMode = localStorage.getItem('lmlChatbotMode');
-    // Only buttons that are not disabled can be used (a disabled mode saved earlier falls back to 'cloud').
-    const usable = Array.from(root.querySelectorAll('[data-lml-mode]:not([disabled])')).map((b) => b.dataset.lmlMode);
-    setSelectedMode(usable.includes(savedMode) ? savedMode : 'cloud');
-} catch (e) {
-    setSelectedMode('cloud');
-}
+// No default and no remembered choice: every visit starts with nothing selected.
+setSelectedMode(null);
 updateModeBarVisibility();
 
 function getSelectedLanguageCode() {
@@ -1834,6 +1847,7 @@ function setAskPending(pending) {
         sendBtn.classList.toggle('is-loading', pending);
         sendBtn.setAttribute('aria-label', pending ? 'Waiting for reply…' : 'Send message');
     }
+    updateComposerAvailability();
 }
 
 if (composer && composerInput) {
@@ -1841,6 +1855,11 @@ if (composer && composerInput) {
         event.preventDefault();
         const text = composerInput.value.trim();
         if (!text || askPending) {
+            return;
+        }
+        // Bikol - Iriga: a chatbot type must be chosen first.
+        if (getSelectedLanguageCode() === 'bcl' && getSelectedMode() === null) {
+            updateComposerAvailability();
             return;
         }
 

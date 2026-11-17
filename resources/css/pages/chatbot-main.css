@@ -1583,6 +1583,18 @@
     font-weight: 600;
 }
 
+/* Nothing chosen yet: make the instruction easy to see */
+.lml-chatbot-main__mode-status[data-state='none'] {
+    width: fit-content;
+    padding: 0.25rem 0.8rem;
+    border-radius: 999px;
+    background-color: rgba(var(--lml-soft-green-rgb), 0.45);
+}
+
+.lml-chatbot-main__composer-input:disabled {
+    cursor: not-allowed;
+}
+
 /* Small tag under each answer: which chatbot answered */
 .lml-chatbot-main__mode-tag {
     display: block;
