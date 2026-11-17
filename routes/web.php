@@ -169,6 +169,22 @@ Route::post('/reset-password', [
 ])->middleware('throttle:6,1')->name('password.update');
 
 /*
+ | Scoped name suggestions (JSON) for staff name-entry fields. Staff only; zone scoping and the
+ | role check are enforced in StaffNameSuggestionService. Never used by guest, resident or chatbot pages.
+ */
+Route::get('/staff/name-suggestions', [
+    \App\Http\Controllers\StaffNameSuggestionController::class,
+    'residents',
+])->middleware([
+    'auth',
+    'staff.account-usable',
+    'staff.password-current',
+    'ui.role',
+    'auth.nocache',
+    'throttle:lmlinga-name-suggest',
+])->name('staff.name-suggestions');
+
+/*
  | Voluntary staff password change — authenticated staff only.
  | REF-24: workers are not forced here after login.
  */
