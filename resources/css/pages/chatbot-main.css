@@ -1556,6 +1556,33 @@
     border-color: var(--lml-secondary);
 }
 
+.lml-chatbot-main__mode-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.lml-chatbot-main__mode-btn:disabled:hover {
+    background: transparent;
+}
+
+/* Hidden for English and Tagalog (the switch is Bikol – Iriga only) */
+.lml-chatbot-main__modes[hidden],
+.lml-chatbot-main__mode-status[hidden] {
+    display: none;
+}
+
+/* Line under the buttons: which chatbot is in use right now */
+.lml-chatbot-main__mode-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    margin: 0 auto 0.5rem;
+    color: var(--lml-dark-green);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
 /* Small tag under each answer: which chatbot answered */
 .lml-chatbot-main__mode-tag {
     display: block;

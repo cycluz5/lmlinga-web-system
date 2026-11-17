@@ -107,6 +107,82 @@ return [
         'model' => env('BIKOL_CHAT_MODEL', 'lmlinga-bikol-chat'),
         'base_url' => env('BIKOL_CHAT_BASE_URL', env('OLLAMA_BASE_URL', 'http://127.0.0.1:11434')),
         'timeout' => (int) env('BIKOL_CHAT_TIMEOUT', 60),
+        // Send the real time/date ("[Oras: 8:00 PM | Aldow: Sabado | Petsa: ...]") with each message.
+        // Turn on only after installing the model trained with ml/bikol-chat notebook v3.
+        'send_context' => (bool) env('BIKOL_CHAT_SEND_CONTEXT', false),
+        // "Health or chat?" gate (ml/bikol-chat/train_gate.py): unrelated messages go to the trained model,
+        // health stays in RAG. Below the confidence limit the message goes to RAG.
+        // Model used by the "Cloud AI (Gemma)" button for unrelated messages.
+        'cloud_model' => env('BIKOL_CHAT_CLOUD_MODEL', 'gemma4:31b-cloud'),
+        // More natural chat (BikolSmallTalkService): ask the model this many times and keep the best answer (1 = off),
+        // and send this many earlier exchanges of the conversation with the new message (0 = off).
+        'candidates' => (int) env('BIKOL_CHAT_CANDIDATES', 3),
+        'history_turns' => (int) env('BIKOL_CHAT_HISTORY_TURNS', 3),
+        // How long Ollama keeps the chat model in memory after the last message (avoids a slow first reply after idle time).
+        'keep_alive' => env('BIKOL_CHAT_KEEP_ALIVE', '30m'),
+        // Reviewed replies: a message your team already answered (or a very close one) gets the team's own reply.
+        // reviewed_min = team-reviewed messages, reviewed_min_auto = machine-made but filter-checked ones (stricter).
+        // Unlearned messages (gibberish, English, Tagalog, Central Bikol) get the team's reviewed "I do not know that" reply.
+        'unlearned_enabled' => (bool) env('BIKOL_UNLEARNED_REPLY', true),
+        'reviewed_enabled' => (bool) env('BIKOL_REVIEWED_REPLIES', true),
+        'reviewed_min' => (float) env('BIKOL_REVIEWED_MIN', 0.82),
+        'reviewed_min_auto' => (float) env('BIKOL_REVIEWED_MIN_AUTO', 0.97),   // machine-made replies: practically exact matches only
+        'gate_enabled' => (bool) env('BIKOL_CHAT_GATE_ENABLED', true),
+        'gate_model_path' => env('BIKOL_CHAT_GATE_MODEL_PATH', base_path('resources/ml/bikol_gate_model.json')),
+        'gate_min_confidence' => (float) env('BIKOL_CHAT_GATE_MIN_CONFIDENCE', 0.75),
+    ],
+
+    /*
+    | Health documents used by the context-based chatbot (RAG).
+    | Linguist-verified set, made by ml/health-docs/convert_verified_docs.py.
+    */
+    'health_docs' => [
+        'path' => env('HEALTH_DOCS_PATH', resource_path('health_docs_v2')),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Bikol-Iriga question-type model (ml/bikol-intent)
+    |--------------------------------------------------------------------------
+    |
+    | Trained in Colab and exported as JSON. When enabled, the model decides
+    | the Bikol question type if it is at least `min_confidence` sure;
+    | otherwise the keyword rules in RagService are used.
+    |
+    */
+    'bikol_intent' => [
+        'enabled' => (bool) env('BIKOL_INTENT_MODEL_ENABLED', true),
+        'model_path' => env('BIKOL_INTENT_MODEL_PATH', base_path('resources/ml/bikol_intent_model.json')),
+        'min_confidence' => (float) env('BIKOL_INTENT_MIN_CONFIDENCE', 0.5),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Bikol-Iriga small-talk model (ml/bikol-chat)
+    |--------------------------------------------------------------------------
+    |
+    | Fine-tuned Gemma 3 4B, run by the LOCAL Ollama (`ollama create
+    | lmlinga-bikol-chat -f Modelfile`). Used only for Bikol messages that are
+    | not health questions. Serious messages always get a fixed checked reply.
+    |
+    */
+    'bikol_chat' => [
+        'enabled' => (bool) env('BIKOL_CHAT_MODEL_ENABLED', true),
+        'model' => env('BIKOL_CHAT_MODEL', 'lmlinga-bikol-chat'),
+        'base_url' => env('BIKOL_CHAT_BASE_URL', env('OLLAMA_BASE_URL', 'http://127.0.0.1:11434')),
+        'timeout' => (int) env('BIKOL_CHAT_TIMEOUT', 60),
+        // Send the real time/date ("[Oras: 8:00 PM | Aldow: Sabado | Petsa: ...]") with each message.
+        // Turn on only after installing the model trained with ml/bikol-chat notebook v3.
+        'send_context' => (bool) env('BIKOL_CHAT_SEND_CONTEXT', false),
+    ],
+
+    /*
+    | Cloud AI mode (Bikol): gemma4:31b-cloud on ollama.com answers in Bikol.
+    | Needs OLLAMA_API_KEY. Health facts still come only from the verified documents.
+    */
+    'bikol_cloud_chat' => [
+        'model' => env('BIKOL_CLOUD_CHAT_MODEL', 'gemma4:31b-cloud'),
+        'timeout' => (int) env('BIKOL_CLOUD_CHAT_TIMEOUT', 60),
     ],
 
 ];

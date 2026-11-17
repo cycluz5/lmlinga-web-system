@@ -5,6 +5,9 @@ namespace App\Http\Controllers\Chatbot;
 use App\Http\Controllers\Controller;
 use App\Models\ChatbotConversation;
 use App\Models\ChatbotMessage;
+use App\Services\BikolCloudChatService;
+use App\Services\BikolSmallTalkService;
+use App\Services\BikolSmallTalkService;
 use App\Services\RagService;
 use App\Services\TagalogConversationService;
 use App\Support\ResidentAuthenticator;
@@ -36,6 +39,8 @@ class ChatbotController extends Controller
         // To turn them back on, use `$request->input('mode', 'context')` for Bikol again.
         $mode = 'context';
         $rag->setAnswerMode($mode);
+        // Same switch for unrelated (non-health) messages: ai = trained model, cloud = Gemma, context = no AI.
+        BikolSmallTalkService::useMode($mode);
 
         // Pulled from the session by EnsureResidentChatbotAccount middleware —
         // never trust a client-supplied account_id for who is asking.
@@ -99,7 +104,24 @@ class ChatbotController extends Controller
                 }
             }
 
-            $result = $rag->ask($question, $language, $category, $topicHint);
+            // Bikol: time/date questions and unrelated (non-health) messages go to the fine-tuned
+            // Bikol-Iriga model; health questions and anything unsure stay in RAG.
+            $result = null;
+            if ($language === 'bcl') {
+                $smallTalk = app(BikolSmallTalkService::class);
+                // The last chat turns of this conversation, so the model can follow what was just said.
+                BikolSmallTalkService::useHistory(BikolSmallTalkService::historyFromMessages(
+                    ChatbotMessage::query()
+                        ->where('conversation_id', $conversation->conversation_id)
+                        ->where('message_id', '<', $userMessage->message_id)
+                        ->orderByDesc('message_id')
+                        ->limit(12)
+                        ->get(['sender', 'message_text'])
+                        ->reverse()
+                ));
+                $result = $smallTalk->timeDateResult($question) ?? $smallTalk->unrelatedResult($question);
+            }
+            $result ??= $rag->ask($question, $language, $category, $topicHint);
             $resolvedLanguage = $result['language'] ?? $language;
 
             Log::info('Chatbot response', [

@@ -65,7 +65,7 @@
                             <label for="lml-hr-fp-nr-first-name">First Name</label>
                             <input
                                 id="lml-hr-fp-nr-first-name"
-                                name="first_name"
+                                name="first_name" data-lml-name-suggest="person" data-lml-name-suggest-heading="Registered La Medalla residents with a similar name — this person may not be a non-resident" data-lml-name-suggest-url="{{ route('staff.name-suggestions') }}"
                                 type="text"
                                 class="lml-hr-fp-nr__input lml-focus-ring"
                                 placeholder="First Name"
@@ -77,7 +77,7 @@
                             <label for="lml-hr-fp-nr-middle-name">Middle Name</label>
                             <input
                                 id="lml-hr-fp-nr-middle-name"
-                                name="middle_name"
+                                name="middle_name" data-lml-name-suggest="person" data-lml-name-suggest-url="{{ route('staff.name-suggestions') }}"
                                 type="text"
                                 class="lml-hr-fp-nr__input lml-focus-ring"
                                 placeholder="Middle Name"
@@ -89,7 +89,7 @@
                             <label for="lml-hr-fp-nr-last-name">Last Name</label>
                             <input
                                 id="lml-hr-fp-nr-last-name"
-                                name="last_name"
+                                name="last_name" data-lml-name-suggest="person" data-lml-name-suggest-url="{{ route('staff.name-suggestions') }}"
                                 type="text"
                                 class="lml-hr-fp-nr__input lml-focus-ring"
                                 placeholder="Last Name"

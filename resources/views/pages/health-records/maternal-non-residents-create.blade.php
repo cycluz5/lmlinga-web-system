@@ -54,7 +54,7 @@
                             <label for="lml-hr-mc-first-name">First Name</label>
                             <input
                                 id="lml-hr-mc-first-name"
-                                name="first_name"
+                                name="first_name" data-lml-name-suggest="person" data-lml-name-suggest-heading="Registered La Medalla residents with a similar name — this person may not be a non-resident" data-lml-name-suggest-url="{{ route('staff.name-suggestions') }}"
                                 type="text"
                                 class="lml-hr-mc-add__input lml-focus-ring @error('first_name') is-invalid @enderror"
                                 value="{{ old('first_name') }}"
@@ -70,7 +70,7 @@
                             <label for="lml-hr-mc-middle-name">Middle Name</label>
                             <input
                                 id="lml-hr-mc-middle-name"
-                                name="middle_name"
+                                name="middle_name" data-lml-name-suggest="person" data-lml-name-suggest-url="{{ route('staff.name-suggestions') }}"
                                 type="text"
                                 class="lml-hr-mc-add__input lml-focus-ring @error('middle_name') is-invalid @enderror"
                                 value="{{ old('middle_name') }}"
@@ -85,7 +85,7 @@
                             <label for="lml-hr-mc-last-name">Last Name</label>
                             <input
                                 id="lml-hr-mc-last-name"
-                                name="last_name"
+                                name="last_name" data-lml-name-suggest="person" data-lml-name-suggest-url="{{ route('staff.name-suggestions') }}"
                                 type="text"
                                 class="lml-hr-mc-add__input lml-focus-ring @error('last_name') is-invalid @enderror"
                                 value="{{ old('last_name') }}"

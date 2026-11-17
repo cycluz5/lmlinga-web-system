@@ -1,0 +1,21 @@
+memory: 990 example pairs, 599 word hints
+0 translated, 903 to go
+  100/903 (ok 100, bad 0)
+  200/903 (ok 200, bad 0)
+  300/903 (ok 300, bad 0)
+  400/903 (ok 400, bad 0)
+  500/903 (ok 500, bad 0)
+  600/903 (ok 600, bad 0)
+  700/903 (ok 700, bad 0)
+  800/903 (ok 800, bad 0)
+  900/903 (ok 900, bad 0)
+finished: 903 translated, 0 failed/malformed -> C:\Users\Kathlyn Cris\Desktop\final\lmlinga-train\ml\bikol-chat\dataset\teacher\dialogs_iriga_raw.jsonl
+memory: 990 example pairs, 599 word hints
+903 translated, 652 to go
+  100/652 (ok 100, bad 0)
+  200/652 (ok 200, bad 0)
+  300/652 (ok 300, bad 0)
+  400/652 (ok 400, bad 0)
+  500/652 (ok 500, bad 0)
+  600/652 (ok 600, bad 0)
+finished: 652 translated, 0 failed/malformed -> C:\Users\Kathlyn Cris\Desktop\final\lmlinga-train\ml\bikol-chat\dataset\teacher\dialogs_iriga_raw.jsonl

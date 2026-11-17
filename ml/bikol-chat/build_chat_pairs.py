@@ -5,7 +5,7 @@ The team checks the Iriga in the review sheet; fixes come back here.
 
 Spelling rules (from the intent dataset): always "ono"; "a" (not "an"); "ka" (not "kan").
 Words not found in ../bikol-intent/vocabulary_guide.csv (or the small common-word
-list below) are listed in "words_to_check" so the reviewer knows what Claude guessed.
+list below) are listed in "words_to_check" so the reviewer knows what was guessed.
 
     python build_chat_pairs.py                      -> dataset/chat_pairs.csv
     python build_chat_pairs.py --sheet <file.xlsx>  -> also the review sheet
@@ -54,7 +54,7 @@ CONVERSATIONS = [
     ('how_are_you', 'what are you doing?', ['Ono a ginigibo mo?', 'Ono a ginigibo mo ngowan?'],
      'Nag-uulat ako sa ionga mo! Ono a gusto mong maiisiyan manongod sa kalusugan?'),
     ('identity', 'who are you?', ['Siisay ika?', 'Ono ika?'],
-     'Ako si LMLinga, usad na chatbot na migtabang sa mga onga manongod sa kalusugan.'),
+     'Ako si LMLinga, osad na chatbot na migtabang sa mga onga manongod sa kalusugan.'),
     ('identity', 'what is your name?', ['Ono a ngaran mo?'],
      'LMLinga a ngaran ko. Maogma akong makaistorya ika!'),
     ('identity', 'what can you do?', ['Ono a kaya mong gibowon?', 'Ono a maitatabang mo?', 'Paono ika makakatabang?'],
@@ -62,7 +62,7 @@ CONVERSATIONS = [
     ('identity', 'are you a doctor?', ['Doktor ika?', 'Parabolong ika?', 'Pwede ika maging doktor ko?'],
      'Boko ako doktor. Nagtatao ako sa impormasyon manongod sa kalusugan, alagad kin agko ika ilang, magpabayad sa doktor o sa health center.'),
     ('identity', 'are you a person?', ['Tawo ika?', 'Tawo ika o robot?', 'Matood na tawo ika?'],
-     'Boko akong tawo. Usad akong chatbot na ginibo tanganing tumabang manongod sa kalusugan.'),
+     'Boko akong tawo. Osad akong chatbot na ginibo tanganing tumabang manongod sa kalusugan.'),
     ('identity', 'who made you?', ['Siisay a naggibo kanimo?', 'Isay a naggibo kanimo?'],
      'Ginibo ako ka manga estudyante para matabangan a manga tawo na makakoko sa impormasyon manongod sa kalusugan sa Bikol-Iriga.'),
     ('identity', 'where are you from?', ['Taga sari ika?', 'Sari ika nag-istar?', 'Sari ika nag-iistar?'],
@@ -88,7 +88,7 @@ CONVERSATIONS = [
     ('goodbye', 'good night', ['Mitorog na kami.', 'Mitorog na ako.', 'Good night!'],
      "Maray na gab'i! Paingalo ika sa maray."),
     ('feeling', "I'm sad", ['Namumundo ako.', 'Namumundo ako ngowan.', 'Diri maray a buut ko.'],
-     'Pasensiya na na namumundo ika. Maray na isabi mo sa usad na tawo na pinagtitiwalaan mo. Sadi man ako kin gusto mong mag-istorya.'),
+     'Pasensiya na na namumundo ika. Maray na isabi mo sa osad na tawo na pinagtitiwalaan mo. Sadi man ako kin gusto mong mag-istorya.'),
     ('feeling', "I'm happy", ['Maogma ako!', 'Maogma ako ngowan.', 'Maray a aldow ko!', 'Mamoya ako!', 'Mamoya ako ngowan!'],
      'Maray man! Maogma man ako para kanimo.'),
     ('feeling', "I'm worried", ['Maporisaw ako.', 'Nag-aalala ako.', 'Maporisaw ako manongod sa igin ko.'],
@@ -106,7 +106,7 @@ CONVERSATIONS = [
     ('feeling', "I'm lonely", ['Solo sana ako.', 'Uda akong kaistorya.', 'Pirmi akong solo.'],
      'Sadi ako para makaistorya ika. Maray man na mag-istorya sa pamilya o amigo mo.'),
     ('crisis', 'I want to die', ['Gusto ko nang magraan.', 'Gusto ko nang mauda sa kinaban.', 'Uda na akong pag-asa.'],
-     'Importante ika. Mag-istorya tabi sa usad na tawo na pinagtitiwalaan mo ngowan sana.'),
+     'Importante ika. Mag-istorya tabi sa osad na tawo na pinagtitiwalaan mo ngowan sana.'),
     ('crisis', 'I want to hurt myself', ['Gusto kong kolgan a sadiri ko.', 'Gusto kong maggibo sa maati sa sadiri ko.'],
      'Pakiusip, diri mo ini gibowon. Isabi mo man sa pamilya o amigo mo ngowan.'),
     ('small_reply', 'yes', ['Amo.', 'Amo tabi.', 'Okay.'],
@@ -198,9 +198,9 @@ CONVERSATIONS = [
     ('feeling', "I'm excited", ['Excited ako!', 'Excited na ako!'],
      ['Maray man! Mamoya man ako para kanimo.', 'Maray man! Mamoya ako para kanimo.']),
     ('feeling', "I'm nervous", ['Inaandal ako.', 'Inaandal ako ngowan'],
-     'Natural sana an. Tistingon mong magpaingalo sagkud mag-istorya sa usad na tawo na pinagtitiwalaan mo.'),
+     'Natural sana an. Tistingon mong magpaingalo sagkud mag-istorya sa osad na tawo na pinagtitiwalaan mo.'),
     ('identity', 'are you an AI?', ['AI ika?', 'AI raw ika?', 'Robot ika?'],
-     'Amo, usad akong chatbot. Nag-aadal pa ako, alagad anda akong tumabang manongod sa kalusugan.'),
+     'Amo, osad akong chatbot. Nag-aadal pa ako, alagad anda akong tumabang manongod sa kalusugan.'),
     ('identity', 'are you always here?', ['Pirmi ika sadi?', 'Sadi ika pirmi?'],
      "Amo, sadi ako aldow sagkud gab'i. Isorat mo sana a onga mo."),
     ('identity', 'do you sleep?', ['Natotorog ika?', 'Diri ika natotorog?'],
@@ -352,7 +352,7 @@ def make_sheet(path, known):
     dv.add(f"G2:G{ws.max_row}")
 
     ws2 = wb.create_sheet("words to check")
-    ws2.append(["word (Claude guessed)", "used in # rows", "correct Iriga word (blank = ok)"])
+    ws2.append(["word (guessed)", "used in # rows", "correct Iriga word (blank = ok)"])
     for c in ws2[1]:
         c.font = Font(bold=True)
     for w, n in sorted(all_check.items(), key=lambda x: (-x[1], x[0])):
@@ -371,7 +371,7 @@ def make_sheet(path, known):
     for line in [
         "HOW TO CHECK (Bikol-Iriga chat replies) - BATCH 2: new chats only (#62 onward)",
         "",
-        "Sheet 'words to check' FIRST: words Claude guessed (not in your vocabulary list or your checked chats).",
+        "Sheet 'words to check' FIRST: words that were guessed (not in your vocabulary list or your checked chats).",
         "   If a word is wrong, write the correct Iriga word in column C. Blank = ok.",
         "   Fixing a word here fixes it in every chat.",
         "",

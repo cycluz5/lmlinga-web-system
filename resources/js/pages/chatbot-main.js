@@ -1698,6 +1698,7 @@ function appendMessage(role, text, points = [], title = null, language = null, i
                 other.classList.toggle('lml-chatbot-main__lang-btn--active', active);
                 other.setAttribute('aria-pressed', active ? 'true' : 'false');
             });
+            updateModeBarVisibility();
             if (langLive) {
                 langLive.textContent = `Language changed to ${btn.dataset.lmlLang}`;
             }
@@ -1732,6 +1733,8 @@ function syncLanguageButton(languageCode) {
         );
     });
 
+    updateModeBarVisibility();
+
     if (langLive) {
         langLive.textContent = `Language changed to ${targetLabel}`;
     }
@@ -1739,22 +1742,30 @@ function syncLanguageButton(languageCode) {
     syncModesVisibility();
 }
 
-/** Chatbot type for the FOD comparison: 'context' or 'ai'. */
+/** Chatbot type: 'cloud' (default on this branch, Cloud AI Gemma), 'ai' or 'context'. */
 function getSelectedMode() {
     const activeBtn = root.querySelector('[data-lml-mode].lml-chatbot-main__mode-btn--active');
-    const mode = activeBtn ? activeBtn.dataset.lmlMode : 'context';
-    // Local AI model and Cloud AI are switched off for now: only Context-based is usable.
-    return mode === 'context' ? mode : 'context';
+    const mode = activeBtn ? activeBtn.dataset.lmlMode : 'cloud';
+    return ['context', 'ai', 'cloud'].includes(mode) ? mode : 'cloud';
 }
 
-/** The Chatbot-type switch (Context-based / Local AI model / Cloud AI) is for Bikol – Iriga only. */
-function syncModesVisibility() {
-    const modes = root.querySelector('[data-lml-modes]');
-    if (!modes) {
-        return;
-    }
-    modes.hidden = getSelectedLanguageCode() !== 'bcl';
+/**
+ * The chatbot-type buttons and their status line belong to Bikol – Iriga only.
+ * English and Tagalog keep working exactly as before, so the switch is hidden for them.
+ */
+function updateModeBarVisibility() {
+    const isBikol = getSelectedLanguageCode() === 'bcl';
+    root.querySelectorAll('[data-lml-modes], [data-lml-mode-status]').forEach((el) => {
+        el.hidden = !isBikol;
+    });
 }
+
+/** Text and icon shown under the buttons so the user knows which chatbot is answering. */
+const MODE_STATUS = {
+    ai: { text: 'The chatbot is using AI Local Model', icon: 'bi-cpu' },
+    context: { text: 'The chatbot is using Context-based (verified datasets only, no AI)', icon: 'bi-journal-text' },
+    cloud: { text: 'The chatbot is using Cloud AI (Gemma)', icon: 'bi-cloud' },
+};
 
 function setSelectedMode(mode) {
     root.querySelectorAll('[data-lml-mode]').forEach((btn) => {
@@ -1762,6 +1773,18 @@ function setSelectedMode(mode) {
         btn.classList.toggle('lml-chatbot-main__mode-btn--active', active);
         btn.setAttribute('aria-pressed', active ? 'true' : 'false');
     });
+    const status = MODE_STATUS[mode];
+    const statusEl = root.querySelector('[data-lml-mode-status]');
+    if (status && statusEl) {
+        const textEl = statusEl.querySelector('[data-lml-mode-status-text]');
+        const iconEl = statusEl.querySelector('i');
+        if (textEl) {
+            textEl.textContent = status.text;
+        }
+        if (iconEl) {
+            iconEl.className = 'bi ' + status.icon;
+        }
+    }
     try {
         localStorage.setItem('lmlChatbotMode', mode);
     } catch (e) {
@@ -1780,15 +1803,13 @@ root.querySelectorAll('[data-lml-mode]').forEach((btn) => {
 
 try {
     const savedMode = localStorage.getItem('lmlChatbotMode');
-    // A mode saved earlier ("ai"/"cloud") is ignored while those two are disabled.
-    if (savedMode === 'context') {
-        setSelectedMode(savedMode);
-    }
+    // Only buttons that are not disabled can be used (a disabled mode saved earlier falls back to 'cloud').
+    const usable = Array.from(root.querySelectorAll('[data-lml-mode]:not([disabled])')).map((b) => b.dataset.lmlMode);
+    setSelectedMode(usable.includes(savedMode) ? savedMode : 'cloud');
 } catch (e) {
-    // ignore
+    setSelectedMode('cloud');
 }
-
-syncModesVisibility();
+updateModeBarVisibility();
 
 function getSelectedLanguageCode() {
     const activeBtn = root.querySelector('[data-lml-lang].lml-chatbot-main__lang-btn--active');
