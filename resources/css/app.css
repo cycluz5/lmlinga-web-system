@@ -75,6 +75,9 @@
 @import './pages/announcement.css';
 @import './components/name-suggest.css';
 @import './components/pagination.css';
+@import './pages/language-review.css';
+@import './pages/language-management.css';
+@import './pages/chatbot-datasets.css';
 
 /*
  * Tailwind theme colors reference tokens.css (:root variables).

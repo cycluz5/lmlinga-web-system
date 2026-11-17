@@ -13,6 +13,7 @@
         'BNS' => 'BNS',
         'BSPO' => 'BSPO',
         'Admin' => 'Admin',
+        'Linguist' => 'Linguist',
     ];
     $statusOptions = [
         'Active' => 'Active',

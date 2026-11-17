@@ -263,10 +263,34 @@ function isValidMobile(value) {
     return digits.length >= 10 && digits.length <= 13;
 }
 
+/** SR-06: Linguist accounts have no assigned zones. */
+export const LINGUIST_ROLE = 'Linguist';
+
+export function isLinguistRole(root) {
+    return root.querySelector('[data-hw-role]')?.value === LINGUIST_ROLE;
+}
+
+/** Hide the Assigned Zones group (and clear its error) while the role is Linguist. */
+export function syncLinguistZoneGroup(root) {
+    const group = root.querySelector('[data-hw-zone-group]');
+    if (!group) {
+        return;
+    }
+    const linguist = isLinguistRole(root);
+    group.hidden = linguist;
+    if (linguist) {
+        setFieldInvalid(root, 'assigned_zone', '');
+    }
+}
+
 function validateField(root, field) {
     const value = getFieldValue(root, field);
 
     if (field === 'photo') {
+        return '';
+    }
+
+    if (field === 'assigned_zone' && isLinguistRole(root)) {
         return '';
     }
 
@@ -541,7 +565,9 @@ function initWizard(root) {
         if (label) {
             label.textContent = `${role.value || 'BHW'} (Role)`;
         }
+        syncLinguistZoneGroup(root);
     });
+    syncLinguistZoneGroup(root);
 
     root.querySelector('[data-hw-photo-change]')?.addEventListener('click', () => {
         photoInput?.click();

@@ -16,8 +16,23 @@ final class StaffRole
 
     public const BSPO = 'bspo';
 
+    /**
+     * SR-06: reviews Bikol-Iriga terms/datasets only. Deny-by-default for every other staff
+     * route (EnsureLinguistScope); never a health worker; has no zones.
+     */
+    public const LINGUIST = 'linguist';
+
     /** @var list<string> */
     public const ALL = [
+        self::ADMIN,
+        self::BHW,
+        self::BNS,
+        self::BSPO,
+        self::LINGUIST,
+    ];
+
+    /** Roles that work with resident, household and health records (everyone except Linguist). */
+    public const HEALTH_WORKERS = [
         self::ADMIN,
         self::BHW,
         self::BNS,
@@ -36,6 +51,7 @@ final class StaffRole
             'bhw', 'barangay health worker' => self::BHW,
             'bns', 'barangay nutrition scholar' => self::BNS,
             'bspo', 'barangay service point officer' => self::BSPO,
+            'linguist' => self::LINGUIST,
             default => in_array($raw, self::ALL, true) ? $raw : null,
         };
     }
@@ -55,7 +71,13 @@ final class StaffRole
             self::BHW => 'BHW',
             self::BNS => 'BNS',
             self::BSPO => 'BSPO',
+            self::LINGUIST => 'Linguist',
             default => '',
         };
+    }
+
+    public static function isLinguist(?string $role): bool
+    {
+        return self::normalize($role) === self::LINGUIST;
     }
 }

@@ -6,6 +6,7 @@ use App\Models\HealthChunk;
 use App\Services\Prompts\BikolPrompts;
 use App\Services\Prompts\TagalogPrompts;
 use App\Services\Prompts\EnglishPrompts;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
@@ -121,8 +122,77 @@ class RagService
             $log[] = "Indexed language: {$lang}";
         }
 
+        // Datasets published by the Admin (Chatbot Datasets) live outside resources/ and are indexed too, so a
+        // full rebuild never drops them. A file here replaces a built-in file of the same name.
+        $adminRoot = $this->adminDocsRoot();
+        if (File::isDirectory($adminRoot)) {
+            foreach (File::allFiles($adminRoot) as $file) {
+                if ($file->getExtension() !== 'txt') {
+                    continue;
+                }
+                $parts = explode('/', str_replace('\\', '/', $file->getRelativePathname()));
+                if (count($parts) !== 3 || !in_array($parts[0], $languages, true)) {
+                    continue;
+                }
+                $totalChunks += $this->indexDocument($parts[0], $parts[1], $parts[2], File::get($file->getPathname()));
+            }
+            $log[] = 'Indexed admin-published datasets.';
+        }
+
         $log[] = "Done. Total chunks indexed: {$totalChunks}";
         return $log;
+    }
+
+    public function adminDocsRoot(): string
+    {
+        return rtrim((string) config('lmlinga.chatbot_datasets.admin_docs_path'), '/\\');
+    }
+
+    /** Admin-published copy when it exists, otherwise the built-in document. */
+    public function healthDocPath(string $language, string $category, string $source): string
+    {
+        $admin = $this->adminDocsRoot() . "/{$language}/{$category}/{$source}";
+
+        return File::exists($admin) ? $admin : $this->healthDocsPath("{$language}/{$category}/{$source}");
+    }
+
+    /**
+     * Index (or re-index) ONE document: embeddings are computed first, so if the embedding model is unreachable
+     * the existing chunks stay untouched; then the old chunks of this document are replaced in one transaction.
+     *
+     * @return int number of chunks stored
+     */
+    public function indexDocument(string $language, string $category, string $filename, string $text): int
+    {
+        $rows = [];
+        foreach ($this->chunkText($text) as $i => $chunk) {
+            $rows[] = [
+                'language'    => $language,
+                'category'    => $category,
+                'source_file' => $filename,
+                'chunk_index' => $i,
+                'content'     => $chunk,
+                'embedding'   => $this->embed($chunk),
+            ];
+        }
+
+        DB::transaction(function () use ($language, $category, $filename, $rows): void {
+            $this->forgetDocument($language, $category, $filename);
+            foreach ($rows as $row) {
+                HealthChunk::create($row);
+            }
+        });
+
+        return count($rows);
+    }
+
+    public function forgetDocument(string $language, string $category, string $filename): void
+    {
+        HealthChunk::query()
+            ->where('language', $language)
+            ->where('category', $category)
+            ->where('source_file', $filename)
+            ->delete();
     }
 
     protected function chunkText(string $text): array
@@ -416,9 +486,7 @@ class RagService
         $resolveCurrentText = function ($file) use (&$fullTextCache): ?string {
             $cacheKey = $file->language . '|' . $file->category . '|' . $file->source_file;
             if (!array_key_exists($cacheKey, $fullTextCache)) {
-                $path = $this->healthDocsPath(
-                    "{$file->language}/{$file->category}/{$file->source_file}"
-                );
+                $path = $this->healthDocPath($file->language, $file->category, $file->source_file);
                 $fullTextCache[$cacheKey] = File::exists($path)
                     ? (string) File::get($path)
                     : null;
@@ -1371,7 +1439,7 @@ class RagService
             return $this->resolvedDocumentTextCache[$cacheKey];
         }
 
-        $path = $this->healthDocsPath("{$language}/{$category}/{$source}");
+        $path = $this->healthDocPath($language, $category, $source);
         if (File::exists($path)) {
             return $this->resolvedDocumentTextCache[$cacheKey] = trim((string) File::get($path));
         }
@@ -2413,11 +2481,72 @@ protected function isPlaceholderValue($value): bool
 
     protected function buildMessages(string $context, string $question, string $language): array
     {
-        return match ($language) {
+        return $this->withApprovedTermsGlossary(match ($language) {
             'bcl' => $this->buildBikolMessages($context, $question),
             'tl'  => $this->buildTagalogMessages($context, $question),
             default => $this->buildEnglishMessages($context, $question),
-        };
+        });
+    }
+
+    /**
+     * Batch 6 (panel: "linguists review and verify terms before they are used by the chatbot", SR-05 D-T6).
+     * Adds ONE system message right after the first system message listing the Bikol-Iriga terms that a
+     * Linguist approved in Language Management (ApprovedBikolTerms: approved, non-retired versions only). The
+     * instruction is in English, so no Bikol text is authored here; the terms come only from the approved list.
+     * Nothing changes when there are no approved terms or when lmlinga.chatbot.approved_terms_in_prompt is false.
+     *
+     * @param  list<array{role: string, content: string}>  $messages
+     * @return list<array{role: string, content: string}>
+     */
+    public function withApprovedTermsGlossary(array $messages): array
+    {
+        $glossary = $this->approvedTermsGlossary();
+        if ($glossary === null || $messages === []) {
+            return $messages;
+        }
+
+        $insertAt = ($messages[0]['role'] ?? null) === 'system' ? 1 : 0;
+        array_splice($messages, $insertAt, 0, [['role' => 'system', 'content' => $glossary]]);
+
+        return $messages;
+    }
+
+    public function approvedTermsGlossary(): ?string
+    {
+        if (! (bool) config('lmlinga.chatbot.approved_terms_in_prompt', true)) {
+            return null;
+        }
+
+        try {
+            $terms = \App\Support\ApprovedBikolTerms::all();
+        } catch (\Throwable $e) {
+            Log::warning('chatbot.approved_terms.unavailable', ['error' => $e::class]);
+
+            return null;
+        }
+        if ($terms === []) {
+            return null;
+        }
+
+        $clean = static fn (?string $v): string => trim(mb_substr(preg_replace('/\s+/u', ' ', (string) $v) ?? '', 0, 160));
+        $lines = [];
+        foreach (array_slice($terms, 0, max(1, (int) config('lmlinga.chatbot.approved_terms_max', 80))) as $term) {
+            $word = $clean($term['term'] ?? '');
+            $meaning = $clean($term['english_meaning'] ?? '');
+            if ($word === '' || $meaning === '') {
+                continue;
+            }
+            $tagalog = $clean($term['tagalog_meaning'] ?? null);
+            $lines[] = '- '.$word.': '.$meaning.($tagalog !== '' ? ' (Tagalog: '.$tagalog.')' : '');
+        }
+        if ($lines === []) {
+            return null;
+        }
+
+        return "APPROVED BIKOL-IRIGA TERMS (verified by the barangay linguist in LMLinga Language Management).\n"
+            .'Use them to understand Bikol-Iriga words in the question. When you answer in Bikol-Iriga, prefer these approved terms. '
+            .'Do not invent other meanings, and still answer only from the CONTEXT.'."\n"
+            .implode("\n", $lines);
     }
 
     protected function buildBikolMessages(string $context, string $question): array
@@ -2788,6 +2917,8 @@ protected function regenerateBikolFromContext(
             'content' => "CONTEXT:\n{$context}\n\nHAPOT:\n{$question}",
         ],
     ];
+
+    $messages = $this->withApprovedTermsGlossary($messages);
 
     $response = $this->ollamaChatRequest([
         'model' => $this->chatModel,

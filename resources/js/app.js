@@ -58,6 +58,7 @@ import './pages/death-requests';
 import './pages/announcement';
 import './pages/announcement-list';
 import './pages/announcement-manage';
+import './pages/chatbot-datasets';
 import './offline/offline-client';
 import './offline/offline-sw-register';
 import './page-loader';

@@ -399,7 +399,7 @@ class DashboardStatisticsPersistenceTest extends TestCase
         $expected = DashboardUiData::summaryCounts();
         $indicatorValues = array_column(DashboardUiData::healthIndicators(), 'value');
 
-        foreach (UiRole::ALLOWED as $role) {
+        foreach (UiRole::HEALTH_WORKER_ROLES as $role) {
             $this->actingAsStaff($role);
         $html = $this->get(route('dashboard'))
                 ->assertOk()
