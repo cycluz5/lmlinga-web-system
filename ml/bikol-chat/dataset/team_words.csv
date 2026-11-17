@@ -1,0 +1,1001 @@
+﻿tagalog,english,iriga,iriga_raw,author,copied_from_tagalog
+ako,I,ako,ako,Crizza,yes
+ikaw,you (singular),ika,ika,Crizza,no
+siya,he / she,iya,iya,Crizza,no
+kami,we (excluding listener),kami,kami,Crizza,yes
+tayo,we (including listener),kita,kita,Crizza,no
+kayo,you (plural / polite),kamo,kamo,Crizza,no
+sila,they,sira,sira,Crizza,no
+ito,this,adi,adi,Crizza,no
+iyan,that (near you),adi,adi,Crizza,no
+iyon,that (far),adto,adto,Crizza,no
+dito,here,sadi,sadi,Crizza,no
+diyan,there (near you),tadi,tadi,Crizza,no
+doon,there (far),tadto,tadto,Crizza,no
+sino,who,isay,isay,Crizza,no
+ano,what,ono,uno,Crizza,no
+saan,where,sari,sari,Crizza,no
+kailan,when,kuno,kuno,Crizza,no
+bakit,why,ngata,ngata,Crizza,no
+paano,how,paono,pauno,Crizza,no
+ilan,how many,pira,pira,Crizza,no
+isa,one,osad,usad,Crizza,no
+dalawa,two,darawa,darawa,Crizza,no
+tatlo,three,tulo,tulo,Crizza,no
+apat,four,upat,upat,Crizza,no
+lima,five,lima,lima,Crizza,yes
+anim,six,unom,unom,Crizza,no
+pito,seven,pito,pito,Crizza,yes
+walo,eight,walo,walo,Crizza,yes
+siyam,nine,siyam,siyam,Crizza,yes
+sampu,ten,sampulo,sampulo,Crizza,no
+isang daan,one hundred,sanggatos,sanggatos,Crizza,no
+isang libo,one thousand,sangribo,sangribo,Crizza,no
+ina,mother,ina,ina,Crizza,yes
+ama,father,ama,ama,Crizza,yes
+anak,child (son / daughter),igin,igin,Crizza,no
+kapatid,sibling,ngud,ngud,Crizza,no
+lolo,grandfather,lolo,lolo,Crizza,yes
+lola,grandmother,lola,lola,Crizza,yes
+asawa,spouse,agom,agom,Crizza,no
+kaibigan,friend,barkada,barkada,Crizza,no
+tao,person,tawo,tawo,Crizza,no
+bata,child,igin,igin,Crizza,no
+lalaki,man / male,lalaki,lalaki,Crizza,yes
+babae,woman / female,babayi,babayi,Crizza,no
+guro,teacher,maestra,maestra,Crizza,no
+doktor,doctor,doktor,doktor,Crizza,yes
+kapitbahay,neighbor,kapitbahay,kapitbahay,Crizza,yes
+ulo,head,payo,payo,Crizza,no
+mata,eye,mata,mata,Crizza,yes
+tainga,ear,talinga,talinga,Crizza,no
+ilong,nose,urong,urong,Crizza,no
+bibig,mouth,nganga,nganga,Crizza,no
+ngipin,tooth,ngipon,ngipon,Crizza,no
+kamay,hand,kamot,kamot,Crizza,no
+paa,foot,tiil,tiil,Crizza,no
+puso,heart,poso,puso,Crizza,yes
+tiyan,stomach,buros,buros,Crizza,no
+buhok,hair,buwok,buwok,Crizza,no
+dugo,blood,rogo,rugo,Crizza,no
+tubig,water,tobig,tubig,Crizza,yes
+kanin,cooked rice,kanon,kanon,Crizza,no
+tinapay,bread,tinapay,tinapay,Crizza,yes
+isda,fish,isura,isura,Crizza,no
+karne,meat,karne,karne,Crizza,yes
+manok,chicken,manok,manok,Crizza,yes
+gulay,vegetable,gulay,gulay,Crizza,yes
+prutas,fruit,prutas,prutas,Crizza,yes
+asin,salt,asin,asin,Crizza,yes
+asukal,sugar,asukar,asukar,Crizza,no
+gatas,milk,gatas,gatas,Crizza,yes
+itlog,egg,itlog,itlog,Crizza,yes
+kape,coffee,kape,kape,Crizza,yes
+pagkain,food,pagkaon,pagkaon,Crizza,no
+saging,banana,batag,batag,Crizza,no
+araw,sun / day,aldow,aldow,Crizza,no
+buwan,moon / month,bulan,bulan,Crizza,no
+bituin,star,bituon,bituon,Crizza,no
+langit,sky,langit,langit,Crizza,yes
+ulan,rain,oran,uran,Crizza,no
+hangin,wind / air,angin,angin,Crizza,no
+dagat,sea,dagat,dagat,Crizza,yes
+ilog,river,ilog,ilog,Crizza,yes
+bundok,mountain,bundok,bundok,Crizza,yes
+puno,tree,puno,puno,Crizza,yes
+bulaklak,flower,burak,burak,Crizza,no
+lupa,land / soil,raga,raga,Crizza,no
+apoy,fire,apoy,apoy,Crizza,yes
+bato,stone,bato,bato,Crizza,yes
+hayop,animal,ayop,ayop,Crizza,no
+aso,dog,ayam,ayam,Crizza,no
+pusa,cat,upos,upos,Crizza,no
+ibon,bird,bayong,bayong,Crizza,no
+baboy,pig,baktin,baktin,Crizza,no
+baka,cow,baka,baka,Crizza,yes
+kabayo,horse,kabayo,kabayo,Crizza,yes
+ahas,snake,sawa,sawa,Crizza,no
+langgam,ant,sirom,sirom,Crizza,no
+bahay,house,baloy,baloy,Crizza,no
+paaralan,school,eskwelahan,eskwelahan,Crizza,no
+palengke,market,sasaran,sasaran,Crizza,no
+ospital,hospital,ospital,ospital,Crizza,yes
+simbahan,church,simbahan,simbahan,Crizza,yes
+daan,road,agihan,agihan,Crizza,no
+lungsod,city,lungsod,lungsod,Crizza,yes
+nayon,village,nayon,nayon,Crizza,yes
+bansa,country,bansa,bansa,Crizza,yes
+pinto,door,pintuan,pintuan,Crizza,no
+bintana,window,bintana,bintana,Crizza,yes
+mesa,table,lamesa,lamesa,Crizza,no
+upuan,chair,uluan,uluan,Crizza,no
+kama,bed,katre,katre,Crizza,no
+damit,clothes,bado,bado,Crizza,no
+sapatos,shoes,sapatos,sapatos,Crizza,yes
+pera,money,sintabo,sintabo,Crizza,no
+aklat,book,libro,libro,Crizza,no
+sasakyan,vehicle,lulunadan,lulunadan,Crizza,no
+telepono,telephone,telepono,telepono,Crizza,yes
+ngayon,now / today,ngowan,nguwan,Crizza,no
+bukas,tomorrow,ugma,ugma,Crizza,no
+kahapon,yesterday,sapon,sapon,Crizza,no
+umaga,morning,ramrag,ramrag,Crizza,no
+tanghali,noon,modto,mudto,Crizza,no
+hapon,afternoon,sapon,sapon,Crizza,no
+gabi,night,gab-i,gab-i,Crizza,no
+linggo,week,semana,semana,Crizza,no
+taon,year,taon,taon,Crizza,yes
+oras,hour / time,oras,oras,Crizza,yes
+minuto,minute,minuto,minuto,Crizza,yes
+palagi,always,pirme,pirme,Crizza,no
+minsan,sometimes,minsan,minsan,Crizza,yes
+mamaya,later,nganod,nganod,Crizza,no
+kanina,earlier,subago,subago,Crizza,no
+kumain,to eat,kumaon,kumaon,Crizza,no
+uminom,to drink,uminom,uminom,Crizza,yes
+matulog,to sleep,matorog,maturog,Crizza,no
+pumunta,to go,omiyan,umiyan,Crizza,no
+dumating,to arrive,umabot,umabot,Crizza,no
+umalis,to leave,gumalin,gumalin,Crizza,no
+lumakad,to walk,mag agi,mag agi,Crizza,no
+tumakbo,to run,dumalagan,dumalagan,Crizza,no
+umupo,to sit,umula,umula,Crizza,no
+tumayo,to stand,tumindog,tumindog,Crizza,no
+magsalita,to speak,magsarita,magsarita,Crizza,no
+makinig,to listen,mag irungog,mag irungog,Crizza,no
+tumingin,to look,sumilong,sumilong,Crizza,no
+magbasa,to read,magbasa,magbasa,Crizza,yes
+magsulat,to write,magsurat,magsurat,Crizza,no
+magtrabaho,to work,magtrabawo,magtrabawo,Crizza,no
+maglaro,to play,mag ngayamon,mag ngayamon,Crizza,no
+bumili,to buy,bumakal,bumakal,Crizza,no
+magbigay,to give,magtao,magtao,Crizza,no
+kumuha,to take / get,kumuko,kumuko,Crizza,no
+magluto,to cook,magluto,magluto,Crizza,yes
+tumulong,to help,tumabang,tumabang,Crizza,no
+mag-aral,to study,mag-adal,mag-adal,Crizza,no
+magmahal,to love,magmahal,magmahal,Crizza,yes
+maghintay,to wait,mag-ulat,mag-ulat,Crizza,no
+malaki,big,dakolo,dakulo,Crizza,no
+maliit,small,saday,saday,Crizza,no
+mahaba,long,maaba,maaba,Crizza,no
+mataas,tall / high,alangkaw,alangkaw,Crizza,no
+mabuti,good,mabuot,mabuot,Crizza,no
+masama,bad,maraot,maraot,Crizza,no
+maganda,beautiful,magayon,magayon,Crizza,no
+mainit,hot,mainit,mainit,Crizza,yes
+malamig,cold,maagnow,maagnow,Crizza,no
+bago,new,bago,bago,Crizza,yes
+luma,old (thing),luma,luma,Crizza,yes
+matanda,old (person),gurang,gurang,Crizza,no
+mabigat,heavy,magubat,magubat,Crizza,no
+mabilis,fast,maispid,maispid,Crizza,no
+mabagal,slow,mauban,mauban,Crizza,no
+mahal,expensive / dear,mahal,mahal,Crizza,yes
+mura,cheap,mura,mura,Crizza,yes
+masaya,happy,mamoya,mamuya,Crizza,no
+malungkot,sad,malungkot,malungkot,Crizza,yes
+gutom,hungry,alop,alop,Crizza,no
+uhaw,thirsty,uhaw,uhaw,Crizza,yes
+pagod,tired,pagal,pagal,Crizza,no
+malinis,clean,malinig,malinig,Crizza,no
+madali,easy,pasil,pasil,Crizza,no
+mahirap,difficult / poor,masakit,masakit,Crizza,no
+pula,red,pula,pula,Crizza,yes
+asul,blue,asul,asul,Crizza,yes
+dilaw,yellow,yelo,yelo,Crizza,no
+berde,green,berde,berde,Crizza,yes
+itim,black,itom,itom,Crizza,no
+puti,white,puti,puti,Crizza,yes
+at,and,ag,ag,Crizza,no
+o,or,o,o,Crizza,yes
+pero,but,pero,pero,Crizza,yes
+dahil,because,kwasa,kwasa,Crizza,no
+kung,if,kin,kin,Crizza,no
+kapag,when / whenever,kinsari,kinsari,Crizza,no
+hindi,no / not,diri,diri,Crizza,no
+oo,yes,amo,amo,Crizza,no
+wala,none / there is not,uda,uda,Crizza,no
+mayroon,there is / to have,agko,agko,Crizza,no
+para sa,for,para kana,para kana,Crizza,no
+din / rin,also / too,din/rin,din/rin,Crizza,no
+ko,my / by me,ako,ako,Crizza,no
+mo,your / by you,mo,mo,Crizza,yes
+niya,his / her,niya,niya,Crizza,yes
+namin,our (excluding listener),kanamo,kanamo,Crizza,no
+natin,our (including listener),kanato,kanato,Crizza,no
+ninyo,your (plural),kaninyo,kaninyo,Crizza,no
+nila,their,kanira,kanira,Crizza,no
+akin,mine,kanako,kanako,Crizza,no
+iyo,yours,kanimo,kanimo,Crizza,no
+kanya,his / hers,kaniya,kaniya,Crizza,no
+labing-isa,eleven,labing osad,labing usad,Crizza,no
+labindalawa,twelve,labing darawa,labing darawa,Crizza,no
+dalawampu,twenty,baynte,baynte,Crizza,no
+tatlumpu,thirty,traynta,traynta,Crizza,no
+apatnapu,forty,kwarenta,kwarenta,Crizza,no
+limampu,fifty,sengkwenta,sengkwenta,Crizza,no
+animnapu,sixty,saisenta,saisenta,Crizza,no
+pitumpu,seventy,setinta,setinta,Crizza,no
+walumpu,eighty,otsinta,otsinta,Crizza,no
+siyamnapu,ninety,nobinta,nobinta,Crizza,no
+isang milyon,one million,osad na milyon,usad na milyon,Crizza,no
+kalahati,half,kabanga,kabanga,Crizza,no
+una,first,una,una,Crizza,yes
+magulang,parent,kag-igin,kag-igin,Crizza,no
+nanay,mom,mama,mama,Crizza,no
+tatay,dad,papa,papa,Crizza,no
+kuya,older brother,kuya,kuya,Crizza,yes
+ate,older sister,ate,ate,Crizza,yes
+bunso,youngest child,bunso,bunso,Crizza,yes
+panganay,eldest child,panganay,panganay,Crizza,yes
+tiyo,uncle,tito,tito,Crizza,no
+tiya,aunt,tita,tita,Crizza,no
+pinsan,cousin,pinsan,pinsan,Crizza,yes
+pamangkin,nephew / niece,pamangkin,pamangkin,Crizza,yes
+apo,grandchild,apo,apo,Crizza,yes
+sanggol,baby,igin na saday,igin na saday,Crizza,no
+binata,unmarried young man,hoben,hoben,Crizza,no
+dalaga,unmarried young woman,raraga,raraga,Crizza,no
+mukha,face,lalawgon,lalawgon,Crizza,no
+leeg,neck,liog,liog,Crizza,no
+balikat,shoulder,balikat,balikat,Crizza,yes
+braso,arm,braso,braso,Crizza,yes
+daliri,finger,guramoy,guramoy,Crizza,no
+kuko,fingernail,kuko,kuko,Crizza,yes
+dibdib,chest,ruruggan,ruruggan,Crizza,no
+likod,back,likod,likod,Crizza,yes
+tuhod,knee,tuwod,tuwod,Crizza,no
+binti,leg,binti,binti,Crizza,yes
+balat,skin,balat,balat,Crizza,yes
+buto,bone,buto,buto,Crizza,yes
+dila,tongue,rira,rira,Crizza,no
+bigas,uncooked rice,bugas,bugas,Crizza,no
+palay,unhusked rice,paroy,paroy,Crizza,no
+ulam,main dish eaten with rice,isura,isura,Crizza,no
+sabaw,soup / broth,sabow,sabow,Crizza,no
+mantika,cooking oil,mantika,mantika,Crizza,yes
+suka,vinegar,suka,suka,Crizza,yes
+toyo,soy sauce,tawyo,tawyo,Crizza,no
+paminta,pepper,paminta,paminta,Crizza,yes
+sibuyas,onion,sibuyas,sibuyas,Crizza,yes
+bawang,garlic,bawang,bawang,Crizza,yes
+kamatis,tomato,kamatis,kamatis,Crizza,yes
+luya,ginger,luya,luya,Crizza,yes
+niyog,coconut,niyog,niyog,Crizza,yes
+mangga,mango,mangga,mangga,Crizza,yes
+pinya,pineapple,pinya,pinya,Crizza,yes
+kamote,sweet potato,kamote,kamote,Crizza,yes
+mais,corn,mais,mais,Crizza,yes
+hipon,shrimp,hipon,hipon,Crizza,yes
+almusal,breakfast,umagahan,umagahan,Crizza,no
+hapunan,dinner,gab-ihan,gab-ihan,Crizza,no
+ulap,cloud,ulap,ulap,Crizza,yes
+kidlat,lightning,kitkitlat,kitkitlat,Crizza,no
+kulog,thunder,kulog,kulog,Crizza,yes
+bagyo,typhoon,bagyo,bagyo,Crizza,yes
+baha,flood,baha,baha,Crizza,yes
+lindol,earthquake,linog,linog,Crizza,no
+bahaghari,rainbow,bahaghari,bahaghari,Crizza,yes
+hamog,dew / fog,hamog,hamog,Crizza,yes
+alon,wave,alon,alon,Crizza,yes
+buhangin,sand,buhangin,buhangin,Crizza,yes
+putik,mud,lamod,lamod,Crizza,no
+gubat,forest,gubat,gubat,Crizza,yes
+bukid,farm / field,bukid,bukid,Crizza,yes
+lawa,lake,lawa,lawa,Crizza,yes
+pulo,island,pulo,pulo,Crizza,yes
+dalampasigan,shore / beach,dalampasigan,dalampasigan,Crizza,yes
+damo,grass,damo,damo,Crizza,yes
+dahon,leaf,dawon,dawon,Crizza,no
+ugat,root,ugat,ugat,Crizza,yes
+binhi,seed,tulang,tulang,Crizza,no
+kalabaw,water buffalo,damulag,damulag,Crizza,no
+kambing,goat,kambing,kambing,Crizza,yes
+tupa,sheep,tupa,tupa,Crizza,yes
+unggoy,monkey,unggoy,unggoy,Crizza,yes
+daga,rat / mouse,babu,babu,Crizza,no
+pato,duck,pato,pato,Crizza,yes
+tandang,rooster,tandang,tandang,Crizza,yes
+inahin,hen,inahon,inahon,Crizza,no
+paruparo,butterfly,paruparo,paruparo,Crizza,yes
+lamok,mosquito,lamok,lamok,Crizza,yes
+langaw,fly,langow,langow,Crizza,no
+gagamba,spider,gagamba,gagamba,Crizza,yes
+palaka,frog,palaka,palaka,Crizza,yes
+pagong,turtle,pagong,pagong,Crizza,yes
+buwaya,crocodile,buwaya,buwaya,Crizza,yes
+bubong,roof,bubong,bubong,Crizza,yes
+dingding,wall,ringring,ringring,Crizza,no
+sahig,floor,salog,salog,Crizza,no
+hagdan,stairs,agranan,agranan,Crizza,no
+kusina,kitchen,kusina,kusina,Crizza,yes
+silid,room,kwarto,kwarto,Crizza,no
+banyo,bathroom,banyo,banyo,Crizza,yes
+ilaw,light / lamp,sulo,sulo,Crizza,no
+unan,pillow,ulunan,ulunan,Crizza,no
+kumot,blanket,kumot,kumot,Crizza,yes
+plato,plate,plato,plato,Crizza,yes
+baso,drinking glass,baso,baso,Crizza,yes
+kutsara,spoon,kutsara,kutsara,Crizza,yes
+tinidor,fork,tinidor,tinidor,Crizza,yes
+kutsilyo,knife,kutsilyo,kutsilyo,Crizza,yes
+papel,paper,papel,papel,Crizza,yes
+panulat,pen,pansurat,pansurat,Crizza,no
+lapis,pencil,lapis,lapis,Crizza,yes
+sulat,letter,sulat,sulat,Crizza,yes
+larawan,picture,larawan,larawan,Crizza,yes
+orasan,clock,orasan,orasan,Crizza,yes
+payong,umbrella,payong,payong,Crizza,yes
+bayong,woven bag,bayong,bayong,Crizza,yes
+pitaka,wallet,pitaka,pitaka,Crizza,yes
+sombrero,hat,kopya,kopya,Crizza,no
+pantalon,trousers,pantalon,pantalon,Crizza,yes
+palda,skirt,palda,palda,Crizza,yes
+tsinelas,slippers,tsinelas,tsinelas,Crizza,yes
+singsing,ring,singsing,singsing,Crizza,yes
+kuwintas,necklace,kwintas,kwintas,Crizza,no
+bangka,small boat,bangka,bangka,Crizza,yes
+barko,ship,barko,barko,Crizza,yes
+eroplano,airplane,eroplano,eroplano,Crizza,yes
+bisikleta,bicycle,bisikleta,bisikleta,Crizza,yes
+gamot,medicine,bolong,bulong,Crizza,no
+bayan,town / nation,bayan,bayan,Crizza,yes
+kalye,street,kalye,kalye,Crizza,yes
+tulay,bridge,tuytuy,tuytuy,Crizza,no
+kanto,street corner,kanto,kanto,Crizza,yes
+tindahan,store,tinadahan,tinadahan,Crizza,no
+botika,pharmacy,botika,botika,Crizza,yes
+bangko,bank,bangko,bangko,Crizza,yes
+aklatan,library,aklatan,aklatan,Crizza,yes
+daungan,port,daungan,daungan,Crizza,yes
+paliparan,airport,paliparan,paliparan,Crizza,yes
+Lunes,Monday,Lunes,Lunes,Crizza,yes
+Martes,Tuesday,Martes,Martes,Crizza,yes
+Miyerkules,Wednesday,Miyerkoles,Miyerkules,Crizza,yes
+Huwebes,Thursday,Huwebes,Huwebes,Crizza,yes
+Biyernes,Friday,Biyernes,Biyernes,Crizza,yes
+Sabado,Saturday,Sabado,Sabado,Crizza,yes
+madaling-araw,dawn,madaling-aldow,madaling-aldow,Crizza,no
+hatinggabi,midnight,hatinggabi,hatinggabi,Crizza,yes
+tag-init,dry / hot season,tag-init,tag-init,Crizza,yes
+tag-ulan,rainy season,tag-uran,tag-uran,Crizza,no
+petsa,date,pitsa,pitsa,Crizza,no
+madalas,often,pirme,pirme,Crizza,no
+bihira,rarely,bihira,bihira,Crizza,yes
+maaga,early,amay,amay,Crizza,no
+matagal,a long time,mauban,mauban,Crizza,no
+lumangoy,to swim,lumangoy,lumangoy,Crizza,yes
+lumipad,to fly,lumipad,lumipad,Crizza,yes
+tumalon,to jump,tumalon,tumalon,Crizza,yes
+umakyat,to climb,gumuno,gumuno,Crizza,no
+bumaba,to go down,bumaba,bumaba,Crizza,yes
+pumasok,to enter,lumuog,lumuog,Crizza,no
+lumabas,to go out,lumuwas,lumuwas,Crizza,no
+bumalik,to return,bumalik,bumalik,Crizza,yes
+umuwi,to go home,umuli,umuli,Crizza,no
+sumakay,to ride,lumunad,lumunad,Crizza,no
+magmaneho,to drive,magmaneho,magmaneho,Crizza,yes
+maglakbay,to travel,magdayan,magdayan,Crizza,no
+maligo,to bathe,marigos,marigos,Crizza,no
+magbihis,to get dressed,magsangli,magsangli,Crizza,no
+maglinis,to clean,maglinig,maglinig,Crizza,no
+maglaba,to do laundry,maglaba,maglaba,Crizza,yes
+magtanim,to plant,magtanom,magtanom,Crizza,no
+mangisda,to fish,mangisura,mangisura,Crizza,no
+magbayad,to pay,magbayad,magbayad,Crizza,yes
+magbilang,to count,magbilang,magbilang,Crizza,yes
+magtanong,to ask,magunga,magunga,Crizza,no
+sumagot,to answer,sumimbag,sumimbag,Crizza,no
+mag-isip,to think,mag-isip,mag-isip,Crizza,yes
+umawit,to sing,kumanta,kumanta,Crizza,no
+sumayaw,to dance,bumayle,bumayle,Crizza,no
+tumawa,to laugh,magtawa,magtawa,Crizza,no
+umiyak,to cry,magbura,magbura,Crizza,no
+ngumiti,to smile,magtawa,magtawa,Crizza,no
+magalit,to get angry,maungot,maungot,Crizza,no
+matakot,to be afraid,matakot,matakot,Crizza,yes
+magdasal,to pray,mangadyi,mangadyi,Crizza,no
+magturo,to teach,magturo,magturo,Crizza,yes
+matuto,to learn,matuto,matuto,Crizza,yes
+magsimula,to begin,magpuon,magpuon,Crizza,no
+matapos,to finish,matapos,matapos,Crizza,yes
+magbukas,to open,magbukas,magbukas,Crizza,yes
+magsara,to close,magsarado,magsarado,Crizza,no
+magdala,to bring / carry,magdara,magdara,Crizza,no
+humawak,to hold,kumapot,kumapot,Crizza,no
+pumutol,to cut,pumutol,pumutol,Crizza,yes
+gumawa,to make / do,gumibo,gumibo,Crizza,no
+sumira,to break / destroy,rauton,rauton,Crizza,no
+maghanap,to look for,mag-anap,mag-anap,Crizza,no
+makakita,to see,makabayad,makabayad,Crizza,no
+mamatay,to die,magraan,magraan,Crizza,no
+mababa,low,ababa,ababa,Crizza,no
+maikli,short,atlukot,atlukot,Crizza,no
+magaan,light (weight),magaan,magaan,Crizza,yes
+malalim,deep,ararom,ararom,Crizza,no
+matigas,hard,makusa,makusa,Crizza,no
+malambot,soft,malambot,malambot,Crizza,yes
+basa,wet,basa,basa,Crizza,yes
+tuyo,dry,mara,mara,Crizza,no
+malakas,strong / loud,makusog,makusog,Crizza,no
+mahina,weak,maluya,maluya,Crizza,no
+marumi,dirty,maati,maati,Crizza,no
+pangit,ugly,makanos,makanos,Crizza,no
+mabango,fragrant,maamot,maamot,Crizza,no
+mabaho,smelly,mabata,mabata,Crizza,no
+masarap,delicious,masiram,masiram,Crizza,no
+matamis,sweet,matam-is,matam-is,Crizza,no
+maasim,sour,maalsom,maalsom,Crizza,no
+mapait,bitter,mapait,mapait,Crizza,yes
+maalat,salty,maasgad,maasgad,Crizza,no
+maanghang,spicy,maali,maali,Crizza,no
+maliwanag,bright,maliwanag,maliwanag,Crizza,yes
+madilim,dark,madiklom,madiklom,Crizza,no
+tahimik,quiet,punok,punok,Crizza,no
+maingay,noisy,maribok,maribok,Crizza,no
+mayaman,rich,mayaman,mayaman,Crizza,yes
+matalino,intelligent,matalino,matalino,Crizza,yes
+mabait,kind,mabuot,mabuot,Crizza,no
+masipag,hardworking,maurot,maurot,Crizza,no
+tamad,lazy,tamad,tamad,Crizza,yes
+matapang,brave,matapang,matapang,Crizza,yes
+kayumanggi,brown,kayumanggi,kayumanggi,Crizza,yes
+kahel,orange,kahel,kahel,Crizza,yes
+lila,purple,lila,lila,Crizza,yes
+abuhin,gray,abuhin,abuhin,Crizza,yes
+rosas,pink,rosas,rosas,Crizza,yes
+pag-ibig,love,pag-ibig,pag-ibig,Crizza,yes
+kapayapaan,peace,kapayapaan,kapayapaan,Crizza,yes
+digmaan,war,digmaan,digmaan,Crizza,yes
+kalayaan,freedom,kalayaan,kalayaan,Crizza,yes
+katotohanan,truth,kamaturan,kamaturan,Crizza,no
+pag-asa,hope,pag-asa,pag-asa,Crizza,yes
+buhay,life,buwaya,buwaya,Crizza,no
+kamatayan,death,kaguranan,kaguranan,Crizza,no
+kalusugan,health,kalusugan,kalusugan,Crizza,yes
+sakit,illness / pain,ilang,ilang,Crizza,no
+lakas,strength,kusog,kusog,Crizza,no
+karunungan,wisdom,kaisihan,kaisihan,Crizza,no
+panaginip,dream,panaginip,panaginip,Crizza,yes
+pangalan,name,ngaran,ngaran,Crizza,no
+wika,language,wika,wika,Crizza,yes
+salita,word,sarita,sarita,Crizza,no
+kuwento,story,istorya,istorya,Crizza,no
+awit,song,kanta,kanta,Crizza,no
+batas,law,batas,batas,Crizza,yes
+trabaho,work / job,trabawo,trabawo,Crizza,no
+na,already / now,ngowan,nguwan,Crizza,no
+pa,still / yet,pa,pa,Crizza,yes
+lang,only / just,sana,sana,Crizza,no
+ba,(yes / no question particle),ba,ba,Crizza,yes
+po,(politeness particle),po,po,Crizza,yes
+nga,indeed,amo,amo,Crizza,no
+naman,(contrast / softening particle),naman,naman,Crizza,yes
+daw / raw,reportedly,daw/raw,daw/raw,Crizza,no
+siguro,maybe,amo gayod,amo gayod,Crizza,no
+talaga,really,ata,ata,Crizza,no
+sa,in / at / to,sa,sa,Crizza,yes
+ng,of / (object marker),kana,kana,Crizza,no
+ang,the / (topic marker),ana/a,ana/a,Crizza,no
+mga,(plural marker),mga,mga,Crizza,yes
+si,(marker before a person's name),si,si,Crizza,yes
+kaya,so / therefore,kaya,kaya,Crizza,yes
+habang,while,labing,labing,Crizza,no
+kanan,right,tuo,tuo,Crizza,no
+kaliwa,left,wala,wala,Crizza,no
+itaas,above / up,itaaas,itaaas,Crizza,no
+ibaba,below / down,ibaba,ibaba,Crizza,yes
+loob,inside,luog,luog,Crizza,no
+labas,outside,luwas,luwas,Crizza,no
+harap,front,atubang,atubang,Crizza,no
+likuran,rear / behind,likudan,likudan,Crizza,no
+tabi,side / beside,abay,abay,Crizza,no
+gitna,middle,bitnga,bitnga,Crizza,no
+pagitan,between,pagitan,pagitan,Crizza,yes
+malapit,near,arani,arani,Crizza,no
+malayo,far,arayo,arayo,Crizza,no
+hilaga,north,hilaga,hilaga,Crizza,yes
+timog,south,timog,timog,Crizza,yes
+silangan,east,silangan,silangan,Crizza,yes
+kanluran,west,kanluran,kanluran,Crizza,yes
+pulis,police officer,pulis,pulis,Paul,yes
+sundalo,soldier,sundalo,sundalo,Paul,yes
+nars,nurse,nars,nars,Paul,yes
+tindera,female vendor,paratinda,paratinda,Paul,no
+karpintero,carpenter,mason,mason,Paul,no
+tsuper,driver,karpintero,karpintero,Paul,no
+manggagawa,worker,trabador,trabador,Paul,no
+estudyante,student,estudyante,estudyante,Paul,yes
+abogado,lawyer,abugado,abugado,Paul,no
+pari,priest,padi,padi,Paul,no
+madre,nun,madre,madre,Paul,yes
+mananahi,tailor / seamstress,paratahi,paratahi,Paul,no
+panadero,baker,paratitinapay,paratitinapay,Paul,no
+kusinero,cook,kusinero,kusinero,Paul,yes
+mang-aawit,singer,parakanta,parakanta,Paul,no
+manunulat,writer,parasurat,parasurat,Paul,no
+pintor,painter,pintor,pintor,Paul,yes
+inhinyero,engineer,inhinyero,inhinyero,Paul,yes
+hukom,judge,hukom,hukom,Paul,yes
+alkalde,mayor,alkalde,alkalde,Paul,yes
+pangulo,president,presidente,presidente,Paul,no
+hari,king,hadi,hadi,Paul,no
+reyna,queen,reyna,reyna,Paul,yes
+bumbero,firefighter,bombero,bombero,Paul,no
+magsasaka,farmer,paratanom,paratanom,Paul,no
+kaaway,enemy,karabong,karabong,Paul,no
+kasama,companion,kaiba,kaiba,Paul,no
+kaklase,classmate,kaklase,kaklase,Paul,yes
+katrabaho,co-worker,katrabawo,katrabawo,Paul,no
+kababayan,fellow countryman,kababayan,kababayan,Paul,yes
+dayuhan,foreigner,dayuwan,dayuwan,Paul,no
+bisita,visitor,bisita,bisita,Paul,yes
+amo,boss / master,amo,amo,Paul,yes
+biyuda,widow,byuda,byuda,Paul,no
+ulila,orphan,ulila,ulila,Paul,yes
+kambal,twins,kambal,kambal,Paul,yes
+biyenan,parent-in-law,byenan,byenan,Paul,no
+manugang,son-in-law / daughter-in-law,manugang,manugang,Paul,yes
+bayaw,brother-in-law,bayaw,bayaw,Paul,yes
+hipag,sister-in-law,hipag,hipag,Paul,yes
+ninong,godfather,ninong,ninong,Paul,yes
+ninang,godmother,ninang,ninang,Paul,yes
+mamamayan,citizen,taga banwaan,taga banwaan,Paul,no
+pamilya,family,pamilya,pamilya,Paul,yes
+angkan,clan,angan,angan,Paul,no
+pisngi,cheek,pisngi,pisngi,Paul,yes
+baba,chin,baba,baba,Paul,yes
+kilay,eyebrow,kiray,kiray,Paul,no
+pilikmata,eyelash,pilikmata,pilikmata,Paul,yes
+labi,lips,ngabil,ngabil,Paul,no
+noo,forehead,noo,noo,Paul,yes
+lalamunan,throat,tutulnan,tutulnan,Paul,no
+siko,elbow,siko,siko,Paul,yes
+palad,palm,palad,palad,Paul,yes
+hinlalaki,thumb,hinlalaki,hinlalaki,Paul,yes
+baywang,waist,beywang,beywang,Paul,no
+balakang,hip,balakang,balakang,Paul,yes
+hita,thigh,ita,ita,Paul,no
+sakong,heel,tiil,tiil,Paul,no
+talampakan,sole of the foot,talampakan,talampakan,Paul,yes
+baga,lungs,baga,baga,Paul,yes
+atay,liver,atay,atay,Paul,yes
+bituka,intestine,bituka,bituka,Paul,yes
+utak,brain,utok,utok,Paul,no
+laman,flesh,laman,laman,Paul,yes
+pawis,sweat,bag-ot,bag-ot,Paul,no
+luha,tear,luwa,luwa,Paul,no
+laway,saliva,liwoy,liwoy,Paul,no
+hininga,breath,inga-inga,inga-inga,Paul,no
+boses,voice,boses,boses,Paul,yes
+lagnat,fever,kalintora,kalintura,Paul,no
+ubo,cough,obo,ubo,Paul,yes
+sipon,cold (illness),sip-on,sip-on,Paul,no
+sakit ng ulo,headache,kulog sa payo,kulog sa payo,Paul,no
+pagtatae,diarrhea,udo-udo,udo-udo,Paul,no
+pilay,sprain / lame,pilay,pilay,Paul,yes
+bulag,blind,bota,bota,Paul,no
+bingi,deaf,bungog,bungog,Paul,no
+pipi,mute,pipi,pipi,Paul,yes
+buntis,pregnant,mabrus,mabros,Paul,no
+malusog,healthy,maray a awak,maray a awak,Paul,no
+maysakit,sick,agko makolog,agko makulog,Paul,no
+lunas,cure,bolong,bulong,Paul,no
+bakuna,vaccine,bakuna,bakuna,Paul,yes
+pasyente,patient,pasyente,pasyente,Paul,yes
+tanghalian,lunch,pamudtuwan,pamudtuwan,Paul,no
+meryenda,snack,mirindalan,mirindalan,Paul,no
+alak,wine / liquor,alak,alak,Paul,yes
+serbesa,beer,alak,alak,Paul,no
+tsaa,tea,tsaa,tsaa,Paul,yes
+yelo,ice,yelo,yelo,Paul,yes
+pulot-pukyutan,honey,pukyutan,pukyutan,Paul,no
+harina,flour,arina,arina,Paul,no
+pansit,noodles,pansit,pansit,Paul,yes
+lugaw,rice porridge,lugaw,lugaw,Paul,yes
+adobo,adobo (meat stewed in vinegar and soy sauce),adobo,adobo,Paul,yes
+sinigang,sinigang (sour soup),sinigang,sinigang,Paul,yes
+bagoong,fermented fish or shrimp paste,balaw,balaw,Paul,no
+patis,fish sauce,patis,patis,Paul,yes
+sili,chili,sili,sili,Paul,yes
+kalabasa,squash,kalabasa,kalabasa,Paul,yes
+talong,eggplant,talong,talong,Paul,yes
+sitaw,string beans,sitaw,sitaw,Paul,yes
+repolyo,cabbage,repolyo,repolyo,Paul,yes
+patatas,potato,patatas,patatas,Paul,yes
+karot,carrot,karots,karots,Paul,no
+labanos,radish,labanos,labanos,Paul,yes
+kangkong,water spinach,kangkong,kangkong,Paul,yes
+papaya,papaya,tapayas,tapayas,Paul,no
+bayabas,guava,bayabas,bayabas,Paul,yes
+kalamansi,calamansi (small citrus),limonsito,limonsito,Paul,no
+pakwan,watermelon,pakwan,pakwan,Paul,yes
+ubas,grapes,ubas,ubas,Paul,yes
+mansanas,apple,mansanas,mansanas,Paul,yes
+dalandan,orange (fruit),dalandan,dalandan,Paul,yes
+langka,jackfruit,langka,langka,Paul,yes
+mani,peanut,mani,mani,Paul,yes
+tsokolate,chocolate,tsokolate,tsokolate,Paul,yes
+keso,cheese,keso,keso,Paul,yes
+alimango,crab,alimango,alimango,Paul,yes
+daigdig,the Earth,kinaban,kinaban,Paul,no
+mundo,world,kinaban,kinaban,Paul,no
+kalikasan,nature,kapalibutan,kapalibutan,Paul,no
+kalawakan,outer space,kalawakan,kalawakan,Paul,yes
+kapaligiran,environment,kapalibutan,kapalibutan,Paul,no
+liwanag,light,liwanag,liwanag,Paul,yes
+dilim,darkness,diklom,diklom,Paul,no
+anino,shadow,anino,anino,Paul,yes
+init,heat,init,init,Paul,yes
+lamig,coldness,agnow,agnow,Paul,no
+ambon,drizzle,ragiri,ragiri,Paul,no
+unos,storm,bagyo,bagyo,Paul,no
+bulkan,volcano,bulkan,bulkan,Paul,yes
+burol,hill,burol,burol,Paul,yes
+lambak,valley,lambak,lambak,Paul,yes
+kapatagan,plain,kapatagan,kapatagan,Paul,yes
+talon,waterfall,talong,talong,Paul,no
+batis,stream,sapa,sapa,Paul,no
+bukal,spring (of water),bukal,bukal,Paul,yes
+look,bay,loook,loook,Paul,no
+yungib,cave,kweba,kweba,Paul,no
+bangin,cliff / ravine,bangin,bangin,Paul,yes
+disyerto,desert,disyerto,disyerto,Paul,yes
+alikabok,dust,disyerto,disyerto,Paul,no
+usok,smoke,aso,aso,Paul,no
+abo,ash,abo,abo,Paul,yes
+uling,charcoal,uring,uring,Paul,no
+ginto,gold,ginto,ginto,Paul,yes
+pilak,silver,pilak,pilak,Paul,yes
+bakal,iron,bakal,bakal,Paul,yes
+kahoy,wood,kawoy,kawoy,Paul,no
+kawayan,bamboo,kawayan,kawayan,Paul,yes
+sanga,branch,sanga,sanga,Paul,yes
+bunga,fruit (of a plant),bunga,bunga,Paul,yes
+halaman,plant,tanom,tanom,Paul,no
+bubuyog,bee,bubuyog,bubuyog,Paul,yes
+uod,worm,ulod,ulod,Paul,no
+usa,deer,usa,usa,Paul,yes
+agila,eagle,agila,agila,Paul,yes
+pating,shark,pating,pating,Paul,yes
+balyena,whale,balyena,balyena,Paul,yes
+pugita,octopus,pugita,pugita,Paul,yes
+dikya,jellyfish,dikya,dikya,Paul,yes
+butiki,house lizard,butiki,butiki,Paul,yes
+tuko,gecko,tuko,tuko,Paul,yes
+paniki,bat,paniki,paniki,Paul,yes
+kuwago,owl,kwago,kwago,Paul,no
+uwak,crow,uwak,uwak,Paul,yes
+kalapati,dove / pigeon,kalapati,kalapati,Paul,yes
+maya,sparrow,maya,maya,Paul,yes
+loro,parrot,loro,loro,Paul,yes
+tipaklong,grasshopper,tipaklong,tipaklong,Paul,yes
+ipis,cockroach,ipis,ipis,Paul,yes
+kuto,louse,kuto,kuto,Paul,yes
+anay,termite,anoy,anoy,Paul,no
+alitaptap,firefly,alitaptap,alitaptap,Paul,yes
+tutubi,dragonfly,tutubi,tutubi,Paul,yes
+suso,snail,suso,suso,Paul,yes
+leon,lion,leon,leon,Paul,yes
+elepante,elephant,elepante,elepante,Paul,yes
+tuta,puppy,tiwo,tiwo,Paul,no
+kuting,kitten,kuting,kuting,Paul,yes
+sisiw,chick,siwsiw,siwsiw,Paul,no
+pakpak,wing,pakpak,pakpak,Paul,yes
+buntot,tail,ikog,ikog,Paul,no
+salamin,mirror / glass,salming,salming,Paul,no
+suklay,comb,sukray,sukray,Paul,no
+sabon,soap,sabon,sabon,Paul,yes
+tuwalya,towel,tuwalya,tuwalya,Paul,yes
+walis,broom,walis,walis,Paul,yes
+tasa,cup,tasa,tasa,Paul,yes
+kaldero,cooking pot,kaldero,kaldero,Paul,yes
+kawali,frying pan,kawali,kawali,Paul,yes
+lubid,rope,lubid,lubid,Paul,yes
+martilyo,hammer,martilyo,martilyo,Paul,yes
+pako,nail (metal),pako,pako,Paul,yes
+susi,key,susi,susi,Paul,yes
+kandila,candle,kandila,kandila,Paul,yes
+banig,sleeping mat,banig,banig,Paul,yes
+bakuran,yard,natad,natad,Paul,no
+bakod,fence,bakod,bakod,Paul,yes
+tarangkahan,gate,trangkahan,trangkahan,Paul,no
+haligi,post / pillar,poste,poste,Paul,no
+kisame,ceiling,kisame,kisame,Paul,yes
+aparador,wardrobe,aparador,aparador,Paul,yes
+kalan,stove,kalan,kalan,Paul,yes
+sandok,ladle,sandok,sandok,Paul,yes
+mangkok,bowl,mangkok,mangkok,Paul,yes
+pitsel,pitcher,pitsil,pitsil,Paul,no
+bote,bottle,bote,bote,Paul,yes
+lata,can,lata,lata,Paul,yes
+timba,bucket,balde,balde,Paul,no
+palanggana,basin,planggana,planggana,Paul,no
+tabo,water dipper,tabo,tabo,Paul,yes
+basahan,rag,basahan,basahan,Paul,yes
+karayom,needle,ragom,ragom,Paul,no
+sinulid,thread,sinulid,sinulid,Paul,yes
+gunting,scissors,gunting,gunting,Paul,yes
+lagari,saw,lagadi,lagadi,Paul,no
+pala,shovel,pala,pala,Paul,yes
+itak,bolo knife,itak,itak,Paul,yes
+araro,plow,araro,araro,Paul,yes
+lambat,fishing net,lambat,lambat,Paul,yes
+kahon,box,kawon,kawon,Paul,no
+sako,sack,kanako,sako,Paul,yes
+baro,blouse / upper garment,baro,baro,Paul,yes
+kamiseta,undershirt / T-shirt,kamiseta,kamiseta,Paul,yes
+medyas,socks,medyas,medyas,Paul,yes
+sinturon,belt,sinturon,sinturon,Paul,yes
+bulsa,pocket,bulsa,bulsa,Paul,yes
+butones,button,butones,butones,Paul,yes
+panyo,handkerchief,panyo,panyo,Paul,yes
+hikaw,earring,hikaw,hikaw,Paul,yes
+pulseras,bracelet,pulseras,pulseras,Paul,yes
+salamin sa mata,eyeglasses,salming sa mata,salming sa mata,Paul,no
+bota,boots,botas,botas,Paul,no
+kapote,raincoat,kapote,kapote,Paul,yes
+silid-aralan,classroom,klasrum,klasrum,Paul,no
+pisara,blackboard,pisara,pisara,Paul,yes
+tisa,chalk,tisa,tisa,Paul,yes
+kuwaderno,notebook,kwaderno,kwaderno,Paul,no
+pambura,eraser,pambura,pambura,Paul,yes
+aralin,lesson,aadalun,aadalun,Paul,no
+pagsusulit,exam,eksam,eksam,Paul,no
+marka,grade / mark,marka,marka,Paul,yes
+takdang-aralin,homework,takdang aralin,takdang aralin,Paul,no
+tanong,question,onga,unga,Paul,no
+sagot,answer,simbag,simbag,Paul,no
+pahina,page,pahina,pahina,Paul,yes
+titik,letter (of the alphabet),letra,letra,Paul,no
+bilang,number,bilang,bilang,Paul,yes
+pangungusap,sentence,pangungusap,pangungusap,Paul,yes
+talata,paragraph,talata,talata,Paul,yes
+diksiyonaryo,dictionary,diksyonaryo,diksyonaryo,Paul,no
+mapa,map,mapa,mapa,Paul,yes
+opisina,office,opisina,opisina,Paul,yes
+pulong,meeting,miting,miting,Paul,no
+kainan,eatery,kaunan,kaunan,Paul,no
+pamilihan,marketplace,bakalan,bakalan,Paul,no
+sementeryo,cemetery,kampusanto,kampusanto,Paul,no
+plasa,plaza,plasa,plasa,Paul,yes
+munisipyo,town hall,munisipyo,munisipyo,Paul,yes
+kulungan,jail / cage,kulungan,kulungan,Paul,yes
+pabrika,factory,pabrika,pabrika,Paul,yes
+bodega,warehouse,bodega,bodega,Paul,yes
+palaruan,playground,ngayamunan,ngayamunan,Paul,no
+parke,park,parke,parke,Paul,yes
+sinehan,cinema,sinehan,sinehan,Paul,yes
+himpilan,station,istasyon,istasyon,Paul,no
+pantalan,pier,pantalan,pantalan,Paul,yes
+palasyo,palace,palasyo,palasyo,Paul,yes
+kubo,hut,kubo,kubo,Paul,yes
+gusali,building,gusali,gusali,Paul,yes
+lalawigan,province,probinsya,probinsya,Paul,no
+barangay,barangay (smallest local district),barangay,barangay,Paul,yes
+kabisera,capital city,kabisera,kabisera,Paul,yes
+hangganan,border,tatapusan,tatapusan,Paul,no
+Enero,January,enero,enero,Paul,yes
+Pebrero,February,pebrero,pebrero,Paul,yes
+Marso,March,marso,marso,Paul,yes
+Abril,April,abril,abril,Paul,yes
+Mayo,May,mayo,mayo,Paul,yes
+Hunyo,June,hunyo,hunyo,Paul,yes
+Hulyo,July,hulyo,hulyo,Paul,yes
+Agosto,August,agosto,agosto,Paul,yes
+Setyembre,September,setyembre,setyembre,Paul,yes
+Oktubre,October,oktubre,oktubre,Paul,yes
+Nobyembre,November,nobyembre,nobyembre,Paul,yes
+Disyembre,December,disyembre,disyembre,Paul,yes
+segundo,second (of time),segundo,segundo,Paul,yes
+siglo,century,siglo,siglo,Paul,yes
+panahon,time / season / weather,panawon,panawon,Paul,no
+kasalukuyan,the present,ngowan,nguwan,Paul,no
+nakaraan,the past,nakaagi,nakaagi,Paul,no
+hinaharap,the future,maabot,maabot,Paul,no
+kagabi,last night,sugab-e,sugab-e,Paul,no
+kamakalawa,the day before yesterday,kamakarwa,kamakarwa,Paul,no
+samakalawa,the day after tomorrow,samakarwa,samakarwa,Paul,no
+takipsilim,dusk,takipsilim,takipsilim,Paul,yes
+bukang-liwayway,daybreak,bukang liwayway,bukang liwayway,Paul,no
+kaarawan,birthday,aldow ka pagkamundag,aldow ka pagkamundag,Paul,no
+pista,fiesta / feast,pyesta,pyesta,Paul,no
+gumising,to wake up,mag gisong,mag gisong,Paul,no
+magbenta,to sell,magpabakal,magpabakal,Paul,no
+maghugas,to wash,mag ugas,mag ugas,Paul,no
+mabuhay,to live,mabuway,mabuway,Paul,no
+ipanganak,to be born,ipangigin,ipangigin,Paul,no
+magwalis,to sweep,mag walis,mag walis,Paul,no
+mag-ani,to harvest,mag ani,mag ani,Paul,no
+magtapon,to throw away,mag apon,mag apon,Paul,no
+humila,to pull,ilaun,ilaun,Paul,no
+magtulak,to push,mag busol,mag busol,Paul,no
+humiga,to lie down,bumatang,bumatang,Paul,no
+lumuhod,to kneel,lumuwod,lumuwod,Paul,no
+gumapang,to crawl,gumapang,gumapang,Paul,yes
+sumigaw,to shout,magsiyak,magsiyak,Paul,no
+bumulong,to whisper,mag ing-ing,mag ing-ing,Paul,no
+humingi,to ask for,umayat,umayat,Paul,no
+tumanggap,to receive,tumanggap,tumanggap,Paul,yes
+magpadala,to send,magpadara,magpadara,Paul,no
+humiram,to borrow,umuram,umuram,Paul,no
+magpahiram,to lend,magpauram,magpauram,Paul,no
+magnakaw,to steal,magtaban,magtaban,Paul,no
+magtago,to hide,magtago,magtago,Paul,yes
+humabol,to chase,suludon,suludon,Paul,no
+tumakas,to escape,tinakas,tinakas,Paul,no
+lumaban,to fight,lumaban,lumaban,Paul,yes
+manalo,to win,manggana,manggana,Paul,no
+matalo,to lose,maraog,maraog,Paul,no
+sumunod,to follow / obey,sumunod,sumunod,Paul,yes
+mamuno,to lead,magmando,magmando,Paul,no
+pumili,to choose,pumili,pumili,Paul,yes
+sumubok,to try,magporbar,magporbar,Paul,no
+magplano,to plan,magplano,magplano,Paul,yes
+magpasya,to decide,mag desisyon,mag desisyon,Paul,no
+maniwala,to believe,magtubod,magtubod,Paul,no
+umasa,to hope,maglaom,maglaom,Paul,no
+makalimot,to forget,makalingaw,makalingaw,Paul,no
+makaalala,to remember,makarumrom,makarumrom,Paul,no
+managinip,to dream,mapangaturugan,mapangaturugan,Paul,no
+magpahinga,to rest,magpaingalo,magpaingalo,Paul,no
+huminga,to breathe,mag inga,mag inga,Paul,no
+lumunok,to swallow,tumulon,tumulon,Paul,no
+ngumuya,to chew,ngumuya,ngumuya,Paul,yes
+kumagat,to bite,kumagat,kumagat,Paul,yes
+tumikim,to taste,magnamit,magnamit,Paul,no
+umamoy,to smell,pumarong,pumarong,Paul,no
+humipo,to touch,magkapot,magkapot,Paul,no
+humalik,to kiss,mag arok,mag arok,Paul,no
+yumakap,to hug,gumakos,gumakos,Paul,no
+kumaway,to wave,kumaway,kumaway,Paul,yes
+pumalakpak,to clap,magpalakpak,magpalakpak,Paul,no
+magtayo,to build,mag tugrok,mag tugrok,Paul,no
+mag-ayos,to fix / arrange,mag usay,mag usay,Paul,no
+manahi,to sew,magtahi,magtahi,Paul,no
+maghukay,to dig,mag bubon,mag bubon,Paul,no
+magbuhat,to lift,mag buhat,mag buhat,Paul,no
+maghagis,to throw,mag apon,mag apon,Paul,no
+sumalo,to catch,saluwon,saluwon,Paul,no
+magbuhos,to pour,mag palis,mag palis,Paul,no
+maghalo,to mix,mag halo,mag halo,Paul,no
+magprito,to fry,mag pritos,mag pritos,Paul,no
+magpakulo,to boil,magpa kalakaga,magpa kalakaga,Paul,no
+maghiwa,to slice,maghiwa,maghiwa,Paul,yes
+magsaing,to cook rice,magsapna,magsapna,Paul,no
+mag-igib,to fetch water,mag sagob,mag sagob,Paul,no
+magdilig,to water plants,mamubo,mamubo,Paul,no
+mag-alaga,to take care of,mag ataman,mag ataman,Paul,no
+magpakasal,to get married,magpakasal,magpakasal,Paul,yes
+manganak,to give birth,mangigin,mangigin,Paul,no
+lumaki,to grow up,dumuag,dumuag,Paul,no
+tumanda,to grow old,mag gurang,mag gurang,Paul,no
+gumaling,to recover / get well,mamaray,mamaray,Paul,no
+magbago,to change,magbago,magbago,Paul,yes
+lumipat,to move / transfer,lumigwat,lumigwat,Paul,no
+dumalaw,to visit,bumisita,bumisita,Paul,no
+bumati,to greet,magbati,magbati,Paul,no
+malapad,wide,malapad,malapad,Paul,yes
+makitid,narrow,piot,piot,Paul,no
+makapal,thick,makapal,makapal,Paul,yes
+manipis,thin,maniwang,maniwang,Paul,no
+mababaw,shallow,ababow,ababow,Paul,no
+matalas,sharp,matarom,matarom,Paul,no
+mapurol,dull / blunt,mangurol,mangurol,Paul,no
+tama,correct,tama,tama,Paul,yes
+mali,wrong,sala,sala,Paul,no
+tapat,honest / loyal,tapat,tapat,Paul,yes
+bilog,round,bilog,bilog,Paul,yes
+parisukat,square,kwadrado,kwadrado,Paul,no
+tuwid,straight,tulid,tulid,Paul,no
+baluktot,crooked,baliko,baliko,Paul,no
+patag,flat,patag,patag,Paul,yes
+matarik,steep,matarik,matarik,Paul,yes
+madulas,slippery,maalnas,maalnas,Paul,no
+magaspang,rough,magaspang,magaspang,Paul,yes
+makinis,smooth,makinis,makinis,Paul,yes
+malagkit,sticky,malagkit,malagkit,Paul,yes
+malutong,crispy,malutong,malutong,Paul,yes
+sariwa,fresh,presko,presko,Paul,no
+bulok,rotten,lupa,lupa,Paul,no
+hinog,ripe,inog,inog,Paul,no
+hilaw,unripe / raw,ilow,ilow,Paul,no
+payat,thin (person),maniwang,maniwang,Paul,no
+mataba,fat,mataba,mataba,Paul,yes
+matangkad,tall (person),alangkaw,alangkaw,Paul,no
+pandak,short (person),punggok,punggok,Paul,no
+mahiyain,shy,susupgon,susupgon,Paul,no
+madaldal,talkative,madaldal,madaldal,Paul,yes
+masungit,grumpy,suplada,suplada,Paul,no
+mapagbigay,generous,matinao,matinao,Paul,no
+maramot,stingy,sigrit,sigrit,Paul,no
+magalang,polite,magalang,magalang,Paul,yes
+bastos,rude,usmak,usmak,Paul,no
+mayabang,boastful,maablada,maablada,Paul,no
+matiyaga,patient / persevering,matyaga,matyaga,Paul,no
+maingat,careful,maingat,maingat,Paul,yes
+pabaya,careless,pabaya,pabaya,Paul,yes
+abala,busy,abala,abala,Paul,yes
+malaya,free,malaya,malaya,Paul,yes
+ligtas,safe,ligtas,ligtas,Paul,yes
+mapanganib,dangerous,delikado,delikado,Paul,no
+mahalaga,important,importante,importante,Paul,no
+sikat,famous,sikat,sikat,Paul,yes
+kakaiba,unusual,kakaiba,kakaiba,Paul,yes
+karaniwan,ordinary,karaniwan,karaniwan,Paul,yes
+totoo,true,matood,matood,Paul,no
+sira,broken,raot,raot,Paul,no
+kasinungalingan,a lie,kasinungalingan,kasinungalingan,Paul,yes
+lungkot,sadness,maunduan,maunduan,Paul,no
+saya,joy,muya,muya,Paul,no
+galit,anger,muna+D433,muna+D433,Paul,no
+takot,fear,takot,takot,Paul,yes
+hiya,shame,supog,supog,Paul,no
+inggit,envy,ibog,ibog,Paul,no
+awa,pity / mercy,awa,awa,Paul,yes
+tiwala,trust,tiwala,tiwala,Paul,yes
+pangako,promise,pangako,pangako,Paul,yes
+pangarap,aspiration / dream,pangarap,pangarap,Paul,yes
+layunin,goal,tuyo,tuyo,Paul,no
+dahilan,reason,rason,rason,Paul,no
+problema,problem,problema,problema,Paul,yes
+solusyon,solution,solusyon,solusyon,Paul,yes
+tulong,help,tabang,tabang,Paul,no
+ugali,habit / character,ugali,ugali,Paul,yes
+kaugalian,custom,kaugalian,kaugalian,Paul,yes
+kultura,culture,kultura,kultura,Paul,yes
+kasaysayan,history,kasaysayan,kasaysayan,Paul,yes
+alamat,legend,alamat,alamat,Paul,yes
+relihiyon,religion,relihiyon,relihiyon,Paul,yes
+pananampalataya,faith,pagtubod,pagtubod,Paul,no
+Diyos,God,Diyos,Diyos,Paul,yes
+kaluluwa,soul,kalag,kalag,Paul,no
+kasalanan,sin / fault,sala,sala,Paul,no
+biyaya,blessing,bendisyon,bendisyon,Paul,no
+pamahalaan,government,gobyerno,gobyerno,Paul,no
+halalan,election,eleksyon,eleksyon,Paul,no
+karapatan,right,karapatan,karapatan,Paul,yes
+tungkulin,duty,tungkulin,tungkulin,Paul,yes
+katarungan,justice,hustisya,hustisya,Paul,no
+kapangyarihan,power,kapangyariwan,kapangyariwan,Paul,no
+kayamanan,wealth,kayamanan,kayamanan,Paul,yes
+kahirapan,poverty,kasakitan,kasakitan,Paul,no
+negosyo,business,negosyo,negosyo,Paul,yes
+presyo,price,presyo,presyo,Paul,yes
+utang,debt,utang,utang,Paul,yes
+buwis,tax,buwis,buwis,Paul,yes
+edukasyon,education,edukasyon,edukasyon,Paul,yes
+agham,science,siyensya,siyensya,Paul,no
+sining,art,sining,sining,Paul,yes
+musika,music,musika,musika,Paul,yes
+pagkatapos,after,pagkatapos,pagkatapos,Paul,yes
+kahit,even though,maski,maski,Paul,no
+ngunit,but (formal),dawa,dawa,Paul,no
+hanggang,until,sagkud,sagkod,Paul,no
+mula,from,puon,puon,Paul,no
+tungkol sa,about,manongod sa,manungod sa,Paul,no
+ayon sa,according to,ayon sa,ayon sa,Paul,yes
+dahil sa,because of,dahil sa,dahil sa,Paul,yes
+upang,in order to,nganing,nganing,Paul,no
+sapagkat,because (formal),ta,ta,Paul,no
+samantala,meanwhile,samantala,samantala,Paul,yes
+bukod sa,aside from,bukod sa,bukod sa,Paul,yes
+maliban,except,maliban,maliban,Paul,yes
+kundi,but rather,kundi,kundi,Paul,yes
+tuwing,every time,kada,kada,Paul,no
+noong,when (in the past),ku,ku,Paul,no
+nang,when / (adverb marker),ka,ka,Paul,no
+sana,hopefully,sana,sana,Paul,yes
+yata,it seems,gad,gad,Paul,no
+muna,first / for now,muna,muna,Paul,yes
+ulit,again,utro,utro,Paul,no
+halos,almost,halos,halos,Paul,yes
+marahil,perhaps,siguro,siguro,Paul,no
+tiyak,certainly,sigurado,sigurado,Paul,no
+lahat,all,ngamin,ngamin,Paul,no
+bawat,each,kada,kada,Paul,no
+iba,other / different,iba,iba,Paul,yes
+sarili,self,sadiri,sadiri,Paul,no
+kanino,whose,kiisay,kiisay,Paul,no
+alin,which,ari,ari,Paul,no

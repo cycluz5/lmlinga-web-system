@@ -145,7 +145,59 @@ def build():
     return rows
 
 
+def build_extra(n_time=420, n_day=40, n_date=60, n_period=30):
+    """MORE time/day/date chats for v4b (same reviewed wording rules, different random dates and times).
+
+    v4 saw about 50 time chats with few different minutes and sometimes answered "diri ko isi a oras" or left out
+    the minutes. Here every hour of the day is covered, with many different minutes (not only :00, :15, :30).
+    The question wordings and the reply patterns are the SAME ones the team already reviewed above.
+    """
+    rng = random.Random(SEED + 100)
+    random.seed(SEED + 100)
+    rows, cid = [], 1000   # conv_id 1000+ so they never clash with situational.csv
+
+    def add(cat, now, user, bot):
+        nonlocal cid
+        cid += 1
+        rows.append({"conv_id": cid, "status": "reviewed", "category": cat, "context": context_line(now),
+                     "user": user, "bot": bot})
+
+    def date_at(hour, minute):
+        base = dt.datetime(2026, 1, 1) + dt.timedelta(days=rng.randrange(0, 730))
+        return base.replace(hour=hour, minute=minute)
+
+    # time: all 24 hours, round-robin; minutes: every 3rd is exactly :00, the rest anything 1-59
+    for i in range(n_time):
+        hour = i % 24
+        minute = 0 if i % 3 == 0 else rng.randrange(1, 60)
+        now = date_at(hour, minute)
+        add("time", now, rng.choice(Q_TIME), reply_time(now))
+    for i in range(n_day):
+        now = date_at(rng.randrange(24), rng.randrange(60))
+        add("day", now, rng.choice(Q_DAY), f"Ngowan, {DAYS[now.weekday()]}.")
+    for i in range(n_date):
+        now = date_at(rng.randrange(24), rng.randrange(60))
+        add("date", now, rng.choice(Q_DATE), f"Ngowan ana {DAYS[now.weekday()]}, {MONTHS[now.month - 1]} {now.day}, {now.year}.")
+    for i in range(n_period):
+        now = date_at(rng.randrange(24), rng.randrange(60))
+        add("day_period", now, rng.choice(Q_PERIOD), reply_period(now, ""))
+    return rows
+
+
+def write_extra():
+    rows = build_extra()
+    out = HERE / "dataset" / "situational_extra.csv"
+    with open(out, "w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=["conv_id", "status", "category", "context", "user", "bot"])
+        w.writeheader()
+        w.writerows(rows)
+    print(f"{len(rows)} extra time/date chats -> {out}")
+
+
 def main():
+    if "--extra" in sys.argv:   # leaves the reviewed situational.csv untouched
+        write_extra()
+        return
     rows = build()
     out = HERE / "dataset" / "situational.csv"
     with open(out, "w", newline="", encoding="utf-8") as f:

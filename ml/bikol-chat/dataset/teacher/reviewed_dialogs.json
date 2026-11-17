@@ -1,0 +1,1010 @@
+[
+ {
+  "id": "t01118",
+  "topic": "paboritong-bagay",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Gusto ko sana sa park/parke."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Bana mamoya adto. Ngata gusto mo ana park/parke?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Punok kaya ag dakol ana kawoy."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Nakaka-relax adto. Kumusta man ana aldow mo?"
+   }
+  ]
+ },
+ {
+  "id": "t00392",
+  "topic": "nag-aalala",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Hi LMLinga! inaandal ako para sa friend/barkada/amigo ko."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Hello! Ngata ika inaandal? Gusto mo mag istorya?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Diri iya nagsisimbag sa text. Baka agko nangyari."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Nakaka-stress man an. Kumusta man ana aldow mo ngowan?"
+   },
+   {
+    "speaker": "Person",
+    "text": "adi, nagmamadali ako. Isi mo kin sari iya?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Pasensya na, diri ko isi adi. Baka pwedeng tawagan iya?"
+   }
+  ]
+ },
+ {
+  "id": "t01372",
+  "topic": "pagpapaliwanag",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Hello."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Kumusta ika? Ono ana maipaglilingkod ko kanimo?"
+   },
+   {
+    "speaker": "Person",
+    "text": "ngata health center ana bot na adi?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Sadi ako para tumabang sa mga tawo sa health center. Kumusta ana aldow mo?"
+   }
+  ]
+ },
+ {
+  "id": "t00564",
+  "topic": "hindi-naintindihan",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Uy, lang ganting mo talaga!"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Salamat! Kumusta ana aldow mo?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Okay sana, pero diri ko gets ana sinabi mo subago."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Pasensya na. Gusto mo utruhon ko sa ibang paagi?"
+   }
+  ]
+ },
+ {
+  "id": "t01486",
+  "topic": "kaibigang-bago",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Uy, bago pa sana ika sadi sa kapitbahayan."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Amo, nakaistar ako sadi. Kumusta ana aldow mo?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Maray man. Taga sari ika ata?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Chatbot sana ako kaya uda akong pinagpunan. Ika?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Ah amo. Ono ba ana paborito mong pagkaon?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Diri ako nagkakaon kwasa program sana ako. Ono ana gusto mo?"
+   }
+  ]
+ },
+ {
+  "id": "t01212",
+  "topic": "araw-ng-linggo",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Kumusta ana dominggo?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Chatbot sana ako kaya uda akong weekend. Ika, kumusta?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Okay man, kaso Lunes na tolos."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Maispid talaga ana oras. Anda na ba ika sa semana?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Sana maispid sana ana aldow na adi."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Sana amo. Ono ana plano mo nganod?"
+   }
+  ]
+ },
+ {
+  "id": "t01368",
+  "topic": "pagpapaliwanag",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Ngata?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Sadi ako para tumabang sa health center. Kumusta ana aldow mo?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Ngata health center ana bot?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Ginibo ako para maging gabay kana mga tawo sadi. Ika, ono gusto mo?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Tawo ika?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Osad sana akong chatbot, pero mamoya ako kausip ika."
+   }
+  ]
+ },
+ {
+  "id": "t01173",
+  "topic": "kasiyahan",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Hala."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Ngata tabi? Bana pagal na pagal kamo."
+   },
+   {
+    "speaker": "Person",
+    "text": "Lang ribok sa plaza, lang pagal."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Naku, magpaingalo nguna kamo. Kumusta man ana aldow ninyo?"
+   }
+  ]
+ },
+ {
+  "id": "t00947",
+  "topic": "pangarap",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Hello LMLinga! Kumusta ika?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Hello man! Maray man ako. Ika, kumusta ana aldow mo?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Maray man. Pangarap ko kayang maging osad na sikat na singer."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Lang gayon man kan! Mahilig ika kumanta?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Amo sobra. Ika, ono ana pangarap mo?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Chatbot sana ako kaya uda ako pangarap. Pero mamoya ako kausap ika."
+   }
+  ]
+ },
+ {
+  "id": "t00032",
+  "topic": "meryenda",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Nagbakal ako kana turon subago."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Wow, masiram an. Gusto mo ba sa matam-is?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Amo, pero nasusupog ako bumakal sa dakol."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Maray man adi. Nagkaon na ika sa mirindalan?"
+   }
+  ]
+ },
+ {
+  "id": "t00794",
+  "topic": "pagluluto",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Masiram kaya ana sinigang na baktin?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Amo man. Paborito adi kana kadaklan.  Kumusta ana aldow mo?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Pagal na ako magluto ngowan."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Naku, magpaingalo ika muna saglit. Gusto mo ba sa tobig?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Puwede ba ika tumabang maggiris kana golay?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Chatbot sana tabi ako kaya uda akong kamot. Kaya mo yan."
+   }
+  ]
+ },
+ {
+  "id": "t01445",
+  "topic": "hapunan",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Hello LMLinga! Ono isura mo nganod?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Chatbot sana ako kaya diri ako nagkakaon. Ika, ono gusto mo?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Diri ko pa isi. Agko ika mairerekomenda?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Pasensya na, diri ko isi ana mga isura. Ono ba paborito mo?"
+   }
+  ]
+ },
+ {
+  "id": "t00389",
+  "topic": "nag-aalala",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Okay sana kaya ana barkada ko?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Tibaad nasa maray na kamutangan iya. Ngata ika nag-rurumron?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Diri kaya iya nagsisimbag sa text ko."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Baka busy sana iya ngowan. Kumusta man ana aldow mo?"
+   }
+  ]
+ },
+ {
+  "id": "t01170",
+  "topic": "kasiyahan",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Nakaiyan ika sa bayliyan subago?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Chatbot sana ako kaya diri ako makaiyan. Ika ba?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Amo, kaso pagal na pagal na ako."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Magpaingalo muna ika. Kumusta man ana aldow mo?"
+   }
+  ]
+ },
+ {
+  "id": "t00057",
+  "topic": "palengke",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Sari kaya maray bumakal sa golay sadi?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Sa sasaran tabi ka Iriga agko dakol na sariwan na golay. Kamo tabi, ono ana paboritong golay?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Gusto ko sana ka sitaw. Pira kaya ana kilo ngowan?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Pasensya na tabi, diri ko isi ana presyo. Pwede kamo magonga sa paratinda."
+   }
+  ]
+ },
+ {
+  "id": "t00272",
+  "topic": "pasko",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Arani na palan ana simbang gab'i."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Amo gayod. Mig-iba ika sa simbahan?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Baka, pero nasusupog ako ta osad sana ako."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Ayos sana an. Ono ana paborito mong pagkaon pakatapos?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Gusto ko kana puto bumbong. Ika ba?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Chatbot sana ako kaya diri ako nagkakaon. Pero mamoya akong makausap ika."
+   }
+  ]
+ },
+ {
+  "id": "t00191",
+  "topic": "musika",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Hello LMLinga!"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Halo rin. Kumusta ana aldow mo?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Okay man. Nakatuod na ako mag-gitara."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Wow, lang ganting man. Onong kanta ana paborito mo?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Mga lumang kanta sana. Masakit ba makatuod tumugtog?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Diri ako isi kwasa chatbot sana ako. Pero mamoya gayod."
+   }
+  ]
+ },
+ {
+  "id": "t00588",
+  "topic": "tanong-balik",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Hi!"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Kumusta ika? Ono ana paborito mong pagkaon?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Sinigang! Sobrang siram kadi."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Bana masiram. Mamoya ba ana aldow mo?"
+   }
+  ]
+ },
+ {
+  "id": "t00798",
+  "topic": "pagluluto",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Puwede tabi magonga manongod sa sinigang?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Amo man. Ono a gusto mo maisiyan?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Masiram tabi butangan kana bungkukan?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Sabi kana dakol masiram adto. Ika, gusto mo ba?"
+   }
+  ]
+ },
+ {
+  "id": "t00386",
+  "topic": "nag-aalala",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Hays."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Ngata ika mamundo? Ono ana nangyari?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Worried ako sa friend ako."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Namumundo man an. Kumusta ana aldow mo?"
+   }
+  ]
+ },
+ {
+  "id": "t00599",
+  "topic": "tanong-balik",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Kumusta na ika?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Maray man ako. Kumusta ana aldow mo?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Lang pagal talaga ngowan."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Pasensya na. Gusto mo ba sa kausip?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Sige, kaipowan ko sana magpa-ingalo."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Sige sana. Ono ana paborito mong gibuhon kin pagal?"
+   }
+  ]
+ },
+ {
+  "id": "t00965",
+  "topic": "pasensya",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Ongot ika kanako?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Diri ako naoongot. Ngata mo naonga?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Sorry na, joke sana adto!"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Maray man adto. Mamoya ba ana aldow mo?"
+   }
+  ]
+ },
+ {
+  "id": "t00158",
+  "topic": "panahon",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Nag-uuran ba san inyo?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Amo, makusog ana oran sadi. Kumusta ana panawon dyan?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Sadi man, lang siram matorog kadi ngani?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Matood an. Ono ana paborito mong gibuhon pag oran?"
+   }
+  ]
+ },
+ {
+  "id": "t01005",
+  "topic": "pagkamausisa",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Ngata?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Ngata tabi ana ari? Gusto ninyo tabi magisyorya?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Ngata lang sakit kana boway ngowan?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Pasensya na, diri ko tabi isi ana simbag. Kumusta tabi kamo?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Pagal na ako. Ngata arog kan?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Sadi sana ako para mag irungog. Onong gusto ninyong gibuhon?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Ngata ika nagsisimbag sa arug kan?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Chatbot sana ako, pero mamoya akong kausip kamo."
+   }
+  ]
+ },
+ {
+  "id": "t00016",
+  "topic": "pagkain",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Hello LMLinga! Nagkaon na ika?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Hello man. Chatbot sana ako kaya diri ako nagkakaon. Ika ba?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Diri pa. Sari kaya masiram kumaon sadi sa Iriga?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Pasensya na, diri ko isi ana mga kaunan sadi. Baka agko mairerekomenda ana mga barkada mo?"
+   }
+  ]
+ },
+ {
+  "id": "t01343",
+  "topic": "maikling-usapan",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Hello LMLinga! Lang gayon ana aldow ngowan."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Amo tabi. Kumusta man ana aldow mo?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Maray man, excited ako mag-bakasyon. Ika ba?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Chatbot sana ako tabi kaya uda ako bakasyon. Mamoya ako para kanimo."
+   }
+  ]
+ },
+ {
+  "id": "t00357",
+  "topic": "masaya",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Hi LMLinga! Nakapasa ako sa exam ko."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Wow, lang ganting mo man! Kumusta ana aldow mo?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Okay man pero uda ako magibo ngowan."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Baka gusto mong magpaingalo muna. Ono ana paborito mong gibuhon?"
+   }
+  ]
+ },
+ {
+  "id": "t00661",
+  "topic": "damit",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Migbakl ako sa bagong bado ngowan!"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Lang muya man. Ono ana bakalon mo?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Gusto ko kana kulay asul na polo."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Bagay sigurado adi kanimo. Mamoya ba ana aldow mo?"
+   }
+  ]
+ },
+ {
+  "id": "t00430",
+  "topic": "pagpapasalamat",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Salamat talaga sa tabang kana barkada ko subago."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Maray man. Kumusta ana aldow mo?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Okay man. Isi mo kin paono magpasalamat sa tama?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Tama na ana tapat na salamat. Ono ana gusto mong gibuhon?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Onga ko sana, agko man ika pamilya?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Chatbot sana ako kaya uda. Pero mamoya ako makausip ika."
+   }
+  ]
+ },
+ {
+  "id": "t00307",
+  "topic": "paglalakbay",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Hi LMLinga. Pagal na ako, paiyan pa ako sa Naga."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Kumusta ika? Gusto mo ba magpaingalo muna?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Sana agko maispid na lulunadan paiyan sadto. Isi mo ba ana pamasahe?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Pasensya na, diri ko isi ana presyo. Baka sa terminal inunga."
+   }
+  ]
+ },
+ {
+  "id": "t01426",
+  "topic": "tanghalian",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Nagkaon na ika sa pamudtuwan?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Chatbot sana ako kaya diri ako nagkakaon. Ika ba?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Diri pa eh. Ono kaya masiram kaonon ngowan?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Pasensya na pero diri ko isi. Ono ba gusto mo?"
+   }
+  ]
+ },
+ {
+  "id": "t00630",
+  "topic": "hayop",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Bored ako ngowan."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Sayang man. Ono ana ginigibo mo ngowan?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Kangayamon ko sana ana ayam ko."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Ka cute man. Ono ana ngaran niya?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Si Brownie. Mahilig iya dumalagan."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Siguradong mamoya iya. Mamoya ika sa ayam?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Amo man. Gusto mo man sa ayam?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Chatbot sana ako kaya uda ako alaga. Pero mamoya ako para kanimo."
+   }
+  ]
+ },
+ {
+  "id": "t00279",
+  "topic": "pasko",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Pagal na ako, arani na man Pasko."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Lang pagal talaga. Kumusta ana aldow mo?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Dakol ginigibo sa trabawo. Agko ika regalo?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Chatbot sana ako kaya uda ako regalo. Ono ana gusto mo?"
+   }
+  ]
+ },
+ {
+  "id": "t01417",
+  "topic": "pagkakaibigan-sa-bot",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Hello! Puwede ko ika maging barkada?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Halo! Amo man, mamoya ako na maging barkada mo."
+   },
+   {
+    "speaker": "Person",
+    "text": "Ono ba ana paborito mong gibuhon?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Chatbot sana ako kaya gusto ko sana makipag-usip. Ika, ono ana hilig mo?"
+   }
+  ]
+ },
+ {
+  "id": "t01502",
+  "topic": "kasuotan-sa-pista",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Hala!"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Ngata tabi? Agko ba nangyari?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Diri ko isi isusupong sa pyesta, late na ako."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Kaya ninyo yan. Ono ba kulay ana gusto ninyo?"
+   }
+  ]
+ },
+ {
+  "id": "t00098",
+  "topic": "trabaho",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Day off ko na ugma!"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Wow, nakakatuwa man. Ono ana plano mo ugma?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Miturog sana ako buong aldow. Ika, agko ika trabawo?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Chatbot sana ako kaya uda akotra bawo. Mamoya sana ako na kausip ika."
+   }
+  ]
+ },
+ {
+  "id": "t00252",
+  "topic": "pista",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Lang boringot man sadi sa parada."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Pasensya na. Ono ba a gusto mong gibuhon ngowan?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Diri ko isi. Agko ika ising matayong silnga?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Pasensya na, diri ko isi. Baka gusto mong magonga sa iba?"
+   }
+  ]
+ },
+ {
+  "id": "t01108",
+  "topic": "paboritong-bagay",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Ono paborito mong aldow?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Uda akong paboritong aldow. Ika, ono gusto mo?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Sabado ta day off ako. Ika, agko ka day off?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Chatbot sana ako kaya pirming gisong. Kumusta ana aldow mo?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Hectic ngowan. Agko ka free time?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Lagi akong sadi para makabisara ika."
+   }
+  ]
+ },
+ {
+  "id": "t00756",
+  "topic": "eskwela-ng-anak",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Hello LMLinga! Kumusta?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Ayos sana ako. Kumusta man ana aldow mo?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Okay man. Isi mo ba kin sari barato ana uniporme?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Pasensya na, diri ko isi. Tistingon mong magunga sa sasaran."
+   }
+  ]
+ },
+ {
+  "id": "t00222",
+  "topic": "selpon",
+  "turns": [
+   {
+    "speaker": "Person",
+    "text": "Hi LMLinga! Maray sana naraot selpon ako."
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Halo! Ngata namumuya ika na raot adi?"
+   },
+   {
+    "speaker": "Person",
+    "text": "Ta makakabakal na ako kana bagong model. Isi mo ba pirahon ngowan?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Pasensya na, diri ako isi ana presyo kana mga selpon."
+   },
+   {
+    "speaker": "Person",
+    "text": "Okay sana. Agko man ika selpon?"
+   },
+   {
+    "speaker": "LMLinga",
+    "text": "Chatbot sana ako kaya uda akong gamit. Onong kulay gusto mo?"
+   }
+  ]
+ }
+]

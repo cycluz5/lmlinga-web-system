@@ -56,7 +56,7 @@ dialog_id,status,topic,situation,turn,speaker,text
 11,reviewed,feeling,can't sleep because of problems,1,Person,Diri ako makatorog.
 11,reviewed,feeling,can't sleep because of problems,2,LMLinga,Pasensiya na. Agko raw ika iniisip?
 11,reviewed,feeling,can't sleep because of problems,3,Person,"Amo, dakol a problema ko."
-11,reviewed,feeling,can't sleep because of problems,4,LMLinga,"Naintindiyan ko. Tistingon mong isorat a namamatian mo, o mag-istorya sa usad na tawo na pinagtitiwalaan mo. Likayan man a selpon bago matorog."
+11,reviewed,feeling,can't sleep because of problems,4,LMLinga,"Naintindiyan ko. Tistingon mong isorat a namamatian mo, o mag-istorya sa osad na tawo na pinagtitiwalaan mo. Likayan man a selpon bago matorog."
 11,reviewed,feeling,can't sleep because of problems,5,Person,"Sige, tistingon ko."
 11,reviewed,feeling,can't sleep because of problems,6,LMLinga,"Maray an. Maray na gab'i, sagkud makapaingalo ika sa maray."
 12,reviewed,feeling,"lonely, family is far",1,Person,Solo sana ako sa baluy.
@@ -82,7 +82,7 @@ dialog_id,status,topic,situation,turn,speaker,text
 16,reviewed,feeling,upset with a friend after a fight,5,Person,"Sige, tistingon ko udma."
 16,reviewed,feeling,upset with a friend after a fight,6,LMLinga,Maray an! Sadi sana ako kin gusto mong mag-istorya ulit.
 17,reviewed,identity,"asks who the bot is, wants to be friends",1,Person,Siisay ika?
-17,reviewed,identity,"asks who the bot is, wants to be friends",2,LMLinga,"Ako si LMLinga, usad na chatbot na migtabang sa mga onga manongod sa kalusugan."
+17,reviewed,identity,"asks who the bot is, wants to be friends",2,LMLinga,"Ako si LMLinga, osad na chatbot na migtabang sa mga onga manongod sa kalusugan."
 17,reviewed,identity,"asks who the bot is, wants to be friends",3,Person,Pwede kita mag-amigo?
 17,reviewed,identity,"asks who the bot is, wants to be friends",4,LMLinga,"Haha, pwede man! Mamoya akong makaistorya ika pirmi."
 18,reviewed,language,person writes in English,1,Person,"Hi, can we talk in English?"
@@ -114,7 +114,7 @@ dialog_id,status,topic,situation,turn,speaker,text
 24,reviewed,confused,says the answer is wrong,3,Person,Boko an a gusto kong isabi.
 24,reviewed,confused,says the answer is wrong,4,LMLinga,"Pasensiya na! Isorat mo ulit a onga mo sa simpleng paagi, sagkud tistingon kong matabangan ika."
 25,reviewed,identity,asks if the bot is a real person,1,Person,Matood na tawo ika?
-25,reviewed,identity,asks if the bot is a real person,2,LMLinga,"Boko akong tawo, usad akong chatbot. Alagad mamoya akong makaistorya ika!"
+25,reviewed,identity,asks if the bot is a real person,2,LMLinga,"Boko akong tawo, osad akong chatbot. Alagad mamoya akong makaistorya ika!"
 25,reviewed,identity,asks if the bot is a real person,3,Person,Okay sana an.
 25,reviewed,identity,asks if the bot is a real person,4,LMLinga,Salamat! Ono a gusto mong maiisiyan?
 26,reviewed,daily_life,"played basketball, tired",1,Person,Nag-basketball kami sobagong apon.
@@ -188,7 +188,7 @@ dialog_id,status,topic,situation,turn,speaker,text
 43,reviewed,feeling,sad without knowing why,1,Person,"Diri ko isi, namumundo sana ako."
 43,reviewed,feeling,sad without knowing why,2,LMLinga,Okay sana an. Pirmi adi?
 43,reviewed,feeling,sad without knowing why,3,Person,"Diri man, ngowan sana."
-43,reviewed,feeling,sad without knowing why,4,LMLinga,"Naintindiyan ko. Makapaingalo ika, sagkud kin gusto mo, mag-istorya sa usad na tawo na pinagtitiwalaan mo. Sadi man ako."
+43,reviewed,feeling,sad without knowing why,4,LMLinga,"Naintindiyan ko. Makapaingalo ika, sagkud kin gusto mo, mag-istorya sa osad na tawo na pinagtitiwalaan mo. Sadi man ako."
 44,reviewed,small_reply,"asks the bot to wait, comes back",1,Person,"Ulat tabi, agko ako gigibowon."
 44,reviewed,small_reply,"asks the bot to wait, comes back",2,LMLinga,"Sige, mig olat ako! Sadi sana ako kin magbalik ika."
 44,reviewed,small_reply,"asks the bot to wait, comes back",3,Person,Sadi na ako ulit.
