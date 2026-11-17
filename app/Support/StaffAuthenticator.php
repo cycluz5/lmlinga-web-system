@@ -3,6 +3,7 @@
 namespace App\Support;
 
 use App\Models\User;
+use App\Services\StaffEmailVerificationService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
@@ -13,18 +14,21 @@ use Illuminate\Support\Facades\Schema;
 final class StaffAuthenticator
 {
     /**
-     * @return array{user: User|null, via: 'database'|'demo'|null, must_change_password: bool}
+     * pending_verification is the account when the password was correct but its email is not verified yet
+     * (Batch 1). No session is established for such an account; the caller starts email verification.
+     *
+     * @return array{user: User|null, via: 'database'|'demo'|null, must_change_password: bool, pending_verification: User|null}
      */
     public static function attempt(string $identity, string $password): array
     {
         self::clearIdentityBeforeLogin();
 
+        $failure = ['user' => null, 'via' => null, 'must_change_password' => false, 'pending_verification' => null];
+
         $identityKey = self::normalizeIdentity($identity);
         if ($identityKey === '' || $password === '') {
-            return ['user' => null, 'via' => null, 'must_change_password' => false];
+            return $failure;
         }
-
-        $failure = ['user' => null, 'via' => null, 'must_change_password' => false];
 
         if (UserManagementErdMode::isActive()) {
             $erdResult = self::attemptStaffTable($identityKey, $password);
@@ -32,7 +36,7 @@ final class StaffAuthenticator
                 return $erdResult;
             }
 
-            return $failure;
+            return [...$failure, 'pending_verification' => $erdResult['pending_verification']];
         }
 
         if (Schema::hasTable('users')) {
@@ -41,7 +45,7 @@ final class StaffAuthenticator
                 return $legacyResult;
             }
             if ($legacyResult['identity_matched']) {
-                return $failure;
+                return [...$failure, 'pending_verification' => $legacyResult['pending_verification']];
             }
         }
 
@@ -56,6 +60,7 @@ final class StaffAuthenticator
             'user' => null,
             'via' => 'demo',
             'must_change_password' => false,
+            'pending_verification' => null,
         ];
     }
 
@@ -64,7 +69,8 @@ final class StaffAuthenticator
      *     user: User|null,
      *     via: 'database'|null,
      *     must_change_password: bool,
-     *     identity_matched: bool
+     *     identity_matched: bool,
+     *     pending_verification: User|null
      * }
      */
     private static function attemptStaffTable(string $identityKey, string $password): array
@@ -74,6 +80,7 @@ final class StaffAuthenticator
             'via' => null,
             'must_change_password' => false,
             'identity_matched' => false,
+            'pending_verification' => null,
         ];
 
         $user = User::query()
@@ -94,6 +101,15 @@ final class StaffAuthenticator
             ];
         }
 
+        // Batch 1: correct password but email ownership not yet proven — never establish a session.
+        if (app(StaffEmailVerificationService::class)->isPending($user)) {
+            return [
+                ...$failure,
+                'identity_matched' => true,
+                'pending_verification' => $user,
+            ];
+        }
+
         Auth::login($user);
         $user->syncUiRoleSession();
         session([
@@ -107,6 +123,7 @@ final class StaffAuthenticator
             'via' => 'database',
             'must_change_password' => (bool) $user->must_change_password,
             'identity_matched' => true,
+            'pending_verification' => null,
         ];
     }
 

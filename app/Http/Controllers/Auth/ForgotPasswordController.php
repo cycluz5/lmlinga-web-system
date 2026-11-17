@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ResetStaffPasswordRequest;
 use App\Http\Requests\SendStaffPasswordResetLinkRequest;
 use App\Models\User;
+use App\Services\StaffEmailVerificationService;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -57,7 +58,9 @@ class ForgotPasswordController extends Controller
             return back()->withInput($request->only('email'))->withErrors(['email' => self::NOT_REGISTERED_MESSAGE]);
         }
 
-        if (! $user->isActive()) {
+        // Inactive, or the email address is not verified yet (a new account activates through the emailed code
+        // at first sign-in, not through a reset link).
+        if (! $user->isActive() || app(StaffEmailVerificationService::class)->isPending($user)) {
             return back()->withInput($request->only('email'))->withErrors(['email' => self::NOT_ELIGIBLE_MESSAGE]);
         }
 
