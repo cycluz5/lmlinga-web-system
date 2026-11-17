@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Mail\StaffAccountCredentialsMail;
 use App\Models\User;
 use App\Models\WorkerAppointment;
 use App\Support\StaffAccountStatus;
@@ -12,8 +13,11 @@ use App\Support\WorkerAssignedZones;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Validation\ValidationException;
+use Throwable;
 
 /**
  * Admin Health Worker account persistence against users + worker_appointments.
@@ -124,6 +128,8 @@ final class HealthWorkerAccountService
                 ),
             ));
 
+            $this->markTemporaryPassword($user);
+
             $user->save();
 
             $user->appointments()->create($appointmentData);
@@ -138,6 +144,59 @@ final class HealthWorkerAccountService
     private function emailVerification(): StaffEmailVerificationService
     {
         return app(StaffEmailVerificationService::class);
+    }
+
+    /**
+     * Flag the in-memory account as holding an admin-issued temporary password (new account or admin reset).
+     * The worker must replace it, together with the emailed code, on first login. Legacy rows stay NULL.
+     */
+    private function markTemporaryPassword(User $user): void
+    {
+        $user->must_change_password = true;
+
+        if (Schema::hasColumn($user->getTable(), 'temp_password_issued_at')) {
+            $user->temp_password_issued_at = now();
+        }
+    }
+
+    /**
+     * Email the temporary credentials to the worker. Call AFTER the account transaction has committed.
+     * A delivery failure never rolls back the account; it is logged and reported to the caller.
+     */
+    public function sendCredentialsEmail(User $user, string $temporaryPassword, bool $isReset = false): bool
+    {
+        try {
+            Mail::to(strtolower(trim((string) $user->email)))->send(new StaffAccountCredentialsMail(
+                workerName: $user->composeDisplayName(),
+                loginIdentity: (string) ($user->username ?: $user->email),
+                loginEmail: (string) $user->email,
+                temporaryPassword: $temporaryPassword,
+                loginUrl: route('login'),
+                isReset: $isReset,
+                expiryMinutes: StaffEmailVerificationService::EXPIRY_MINUTES,
+            ));
+        } catch (Throwable $e) {
+            Log::warning('staff.credentials_email.delivery_failed', [
+                'user_id' => $user->getKey(),
+                'error' => $e::class,
+            ]);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * True when the update payload carries a new admin-set password.
+     *
+     * @param  array<string, mixed>  $data
+     */
+    public static function updateChangesPassword(array $data): bool
+    {
+        $password = $data['hw_password'] ?? null;
+
+        return is_string($password) && $password !== '';
     }
 
     /**
@@ -187,12 +246,23 @@ final class HealthWorkerAccountService
             $password = $data['hw_password'] ?? null;
             if (is_string($password) && $password !== '') {
                 $profile['password'] = $password;
-                $profile['must_change_password'] = true;
             }
 
             $previousEmail = strtolower(trim((string) $user->email));
 
             $user->fill($profile);
+
+            // An admin password reset issues a new temporary password: force the first-login code + new
+            // password step again. Never applied to the last usable Admin (typo-lockout protection).
+            $passwordReset = is_string($password) && $password !== '';
+            $forceTemporaryFlow = $passwordReset
+                && ! ($this->isActiveAdmin($user->fresh(['currentAppointment'])) && $this->countOtherActiveAdmins((int) $user->id) === 0);
+            if ($passwordReset) {
+                $user->must_change_password = true;
+            }
+            if ($forceTemporaryFlow) {
+                $this->markTemporaryPassword($user);
+            }
 
             $emailChanged = strtolower(trim((string) $user->email)) !== $previousEmail;
 
@@ -217,9 +287,12 @@ final class HealthWorkerAccountService
                 // Batch 1: a changed email must be proven again before the account is usable. Never applied
                 // to the last usable Admin, so an email typo cannot lock everyone out of User Management.
                 if (
-                    $emailChanged
-                    && (bool) config('lmlinga.staff_email_verification.reverify_on_email_change', true)
-                    && ! ($this->isActiveAdmin($user->fresh(['currentAppointment'])) && $this->countOtherActiveAdmins((int) $user->id) === 0)
+                    $forceTemporaryFlow
+                    || (
+                        $emailChanged
+                        && (bool) config('lmlinga.staff_email_verification.reverify_on_email_change', true)
+                        && ! ($this->isActiveAdmin($user->fresh(['currentAppointment'])) && $this->countOtherActiveAdmins((int) $user->id) === 0)
+                    )
                 ) {
                     $this->emailVerification()->markPending($user);
                 }

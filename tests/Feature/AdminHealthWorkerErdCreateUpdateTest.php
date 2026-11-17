@@ -49,7 +49,7 @@ class AdminHealthWorkerErdCreateUpdateTest extends TestCase
         ]);
 
         $response->assertRedirect(route('user-management.index', ['tab' => 'workers']));
-        $response->assertSessionHas('status', 'Health Worker account created successfully.');
+        $response->assertSessionHas('status', 'Health Worker account created successfully. Login details were emailed to erd.new.worker@example.test.');
 
         $row = DB::table('user_management')->where('email', 'erd.new.worker@example.test')->first();
         $this->assertNotNull($row);

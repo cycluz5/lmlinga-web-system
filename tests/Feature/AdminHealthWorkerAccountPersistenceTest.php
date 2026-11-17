@@ -155,7 +155,7 @@ class AdminHealthWorkerAccountPersistenceTest extends TestCase
         $user = User::query()->where('email', 'new.worker@example.test')->first();
         $this->assertNotNull($user);
         $response->assertRedirect(route('user-management.index', ['tab' => 'workers']));
-        $response->assertSessionHas('status', 'Health Worker account created successfully.');
+        $response->assertSessionHas('status', 'Health Worker account created successfully. Login details were emailed to new.worker@example.test.');
 
         $this->assertSame('New', $user->first_name);
         $this->assertSame('A', $user->middle_name);

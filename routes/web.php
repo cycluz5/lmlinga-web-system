@@ -53,7 +53,17 @@ Route::view('/register', 'pages.auth.register')->name('register');
 Route::view('/chatbot', 'pages.chatbot.landing')->name('chatbot.landing');
 
 Route::view('/chatbot/register', 'pages.chatbot.register')->name('chatbot.register');
-Route::post('/chatbot/register', [ResidentRegistrationController::class, 'store'])->name('chatbot.register.store');
+Route::post('/chatbot/register', [ResidentRegistrationController::class, 'store'])
+    ->middleware('throttle:lmlinga-resident-register-otp-send')
+    ->name('chatbot.register.store');
+Route::get('/chatbot/register/verify', [ResidentRegistrationController::class, 'showVerify'])->name('chatbot.register.verify');
+Route::post('/chatbot/register/verify', [ResidentRegistrationController::class, 'verify'])
+    ->middleware('throttle:lmlinga-resident-register-otp-verify')
+    ->name('chatbot.register.verify.submit');
+Route::post('/chatbot/register/verify/resend', [ResidentRegistrationController::class, 'resend'])
+    ->middleware('throttle:lmlinga-resident-register-otp-send')
+    ->name('chatbot.register.verify.resend');
+Route::post('/chatbot/register/verify/cancel', [ResidentRegistrationController::class, 'cancel'])->name('chatbot.register.verify.cancel');
 Route::view('/chatbot/login', 'pages.chatbot.login')->name('chatbot.login');
 Route::post('/chatbot/login', [ResidentLoginController::class, 'store'])->name('chatbot.login.store');
 Route::post('/chatbot/logout', [ResidentLoginController::class, 'destroy'])->name('chatbot.logout');
@@ -210,7 +220,9 @@ Route::post('/staff/verify-email/cancel', [
 
 /*
  | Voluntary staff password change — authenticated staff only.
- | REF-24: workers are not forced here after login.
+ | REF-24: password changes stay voluntary for every account EXCEPT one still holding an admin-issued
+ | temporary password (users.temp_password_issued_at set: new account or admin reset). Those are handled by
+ | the first-login code + new-password step; EnsurePasswordIsCurrent is the narrowed safety net for them.
  */
 Route::middleware(['auth', 'staff.account-usable'])->group(function () {
     Route::get('/change-password', [

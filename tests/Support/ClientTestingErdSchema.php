@@ -142,6 +142,7 @@ final class ClientTestingErdSchema
             $table->string('password');
             $table->string('status')->default('Active');
             $table->boolean('must_change_password')->default(false);
+            $table->timestamp('temp_password_issued_at')->nullable();
             $table->string('photo_path')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->timestamp('email_verified_at')->nullable();
