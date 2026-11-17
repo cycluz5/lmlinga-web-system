@@ -122,6 +122,8 @@
                     @csrf
                     @include('pages.household-profiling.partials.member-form-fields', [
                         'memberValues' => session()->hasOldInput() ? old() : ($memberValues ?? []),
+                        // Suggest existing residents while adding a member (not on edit).
+                        'nameSuggest' => true,
                     ])
 
                     <div class="lml-hh-member-form__actions">

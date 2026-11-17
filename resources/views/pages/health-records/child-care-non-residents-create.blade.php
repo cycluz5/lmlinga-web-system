@@ -87,15 +87,15 @@
                     <div class="lml-hr-cc-nr__field-grid lml-hr-cc-nr__field-grid--3">
                         <div class="lml-hr-cc-nr__field">
                             <label for="lml-hr-cc-nr-first-name">First Name</label>
-                            <input id="lml-hr-cc-nr-first-name" name="first_name" type="text" class="lml-hr-cc-nr__input lml-focus-ring" autocomplete="given-name" data-hr-cc-nr-first-name>
+                            <input id="lml-hr-cc-nr-first-name" name="first_name" data-lml-name-suggest="person" data-lml-name-suggest-heading="Registered La Medalla residents with a similar name — this person may not be a non-resident" data-lml-name-suggest-url="{{ route('staff.name-suggestions') }}" type="text" class="lml-hr-cc-nr__input lml-focus-ring" autocomplete="given-name" data-hr-cc-nr-first-name>
                         </div>
                         <div class="lml-hr-cc-nr__field">
                             <label for="lml-hr-cc-nr-middle-name">Middle Name</label>
-                            <input id="lml-hr-cc-nr-middle-name" name="middle_name" type="text" class="lml-hr-cc-nr__input lml-focus-ring" autocomplete="additional-name" data-hr-cc-nr-middle-name>
+                            <input id="lml-hr-cc-nr-middle-name" name="middle_name" data-lml-name-suggest="person" data-lml-name-suggest-url="{{ route('staff.name-suggestions') }}" type="text" class="lml-hr-cc-nr__input lml-focus-ring" autocomplete="additional-name" data-hr-cc-nr-middle-name>
                         </div>
                         <div class="lml-hr-cc-nr__field">
                             <label for="lml-hr-cc-nr-last-name">Last Name</label>
-                            <input id="lml-hr-cc-nr-last-name" name="last_name" type="text" class="lml-hr-cc-nr__input lml-focus-ring" autocomplete="family-name" data-hr-cc-nr-last-name>
+                            <input id="lml-hr-cc-nr-last-name" name="last_name" data-lml-name-suggest="person" data-lml-name-suggest-url="{{ route('staff.name-suggestions') }}" type="text" class="lml-hr-cc-nr__input lml-focus-ring" autocomplete="family-name" data-hr-cc-nr-last-name>
                         </div>
                     </div>
 

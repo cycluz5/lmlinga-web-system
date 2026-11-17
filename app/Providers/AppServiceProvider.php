@@ -6,6 +6,7 @@ use App\Support\AtRestEncrypter;
 use App\Support\Database\CachingSchemaBuilder;
 use App\Support\Database\SchemaLookupCache;
 use Database\Seeders\SuperAdminSeeder;
+use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Console\Events\CommandFinished;
 use Illuminate\Database\Events\DatabaseRefreshed;
 use Illuminate\Database\Events\MigrationsEnded;
@@ -13,8 +14,10 @@ use Illuminate\Database\Events\MigrationsStarted;
 use Illuminate\Database\Events\QueryExecuted;
 use Illuminate\Database\Events\SchemaLoaded;
 use Illuminate\Database\Events\TransactionRolledBack;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -62,6 +65,10 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrapFive();
         $this->flushSchemaLookupsOnSchemaChange();
+
+        // Staff name suggestions: per signed-in staff user (typing is debounced client-side).
+        RateLimiter::for('lmlinga-name-suggest', static fn (Request $request): Limit => Limit::perMinute(60)
+            ->by('name-suggest|'.($request->user()?->getAuthIdentifier() ?? $request->ip())));
 
         if ($this->app->runningInConsole()) {
             $this->prependMysqlClientToPath();

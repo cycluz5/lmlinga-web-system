@@ -73,6 +73,7 @@
 @import './pages/health-records-death.css';
 @import './pages/death-requests.css';
 @import './pages/announcement.css';
+@import './components/name-suggest.css';
 
 /*
  * Tailwind theme colors reference tokens.css (:root variables).
