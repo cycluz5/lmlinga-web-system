@@ -251,6 +251,49 @@ Route::middleware(['auth', 'staff.account-usable'])->group(function () {
 });
 
 /*
+ | SR-06 Language Review — Linguist accounts only (Admin and health workers get 403; D-7 / LQ-2).
+ | Every other staff route is refused for Linguists by the global EnsureLinguistScope middleware.
+ */
+Route::middleware(['auth', 'staff.account-usable', 'staff.password-current', 'ui.role', 'auth.nocache', 'ui.linguist'])->group(function () {
+    Route::get('/language-review', [
+        \App\Http\Controllers\LanguageReview\LanguageReviewController::class,
+        'index',
+    ])->name('language-review.index');
+
+    // SR-05: Linguist approves or rejects a submitted Bikol-Iriga term version (never edits it).
+    Route::get('/language-review/terms/{versionId}', [
+        \App\Http\Controllers\LanguageReview\LanguageReviewTermController::class,
+        'show',
+    ])->where('versionId', '[0-9]+')->name('language-review.terms.show');
+
+    Route::post('/language-review/terms/{versionId}/approve', [
+        \App\Http\Controllers\LanguageReview\LanguageReviewTermController::class,
+        'approve',
+    ])->where('versionId', '[0-9]+')->name('language-review.terms.approve');
+
+    Route::post('/language-review/terms/{versionId}/reject', [
+        \App\Http\Controllers\LanguageReview\LanguageReviewTermController::class,
+        'reject',
+    ])->where('versionId', '[0-9]+')->name('language-review.terms.reject');
+
+    // SR-07: Linguist approves or rejects a submitted chatbot dataset version.
+    Route::get('/language-review/datasets/{datasetVersionId}', [
+        \App\Http\Controllers\LanguageReview\LanguageReviewDatasetController::class,
+        'show',
+    ])->where('datasetVersionId', '[0-9]+')->name('language-review.datasets.show');
+
+    Route::post('/language-review/datasets/{datasetVersionId}/approve', [
+        \App\Http\Controllers\LanguageReview\LanguageReviewDatasetController::class,
+        'approve',
+    ])->where('datasetVersionId', '[0-9]+')->name('language-review.datasets.approve');
+
+    Route::post('/language-review/datasets/{datasetVersionId}/reject', [
+        \App\Http\Controllers\LanguageReview\LanguageReviewDatasetController::class,
+        'reject',
+    ])->where('datasetVersionId', '[0-9]+')->name('language-review.datasets.reject');
+});
+
+/*
  | Offline sync foundation — session/CSRF JSON endpoints.
  | Status is reachable during forced password change so the client can
  | read must_change_password. Sync remains password-current protected.
@@ -298,6 +341,118 @@ Route::middleware(['auth', 'staff.account-usable', 'staff.password-current', 'ui
      | Admin-only modules — route layer matches sidebar visibility.
      */
     Route::middleware('ui.admin')->group(function () {
+        // SR-05 Language Management: Admin adds Bikol-Iriga terms and submits them for Linguist review.
+        Route::get('/language-management', [
+            \App\Http\Controllers\Admin\LanguageManagementController::class,
+            'index',
+        ])->name('language-management.index');
+
+        Route::get('/language-management/create', [
+            \App\Http\Controllers\Admin\LanguageManagementController::class,
+            'create',
+        ])->name('language-management.create');
+
+        Route::post('/language-management', [
+            \App\Http\Controllers\Admin\LanguageManagementController::class,
+            'store',
+        ])->name('language-management.store');
+
+        Route::get('/language-management/{termId}', [
+            \App\Http\Controllers\Admin\LanguageManagementController::class,
+            'show',
+        ])->where('termId', '[0-9]+')->name('language-management.show');
+
+        Route::get('/language-management/{termId}/edit', [
+            \App\Http\Controllers\Admin\LanguageManagementController::class,
+            'edit',
+        ])->where('termId', '[0-9]+')->name('language-management.edit');
+
+        Route::put('/language-management/{termId}', [
+            \App\Http\Controllers\Admin\LanguageManagementController::class,
+            'update',
+        ])->where('termId', '[0-9]+')->name('language-management.update');
+
+        Route::post('/language-management/{termId}/submit', [
+            \App\Http\Controllers\Admin\LanguageManagementController::class,
+            'submit',
+        ])->where('termId', '[0-9]+')->name('language-management.submit');
+
+        Route::post('/language-management/{termId}/retire', [
+            \App\Http\Controllers\Admin\LanguageManagementController::class,
+            'retire',
+        ])->where('termId', '[0-9]+')->name('language-management.retire');
+
+        Route::post('/language-management/{termId}/restore', [
+            \App\Http\Controllers\Admin\LanguageManagementController::class,
+            'restore',
+        ])->where('termId', '[0-9]+')->name('language-management.restore');
+
+        Route::delete('/language-management/{termId}', [
+            \App\Http\Controllers\Admin\LanguageManagementController::class,
+            'destroy',
+        ])->where('termId', '[0-9]+')->name('language-management.destroy');
+
+        // SR-07 Chatbot Datasets: Admin uploads .txt datasets and submits them for Linguist review.
+        Route::get('/chatbot-datasets', [
+            \App\Http\Controllers\Admin\ChatbotDatasetController::class,
+            'index',
+        ])->name('chatbot-datasets.index');
+
+        Route::get('/chatbot-datasets/create', [
+            \App\Http\Controllers\Admin\ChatbotDatasetController::class,
+            'create',
+        ])->name('chatbot-datasets.create');
+
+        Route::post('/chatbot-datasets', [
+            \App\Http\Controllers\Admin\ChatbotDatasetController::class,
+            'store',
+        ])->middleware('throttle:lmlinga-dataset-upload')->name('chatbot-datasets.store');
+
+        Route::post('/chatbot-datasets/import-existing', [
+            \App\Http\Controllers\Admin\ChatbotDatasetController::class,
+            'importExisting',
+        ])->middleware('throttle:lmlinga-dataset-upload')->name('chatbot-datasets.import-existing');
+
+        Route::get('/chatbot-datasets/{datasetId}', [
+            \App\Http\Controllers\Admin\ChatbotDatasetController::class,
+            'show',
+        ])->where('datasetId', '[0-9]+')->name('chatbot-datasets.show');
+
+        Route::get('/chatbot-datasets/{datasetId}/edit', [
+            \App\Http\Controllers\Admin\ChatbotDatasetController::class,
+            'edit',
+        ])->where('datasetId', '[0-9]+')->name('chatbot-datasets.edit');
+
+        Route::put('/chatbot-datasets/{datasetId}', [
+            \App\Http\Controllers\Admin\ChatbotDatasetController::class,
+            'update',
+        ])->where('datasetId', '[0-9]+')->middleware('throttle:lmlinga-dataset-upload')->name('chatbot-datasets.update');
+
+        Route::post('/chatbot-datasets/{datasetId}/submit', [
+            \App\Http\Controllers\Admin\ChatbotDatasetController::class,
+            'submit',
+        ])->where('datasetId', '[0-9]+')->name('chatbot-datasets.submit');
+
+        Route::post('/chatbot-datasets/{datasetId}/retire', [
+            \App\Http\Controllers\Admin\ChatbotDatasetController::class,
+            'retire',
+        ])->where('datasetId', '[0-9]+')->name('chatbot-datasets.retire');
+
+        Route::post('/chatbot-datasets/{datasetId}/restore', [
+            \App\Http\Controllers\Admin\ChatbotDatasetController::class,
+            'restore',
+        ])->where('datasetId', '[0-9]+')->name('chatbot-datasets.restore');
+
+        Route::post('/chatbot-datasets/{datasetId}/reindex', [
+            \App\Http\Controllers\Admin\ChatbotDatasetController::class,
+            'reindex',
+        ])->where('datasetId', '[0-9]+')->middleware('throttle:lmlinga-dataset-upload')->name('chatbot-datasets.reindex');
+
+        Route::delete('/chatbot-datasets/{datasetId}', [
+            \App\Http\Controllers\Admin\ChatbotDatasetController::class,
+            'destroy',
+        ])->where('datasetId', '[0-9]+')->name('chatbot-datasets.destroy');
+
         Route::get('/user-management', [
             \App\Http\Controllers\Admin\HealthWorkerAccountController::class,
             'index',

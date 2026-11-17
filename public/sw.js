@@ -74,6 +74,12 @@
     "/offline",
     // /offline/status and /offline/sync
     "/chatbot",
+    "/language-review",
+    // SR-06: Linguist review is online-only and never cached
+    "/language-management",
+    // SR-05: Admin term management is online-only and never cached
+    "/chatbot-datasets",
+    // SR-07: Admin dataset uploads are online-only and never cached
     "/storage",
     "/sanctum",
     "/up",
@@ -550,6 +556,15 @@
     }
     if (path.startsWith("/profile")) {
       return "Profile";
+    }
+    if (path.startsWith("/language-management")) {
+      return "Language Management";
+    }
+    if (path.startsWith("/chatbot-datasets")) {
+      return "Chatbot Datasets";
+    }
+    if (path.startsWith("/language-review")) {
+      return "Language Review";
     }
     return "This page";
   }

@@ -26,21 +26,25 @@
         $userPhotoUrl = $authUser instanceof \App\Models\User
             ? $authUser->profilePhotoUrl()
             : null;
+        // SR-06: Linguists have no offline features (offline endpoints are refused for them).
+        $offlineEnabled = $role !== \App\Support\StaffRole::LINGUIST;
     @endphp
 
     <div
         class="lml-dashboard"
         data-role="{{ $role }}"
-        data-lml-offline-root
-        data-lml-offline-state="checking"
-        data-offline-status-url="{{ route('offline.status') }}"
-        data-offline-sync-url="{{ route('offline.sync') }}"
-        data-offline-eh-shell-base="{{ url('/offline/environmental-health-shell') }}"
-        @if ($authUser instanceof \App\Models\User)
-            data-offline-actor-id="{{ $authUser->getKey() }}"
-            data-offline-actor-username="{{ $authUser->username }}"
-            @if (is_string($userPhotoUrl) && $userPhotoUrl !== '')
-                data-offline-actor-avatar="{{ $userPhotoUrl }}"
+        @if ($offlineEnabled)
+            data-lml-offline-root
+            data-lml-offline-state="checking"
+            data-offline-status-url="{{ route('offline.status') }}"
+            data-offline-sync-url="{{ route('offline.sync') }}"
+            data-offline-eh-shell-base="{{ url('/offline/environmental-health-shell') }}"
+            @if ($authUser instanceof \App\Models\User)
+                data-offline-actor-id="{{ $authUser->getKey() }}"
+                data-offline-actor-username="{{ $authUser->username }}"
+                @if (is_string($userPhotoUrl) && $userPhotoUrl !== '')
+                    data-offline-actor-avatar="{{ $userPhotoUrl }}"
+                @endif
             @endif
         @endif
     >
@@ -59,7 +63,9 @@
                 :user-photo-url="$userPhotoUrl"
             />
 
-            <x-lml.offline-status />
+            @if ($offlineEnabled)
+                <x-lml.offline-status />
+            @endif
 
             <main class="lml-dashboard__content" id="main-content">
                 @yield('content')

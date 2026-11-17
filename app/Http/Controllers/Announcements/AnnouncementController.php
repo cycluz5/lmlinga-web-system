@@ -126,7 +126,7 @@ class AnnouncementController extends Controller
     {
         $role = UiRole::current();
 
-        if ($role === null || ! in_array($role, UiRole::ALLOWED, true)) {
+        if ($role === null || ! in_array($role, UiRole::HEALTH_WORKER_ROLES, true)) {
             abort(403);
         }
 

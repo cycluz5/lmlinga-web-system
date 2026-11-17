@@ -85,4 +85,36 @@ return [
         'display_unavailable' => '[Decryption unavailable]',
     ],
 
+    /*
+     | Language Management — the resident chatbot uses the Bikol-Iriga terms a Linguist approved as a glossary
+     | in its prompt. Only approved, non-retired terms; no change while none are approved.
+     | LMLINGA_CHATBOT_APPROVED_TERMS=false turns it off (rollback).
+     */
+    'chatbot' => [
+        'approved_terms_in_prompt' => (bool) env('LMLINGA_CHATBOT_APPROVED_TERMS', true),
+        'approved_terms_max' => 80,
+
+        // Linguist review is required by default: an Admin save becomes a draft that a Linguist must approve
+        // before the chatbot uses it. LMLINGA_TERMS_REQUIRE_REVIEW=false lets Admin saves publish directly.
+        'terms_require_review' => (bool) env('LMLINGA_TERMS_REQUIRE_REVIEW', true),
+    ],
+
+    /*
+     | Chatbot dataset uploads (Admin), reviewed by a Linguist before the chatbot can read them.
+     */
+    'chatbot_datasets' => [
+        'max_kilobytes' => 100,
+        'min_characters' => 200,
+        'max_line_length' => 5000,
+        'uploads_per_hour' => (int) env('LMLINGA_DATASET_UPLOADS_PER_HOUR', 20),
+
+        // Linguist review is required by default. LMLINGA_DATASETS_REQUIRE_REVIEW=false lets Admin saves
+        // publish directly.
+        'require_review' => (bool) env('LMLINGA_DATASETS_REQUIRE_REVIEW', true),
+
+        // Where published datasets are written for the chatbot: <path>/<language>/<category>/<source>.txt.
+        // Outside resources/ so deploys never overwrite it; the chatbot reads this folder as well as resources/health_docs.
+        'admin_docs_path' => storage_path('app/health_docs_admin'),
+    ],
+
 ];
