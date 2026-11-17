@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Chatbot;
 use App\Http\Controllers\Controller;
 use App\Models\ChatbotConversation;
 use App\Models\ChatbotMessage;
+use App\Services\BikolCloudChatService;
+use App\Services\BikolSmallTalkService;
 use App\Services\BikolSmallTalkService;
 use App\Services\RagService;
 use App\Services\TagalogConversationService;

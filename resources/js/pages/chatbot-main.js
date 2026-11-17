@@ -1739,11 +1739,11 @@ function syncLanguageButton(languageCode) {
     }
 }
 
-/** Chatbot type for the FOD comparison: 'ai' (default, trained Local AI model), 'context' or 'cloud'. */
+/** Chatbot type: 'cloud' (default on this branch, Cloud AI Gemma), 'ai' or 'context'. */
 function getSelectedMode() {
     const activeBtn = root.querySelector('[data-lml-mode].lml-chatbot-main__mode-btn--active');
-    const mode = activeBtn ? activeBtn.dataset.lmlMode : 'ai';
-    return ['context', 'ai', 'cloud'].includes(mode) ? mode : 'ai';
+    const mode = activeBtn ? activeBtn.dataset.lmlMode : 'cloud';
+    return ['context', 'ai', 'cloud'].includes(mode) ? mode : 'cloud';
 }
 
 /**
@@ -1800,11 +1800,11 @@ root.querySelectorAll('[data-lml-mode]').forEach((btn) => {
 
 try {
     const savedMode = localStorage.getItem('lmlChatbotMode');
-    // Only buttons that are not disabled can be used (a disabled mode saved earlier falls back to 'ai').
+    // Only buttons that are not disabled can be used (a disabled mode saved earlier falls back to 'cloud').
     const usable = Array.from(root.querySelectorAll('[data-lml-mode]:not([disabled])')).map((b) => b.dataset.lmlMode);
-    setSelectedMode(usable.includes(savedMode) ? savedMode : 'ai');
+    setSelectedMode(usable.includes(savedMode) ? savedMode : 'cloud');
 } catch (e) {
-    setSelectedMode('ai');
+    setSelectedMode('cloud');
 }
 updateModeBarVisibility();
 
