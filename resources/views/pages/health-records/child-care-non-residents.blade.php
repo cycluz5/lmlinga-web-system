@@ -124,7 +124,7 @@
                                 <th scope="col">Action</th>
                             </tr>
                         </thead>
-                        <tbody data-hr-cc-nr-tbody>
+                        <tbody data-lml-paginate="hr-cc-nr-row" data-lml-paginate-label="children" data-hr-cc-nr-tbody>
                             @forelse ($rows as $row)
                                 <tr
                                     data-hr-cc-nr-row

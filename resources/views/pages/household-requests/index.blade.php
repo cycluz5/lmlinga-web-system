@@ -85,7 +85,7 @@
                         <th scope="col">View</th>
                     </tr>
                 </thead>
-                <tbody data-hr-tbody>
+                <tbody data-lml-paginate="hr-row" data-lml-paginate-label="requests" data-hr-tbody>
                     @foreach ($requests as $request)
                         <x-lml.household-requests.request-row
                             :id="$request['id']"

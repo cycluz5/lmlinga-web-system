@@ -1,0 +1,98 @@
+/* Batch 3 — shared listing pagination (resources/js/components/table-pagination.js).
+   Visual language mirrors the existing User Management → Residents pager (.lml-ra-pagination). */
+
+.lml-paginate-off {
+    display: none !important;
+}
+
+.lml-pagination {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem 1rem;
+    width: 100%;
+    min-width: 0;
+    margin-top: 0.75rem;
+    padding: 0.15rem 0.1rem 0;
+}
+
+.lml-pagination[hidden] {
+    display: none !important;
+}
+
+.lml-pagination__summary {
+    margin: 0;
+    color: #4b5563;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.lml-pagination__controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    min-width: 0;
+}
+
+.lml-pagination__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;
+    min-width: 2.75rem;
+    padding: 0.35rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    background: #fff;
+    color: #1f2937;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.lml-pagination__btn:hover:not(:disabled) {
+    background: var(--lml-soft-green);
+    border-color: rgba(var(--lml-primary-rgb), 0.35);
+}
+
+.lml-pagination__btn--current,
+.lml-pagination__btn--current:hover:not(:disabled) {
+    background: var(--lml-primary);
+    border-color: var(--lml-primary);
+    color: #fff;
+}
+
+.lml-pagination__btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.lml-pagination__gap {
+    padding: 0 0.2rem;
+    color: #6b7280;
+}
+
+@media (max-width: 575.98px) {
+    .lml-pagination {
+        justify-content: center;
+    }
+
+    .lml-pagination__summary {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+/* Printing a listing prints every filtered row, not only the current page. */
+@media print {
+    .lml-paginate-off {
+        display: revert !important;
+    }
+
+    .lml-pagination {
+        display: none !important;
+    }
+}

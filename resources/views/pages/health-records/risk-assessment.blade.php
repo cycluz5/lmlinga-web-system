@@ -192,7 +192,7 @@
                                 <th scope="col">BP</th>
                             </tr>
                         </thead>
-                        <tbody data-hr-ra-tbody>
+                        <tbody data-lml-paginate="hr-ra-row" data-lml-paginate-label="records" data-hr-ra-tbody>
                             @foreach ($rows as $row)
                                 @php
                                     $viewUrl = (string) ($row['view_url'] ?? '');
