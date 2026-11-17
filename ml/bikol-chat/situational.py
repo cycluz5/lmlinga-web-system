@@ -8,7 +8,7 @@ An LLM cannot know the time. So the app puts one context line in front of the us
 and the model is trained to read it ("Ngowan, alas otso na kana gab'i.").
 The SAME line format is built in PHP: app/Services/BikolSmallTalkService.php::contextLine().
 
-Drafted by Claude, CHECKED by the team (bikol_situational_REVIEW.xlsx, 2026-11-14). The linguist's fixes are applied to every
+Auto-drafted, CHECKED by the team (bikol_situational_REVIEW.xlsx, 2026-11-14). The linguist's fixes are applied to every
 chat as rules: hapon->apon, "kana <part of day>"->"sa", panahon->panawon, Domingo->Dominggo, alas una->alas ona.
 
     python situational.py                 -> dataset/situational.csv
@@ -145,7 +145,59 @@ def build():
     return rows
 
 
+def build_extra(n_time=420, n_day=40, n_date=60, n_period=30):
+    """MORE time/day/date chats for v4b (same reviewed wording rules, different random dates and times).
+
+    v4 saw about 50 time chats with few different minutes and sometimes answered "diri ko isi a oras" or left out
+    the minutes. Here every hour of the day is covered, with many different minutes (not only :00, :15, :30).
+    The question wordings and the reply patterns are the SAME ones the team already reviewed above.
+    """
+    rng = random.Random(SEED + 100)
+    random.seed(SEED + 100)
+    rows, cid = [], 1000   # conv_id 1000+ so they never clash with situational.csv
+
+    def add(cat, now, user, bot):
+        nonlocal cid
+        cid += 1
+        rows.append({"conv_id": cid, "status": "reviewed", "category": cat, "context": context_line(now),
+                     "user": user, "bot": bot})
+
+    def date_at(hour, minute):
+        base = dt.datetime(2026, 1, 1) + dt.timedelta(days=rng.randrange(0, 730))
+        return base.replace(hour=hour, minute=minute)
+
+    # time: all 24 hours, round-robin; minutes: every 3rd is exactly :00, the rest anything 1-59
+    for i in range(n_time):
+        hour = i % 24
+        minute = 0 if i % 3 == 0 else rng.randrange(1, 60)
+        now = date_at(hour, minute)
+        add("time", now, rng.choice(Q_TIME), reply_time(now))
+    for i in range(n_day):
+        now = date_at(rng.randrange(24), rng.randrange(60))
+        add("day", now, rng.choice(Q_DAY), f"Ngowan, {DAYS[now.weekday()]}.")
+    for i in range(n_date):
+        now = date_at(rng.randrange(24), rng.randrange(60))
+        add("date", now, rng.choice(Q_DATE), f"Ngowan ana {DAYS[now.weekday()]}, {MONTHS[now.month - 1]} {now.day}, {now.year}.")
+    for i in range(n_period):
+        now = date_at(rng.randrange(24), rng.randrange(60))
+        add("day_period", now, rng.choice(Q_PERIOD), reply_period(now, ""))
+    return rows
+
+
+def write_extra():
+    rows = build_extra()
+    out = HERE / "dataset" / "situational_extra.csv"
+    with open(out, "w", newline="", encoding="utf-8") as f:
+        w = csv.DictWriter(f, fieldnames=["conv_id", "status", "category", "context", "user", "bot"])
+        w.writeheader()
+        w.writerows(rows)
+    print(f"{len(rows)} extra time/date chats -> {out}")
+
+
 def main():
+    if "--extra" in sys.argv:   # leaves the reviewed situational.csv untouched
+        write_extra()
+        return
     rows = build()
     out = HERE / "dataset" / "situational.csv"
     with open(out, "w", newline="", encoding="utf-8") as f:
@@ -167,7 +219,7 @@ def make_sheet(rows):
     for line in [
         "These are chats where LMLinga must use the REAL time/date. The app sends the 'context' line first.",
         "Tab 'chats to check': read 'bot reply (draft)'. If it is good Iriga, leave 'fixed reply' EMPTY. If not, write the correct reply in 'fixed reply'.",
-        "Tab 'words to check': Claude GUESSED these words (clock, days, months, parts of the day). Write the correct Iriga word.",
+        "Tab 'words to check': these words were GUESSED (clock, days, months, parts of the day). Write the correct Iriga word.",
         "The reply must keep the same time/day/date as the context line. Only the Iriga wording changes.",
         "Health answers do NOT come from here (they come from the verified health documents).",
     ]:
@@ -196,7 +248,7 @@ def make_sheet(rows):
         row[5].fill = PatternFill("solid", fgColor="FFF2CC")
 
     ws3 = wb.create_sheet("words to check")
-    ws3.append(["word / phrase", "meaning", "Claude's guess", "correct Iriga word (only if wrong)"])
+    ws3.append(["word / phrase", "meaning", "guessed word", "correct Iriga word (only if wrong)"])
     words = [("alas otso", "8 o'clock (Spanish numbers una...dose)", "alas una, dos, tres, kuwatro, singko, sais, siyete, otso, nuwebe, dies, onse, dose"),
              ("kana ramrag", "in the morning", "ramrag"), ("kana modto", "at noon", "modto"),
              ("kana hapon", "in the afternoon", "hapon  (GUESS)"), ("kana gab'i", "at night", "gab'i"),

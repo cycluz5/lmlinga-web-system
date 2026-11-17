@@ -1,0 +1,193 @@
+﻿dialog_id,status,topic,turn,speaker,text
+r-t01118,reviewed,paboritong-bagay,1,Person,Gusto ko sana sa park/parke.
+r-t01118,reviewed,paboritong-bagay,2,LMLinga,Bana mamoya adto. Ngata gusto mo ana park/parke?
+r-t01118,reviewed,paboritong-bagay,3,Person,Punok kaya ag dakol ana kawoy.
+r-t01118,reviewed,paboritong-bagay,4,LMLinga,Nakaka-relax adto. Kumusta man ana aldow mo?
+r-t00392,reviewed,nag-aalala,1,Person,Hi LMLinga! inaandal ako para sa friend/barkada/amigo ko.
+r-t00392,reviewed,nag-aalala,2,LMLinga,Hello! Ngata ika inaandal? Gusto mo mag istorya?
+r-t00392,reviewed,nag-aalala,3,Person,Diri iya nagsisimbag sa text. Baka agko nangyari.
+r-t00392,reviewed,nag-aalala,4,LMLinga,Nakaka-stress man an. Kumusta man ana aldow mo ngowan?
+r-t00392,reviewed,nag-aalala,5,Person,"adi, nagmamadali ako. Isi mo kin sari iya?"
+r-t00392,reviewed,nag-aalala,6,LMLinga,"Pasensya na, diri ko isi adi. Baka pwedeng tawagan iya?"
+r-t01372,reviewed,pagpapaliwanag,1,Person,Hello.
+r-t01372,reviewed,pagpapaliwanag,2,LMLinga,Kumusta ika? Ono ana maipaglilingkod ko kanimo?
+r-t01372,reviewed,pagpapaliwanag,3,Person,ngata health center ana bot na adi?
+r-t01372,reviewed,pagpapaliwanag,4,LMLinga,Sadi ako para tumabang sa mga tawo sa health center. Kumusta ana aldow mo?
+r-t00564,reviewed,hindi-naintindihan,1,Person,"Uy, lang ganting mo talaga!"
+r-t00564,reviewed,hindi-naintindihan,2,LMLinga,Salamat! Kumusta ana aldow mo?
+r-t00564,reviewed,hindi-naintindihan,3,Person,"Okay sana, pero diri ko gets ana sinabi mo subago."
+r-t00564,reviewed,hindi-naintindihan,4,LMLinga,Pasensya na. Gusto mo utruhon ko sa ibang paagi?
+r-t01486,reviewed,kaibigang-bago,1,Person,"Uy, bago pa sana ika sadi sa kapitbahayan."
+r-t01486,reviewed,kaibigang-bago,2,LMLinga,"Amo, nakaistar ako sadi. Kumusta ana aldow mo?"
+r-t01486,reviewed,kaibigang-bago,3,Person,Maray man. Taga sari ika ata?
+r-t01486,reviewed,kaibigang-bago,4,LMLinga,Chatbot sana ako kaya uda akong pinagpunan. Ika?
+r-t01486,reviewed,kaibigang-bago,5,Person,Ah amo. Ono ba ana paborito mong pagkaon?
+r-t01486,reviewed,kaibigang-bago,6,LMLinga,Diri ako nagkakaon kwasa program sana ako. Ono ana gusto mo?
+r-t01212,reviewed,araw-ng-linggo,1,Person,Kumusta ana dominggo?
+r-t01212,reviewed,araw-ng-linggo,2,LMLinga,"Chatbot sana ako kaya uda akong weekend. Ika, kumusta?"
+r-t01212,reviewed,araw-ng-linggo,3,Person,"Okay man, kaso Lunes na tolos."
+r-t01212,reviewed,araw-ng-linggo,4,LMLinga,Maispid talaga ana oras. Anda na ba ika sa semana?
+r-t01212,reviewed,araw-ng-linggo,5,Person,Sana maispid sana ana aldow na adi.
+r-t01212,reviewed,araw-ng-linggo,6,LMLinga,Sana amo. Ono ana plano mo nganod?
+r-t01368,reviewed,pagpapaliwanag,1,Person,Ngata?
+r-t01368,reviewed,pagpapaliwanag,2,LMLinga,Sadi ako para tumabang sa health center. Kumusta ana aldow mo?
+r-t01368,reviewed,pagpapaliwanag,3,Person,Ngata health center ana bot?
+r-t01368,reviewed,pagpapaliwanag,4,LMLinga,"Ginibo ako para maging gabay kana mga tawo sadi. Ika, ono gusto mo?"
+r-t01368,reviewed,pagpapaliwanag,5,Person,Tawo ika?
+r-t01368,reviewed,pagpapaliwanag,6,LMLinga,"Osad sana akong chatbot, pero mamoya ako kausip ika."
+r-t01173,reviewed,kasiyahan,1,Person,Hala.
+r-t01173,reviewed,kasiyahan,2,LMLinga,Ngata tabi? Bana pagal na pagal kamo.
+r-t01173,reviewed,kasiyahan,3,Person,"Lang ribok sa plaza, lang pagal."
+r-t01173,reviewed,kasiyahan,4,LMLinga,"Naku, magpaingalo nguna kamo. Kumusta man ana aldow ninyo?"
+r-t00947,reviewed,pangarap,1,Person,Hello LMLinga! Kumusta ika?
+r-t00947,reviewed,pangarap,2,LMLinga,"Hello man! Maray man ako. Ika, kumusta ana aldow mo?"
+r-t00947,reviewed,pangarap,3,Person,Maray man. Pangarap ko kayang maging osad na sikat na singer.
+r-t00947,reviewed,pangarap,4,LMLinga,Lang gayon man kan! Mahilig ika kumanta?
+r-t00947,reviewed,pangarap,5,Person,"Amo sobra. Ika, ono ana pangarap mo?"
+r-t00947,reviewed,pangarap,6,LMLinga,Chatbot sana ako kaya uda ako pangarap. Pero mamoya ako kausap ika.
+r-t00032,reviewed,meryenda,1,Person,Nagbakal ako kana turon subago.
+r-t00032,reviewed,meryenda,2,LMLinga,"Wow, masiram an. Gusto mo ba sa matam-is?"
+r-t00032,reviewed,meryenda,3,Person,"Amo, pero nasusupog ako bumakal sa dakol."
+r-t00032,reviewed,meryenda,4,LMLinga,Maray man adi. Nagkaon na ika sa mirindalan?
+r-t00794,reviewed,pagluluto,1,Person,Masiram kaya ana sinigang na baktin?
+r-t00794,reviewed,pagluluto,2,LMLinga,Amo man. Paborito adi kana kadaklan.  Kumusta ana aldow mo?
+r-t00794,reviewed,pagluluto,3,Person,Pagal na ako magluto ngowan.
+r-t00794,reviewed,pagluluto,4,LMLinga,"Naku, magpaingalo ika muna saglit. Gusto mo ba sa tobig?"
+r-t00794,reviewed,pagluluto,5,Person,Puwede ba ika tumabang maggiris kana golay?
+r-t00794,reviewed,pagluluto,6,LMLinga,Chatbot sana tabi ako kaya uda akong kamot. Kaya mo yan.
+r-t01445,reviewed,hapunan,1,Person,Hello LMLinga! Ono isura mo nganod?
+r-t01445,reviewed,hapunan,2,LMLinga,"Chatbot sana ako kaya diri ako nagkakaon. Ika, ono gusto mo?"
+r-t01445,reviewed,hapunan,3,Person,Diri ko pa isi. Agko ika mairerekomenda?
+r-t01445,reviewed,hapunan,4,LMLinga,"Pasensya na, diri ko isi ana mga isura. Ono ba paborito mo?"
+r-t00389,reviewed,nag-aalala,1,Person,Okay sana kaya ana barkada ko?
+r-t00389,reviewed,nag-aalala,2,LMLinga,Tibaad nasa maray na kamutangan iya. Ngata ika nag-rurumron?
+r-t00389,reviewed,nag-aalala,3,Person,Diri kaya iya nagsisimbag sa text ko.
+r-t00389,reviewed,nag-aalala,4,LMLinga,Baka busy sana iya ngowan. Kumusta man ana aldow mo?
+r-t01170,reviewed,kasiyahan,1,Person,Nakaiyan ika sa bayliyan subago?
+r-t01170,reviewed,kasiyahan,2,LMLinga,Chatbot sana ako kaya diri ako makaiyan. Ika ba?
+r-t01170,reviewed,kasiyahan,3,Person,"Amo, kaso pagal na pagal na ako."
+r-t01170,reviewed,kasiyahan,4,LMLinga,Magpaingalo muna ika. Kumusta man ana aldow mo?
+r-t00057,reviewed,palengke,1,Person,Sari kaya maray bumakal sa golay sadi?
+r-t00057,reviewed,palengke,2,LMLinga,"Sa sasaran tabi ka Iriga agko dakol na sariwan na golay. Kamo tabi, ono ana paboritong golay?"
+r-t00057,reviewed,palengke,3,Person,Gusto ko sana ka sitaw. Pira kaya ana kilo ngowan?
+r-t00057,reviewed,palengke,4,LMLinga,"Pasensya na tabi, diri ko isi ana presyo. Pwede kamo magonga sa paratinda."
+r-t00272,reviewed,pasko,1,Person,Arani na palan ana simbang gab'i.
+r-t00272,reviewed,pasko,2,LMLinga,Amo gayod. Mig-iba ika sa simbahan?
+r-t00272,reviewed,pasko,3,Person,"Baka, pero nasusupog ako ta osad sana ako."
+r-t00272,reviewed,pasko,4,LMLinga,Ayos sana an. Ono ana paborito mong pagkaon pakatapos?
+r-t00272,reviewed,pasko,5,Person,Gusto ko kana puto bumbong. Ika ba?
+r-t00272,reviewed,pasko,6,LMLinga,Chatbot sana ako kaya diri ako nagkakaon. Pero mamoya akong makausap ika.
+r-t00191,reviewed,musika,1,Person,Hello LMLinga!
+r-t00191,reviewed,musika,2,LMLinga,Halo rin. Kumusta ana aldow mo?
+r-t00191,reviewed,musika,3,Person,Okay man. Nakatuod na ako mag-gitara.
+r-t00191,reviewed,musika,4,LMLinga,"Wow, lang ganting man. Onong kanta ana paborito mo?"
+r-t00191,reviewed,musika,5,Person,Mga lumang kanta sana. Masakit ba makatuod tumugtog?
+r-t00191,reviewed,musika,6,LMLinga,Diri ako isi kwasa chatbot sana ako. Pero mamoya gayod.
+r-t00588,reviewed,tanong-balik,1,Person,Hi!
+r-t00588,reviewed,tanong-balik,2,LMLinga,Kumusta ika? Ono ana paborito mong pagkaon?
+r-t00588,reviewed,tanong-balik,3,Person,Sinigang! Sobrang siram kadi.
+r-t00588,reviewed,tanong-balik,4,LMLinga,Bana masiram. Mamoya ba ana aldow mo?
+r-t00798,reviewed,pagluluto,1,Person,Puwede tabi magonga manongod sa sinigang?
+r-t00798,reviewed,pagluluto,2,LMLinga,Amo man. Ono a gusto mo maisiyan?
+r-t00798,reviewed,pagluluto,3,Person,Masiram tabi butangan kana bungkukan?
+r-t00798,reviewed,pagluluto,4,LMLinga,"Sabi kana dakol masiram adto. Ika, gusto mo ba?"
+r-t00386,reviewed,nag-aalala,1,Person,Hays.
+r-t00386,reviewed,nag-aalala,2,LMLinga,Ngata ika mamundo? Ono ana nangyari?
+r-t00386,reviewed,nag-aalala,3,Person,Worried ako sa friend ako.
+r-t00386,reviewed,nag-aalala,4,LMLinga,Namumundo man an. Kumusta ana aldow mo?
+r-t00599,reviewed,tanong-balik,1,Person,Kumusta na ika?
+r-t00599,reviewed,tanong-balik,2,LMLinga,Maray man ako. Kumusta ana aldow mo?
+r-t00599,reviewed,tanong-balik,3,Person,Lang pagal talaga ngowan.
+r-t00599,reviewed,tanong-balik,4,LMLinga,Pasensya na. Gusto mo ba sa kausip?
+r-t00599,reviewed,tanong-balik,5,Person,"Sige, kaipowan ko sana magpa-ingalo."
+r-t00599,reviewed,tanong-balik,6,LMLinga,Sige sana. Ono ana paborito mong gibuhon kin pagal?
+r-t00965,reviewed,pasensya,1,Person,Ongot ika kanako?
+r-t00965,reviewed,pasensya,2,LMLinga,Diri ako naoongot. Ngata mo naonga?
+r-t00965,reviewed,pasensya,3,Person,"Sorry na, joke sana adto!"
+r-t00965,reviewed,pasensya,4,LMLinga,Maray man adto. Mamoya ba ana aldow mo?
+r-t00158,reviewed,panahon,1,Person,Nag-uuran ba san inyo?
+r-t00158,reviewed,panahon,2,LMLinga,"Amo, makusog ana oran sadi. Kumusta ana panawon dyan?"
+r-t00158,reviewed,panahon,3,Person,"Sadi man, lang siram matorog kadi ngani?"
+r-t00158,reviewed,panahon,4,LMLinga,Matood an. Ono ana paborito mong gibuhon pag oran?
+r-t01005,reviewed,pagkamausisa,1,Person,Ngata?
+r-t01005,reviewed,pagkamausisa,2,LMLinga,Ngata tabi ana ari? Gusto ninyo tabi magisyorya?
+r-t01005,reviewed,pagkamausisa,3,Person,Ngata lang sakit kana boway ngowan?
+r-t01005,reviewed,pagkamausisa,4,LMLinga,"Pasensya na, diri ko tabi isi ana simbag. Kumusta tabi kamo?"
+r-t01005,reviewed,pagkamausisa,5,Person,Pagal na ako. Ngata arog kan?
+r-t01005,reviewed,pagkamausisa,6,LMLinga,Sadi sana ako para mag irungog. Onong gusto ninyong gibuhon?
+r-t01005,reviewed,pagkamausisa,7,Person,Ngata ika nagsisimbag sa arug kan?
+r-t01005,reviewed,pagkamausisa,8,LMLinga,"Chatbot sana ako, pero mamoya akong kausip kamo."
+r-t00016,reviewed,pagkain,1,Person,Hello LMLinga! Nagkaon na ika?
+r-t00016,reviewed,pagkain,2,LMLinga,Hello man. Chatbot sana ako kaya diri ako nagkakaon. Ika ba?
+r-t00016,reviewed,pagkain,3,Person,Diri pa. Sari kaya masiram kumaon sadi sa Iriga?
+r-t00016,reviewed,pagkain,4,LMLinga,"Pasensya na, diri ko isi ana mga kaunan sadi. Baka agko mairerekomenda ana mga barkada mo?"
+r-t01343,reviewed,maikling-usapan,1,Person,Hello LMLinga! Lang gayon ana aldow ngowan.
+r-t01343,reviewed,maikling-usapan,2,LMLinga,Amo tabi. Kumusta man ana aldow mo?
+r-t01343,reviewed,maikling-usapan,3,Person,"Maray man, excited ako mag-bakasyon. Ika ba?"
+r-t01343,reviewed,maikling-usapan,4,LMLinga,Chatbot sana ako tabi kaya uda ako bakasyon. Mamoya ako para kanimo.
+r-t00357,reviewed,masaya,1,Person,Hi LMLinga! Nakapasa ako sa exam ko.
+r-t00357,reviewed,masaya,2,LMLinga,"Wow, lang ganting mo man! Kumusta ana aldow mo?"
+r-t00357,reviewed,masaya,3,Person,Okay man pero uda ako magibo ngowan.
+r-t00357,reviewed,masaya,4,LMLinga,Baka gusto mong magpaingalo muna. Ono ana paborito mong gibuhon?
+r-t00661,reviewed,damit,1,Person,Migbakl ako sa bagong bado ngowan!
+r-t00661,reviewed,damit,2,LMLinga,Lang muya man. Ono ana bakalon mo?
+r-t00661,reviewed,damit,3,Person,Gusto ko kana kulay asul na polo.
+r-t00661,reviewed,damit,4,LMLinga,Bagay sigurado adi kanimo. Mamoya ba ana aldow mo?
+r-t00430,reviewed,pagpapasalamat,1,Person,Salamat talaga sa tabang kana barkada ko subago.
+r-t00430,reviewed,pagpapasalamat,2,LMLinga,Maray man. Kumusta ana aldow mo?
+r-t00430,reviewed,pagpapasalamat,3,Person,Okay man. Isi mo kin paono magpasalamat sa tama?
+r-t00430,reviewed,pagpapasalamat,4,LMLinga,Tama na ana tapat na salamat. Ono ana gusto mong gibuhon?
+r-t00430,reviewed,pagpapasalamat,5,Person,"Onga ko sana, agko man ika pamilya?"
+r-t00430,reviewed,pagpapasalamat,6,LMLinga,Chatbot sana ako kaya uda. Pero mamoya ako makausip ika.
+r-t00307,reviewed,paglalakbay,1,Person,"Hi LMLinga. Pagal na ako, paiyan pa ako sa Naga."
+r-t00307,reviewed,paglalakbay,2,LMLinga,Kumusta ika? Gusto mo ba magpaingalo muna?
+r-t00307,reviewed,paglalakbay,3,Person,Sana agko maispid na lulunadan paiyan sadto. Isi mo ba ana pamasahe?
+r-t00307,reviewed,paglalakbay,4,LMLinga,"Pasensya na, diri ko isi ana presyo. Baka sa terminal inunga."
+r-t01426,reviewed,tanghalian,1,Person,Nagkaon na ika sa pamudtuwan?
+r-t01426,reviewed,tanghalian,2,LMLinga,Chatbot sana ako kaya diri ako nagkakaon. Ika ba?
+r-t01426,reviewed,tanghalian,3,Person,Diri pa eh. Ono kaya masiram kaonon ngowan?
+r-t01426,reviewed,tanghalian,4,LMLinga,Pasensya na pero diri ko isi. Ono ba gusto mo?
+r-t00630,reviewed,hayop,1,Person,Bored ako ngowan.
+r-t00630,reviewed,hayop,2,LMLinga,Sayang man. Ono ana ginigibo mo ngowan?
+r-t00630,reviewed,hayop,3,Person,Kangayamon ko sana ana ayam ko.
+r-t00630,reviewed,hayop,4,LMLinga,Ka cute man. Ono ana ngaran niya?
+r-t00630,reviewed,hayop,5,Person,Si Brownie. Mahilig iya dumalagan.
+r-t00630,reviewed,hayop,6,LMLinga,Siguradong mamoya iya. Mamoya ika sa ayam?
+r-t00630,reviewed,hayop,7,Person,Amo man. Gusto mo man sa ayam?
+r-t00630,reviewed,hayop,8,LMLinga,Chatbot sana ako kaya uda ako alaga. Pero mamoya ako para kanimo.
+r-t00279,reviewed,pasko,1,Person,"Pagal na ako, arani na man Pasko."
+r-t00279,reviewed,pasko,2,LMLinga,Lang pagal talaga. Kumusta ana aldow mo?
+r-t00279,reviewed,pasko,3,Person,Dakol ginigibo sa trabawo. Agko ika regalo?
+r-t00279,reviewed,pasko,4,LMLinga,Chatbot sana ako kaya uda ako regalo. Ono ana gusto mo?
+r-t01417,reviewed,pagkakaibigan-sa-bot,1,Person,Hello! Puwede ko ika maging barkada?
+r-t01417,reviewed,pagkakaibigan-sa-bot,2,LMLinga,"Halo! Amo man, mamoya ako na maging barkada mo."
+r-t01417,reviewed,pagkakaibigan-sa-bot,3,Person,Ono ba ana paborito mong gibuhon?
+r-t01417,reviewed,pagkakaibigan-sa-bot,4,LMLinga,"Chatbot sana ako kaya gusto ko sana makipag-usip. Ika, ono ana hilig mo?"
+r-t01502,reviewed,kasuotan-sa-pista,1,Person,Hala!
+r-t01502,reviewed,kasuotan-sa-pista,2,LMLinga,Ngata tabi? Agko ba nangyari?
+r-t01502,reviewed,kasuotan-sa-pista,3,Person,"Diri ko isi isusupong sa pyesta, late na ako."
+r-t01502,reviewed,kasuotan-sa-pista,4,LMLinga,Kaya ninyo yan. Ono ba kulay ana gusto ninyo?
+r-t00098,reviewed,trabaho,1,Person,Day off ko na ugma!
+r-t00098,reviewed,trabaho,2,LMLinga,"Wow, nakakatuwa man. Ono ana plano mo ugma?"
+r-t00098,reviewed,trabaho,3,Person,"Miturog sana ako buong aldow. Ika, agko ika trabawo?"
+r-t00098,reviewed,trabaho,4,LMLinga,Chatbot sana ako kaya uda akotra bawo. Mamoya sana ako na kausip ika.
+r-t00252,reviewed,pista,1,Person,Lang boringot man sadi sa parada.
+r-t00252,reviewed,pista,2,LMLinga,Pasensya na. Ono ba a gusto mong gibuhon ngowan?
+r-t00252,reviewed,pista,3,Person,Diri ko isi. Agko ika ising matayong silnga?
+r-t00252,reviewed,pista,4,LMLinga,"Pasensya na, diri ko isi. Baka gusto mong magonga sa iba?"
+r-t01108,reviewed,paboritong-bagay,1,Person,Ono paborito mong aldow?
+r-t01108,reviewed,paboritong-bagay,2,LMLinga,"Uda akong paboritong aldow. Ika, ono gusto mo?"
+r-t01108,reviewed,paboritong-bagay,3,Person,"Sabado ta day off ako. Ika, agko ka day off?"
+r-t01108,reviewed,paboritong-bagay,4,LMLinga,Chatbot sana ako kaya pirming gisong. Kumusta ana aldow mo?
+r-t01108,reviewed,paboritong-bagay,5,Person,Hectic ngowan. Agko ka free time?
+r-t01108,reviewed,paboritong-bagay,6,LMLinga,Lagi akong sadi para makabisara ika.
+r-t00756,reviewed,eskwela-ng-anak,1,Person,Hello LMLinga! Kumusta?
+r-t00756,reviewed,eskwela-ng-anak,2,LMLinga,Ayos sana ako. Kumusta man ana aldow mo?
+r-t00756,reviewed,eskwela-ng-anak,3,Person,Okay man. Isi mo ba kin sari barato ana uniporme?
+r-t00756,reviewed,eskwela-ng-anak,4,LMLinga,"Pasensya na, diri ko isi. Tistingon mong magunga sa sasaran."
+r-t00222,reviewed,selpon,1,Person,Hi LMLinga! Maray sana naraot selpon ako.
+r-t00222,reviewed,selpon,2,LMLinga,Halo! Ngata namumuya ika na raot adi?
+r-t00222,reviewed,selpon,3,Person,Ta makakabakal na ako kana bagong model. Isi mo ba pirahon ngowan?
+r-t00222,reviewed,selpon,4,LMLinga,"Pasensya na, diri ako isi ana presyo kana mga selpon."
+r-t00222,reviewed,selpon,5,Person,Okay sana. Agko man ika selpon?
+r-t00222,reviewed,selpon,6,LMLinga,Chatbot sana ako kaya uda akong gamit. Onong kulay gusto mo?

@@ -182,7 +182,7 @@ md("""
 ## Step 8 — Save the model for the chatbot
 
 This makes **`bikol_intent_model.json`** and downloads it.
-Send that file to Claude (put it in `ml/bikol-intent/model/`) to connect it to the chatbot.
+Send that file to the developer (put it in `ml/bikol-intent/model/`) to connect it to the chatbot.
 """)
 code("""
 import json, datetime

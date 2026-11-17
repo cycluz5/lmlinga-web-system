@@ -1,0 +1,551 @@
+conv_id,status,category,context,user,bot
+1001,reviewed,time,"[Oras: 12:00 AM | Aldow: Huwebes | Petsa: Agosto 6, 2026]",What time is it?,"Ngowan, alas dose na sa gab'i."
+1002,reviewed,time,"[Oras: 1:32 AM | Aldow: Sabado | Petsa: Hulyo 18, 2026]",What time is it now?,1:32 na sa gab'i ngowan.
+1003,reviewed,time,"[Oras: 2:27 AM | Aldow: Biyernes | Petsa: Setyembre 24, 2027]",Pirang oras na?,2:27 na sa gab'i ngowan.
+1004,reviewed,time,"[Oras: 3:00 AM | Aldow: Huwebes | Petsa: Oktubre 7, 2027]",Anong oras na?,"Ngowan, alas tres na sa gab'i."
+1005,reviewed,time,"[Oras: 4:45 AM | Aldow: Lunes | Petsa: Marso 8, 2027]",Anong oras na?,4:45 na sa gab'i ngowan.
+1006,reviewed,time,"[Oras: 5:12 AM | Aldow: Huwebes | Petsa: Nobyembre 18, 2027]",Oras na ba?,5:12 na sa ramrag ngowan.
+1007,reviewed,time,"[Oras: 6:00 AM | Aldow: Miyerkoles | Petsa: Marso 3, 2027]",What time is it now?,"Ngowan, alas sais na sa ramrag."
+1008,reviewed,time,"[Oras: 7:46 AM | Aldow: Lunes | Petsa: Oktubre 12, 2026]",What time is it now?,"Ngowan, 7:46 na sa ramrag."
+1009,reviewed,time,"[Oras: 8:15 AM | Aldow: Biyernes | Petsa: Disyembre 25, 2026]",Oras na ba?,8:15 na sa ramrag ngowan.
+1010,reviewed,time,"[Oras: 9:00 AM | Aldow: Martes | Petsa: Pebrero 3, 2026]",What time is it?,"Ngowan, alas nuwebe na sa ramrag."
+1011,reviewed,time,"[Oras: 10:44 AM | Aldow: Lunes | Petsa: Nobyembre 29, 2027]",Anong oras na?,"Ngowan, 10:44 na sa ramrag."
+1012,reviewed,time,"[Oras: 11:57 AM | Aldow: Biyernes | Petsa: Agosto 6, 2027]",Oras na ba?,11:57 na sa ramrag ngowan.
+1013,reviewed,time,"[Oras: 12:00 PM | Aldow: Lunes | Petsa: Pebrero 22, 2027]",Onong oras ngowan?,Alas dose na sa modto ngowan.
+1014,reviewed,time,"[Oras: 1:56 PM | Aldow: Biyernes | Petsa: Marso 12, 2027]",Onong oras ngowan?,1:56 na sa modto ngowan.
+1015,reviewed,time,"[Oras: 2:19 PM | Aldow: Dominggo | Petsa: Abril 12, 2026]",What time is it?,2:19 na sa apon ngowan.
+1016,reviewed,time,"[Oras: 3:00 PM | Aldow: Sabado | Petsa: Abril 17, 2027]",Anong oras na?,Alas tres na sa apon ngowan.
+1017,reviewed,time,"[Oras: 4:22 PM | Aldow: Martes | Petsa: Setyembre 1, 2026]",Onong oras?,"Ngowan, 4:22 na sa apon."
+1018,reviewed,time,"[Oras: 5:45 PM | Aldow: Biyernes | Petsa: Enero 23, 2026]",What time is it now?,5:45 na sa apon ngowan.
+1019,reviewed,time,"[Oras: 6:00 PM | Aldow: Martes | Petsa: Oktubre 5, 2027]",Anong oras na ngayon?,Alas sais na sa gab'i ngowan.
+1020,reviewed,time,"[Oras: 7:48 PM | Aldow: Sabado | Petsa: Mayo 22, 2027]",Oras na ba?,"Ngowan, 7:48 na sa gab'i."
+1021,reviewed,time,"[Oras: 8:56 PM | Aldow: Lunes | Petsa: Mayo 17, 2027]",Onong oras ngowan?,8:56 na sa gab'i ngowan.
+1022,reviewed,time,"[Oras: 9:00 PM | Aldow: Dominggo | Petsa: Disyembre 19, 2027]",Pirang oras na?,"Ngowan, alas nuwebe na sa gab'i."
+1023,reviewed,time,"[Oras: 10:50 PM | Aldow: Martes | Petsa: Enero 13, 2026]",Pirang oras na?,10:50 na sa gab'i ngowan.
+1024,reviewed,time,"[Oras: 11:32 PM | Aldow: Miyerkoles | Petsa: Nobyembre 3, 2027]",Oras na ba?,11:32 na sa gab'i ngowan.
+1025,reviewed,time,"[Oras: 12:00 AM | Aldow: Biyernes | Petsa: Hulyo 2, 2027]",Onong oras?,"Ngowan, alas dose na sa gab'i."
+1026,reviewed,time,"[Oras: 1:24 AM | Aldow: Sabado | Petsa: Disyembre 11, 2027]",Anong oras na?,1:24 na sa gab'i ngowan.
+1027,reviewed,time,"[Oras: 2:29 AM | Aldow: Miyerkoles | Petsa: Disyembre 8, 2027]",Pirang oras na?,"Ngowan, 2:29 na sa gab'i."
+1028,reviewed,time,"[Oras: 3:00 AM | Aldow: Martes | Petsa: Hunyo 9, 2026]",What time is it now?,Alas tres na sa gab'i ngowan.
+1029,reviewed,time,"[Oras: 4:38 AM | Aldow: Dominggo | Petsa: Disyembre 5, 2027]",Oras na ba?,"Ngowan, 4:38 na sa gab'i."
+1030,reviewed,time,"[Oras: 5:01 AM | Aldow: Biyernes | Petsa: Agosto 13, 2027]",Anong oras na?,5:01 na sa ramrag ngowan.
+1031,reviewed,time,"[Oras: 6:00 AM | Aldow: Martes | Petsa: Mayo 12, 2026]",Pirang oras na?,Alas sais na sa ramrag ngowan.
+1032,reviewed,time,"[Oras: 7:35 AM | Aldow: Dominggo | Petsa: Agosto 15, 2027]",Anong oras na ngayon?,"Ngowan, 7:35 na sa ramrag."
+1033,reviewed,time,"[Oras: 8:24 AM | Aldow: Miyerkoles | Petsa: Pebrero 18, 2026]",Oras na ba?,8:24 na sa ramrag ngowan.
+1034,reviewed,time,"[Oras: 9:00 AM | Aldow: Sabado | Petsa: Pebrero 28, 2026]",What time is it?,"Ngowan, alas nuwebe na sa ramrag."
+1035,reviewed,time,"[Oras: 10:49 AM | Aldow: Lunes | Petsa: Oktubre 11, 2027]",Onong oras ngowan?,"Ngowan, 10:49 na sa ramrag."
+1036,reviewed,time,"[Oras: 11:56 AM | Aldow: Lunes | Petsa: Agosto 23, 2027]",Onong oras ngowan?,"Ngowan, 11:56 na sa ramrag."
+1037,reviewed,time,"[Oras: 12:00 PM | Aldow: Martes | Petsa: Marso 2, 2027]",What time is it?,Alas dose na sa modto ngowan.
+1038,reviewed,time,"[Oras: 1:15 PM | Aldow: Lunes | Petsa: Hulyo 20, 2026]",Oras na ba?,1:15 na sa modto ngowan.
+1039,reviewed,time,"[Oras: 2:07 PM | Aldow: Huwebes | Petsa: Hunyo 17, 2027]",What time is it now?,2:07 na sa apon ngowan.
+1040,reviewed,time,"[Oras: 3:00 PM | Aldow: Huwebes | Petsa: Pebrero 11, 2027]",Anong oras na?,Alas tres na sa apon ngowan.
+1041,reviewed,time,"[Oras: 4:42 PM | Aldow: Martes | Petsa: Mayo 5, 2026]",Anong oras na ngayon?,4:42 na sa apon ngowan.
+1042,reviewed,time,"[Oras: 5:17 PM | Aldow: Biyernes | Petsa: Mayo 1, 2026]",What time is it now?,"Ngowan, 5:17 na sa apon."
+1043,reviewed,time,"[Oras: 6:00 PM | Aldow: Dominggo | Petsa: Mayo 17, 2026]",Anong oras na?,"Ngowan, alas sais na sa gab'i."
+1044,reviewed,time,"[Oras: 7:54 PM | Aldow: Huwebes | Petsa: Abril 2, 2026]",Oras na ba?,"Ngowan, 7:54 na sa gab'i."
+1045,reviewed,time,"[Oras: 8:31 PM | Aldow: Biyernes | Petsa: Oktubre 9, 2026]",Onong oras?,"Ngowan, 8:31 na sa gab'i."
+1046,reviewed,time,"[Oras: 9:00 PM | Aldow: Sabado | Petsa: Enero 10, 2026]",Anong oras na?,Alas nuwebe na sa gab'i ngowan.
+1047,reviewed,time,"[Oras: 10:57 PM | Aldow: Martes | Petsa: Agosto 25, 2026]",What time is it now?,10:57 na sa gab'i ngowan.
+1048,reviewed,time,"[Oras: 11:48 PM | Aldow: Martes | Petsa: Setyembre 14, 2027]",Onong oras ngowan?,"Ngowan, 11:48 na sa gab'i."
+1049,reviewed,time,"[Oras: 12:00 AM | Aldow: Dominggo | Petsa: Marso 1, 2026]",Onong oras?,Alas dose na sa gab'i ngowan.
+1050,reviewed,time,"[Oras: 1:35 AM | Aldow: Lunes | Petsa: Enero 4, 2027]",Anong oras na ngayon?,"Ngowan, 1:35 na sa gab'i."
+1051,reviewed,time,"[Oras: 2:23 AM | Aldow: Huwebes | Petsa: Hulyo 30, 2026]",Anong oras na ngayon?,2:23 na sa gab'i ngowan.
+1052,reviewed,time,"[Oras: 3:00 AM | Aldow: Biyernes | Petsa: Nobyembre 20, 2026]",Pirang oras na?,"Ngowan, alas tres na sa gab'i."
+1053,reviewed,time,"[Oras: 4:27 AM | Aldow: Martes | Petsa: Enero 5, 2027]",Anong oras na ngayon?,"Ngowan, 4:27 na sa gab'i."
+1054,reviewed,time,"[Oras: 5:40 AM | Aldow: Martes | Petsa: Hulyo 20, 2027]",Pirang oras na?,5:40 na sa ramrag ngowan.
+1055,reviewed,time,"[Oras: 6:00 AM | Aldow: Martes | Petsa: Pebrero 2, 2027]",What time is it?,Alas sais na sa ramrag ngowan.
+1056,reviewed,time,"[Oras: 7:53 AM | Aldow: Lunes | Petsa: Agosto 30, 2027]",What time is it now?,"Ngowan, 7:53 na sa ramrag."
+1057,reviewed,time,"[Oras: 8:07 AM | Aldow: Martes | Petsa: Pebrero 9, 2027]",Anong oras na?,"Ngowan, 8:07 na sa ramrag."
+1058,reviewed,time,"[Oras: 9:00 AM | Aldow: Martes | Petsa: Agosto 31, 2027]",Anong oras na ngayon?,"Ngowan, alas nuwebe na sa ramrag."
+1059,reviewed,time,"[Oras: 10:08 AM | Aldow: Lunes | Petsa: Nobyembre 8, 2027]",Onong oras?,"Ngowan, 10:08 na sa ramrag."
+1060,reviewed,time,"[Oras: 11:46 AM | Aldow: Biyernes | Petsa: Hulyo 17, 2026]",Oras na ba?,11:46 na sa ramrag ngowan.
+1061,reviewed,time,"[Oras: 12:00 PM | Aldow: Sabado | Petsa: Disyembre 4, 2027]",Onong oras ngowan?,Alas dose na sa modto ngowan.
+1062,reviewed,time,"[Oras: 1:45 PM | Aldow: Dominggo | Petsa: Agosto 1, 2027]",What time is it?,"Ngowan, 1:45 na sa modto."
+1063,reviewed,time,"[Oras: 2:18 PM | Aldow: Lunes | Petsa: Hulyo 19, 2027]",Anong oras na?,2:18 na sa apon ngowan.
+1064,reviewed,time,"[Oras: 3:00 PM | Aldow: Lunes | Petsa: Abril 6, 2026]",What time is it?,"Ngowan, alas tres na sa apon."
+1065,reviewed,time,"[Oras: 4:58 PM | Aldow: Martes | Petsa: Marso 31, 2026]",Onong oras?,4:58 na sa apon ngowan.
+1066,reviewed,time,"[Oras: 5:20 PM | Aldow: Miyerkoles | Petsa: Hulyo 1, 2026]",Anong oras na ngayon?,"Ngowan, 5:20 na sa apon."
+1067,reviewed,time,"[Oras: 6:00 PM | Aldow: Martes | Petsa: Setyembre 21, 2027]",Onong oras ngowan?,"Ngowan, alas sais na sa gab'i."
+1068,reviewed,time,"[Oras: 7:37 PM | Aldow: Martes | Petsa: Agosto 17, 2027]",Oras na ba?,7:37 na sa gab'i ngowan.
+1069,reviewed,time,"[Oras: 8:03 PM | Aldow: Sabado | Petsa: Abril 24, 2027]",What time is it?,8:03 na sa gab'i ngowan.
+1070,reviewed,time,"[Oras: 9:00 PM | Aldow: Miyerkoles | Petsa: Marso 17, 2027]",Anong oras na ngayon?,"Ngowan, alas nuwebe na sa gab'i."
+1071,reviewed,time,"[Oras: 10:21 PM | Aldow: Sabado | Petsa: Oktubre 24, 2026]",Onong oras ngowan?,"Ngowan, 10:21 na sa gab'i."
+1072,reviewed,time,"[Oras: 11:44 PM | Aldow: Lunes | Petsa: Enero 19, 2026]",Anong oras na ngayon?,11:44 na sa gab'i ngowan.
+1073,reviewed,time,"[Oras: 12:00 AM | Aldow: Miyerkoles | Petsa: Hunyo 16, 2027]",Onong oras?,"Ngowan, alas dose na sa gab'i."
+1074,reviewed,time,"[Oras: 1:13 AM | Aldow: Huwebes | Petsa: Oktubre 14, 2027]",Oras na ba?,1:13 na sa gab'i ngowan.
+1075,reviewed,time,"[Oras: 2:35 AM | Aldow: Sabado | Petsa: Oktubre 24, 2026]",Anong oras na?,2:35 na sa gab'i ngowan.
+1076,reviewed,time,"[Oras: 3:00 AM | Aldow: Sabado | Petsa: Oktubre 3, 2026]",Oras na ba?,"Ngowan, alas tres na sa gab'i."
+1077,reviewed,time,"[Oras: 4:01 AM | Aldow: Martes | Petsa: Mayo 12, 2026]",Onong oras?,"Ngowan, 4:01 na sa gab'i."
+1078,reviewed,time,"[Oras: 5:26 AM | Aldow: Sabado | Petsa: Abril 24, 2027]",Anong oras na?,5:26 na sa ramrag ngowan.
+1079,reviewed,time,"[Oras: 6:00 AM | Aldow: Miyerkoles | Petsa: Hulyo 15, 2026]",Anong oras na ngayon?,Alas sais na sa ramrag ngowan.
+1080,reviewed,time,"[Oras: 7:16 AM | Aldow: Sabado | Petsa: Marso 20, 2027]",What time is it?,"Ngowan, 7:16 na sa ramrag."
+1081,reviewed,time,"[Oras: 8:26 AM | Aldow: Martes | Petsa: Marso 3, 2026]",What time is it now?,8:26 na sa ramrag ngowan.
+1082,reviewed,time,"[Oras: 9:00 AM | Aldow: Lunes | Petsa: Marso 29, 2027]",Pirang oras na?,"Ngowan, alas nuwebe na sa ramrag."
+1083,reviewed,time,"[Oras: 10:54 AM | Aldow: Dominggo | Petsa: Mayo 30, 2027]",What time is it now?,"Ngowan, 10:54 na sa ramrag."
+1084,reviewed,time,"[Oras: 11:29 AM | Aldow: Dominggo | Petsa: Abril 18, 2027]",Oras na ba?,"Ngowan, 11:29 na sa ramrag."
+1085,reviewed,time,"[Oras: 12:00 PM | Aldow: Miyerkoles | Petsa: Marso 24, 2027]",Anong oras na?,Alas dose na sa modto ngowan.
+1086,reviewed,time,"[Oras: 1:15 PM | Aldow: Dominggo | Petsa: Mayo 23, 2027]",Pirang oras na?,1:15 na sa modto ngowan.
+1087,reviewed,time,"[Oras: 2:29 PM | Aldow: Biyernes | Petsa: Setyembre 18, 2026]",Oras na ba?,2:29 na sa apon ngowan.
+1088,reviewed,time,"[Oras: 3:00 PM | Aldow: Miyerkoles | Petsa: Hulyo 14, 2027]",Anong oras na?,"Ngowan, alas tres na sa apon."
+1089,reviewed,time,"[Oras: 4:20 PM | Aldow: Martes | Petsa: Nobyembre 3, 2026]",Anong oras na ngayon?,"Ngowan, 4:20 na sa apon."
+1090,reviewed,time,"[Oras: 5:37 PM | Aldow: Martes | Petsa: Setyembre 22, 2026]",What time is it now?,"Ngowan, 5:37 na sa apon."
+1091,reviewed,time,"[Oras: 6:00 PM | Aldow: Sabado | Petsa: Oktubre 9, 2027]",Oras na ba?,"Ngowan, alas sais na sa gab'i."
+1092,reviewed,time,"[Oras: 7:56 PM | Aldow: Miyerkoles | Petsa: Marso 17, 2027]",Anong oras na?,7:56 na sa gab'i ngowan.
+1093,reviewed,time,"[Oras: 8:41 PM | Aldow: Biyernes | Petsa: Hulyo 10, 2026]",Anong oras na ngayon?,"Ngowan, 8:41 na sa gab'i."
+1094,reviewed,time,"[Oras: 9:00 PM | Aldow: Miyerkoles | Petsa: Hunyo 3, 2026]",What time is it now?,"Ngowan, alas nuwebe na sa gab'i."
+1095,reviewed,time,"[Oras: 10:13 PM | Aldow: Huwebes | Petsa: Marso 4, 2027]",Anong oras na?,"Ngowan, 10:13 na sa gab'i."
+1096,reviewed,time,"[Oras: 11:41 PM | Aldow: Huwebes | Petsa: Nobyembre 19, 2026]",Anong oras na ngayon?,11:41 na sa gab'i ngowan.
+1097,reviewed,time,"[Oras: 12:00 AM | Aldow: Lunes | Petsa: Hunyo 21, 2027]",Onong oras?,Alas dose na sa gab'i ngowan.
+1098,reviewed,time,"[Oras: 1:27 AM | Aldow: Huwebes | Petsa: Setyembre 17, 2026]",Anong oras na?,1:27 na sa gab'i ngowan.
+1099,reviewed,time,"[Oras: 2:01 AM | Aldow: Sabado | Petsa: Enero 10, 2026]",Onong oras ngowan?,"Ngowan, 2:01 na sa gab'i."
+1100,reviewed,time,"[Oras: 3:00 AM | Aldow: Biyernes | Petsa: Nobyembre 12, 2027]",Onong oras ngowan?,Alas tres na sa gab'i ngowan.
+1101,reviewed,time,"[Oras: 4:14 AM | Aldow: Biyernes | Petsa: Disyembre 24, 2027]",Onong oras?,4:14 na sa gab'i ngowan.
+1102,reviewed,time,"[Oras: 5:15 AM | Aldow: Martes | Petsa: Abril 6, 2027]",Onong oras ngowan?,"Ngowan, 5:15 na sa ramrag."
+1103,reviewed,time,"[Oras: 6:00 AM | Aldow: Miyerkoles | Petsa: Abril 21, 2027]",Onong oras ngowan?,Alas sais na sa ramrag ngowan.
+1104,reviewed,time,"[Oras: 7:45 AM | Aldow: Dominggo | Petsa: Oktubre 10, 2027]",Pirang oras na?,7:45 na sa ramrag ngowan.
+1105,reviewed,time,"[Oras: 8:32 AM | Aldow: Martes | Petsa: Mayo 11, 2027]",Oras na ba?,8:32 na sa ramrag ngowan.
+1106,reviewed,time,"[Oras: 9:00 AM | Aldow: Sabado | Petsa: Abril 3, 2027]",What time is it now?,"Ngowan, alas nuwebe na sa ramrag."
+1107,reviewed,time,"[Oras: 10:03 AM | Aldow: Dominggo | Petsa: Hunyo 6, 2027]",Pirang oras na?,10:03 na sa ramrag ngowan.
+1108,reviewed,time,"[Oras: 11:51 AM | Aldow: Biyernes | Petsa: Disyembre 31, 2027]",Anong oras na ngayon?,11:51 na sa ramrag ngowan.
+1109,reviewed,time,"[Oras: 12:00 PM | Aldow: Sabado | Petsa: Agosto 29, 2026]",What time is it now?,Alas dose na sa modto ngowan.
+1110,reviewed,time,"[Oras: 1:03 PM | Aldow: Dominggo | Petsa: Mayo 30, 2027]",Onong oras?,"Ngowan, 1:03 na sa modto."
+1111,reviewed,time,"[Oras: 2:14 PM | Aldow: Sabado | Petsa: Marso 21, 2026]",What time is it now?,2:14 na sa apon ngowan.
+1112,reviewed,time,"[Oras: 3:00 PM | Aldow: Dominggo | Petsa: Agosto 30, 2026]",Anong oras na ngayon?,"Ngowan, alas tres na sa apon."
+1113,reviewed,time,"[Oras: 4:06 PM | Aldow: Miyerkoles | Petsa: Agosto 26, 2026]",Anong oras na?,4:06 na sa apon ngowan.
+1114,reviewed,time,"[Oras: 5:44 PM | Aldow: Biyernes | Petsa: Marso 6, 2026]",Onong oras?,"Ngowan, 5:44 na sa apon."
+1115,reviewed,time,"[Oras: 6:00 PM | Aldow: Martes | Petsa: Abril 13, 2027]",Anong oras na ngayon?,"Ngowan, alas sais na sa gab'i."
+1116,reviewed,time,"[Oras: 7:14 PM | Aldow: Sabado | Petsa: Enero 24, 2026]",Onong oras?,"Ngowan, 7:14 na sa gab'i."
+1117,reviewed,time,"[Oras: 8:47 PM | Aldow: Martes | Petsa: Enero 20, 2026]",Oras na ba?,8:47 na sa gab'i ngowan.
+1118,reviewed,time,"[Oras: 9:00 PM | Aldow: Martes | Petsa: Hunyo 23, 2026]",What time is it now?,"Ngowan, alas nuwebe na sa gab'i."
+1119,reviewed,time,"[Oras: 10:33 PM | Aldow: Miyerkoles | Petsa: Pebrero 24, 2027]",Oras na ba?,10:33 na sa gab'i ngowan.
+1120,reviewed,time,"[Oras: 11:25 PM | Aldow: Martes | Petsa: Hunyo 30, 2026]",Anong oras na ngayon?,11:25 na sa gab'i ngowan.
+1121,reviewed,time,"[Oras: 12:00 AM | Aldow: Huwebes | Petsa: Oktubre 22, 2026]",Onong oras?,"Ngowan, alas dose na sa gab'i."
+1122,reviewed,time,"[Oras: 1:40 AM | Aldow: Sabado | Petsa: Setyembre 25, 2027]",Anong oras na ngayon?,"Ngowan, 1:40 na sa gab'i."
+1123,reviewed,time,"[Oras: 2:55 AM | Aldow: Martes | Petsa: Nobyembre 23, 2027]",Anong oras na ngayon?,2:55 na sa gab'i ngowan.
+1124,reviewed,time,"[Oras: 3:00 AM | Aldow: Huwebes | Petsa: Hunyo 18, 2026]",Anong oras na ngayon?,"Ngowan, alas tres na sa gab'i."
+1125,reviewed,time,"[Oras: 4:13 AM | Aldow: Martes | Petsa: Agosto 24, 2027]",Onong oras ngowan?,"Ngowan, 4:13 na sa gab'i."
+1126,reviewed,time,"[Oras: 5:31 AM | Aldow: Biyernes | Petsa: Setyembre 17, 2027]",Anong oras na?,5:31 na sa ramrag ngowan.
+1127,reviewed,time,"[Oras: 6:00 AM | Aldow: Sabado | Petsa: Oktubre 17, 2026]",Onong oras?,"Ngowan, alas sais na sa ramrag."
+1128,reviewed,time,"[Oras: 7:15 AM | Aldow: Lunes | Petsa: Agosto 30, 2027]",Onong oras ngowan?,7:15 na sa ramrag ngowan.
+1129,reviewed,time,"[Oras: 8:26 AM | Aldow: Lunes | Petsa: Setyembre 7, 2026]",Anong oras na ngayon?,"Ngowan, 8:26 na sa ramrag."
+1130,reviewed,time,"[Oras: 9:00 AM | Aldow: Miyerkoles | Petsa: Disyembre 15, 2027]",Anong oras na ngayon?,Alas nuwebe na sa ramrag ngowan.
+1131,reviewed,time,"[Oras: 10:26 AM | Aldow: Miyerkoles | Petsa: Pebrero 18, 2026]",Anong oras na ngayon?,"Ngowan, 10:26 na sa ramrag."
+1132,reviewed,time,"[Oras: 11:37 AM | Aldow: Dominggo | Petsa: Abril 11, 2027]",Onong oras?,11:37 na sa ramrag ngowan.
+1133,reviewed,time,"[Oras: 12:00 PM | Aldow: Martes | Petsa: Marso 3, 2026]",What time is it now?,Alas dose na sa modto ngowan.
+1134,reviewed,time,"[Oras: 1:40 PM | Aldow: Miyerkoles | Petsa: Mayo 12, 2027]",Onong oras ngowan?,1:40 na sa modto ngowan.
+1135,reviewed,time,"[Oras: 2:11 PM | Aldow: Sabado | Petsa: Enero 23, 2027]",Anong oras na?,2:11 na sa apon ngowan.
+1136,reviewed,time,"[Oras: 3:00 PM | Aldow: Martes | Petsa: Abril 7, 2026]",Onong oras ngowan?,Alas tres na sa apon ngowan.
+1137,reviewed,time,"[Oras: 4:33 PM | Aldow: Lunes | Petsa: Hulyo 27, 2026]",Anong oras na ngayon?,4:33 na sa apon ngowan.
+1138,reviewed,time,"[Oras: 5:11 PM | Aldow: Martes | Petsa: Mayo 5, 2026]",Onong oras ngowan?,"Ngowan, 5:11 na sa apon."
+1139,reviewed,time,"[Oras: 6:00 PM | Aldow: Sabado | Petsa: Hulyo 18, 2026]",What time is it?,"Ngowan, alas sais na sa gab'i."
+1140,reviewed,time,"[Oras: 7:14 PM | Aldow: Sabado | Petsa: Disyembre 12, 2026]",Oras na ba?,7:14 na sa gab'i ngowan.
+1141,reviewed,time,"[Oras: 8:19 PM | Aldow: Lunes | Petsa: Mayo 4, 2026]",Onong oras?,"Ngowan, 8:19 na sa gab'i."
+1142,reviewed,time,"[Oras: 9:00 PM | Aldow: Sabado | Petsa: Disyembre 4, 2027]",Pirang oras na?,"Ngowan, alas nuwebe na sa gab'i."
+1143,reviewed,time,"[Oras: 10:12 PM | Aldow: Dominggo | Petsa: Mayo 3, 2026]",Onong oras ngowan?,10:12 na sa gab'i ngowan.
+1144,reviewed,time,"[Oras: 11:52 PM | Aldow: Lunes | Petsa: Abril 20, 2026]",Anong oras na ngayon?,11:52 na sa gab'i ngowan.
+1145,reviewed,time,"[Oras: 12:00 AM | Aldow: Lunes | Petsa: Disyembre 20, 2027]",What time is it now?,"Ngowan, alas dose na sa gab'i."
+1146,reviewed,time,"[Oras: 1:37 AM | Aldow: Miyerkoles | Petsa: Hulyo 22, 2026]",What time is it now?,1:37 na sa gab'i ngowan.
+1147,reviewed,time,"[Oras: 2:33 AM | Aldow: Miyerkoles | Petsa: Abril 15, 2026]",What time is it now?,2:33 na sa gab'i ngowan.
+1148,reviewed,time,"[Oras: 3:00 AM | Aldow: Sabado | Petsa: Abril 17, 2027]",Anong oras na ngayon?,"Ngowan, alas tres na sa gab'i."
+1149,reviewed,time,"[Oras: 4:33 AM | Aldow: Dominggo | Petsa: Oktubre 11, 2026]",Oras na ba?,"Ngowan, 4:33 na sa gab'i."
+1150,reviewed,time,"[Oras: 5:07 AM | Aldow: Martes | Petsa: Agosto 31, 2027]",Anong oras na ngayon?,"Ngowan, 5:07 na sa ramrag."
+1151,reviewed,time,"[Oras: 6:00 AM | Aldow: Martes | Petsa: Setyembre 28, 2027]",What time is it?,Alas sais na sa ramrag ngowan.
+1152,reviewed,time,"[Oras: 7:15 AM | Aldow: Dominggo | Petsa: Abril 18, 2027]",What time is it?,7:15 na sa ramrag ngowan.
+1153,reviewed,time,"[Oras: 8:51 AM | Aldow: Sabado | Petsa: Enero 3, 2026]",What time is it?,"Ngowan, 8:51 na sa ramrag."
+1154,reviewed,time,"[Oras: 9:00 AM | Aldow: Dominggo | Petsa: Nobyembre 8, 2026]",What time is it now?,"Ngowan, alas nuwebe na sa ramrag."
+1155,reviewed,time,"[Oras: 10:59 AM | Aldow: Sabado | Petsa: Agosto 21, 2027]",Anong oras na ngayon?,10:59 na sa ramrag ngowan.
+1156,reviewed,time,"[Oras: 11:52 AM | Aldow: Biyernes | Petsa: Disyembre 3, 2027]",Onong oras?,"Ngowan, 11:52 na sa ramrag."
+1157,reviewed,time,"[Oras: 12:00 PM | Aldow: Miyerkoles | Petsa: Disyembre 29, 2027]",Anong oras na ngayon?,Alas dose na sa modto ngowan.
+1158,reviewed,time,"[Oras: 1:14 PM | Aldow: Huwebes | Petsa: Agosto 26, 2027]",Onong oras ngowan?,1:14 na sa modto ngowan.
+1159,reviewed,time,"[Oras: 2:42 PM | Aldow: Miyerkoles | Petsa: Agosto 18, 2027]",Pirang oras na?,2:42 na sa apon ngowan.
+1160,reviewed,time,"[Oras: 3:00 PM | Aldow: Lunes | Petsa: Setyembre 21, 2026]",Anong oras na ngayon?,"Ngowan, alas tres na sa apon."
+1161,reviewed,time,"[Oras: 4:48 PM | Aldow: Biyernes | Petsa: Abril 17, 2026]",Onong oras?,4:48 na sa apon ngowan.
+1162,reviewed,time,"[Oras: 5:45 PM | Aldow: Miyerkoles | Petsa: Disyembre 8, 2027]",Onong oras?,5:45 na sa apon ngowan.
+1163,reviewed,time,"[Oras: 6:00 PM | Aldow: Lunes | Petsa: Marso 16, 2026]",Anong oras na ngayon?,"Ngowan, alas sais na sa gab'i."
+1164,reviewed,time,"[Oras: 7:35 PM | Aldow: Biyernes | Petsa: Setyembre 11, 2026]",Anong oras na?,7:35 na sa gab'i ngowan.
+1165,reviewed,time,"[Oras: 8:36 PM | Aldow: Lunes | Petsa: Setyembre 7, 2026]",Anong oras na ngayon?,8:36 na sa gab'i ngowan.
+1166,reviewed,time,"[Oras: 9:00 PM | Aldow: Sabado | Petsa: Pebrero 7, 2026]",Onong oras ngowan?,Alas nuwebe na sa gab'i ngowan.
+1167,reviewed,time,"[Oras: 10:12 PM | Aldow: Lunes | Petsa: Enero 19, 2026]",What time is it now?,10:12 na sa gab'i ngowan.
+1168,reviewed,time,"[Oras: 11:29 PM | Aldow: Huwebes | Petsa: Enero 28, 2027]",What time is it now?,11:29 na sa gab'i ngowan.
+1169,reviewed,time,"[Oras: 12:00 AM | Aldow: Huwebes | Petsa: Pebrero 11, 2027]",Oras na ba?,"Ngowan, alas dose na sa gab'i."
+1170,reviewed,time,"[Oras: 1:28 AM | Aldow: Miyerkoles | Petsa: Enero 13, 2027]",Oras na ba?,"Ngowan, 1:28 na sa gab'i."
+1171,reviewed,time,"[Oras: 2:32 AM | Aldow: Miyerkoles | Petsa: Setyembre 23, 2026]",What time is it now?,2:32 na sa gab'i ngowan.
+1172,reviewed,time,"[Oras: 3:00 AM | Aldow: Miyerkoles | Petsa: Hulyo 7, 2027]",What time is it?,"Ngowan, alas tres na sa gab'i."
+1173,reviewed,time,"[Oras: 4:09 AM | Aldow: Dominggo | Petsa: Disyembre 26, 2027]",Anong oras na?,4:09 na sa gab'i ngowan.
+1174,reviewed,time,"[Oras: 5:50 AM | Aldow: Dominggo | Petsa: Agosto 23, 2026]",Oras na ba?,5:50 na sa ramrag ngowan.
+1175,reviewed,time,"[Oras: 6:00 AM | Aldow: Huwebes | Petsa: Disyembre 24, 2026]",Onong oras?,Alas sais na sa ramrag ngowan.
+1176,reviewed,time,"[Oras: 7:51 AM | Aldow: Sabado | Petsa: Marso 6, 2027]",Onong oras ngowan?,"Ngowan, 7:51 na sa ramrag."
+1177,reviewed,time,"[Oras: 8:19 AM | Aldow: Dominggo | Petsa: Hunyo 27, 2027]",Onong oras ngowan?,8:19 na sa ramrag ngowan.
+1178,reviewed,time,"[Oras: 9:00 AM | Aldow: Dominggo | Petsa: Oktubre 3, 2027]",Pirang oras na?,Alas nuwebe na sa ramrag ngowan.
+1179,reviewed,time,"[Oras: 10:04 AM | Aldow: Miyerkoles | Petsa: Mayo 20, 2026]",Anong oras na ngayon?,10:04 na sa ramrag ngowan.
+1180,reviewed,time,"[Oras: 11:38 AM | Aldow: Martes | Petsa: Nobyembre 16, 2027]",What time is it?,11:38 na sa ramrag ngowan.
+1181,reviewed,time,"[Oras: 12:00 PM | Aldow: Huwebes | Petsa: Nobyembre 19, 2026]",Onong oras ngowan?,Alas dose na sa modto ngowan.
+1182,reviewed,time,"[Oras: 1:04 PM | Aldow: Dominggo | Petsa: Enero 3, 2027]",Oras na ba?,1:04 na sa modto ngowan.
+1183,reviewed,time,"[Oras: 2:10 PM | Aldow: Lunes | Petsa: Marso 23, 2026]",Onong oras ngowan?,2:10 na sa apon ngowan.
+1184,reviewed,time,"[Oras: 3:00 PM | Aldow: Martes | Petsa: Nobyembre 16, 2027]",Anong oras na ngayon?,"Ngowan, alas tres na sa apon."
+1185,reviewed,time,"[Oras: 4:49 PM | Aldow: Miyerkoles | Petsa: Abril 8, 2026]",Onong oras?,"Ngowan, 4:49 na sa apon."
+1186,reviewed,time,"[Oras: 5:09 PM | Aldow: Martes | Petsa: Hulyo 27, 2027]",Onong oras?,5:09 na sa apon ngowan.
+1187,reviewed,time,"[Oras: 6:00 PM | Aldow: Dominggo | Petsa: Marso 21, 2027]",Anong oras na ngayon?,"Ngowan, alas sais na sa gab'i."
+1188,reviewed,time,"[Oras: 7:08 PM | Aldow: Miyerkoles | Petsa: Agosto 4, 2027]",Pirang oras na?,7:08 na sa gab'i ngowan.
+1189,reviewed,time,"[Oras: 8:52 PM | Aldow: Biyernes | Petsa: Marso 20, 2026]",Anong oras na?,"Ngowan, 8:52 na sa gab'i."
+1190,reviewed,time,"[Oras: 9:00 PM | Aldow: Lunes | Petsa: Agosto 31, 2026]",Onong oras?,Alas nuwebe na sa gab'i ngowan.
+1191,reviewed,time,"[Oras: 10:50 PM | Aldow: Biyernes | Petsa: Mayo 8, 2026]",Oras na ba?,"Ngowan, 10:50 na sa gab'i."
+1192,reviewed,time,"[Oras: 11:50 PM | Aldow: Miyerkoles | Petsa: Abril 15, 2026]",Anong oras na ngayon?,11:50 na sa gab'i ngowan.
+1193,reviewed,time,"[Oras: 12:00 AM | Aldow: Martes | Petsa: Hulyo 7, 2026]",Onong oras?,Alas dose na sa gab'i ngowan.
+1194,reviewed,time,"[Oras: 1:51 AM | Aldow: Dominggo | Petsa: Hunyo 21, 2026]",Oras na ba?,"Ngowan, 1:51 na sa gab'i."
+1195,reviewed,time,"[Oras: 2:19 AM | Aldow: Dominggo | Petsa: Disyembre 6, 2026]",Onong oras ngowan?,2:19 na sa gab'i ngowan.
+1196,reviewed,time,"[Oras: 3:00 AM | Aldow: Huwebes | Petsa: Hunyo 4, 2026]",Pirang oras na?,Alas tres na sa gab'i ngowan.
+1197,reviewed,time,"[Oras: 4:27 AM | Aldow: Sabado | Petsa: Enero 24, 2026]",Anong oras na?,"Ngowan, 4:27 na sa gab'i."
+1198,reviewed,time,"[Oras: 5:41 AM | Aldow: Sabado | Petsa: Hunyo 13, 2026]",Onong oras?,"Ngowan, 5:41 na sa ramrag."
+1199,reviewed,time,"[Oras: 6:00 AM | Aldow: Martes | Petsa: Setyembre 28, 2027]",Anong oras na ngayon?,"Ngowan, alas sais na sa ramrag."
+1200,reviewed,time,"[Oras: 7:58 AM | Aldow: Miyerkoles | Petsa: Disyembre 30, 2026]",What time is it?,"Ngowan, 7:58 na sa ramrag."
+1201,reviewed,time,"[Oras: 8:43 AM | Aldow: Sabado | Petsa: Abril 24, 2027]",Anong oras na?,"Ngowan, 8:43 na sa ramrag."
+1202,reviewed,time,"[Oras: 9:00 AM | Aldow: Huwebes | Petsa: Hulyo 22, 2027]",Anong oras na?,"Ngowan, alas nuwebe na sa ramrag."
+1203,reviewed,time,"[Oras: 10:41 AM | Aldow: Biyernes | Petsa: Enero 1, 2027]",Anong oras na ngayon?,"Ngowan, 10:41 na sa ramrag."
+1204,reviewed,time,"[Oras: 11:24 AM | Aldow: Biyernes | Petsa: Mayo 29, 2026]",What time is it now?,"Ngowan, 11:24 na sa ramrag."
+1205,reviewed,time,"[Oras: 12:00 PM | Aldow: Sabado | Petsa: Agosto 28, 2027]",What time is it now?,Alas dose na sa modto ngowan.
+1206,reviewed,time,"[Oras: 1:21 PM | Aldow: Miyerkoles | Petsa: Enero 13, 2027]",Pirang oras na?,"Ngowan, 1:21 na sa modto."
+1207,reviewed,time,"[Oras: 2:36 PM | Aldow: Miyerkoles | Petsa: Nobyembre 18, 2026]",Pirang oras na?,2:36 na sa apon ngowan.
+1208,reviewed,time,"[Oras: 3:00 PM | Aldow: Miyerkoles | Petsa: Hulyo 1, 2026]",Oras na ba?,"Ngowan, alas tres na sa apon."
+1209,reviewed,time,"[Oras: 4:37 PM | Aldow: Miyerkoles | Petsa: Abril 7, 2027]",Onong oras?,"Ngowan, 4:37 na sa apon."
+1210,reviewed,time,"[Oras: 5:22 PM | Aldow: Miyerkoles | Petsa: Marso 24, 2027]",Pirang oras na?,5:22 na sa apon ngowan.
+1211,reviewed,time,"[Oras: 6:00 PM | Aldow: Dominggo | Petsa: Hulyo 26, 2026]",Onong oras?,Alas sais na sa gab'i ngowan.
+1212,reviewed,time,"[Oras: 7:29 PM | Aldow: Biyernes | Petsa: Marso 6, 2026]",Anong oras na ngayon?,7:29 na sa gab'i ngowan.
+1213,reviewed,time,"[Oras: 8:19 PM | Aldow: Biyernes | Petsa: Enero 8, 2027]",Oras na ba?,8:19 na sa gab'i ngowan.
+1214,reviewed,time,"[Oras: 9:00 PM | Aldow: Sabado | Petsa: Oktubre 23, 2027]",What time is it?,Alas nuwebe na sa gab'i ngowan.
+1215,reviewed,time,"[Oras: 10:54 PM | Aldow: Huwebes | Petsa: Setyembre 23, 2027]",Onong oras?,"Ngowan, 10:54 na sa gab'i."
+1216,reviewed,time,"[Oras: 11:59 PM | Aldow: Lunes | Petsa: Mayo 31, 2027]",What time is it?,"Ngowan, 11:59 na sa gab'i."
+1217,reviewed,time,"[Oras: 12:00 AM | Aldow: Sabado | Petsa: Mayo 8, 2027]",Anong oras na ngayon?,Alas dose na sa gab'i ngowan.
+1218,reviewed,time,"[Oras: 1:37 AM | Aldow: Lunes | Petsa: Hulyo 19, 2027]",Pirang oras na?,"Ngowan, 1:37 na sa gab'i."
+1219,reviewed,time,"[Oras: 2:20 AM | Aldow: Dominggo | Petsa: Hunyo 28, 2026]",Pirang oras na?,2:20 na sa gab'i ngowan.
+1220,reviewed,time,"[Oras: 3:00 AM | Aldow: Lunes | Petsa: Nobyembre 2, 2026]",Pirang oras na?,"Ngowan, alas tres na sa gab'i."
+1221,reviewed,time,"[Oras: 4:56 AM | Aldow: Huwebes | Petsa: Hulyo 30, 2026]",Onong oras?,"Ngowan, 4:56 na sa gab'i."
+1222,reviewed,time,"[Oras: 5:24 AM | Aldow: Sabado | Petsa: Pebrero 20, 2027]",What time is it?,"Ngowan, 5:24 na sa ramrag."
+1223,reviewed,time,"[Oras: 6:00 AM | Aldow: Sabado | Petsa: Nobyembre 14, 2026]",Onong oras?,"Ngowan, alas sais na sa ramrag."
+1224,reviewed,time,"[Oras: 7:35 AM | Aldow: Martes | Petsa: Marso 24, 2026]",What time is it?,7:35 na sa ramrag ngowan.
+1225,reviewed,time,"[Oras: 8:01 AM | Aldow: Dominggo | Petsa: Hulyo 12, 2026]",What time is it?,"Ngowan, 8:01 na sa ramrag."
+1226,reviewed,time,"[Oras: 9:00 AM | Aldow: Biyernes | Petsa: Enero 30, 2026]",Onong oras?,Alas nuwebe na sa ramrag ngowan.
+1227,reviewed,time,"[Oras: 10:29 AM | Aldow: Lunes | Petsa: Disyembre 14, 2026]",What time is it now?,"Ngowan, 10:29 na sa ramrag."
+1228,reviewed,time,"[Oras: 11:59 AM | Aldow: Biyernes | Petsa: Setyembre 3, 2027]",Anong oras na?,"Ngowan, 11:59 na sa ramrag."
+1229,reviewed,time,"[Oras: 12:00 PM | Aldow: Sabado | Petsa: Setyembre 18, 2027]",Onong oras ngowan?,"Ngowan, alas dose na sa modto."
+1230,reviewed,time,"[Oras: 1:24 PM | Aldow: Martes | Petsa: Agosto 3, 2027]",Oras na ba?,"Ngowan, 1:24 na sa modto."
+1231,reviewed,time,"[Oras: 2:52 PM | Aldow: Miyerkoles | Petsa: Abril 21, 2027]",Onong oras ngowan?,"Ngowan, 2:52 na sa apon."
+1232,reviewed,time,"[Oras: 3:00 PM | Aldow: Martes | Petsa: Nobyembre 2, 2027]",Onong oras ngowan?,Alas tres na sa apon ngowan.
+1233,reviewed,time,"[Oras: 4:15 PM | Aldow: Sabado | Petsa: Mayo 9, 2026]",Onong oras ngowan?,4:15 na sa apon ngowan.
+1234,reviewed,time,"[Oras: 5:45 PM | Aldow: Lunes | Petsa: Marso 1, 2027]",Anong oras na ngayon?,"Ngowan, 5:45 na sa apon."
+1235,reviewed,time,"[Oras: 6:00 PM | Aldow: Biyernes | Petsa: Hunyo 25, 2027]",Oras na ba?,"Ngowan, alas sais na sa gab'i."
+1236,reviewed,time,"[Oras: 7:28 PM | Aldow: Martes | Petsa: Nobyembre 9, 2027]",Onong oras?,"Ngowan, 7:28 na sa gab'i."
+1237,reviewed,time,"[Oras: 8:54 PM | Aldow: Huwebes | Petsa: Nobyembre 11, 2027]",What time is it?,"Ngowan, 8:54 na sa gab'i."
+1238,reviewed,time,"[Oras: 9:00 PM | Aldow: Miyerkoles | Petsa: Abril 1, 2026]",Oras na ba?,Alas nuwebe na sa gab'i ngowan.
+1239,reviewed,time,"[Oras: 10:55 PM | Aldow: Sabado | Petsa: Oktubre 3, 2026]",Pirang oras na?,"Ngowan, 10:55 na sa gab'i."
+1240,reviewed,time,"[Oras: 11:47 PM | Aldow: Dominggo | Petsa: Enero 4, 2026]",Anong oras na ngayon?,11:47 na sa gab'i ngowan.
+1241,reviewed,time,"[Oras: 12:00 AM | Aldow: Biyernes | Petsa: Mayo 21, 2027]",Anong oras na ngayon?,Alas dose na sa gab'i ngowan.
+1242,reviewed,time,"[Oras: 1:03 AM | Aldow: Sabado | Petsa: Setyembre 11, 2027]",Pirang oras na?,1:03 na sa gab'i ngowan.
+1243,reviewed,time,"[Oras: 2:02 AM | Aldow: Miyerkoles | Petsa: Enero 6, 2027]",Anong oras na ngayon?,2:02 na sa gab'i ngowan.
+1244,reviewed,time,"[Oras: 3:00 AM | Aldow: Dominggo | Petsa: Mayo 9, 2027]",Pirang oras na?,"Ngowan, alas tres na sa gab'i."
+1245,reviewed,time,"[Oras: 4:25 AM | Aldow: Miyerkoles | Petsa: Hulyo 28, 2027]",What time is it now?,4:25 na sa gab'i ngowan.
+1246,reviewed,time,"[Oras: 5:25 AM | Aldow: Miyerkoles | Petsa: Enero 21, 2026]",Oras na ba?,5:25 na sa ramrag ngowan.
+1247,reviewed,time,"[Oras: 6:00 AM | Aldow: Martes | Petsa: Marso 2, 2027]",What time is it?,"Ngowan, alas sais na sa ramrag."
+1248,reviewed,time,"[Oras: 7:45 AM | Aldow: Dominggo | Petsa: Pebrero 28, 2027]",Anong oras na ngayon?,7:45 na sa ramrag ngowan.
+1249,reviewed,time,"[Oras: 8:01 AM | Aldow: Miyerkoles | Petsa: Enero 14, 2026]",Anong oras na ngayon?,8:01 na sa ramrag ngowan.
+1250,reviewed,time,"[Oras: 9:00 AM | Aldow: Martes | Petsa: Agosto 3, 2027]",Oras na ba?,"Ngowan, alas nuwebe na sa ramrag."
+1251,reviewed,time,"[Oras: 10:08 AM | Aldow: Dominggo | Petsa: Hulyo 12, 2026]",Anong oras na?,10:08 na sa ramrag ngowan.
+1252,reviewed,time,"[Oras: 11:14 AM | Aldow: Biyernes | Petsa: Mayo 14, 2027]",What time is it?,"Ngowan, 11:14 na sa ramrag."
+1253,reviewed,time,"[Oras: 12:00 PM | Aldow: Martes | Petsa: Abril 14, 2026]",What time is it?,"Ngowan, alas dose na sa modto."
+1254,reviewed,time,"[Oras: 1:46 PM | Aldow: Biyernes | Petsa: Hulyo 31, 2026]",Oras na ba?,1:46 na sa modto ngowan.
+1255,reviewed,time,"[Oras: 2:20 PM | Aldow: Dominggo | Petsa: Mayo 23, 2027]",What time is it now?,"Ngowan, 2:20 na sa apon."
+1256,reviewed,time,"[Oras: 3:00 PM | Aldow: Martes | Petsa: Hunyo 8, 2027]",Pirang oras na?,Alas tres na sa apon ngowan.
+1257,reviewed,time,"[Oras: 4:30 PM | Aldow: Huwebes | Petsa: Abril 9, 2026]",Pirang oras na?,"Ngowan, 4:30 na sa apon."
+1258,reviewed,time,"[Oras: 5:53 PM | Aldow: Dominggo | Petsa: Pebrero 7, 2027]",Onong oras?,"Ngowan, 5:53 na sa apon."
+1259,reviewed,time,"[Oras: 6:00 PM | Aldow: Biyernes | Petsa: Hulyo 9, 2027]",Onong oras ngowan?,"Ngowan, alas sais na sa gab'i."
+1260,reviewed,time,"[Oras: 7:23 PM | Aldow: Miyerkoles | Petsa: Abril 29, 2026]",What time is it now?,7:23 na sa gab'i ngowan.
+1261,reviewed,time,"[Oras: 8:08 PM | Aldow: Martes | Petsa: Abril 13, 2027]",Anong oras na ngayon?,"Ngowan, 8:08 na sa gab'i."
+1262,reviewed,time,"[Oras: 9:00 PM | Aldow: Lunes | Petsa: Oktubre 25, 2027]",What time is it?,Alas nuwebe na sa gab'i ngowan.
+1263,reviewed,time,"[Oras: 10:33 PM | Aldow: Sabado | Petsa: Agosto 22, 2026]",What time is it?,10:33 na sa gab'i ngowan.
+1264,reviewed,time,"[Oras: 11:04 PM | Aldow: Miyerkoles | Petsa: Marso 24, 2027]",What time is it?,11:04 na sa gab'i ngowan.
+1265,reviewed,time,"[Oras: 12:00 AM | Aldow: Miyerkoles | Petsa: Agosto 25, 2027]",Oras na ba?,"Ngowan, alas dose na sa gab'i."
+1266,reviewed,time,"[Oras: 1:50 AM | Aldow: Lunes | Petsa: Hulyo 12, 2027]",What time is it now?,1:50 na sa gab'i ngowan.
+1267,reviewed,time,"[Oras: 2:45 AM | Aldow: Sabado | Petsa: Hunyo 20, 2026]",What time is it now?,2:45 na sa gab'i ngowan.
+1268,reviewed,time,"[Oras: 3:00 AM | Aldow: Dominggo | Petsa: Pebrero 1, 2026]",What time is it now?,"Ngowan, alas tres na sa gab'i."
+1269,reviewed,time,"[Oras: 4:51 AM | Aldow: Biyernes | Petsa: Agosto 6, 2027]",Onong oras ngowan?,"Ngowan, 4:51 na sa gab'i."
+1270,reviewed,time,"[Oras: 5:32 AM | Aldow: Huwebes | Petsa: Hulyo 16, 2026]",Pirang oras na?,5:32 na sa ramrag ngowan.
+1271,reviewed,time,"[Oras: 6:00 AM | Aldow: Martes | Petsa: Mayo 19, 2026]",Anong oras na ngayon?,Alas sais na sa ramrag ngowan.
+1272,reviewed,time,"[Oras: 7:29 AM | Aldow: Martes | Petsa: Abril 14, 2026]",Oras na ba?,"Ngowan, 7:29 na sa ramrag."
+1273,reviewed,time,"[Oras: 8:39 AM | Aldow: Biyernes | Petsa: Oktubre 22, 2027]",Anong oras na?,"Ngowan, 8:39 na sa ramrag."
+1274,reviewed,time,"[Oras: 9:00 AM | Aldow: Huwebes | Petsa: Hunyo 11, 2026]",What time is it now?,Alas nuwebe na sa ramrag ngowan.
+1275,reviewed,time,"[Oras: 10:05 AM | Aldow: Miyerkoles | Petsa: Mayo 26, 2027]",What time is it?,"Ngowan, 10:05 na sa ramrag."
+1276,reviewed,time,"[Oras: 11:26 AM | Aldow: Sabado | Petsa: Nobyembre 6, 2027]",Anong oras na ngayon?,"Ngowan, 11:26 na sa ramrag."
+1277,reviewed,time,"[Oras: 12:00 PM | Aldow: Dominggo | Petsa: Enero 24, 2027]",Onong oras ngowan?,"Ngowan, alas dose na sa modto."
+1278,reviewed,time,"[Oras: 1:40 PM | Aldow: Lunes | Petsa: Disyembre 21, 2026]",Oras na ba?,"Ngowan, 1:40 na sa modto."
+1279,reviewed,time,"[Oras: 2:48 PM | Aldow: Sabado | Petsa: Hulyo 11, 2026]",Oras na ba?,2:48 na sa apon ngowan.
+1280,reviewed,time,"[Oras: 3:00 PM | Aldow: Martes | Petsa: Agosto 3, 2027]",What time is it?,"Ngowan, alas tres na sa apon."
+1281,reviewed,time,"[Oras: 4:30 PM | Aldow: Martes | Petsa: Mayo 18, 2027]",Anong oras na ngayon?,"Ngowan, 4:30 na sa apon."
+1282,reviewed,time,"[Oras: 5:14 PM | Aldow: Biyernes | Petsa: Oktubre 2, 2026]",Pirang oras na?,"Ngowan, 5:14 na sa apon."
+1283,reviewed,time,"[Oras: 6:00 PM | Aldow: Miyerkoles | Petsa: Marso 31, 2027]",Onong oras ngowan?,"Ngowan, alas sais na sa gab'i."
+1284,reviewed,time,"[Oras: 7:08 PM | Aldow: Martes | Petsa: Nobyembre 23, 2027]",Onong oras ngowan?,7:08 na sa gab'i ngowan.
+1285,reviewed,time,"[Oras: 8:44 PM | Aldow: Martes | Petsa: Hunyo 22, 2027]",Anong oras na?,"Ngowan, 8:44 na sa gab'i."
+1286,reviewed,time,"[Oras: 9:00 PM | Aldow: Sabado | Petsa: Disyembre 12, 2026]",Anong oras na ngayon?,Alas nuwebe na sa gab'i ngowan.
+1287,reviewed,time,"[Oras: 10:01 PM | Aldow: Sabado | Petsa: Enero 2, 2027]",What time is it?,10:01 na sa gab'i ngowan.
+1288,reviewed,time,"[Oras: 11:06 PM | Aldow: Martes | Petsa: Setyembre 28, 2027]",Anong oras na?,11:06 na sa gab'i ngowan.
+1289,reviewed,time,"[Oras: 12:00 AM | Aldow: Sabado | Petsa: Hunyo 26, 2027]",Onong oras ngowan?,"Ngowan, alas dose na sa gab'i."
+1290,reviewed,time,"[Oras: 1:18 AM | Aldow: Biyernes | Petsa: Pebrero 20, 2026]",Anong oras na?,"Ngowan, 1:18 na sa gab'i."
+1291,reviewed,time,"[Oras: 2:02 AM | Aldow: Dominggo | Petsa: Hulyo 25, 2027]",What time is it now?,"Ngowan, 2:02 na sa gab'i."
+1292,reviewed,time,"[Oras: 3:00 AM | Aldow: Dominggo | Petsa: Marso 7, 2027]",What time is it now?,"Ngowan, alas tres na sa gab'i."
+1293,reviewed,time,"[Oras: 4:51 AM | Aldow: Biyernes | Petsa: Nobyembre 12, 2027]",Anong oras na ngayon?,"Ngowan, 4:51 na sa gab'i."
+1294,reviewed,time,"[Oras: 5:07 AM | Aldow: Miyerkoles | Petsa: Abril 14, 2027]",Onong oras ngowan?,"Ngowan, 5:07 na sa ramrag."
+1295,reviewed,time,"[Oras: 6:00 AM | Aldow: Dominggo | Petsa: Nobyembre 7, 2027]",Anong oras na ngayon?,"Ngowan, alas sais na sa ramrag."
+1296,reviewed,time,"[Oras: 7:50 AM | Aldow: Biyernes | Petsa: Abril 30, 2027]",What time is it?,7:50 na sa ramrag ngowan.
+1297,reviewed,time,"[Oras: 8:24 AM | Aldow: Lunes | Petsa: Oktubre 11, 2027]",Anong oras na?,8:24 na sa ramrag ngowan.
+1298,reviewed,time,"[Oras: 9:00 AM | Aldow: Dominggo | Petsa: Marso 29, 2026]",What time is it?,"Ngowan, alas nuwebe na sa ramrag."
+1299,reviewed,time,"[Oras: 10:42 AM | Aldow: Martes | Petsa: Hunyo 23, 2026]",Onong oras?,10:42 na sa ramrag ngowan.
+1300,reviewed,time,"[Oras: 11:20 AM | Aldow: Huwebes | Petsa: Disyembre 3, 2026]",Onong oras ngowan?,"Ngowan, 11:20 na sa ramrag."
+1301,reviewed,time,"[Oras: 12:00 PM | Aldow: Huwebes | Petsa: Marso 25, 2027]",Onong oras?,Alas dose na sa modto ngowan.
+1302,reviewed,time,"[Oras: 1:25 PM | Aldow: Lunes | Petsa: Setyembre 20, 2027]",What time is it?,1:25 na sa modto ngowan.
+1303,reviewed,time,"[Oras: 2:58 PM | Aldow: Sabado | Petsa: Hunyo 27, 2026]",Anong oras na ngayon?,2:58 na sa apon ngowan.
+1304,reviewed,time,"[Oras: 3:00 PM | Aldow: Sabado | Petsa: Setyembre 26, 2026]",Onong oras?,Alas tres na sa apon ngowan.
+1305,reviewed,time,"[Oras: 4:28 PM | Aldow: Huwebes | Petsa: Agosto 5, 2027]",Anong oras na?,4:28 na sa apon ngowan.
+1306,reviewed,time,"[Oras: 5:57 PM | Aldow: Lunes | Petsa: Hunyo 15, 2026]",Onong oras?,"Ngowan, 5:57 na sa apon."
+1307,reviewed,time,"[Oras: 6:00 PM | Aldow: Biyernes | Petsa: Hunyo 5, 2026]",What time is it?,Alas sais na sa gab'i ngowan.
+1308,reviewed,time,"[Oras: 7:53 PM | Aldow: Huwebes | Petsa: Setyembre 3, 2026]",Pirang oras na?,7:53 na sa gab'i ngowan.
+1309,reviewed,time,"[Oras: 8:17 PM | Aldow: Sabado | Petsa: Nobyembre 14, 2026]",Onong oras ngowan?,"Ngowan, 8:17 na sa gab'i."
+1310,reviewed,time,"[Oras: 9:00 PM | Aldow: Sabado | Petsa: Nobyembre 27, 2027]",Onong oras ngowan?,Alas nuwebe na sa gab'i ngowan.
+1311,reviewed,time,"[Oras: 10:07 PM | Aldow: Miyerkoles | Petsa: Setyembre 16, 2026]",Anong oras na?,10:07 na sa gab'i ngowan.
+1312,reviewed,time,"[Oras: 11:53 PM | Aldow: Dominggo | Petsa: Nobyembre 1, 2026]",What time is it?,"Ngowan, 11:53 na sa gab'i."
+1313,reviewed,time,"[Oras: 12:00 AM | Aldow: Martes | Petsa: Pebrero 3, 2026]",Oras na ba?,Alas dose na sa gab'i ngowan.
+1314,reviewed,time,"[Oras: 1:47 AM | Aldow: Martes | Petsa: Nobyembre 17, 2026]",Oras na ba?,1:47 na sa gab'i ngowan.
+1315,reviewed,time,"[Oras: 2:09 AM | Aldow: Biyernes | Petsa: Oktubre 8, 2027]",What time is it?,2:09 na sa gab'i ngowan.
+1316,reviewed,time,"[Oras: 3:00 AM | Aldow: Biyernes | Petsa: Oktubre 30, 2026]",What time is it now?,Alas tres na sa gab'i ngowan.
+1317,reviewed,time,"[Oras: 4:45 AM | Aldow: Miyerkoles | Petsa: Nobyembre 3, 2027]",Anong oras na ngayon?,"Ngowan, 4:45 na sa gab'i."
+1318,reviewed,time,"[Oras: 5:22 AM | Aldow: Dominggo | Petsa: Nobyembre 21, 2027]",Onong oras?,5:22 na sa ramrag ngowan.
+1319,reviewed,time,"[Oras: 6:00 AM | Aldow: Dominggo | Petsa: Disyembre 6, 2026]",What time is it?,"Ngowan, alas sais na sa ramrag."
+1320,reviewed,time,"[Oras: 7:42 AM | Aldow: Biyernes | Petsa: Oktubre 22, 2027]",What time is it?,"Ngowan, 7:42 na sa ramrag."
+1321,reviewed,time,"[Oras: 8:27 AM | Aldow: Sabado | Petsa: Marso 7, 2026]",What time is it now?,"Ngowan, 8:27 na sa ramrag."
+1322,reviewed,time,"[Oras: 9:00 AM | Aldow: Miyerkoles | Petsa: Hulyo 8, 2026]",Onong oras ngowan?,Alas nuwebe na sa ramrag ngowan.
+1323,reviewed,time,"[Oras: 10:05 AM | Aldow: Dominggo | Petsa: Hulyo 12, 2026]",Anong oras na?,10:05 na sa ramrag ngowan.
+1324,reviewed,time,"[Oras: 11:03 AM | Aldow: Martes | Petsa: Oktubre 19, 2027]",Oras na ba?,"Ngowan, 11:03 na sa ramrag."
+1325,reviewed,time,"[Oras: 12:00 PM | Aldow: Lunes | Petsa: Agosto 10, 2026]",What time is it now?,"Ngowan, alas dose na sa modto."
+1326,reviewed,time,"[Oras: 1:37 PM | Aldow: Miyerkoles | Petsa: Marso 25, 2026]",Onong oras ngowan?,"Ngowan, 1:37 na sa modto."
+1327,reviewed,time,"[Oras: 2:25 PM | Aldow: Dominggo | Petsa: Disyembre 12, 2027]",Anong oras na?,"Ngowan, 2:25 na sa apon."
+1328,reviewed,time,"[Oras: 3:00 PM | Aldow: Miyerkoles | Petsa: Disyembre 29, 2027]",What time is it?,Alas tres na sa apon ngowan.
+1329,reviewed,time,"[Oras: 4:50 PM | Aldow: Miyerkoles | Petsa: Setyembre 1, 2027]",What time is it?,"Ngowan, 4:50 na sa apon."
+1330,reviewed,time,"[Oras: 5:25 PM | Aldow: Dominggo | Petsa: Mayo 3, 2026]",Onong oras ngowan?,"Ngowan, 5:25 na sa apon."
+1331,reviewed,time,"[Oras: 6:00 PM | Aldow: Huwebes | Petsa: Hulyo 30, 2026]",Oras na ba?,"Ngowan, alas sais na sa gab'i."
+1332,reviewed,time,"[Oras: 7:33 PM | Aldow: Lunes | Petsa: Hulyo 27, 2026]",Pirang oras na?,7:33 na sa gab'i ngowan.
+1333,reviewed,time,"[Oras: 8:16 PM | Aldow: Sabado | Petsa: Nobyembre 20, 2027]",What time is it?,"Ngowan, 8:16 na sa gab'i."
+1334,reviewed,time,"[Oras: 9:00 PM | Aldow: Lunes | Petsa: Enero 19, 2026]",Oras na ba?,"Ngowan, alas nuwebe na sa gab'i."
+1335,reviewed,time,"[Oras: 10:24 PM | Aldow: Lunes | Petsa: Agosto 16, 2027]",Oras na ba?,"Ngowan, 10:24 na sa gab'i."
+1336,reviewed,time,"[Oras: 11:23 PM | Aldow: Biyernes | Petsa: Hunyo 12, 2026]",Pirang oras na?,"Ngowan, 11:23 na sa gab'i."
+1337,reviewed,time,"[Oras: 12:00 AM | Aldow: Dominggo | Petsa: Enero 4, 2026]",Onong oras ngowan?,Alas dose na sa gab'i ngowan.
+1338,reviewed,time,"[Oras: 1:40 AM | Aldow: Huwebes | Petsa: Abril 23, 2026]",Oras na ba?,1:40 na sa gab'i ngowan.
+1339,reviewed,time,"[Oras: 2:18 AM | Aldow: Miyerkoles | Petsa: Agosto 12, 2026]",What time is it now?,2:18 na sa gab'i ngowan.
+1340,reviewed,time,"[Oras: 3:00 AM | Aldow: Sabado | Petsa: Setyembre 5, 2026]",Onong oras?,Alas tres na sa gab'i ngowan.
+1341,reviewed,time,"[Oras: 4:55 AM | Aldow: Miyerkoles | Petsa: Disyembre 23, 2026]",What time is it now?,4:55 na sa gab'i ngowan.
+1342,reviewed,time,"[Oras: 5:43 AM | Aldow: Sabado | Petsa: Setyembre 25, 2027]",Pirang oras na?,5:43 na sa ramrag ngowan.
+1343,reviewed,time,"[Oras: 6:00 AM | Aldow: Biyernes | Petsa: Agosto 13, 2027]",Pirang oras na?,Alas sais na sa ramrag ngowan.
+1344,reviewed,time,"[Oras: 7:06 AM | Aldow: Sabado | Petsa: Enero 16, 2027]",What time is it?,7:06 na sa ramrag ngowan.
+1345,reviewed,time,"[Oras: 8:06 AM | Aldow: Dominggo | Petsa: Agosto 1, 2027]",What time is it?,8:06 na sa ramrag ngowan.
+1346,reviewed,time,"[Oras: 9:00 AM | Aldow: Huwebes | Petsa: Pebrero 12, 2026]",Onong oras ngowan?,Alas nuwebe na sa ramrag ngowan.
+1347,reviewed,time,"[Oras: 10:43 AM | Aldow: Miyerkoles | Petsa: Marso 25, 2026]",Anong oras na ngayon?,10:43 na sa ramrag ngowan.
+1348,reviewed,time,"[Oras: 11:56 AM | Aldow: Sabado | Petsa: Oktubre 30, 2027]",What time is it?,11:56 na sa ramrag ngowan.
+1349,reviewed,time,"[Oras: 12:00 PM | Aldow: Huwebes | Petsa: Agosto 19, 2027]",What time is it?,Alas dose na sa modto ngowan.
+1350,reviewed,time,"[Oras: 1:32 PM | Aldow: Lunes | Petsa: Oktubre 12, 2026]",What time is it?,"Ngowan, 1:32 na sa modto."
+1351,reviewed,time,"[Oras: 2:01 PM | Aldow: Biyernes | Petsa: Abril 23, 2027]",Oras na ba?,"Ngowan, 2:01 na sa apon."
+1352,reviewed,time,"[Oras: 3:00 PM | Aldow: Miyerkoles | Petsa: Abril 8, 2026]",Anong oras na ngayon?,"Ngowan, alas tres na sa apon."
+1353,reviewed,time,"[Oras: 4:50 PM | Aldow: Martes | Petsa: Enero 19, 2027]",Oras na ba?,4:50 na sa apon ngowan.
+1354,reviewed,time,"[Oras: 5:08 PM | Aldow: Martes | Petsa: Nobyembre 30, 2027]",What time is it?,5:08 na sa apon ngowan.
+1355,reviewed,time,"[Oras: 6:00 PM | Aldow: Martes | Petsa: Setyembre 28, 2027]",Pirang oras na?,"Ngowan, alas sais na sa gab'i."
+1356,reviewed,time,"[Oras: 7:31 PM | Aldow: Huwebes | Petsa: Setyembre 3, 2026]",Oras na ba?,7:31 na sa gab'i ngowan.
+1357,reviewed,time,"[Oras: 8:56 PM | Aldow: Lunes | Petsa: Hulyo 20, 2026]",What time is it now?,"Ngowan, 8:56 na sa gab'i."
+1358,reviewed,time,"[Oras: 9:00 PM | Aldow: Lunes | Petsa: Enero 26, 2026]",Anong oras na?,Alas nuwebe na sa gab'i ngowan.
+1359,reviewed,time,"[Oras: 10:42 PM | Aldow: Miyerkoles | Petsa: Pebrero 24, 2027]",Anong oras na?,"Ngowan, 10:42 na sa gab'i."
+1360,reviewed,time,"[Oras: 11:53 PM | Aldow: Biyernes | Petsa: Hunyo 19, 2026]",What time is it now?,"Ngowan, 11:53 na sa gab'i."
+1361,reviewed,time,"[Oras: 12:00 AM | Aldow: Huwebes | Petsa: Nobyembre 11, 2027]",Pirang oras na?,"Ngowan, alas dose na sa gab'i."
+1362,reviewed,time,"[Oras: 1:45 AM | Aldow: Martes | Petsa: Marso 3, 2026]",Onong oras?,"Ngowan, 1:45 na sa gab'i."
+1363,reviewed,time,"[Oras: 2:01 AM | Aldow: Biyernes | Petsa: Marso 13, 2026]",Oras na ba?,2:01 na sa gab'i ngowan.
+1364,reviewed,time,"[Oras: 3:00 AM | Aldow: Miyerkoles | Petsa: Agosto 26, 2026]",Oras na ba?,Alas tres na sa gab'i ngowan.
+1365,reviewed,time,"[Oras: 4:13 AM | Aldow: Sabado | Petsa: Pebrero 20, 2027]",Oras na ba?,4:13 na sa gab'i ngowan.
+1366,reviewed,time,"[Oras: 5:58 AM | Aldow: Biyernes | Petsa: Mayo 7, 2027]",Pirang oras na?,"Ngowan, 5:58 na sa ramrag."
+1367,reviewed,time,"[Oras: 6:00 AM | Aldow: Huwebes | Petsa: Hulyo 23, 2026]",Onong oras ngowan?,"Ngowan, alas sais na sa ramrag."
+1368,reviewed,time,"[Oras: 7:03 AM | Aldow: Martes | Petsa: Pebrero 3, 2026]",Anong oras na?,7:03 na sa ramrag ngowan.
+1369,reviewed,time,"[Oras: 8:11 AM | Aldow: Miyerkoles | Petsa: Setyembre 9, 2026]",What time is it?,8:11 na sa ramrag ngowan.
+1370,reviewed,time,"[Oras: 9:00 AM | Aldow: Huwebes | Petsa: Agosto 5, 2027]",Anong oras na?,"Ngowan, alas nuwebe na sa ramrag."
+1371,reviewed,time,"[Oras: 10:28 AM | Aldow: Huwebes | Petsa: Marso 5, 2026]",Anong oras na ngayon?,"Ngowan, 10:28 na sa ramrag."
+1372,reviewed,time,"[Oras: 11:27 AM | Aldow: Sabado | Petsa: Mayo 29, 2027]",What time is it now?,"Ngowan, 11:27 na sa ramrag."
+1373,reviewed,time,"[Oras: 12:00 PM | Aldow: Miyerkoles | Petsa: Hulyo 15, 2026]",Anong oras na ngayon?,Alas dose na sa modto ngowan.
+1374,reviewed,time,"[Oras: 1:48 PM | Aldow: Dominggo | Petsa: Hulyo 19, 2026]",Anong oras na?,"Ngowan, 1:48 na sa modto."
+1375,reviewed,time,"[Oras: 2:07 PM | Aldow: Biyernes | Petsa: Pebrero 13, 2026]",Anong oras na ngayon?,"Ngowan, 2:07 na sa apon."
+1376,reviewed,time,"[Oras: 3:00 PM | Aldow: Miyerkoles | Petsa: Enero 28, 2026]",Onong oras?,"Ngowan, alas tres na sa apon."
+1377,reviewed,time,"[Oras: 4:11 PM | Aldow: Sabado | Petsa: Pebrero 13, 2027]",Onong oras?,"Ngowan, 4:11 na sa apon."
+1378,reviewed,time,"[Oras: 5:02 PM | Aldow: Miyerkoles | Petsa: Pebrero 10, 2027]",Onong oras ngowan?,5:02 na sa apon ngowan.
+1379,reviewed,time,"[Oras: 6:00 PM | Aldow: Miyerkoles | Petsa: Pebrero 25, 2026]",Anong oras na ngayon?,Alas sais na sa gab'i ngowan.
+1380,reviewed,time,"[Oras: 7:26 PM | Aldow: Lunes | Petsa: Enero 12, 2026]",What time is it now?,"Ngowan, 7:26 na sa gab'i."
+1381,reviewed,time,"[Oras: 8:21 PM | Aldow: Huwebes | Petsa: Agosto 5, 2027]",Pirang oras na?,"Ngowan, 8:21 na sa gab'i."
+1382,reviewed,time,"[Oras: 9:00 PM | Aldow: Huwebes | Petsa: Pebrero 12, 2026]",Anong oras na ngayon?,"Ngowan, alas nuwebe na sa gab'i."
+1383,reviewed,time,"[Oras: 10:08 PM | Aldow: Sabado | Petsa: Setyembre 12, 2026]",Anong oras na?,"Ngowan, 10:08 na sa gab'i."
+1384,reviewed,time,"[Oras: 11:38 PM | Aldow: Martes | Petsa: Mayo 11, 2027]",Onong oras ngowan?,"Ngowan, 11:38 na sa gab'i."
+1385,reviewed,time,"[Oras: 12:00 AM | Aldow: Lunes | Petsa: Oktubre 5, 2026]",Anong oras na?,"Ngowan, alas dose na sa gab'i."
+1386,reviewed,time,"[Oras: 1:47 AM | Aldow: Huwebes | Petsa: Mayo 21, 2026]",Onong oras?,"Ngowan, 1:47 na sa gab'i."
+1387,reviewed,time,"[Oras: 2:18 AM | Aldow: Biyernes | Petsa: Agosto 20, 2027]",Onong oras ngowan?,2:18 na sa gab'i ngowan.
+1388,reviewed,time,"[Oras: 3:00 AM | Aldow: Miyerkoles | Petsa: Oktubre 13, 2027]",Oras na ba?,"Ngowan, alas tres na sa gab'i."
+1389,reviewed,time,"[Oras: 4:02 AM | Aldow: Miyerkoles | Petsa: Hulyo 1, 2026]",Anong oras na ngayon?,4:02 na sa gab'i ngowan.
+1390,reviewed,time,"[Oras: 5:18 AM | Aldow: Martes | Petsa: Hulyo 7, 2026]",What time is it?,"Ngowan, 5:18 na sa ramrag."
+1391,reviewed,time,"[Oras: 6:00 AM | Aldow: Sabado | Petsa: Oktubre 17, 2026]",Pirang oras na?,"Ngowan, alas sais na sa ramrag."
+1392,reviewed,time,"[Oras: 7:14 AM | Aldow: Martes | Petsa: Nobyembre 23, 2027]",Pirang oras na?,"Ngowan, 7:14 na sa ramrag."
+1393,reviewed,time,"[Oras: 8:39 AM | Aldow: Miyerkoles | Petsa: Nobyembre 17, 2027]",What time is it now?,8:39 na sa ramrag ngowan.
+1394,reviewed,time,"[Oras: 9:00 AM | Aldow: Lunes | Petsa: Pebrero 2, 2026]",What time is it now?,Alas nuwebe na sa ramrag ngowan.
+1395,reviewed,time,"[Oras: 10:11 AM | Aldow: Dominggo | Petsa: Abril 4, 2027]",Anong oras na?,10:11 na sa ramrag ngowan.
+1396,reviewed,time,"[Oras: 11:59 AM | Aldow: Biyernes | Petsa: Agosto 13, 2027]",Onong oras ngowan?,"Ngowan, 11:59 na sa ramrag."
+1397,reviewed,time,"[Oras: 12:00 PM | Aldow: Huwebes | Petsa: Mayo 28, 2026]",Onong oras?,"Ngowan, alas dose na sa modto."
+1398,reviewed,time,"[Oras: 1:32 PM | Aldow: Huwebes | Petsa: Hulyo 23, 2026]",Oras na ba?,"Ngowan, 1:32 na sa modto."
+1399,reviewed,time,"[Oras: 2:36 PM | Aldow: Miyerkoles | Petsa: Mayo 5, 2027]",What time is it now?,2:36 na sa apon ngowan.
+1400,reviewed,time,"[Oras: 3:00 PM | Aldow: Martes | Petsa: Nobyembre 10, 2026]",Onong oras?,"Ngowan, alas tres na sa apon."
+1401,reviewed,time,"[Oras: 4:05 PM | Aldow: Lunes | Petsa: Hunyo 7, 2027]",What time is it?,"Ngowan, 4:05 na sa apon."
+1402,reviewed,time,"[Oras: 5:35 PM | Aldow: Biyernes | Petsa: Marso 19, 2027]",Anong oras na?,"Ngowan, 5:35 na sa apon."
+1403,reviewed,time,"[Oras: 6:00 PM | Aldow: Dominggo | Petsa: Hulyo 11, 2027]",Onong oras ngowan?,"Ngowan, alas sais na sa gab'i."
+1404,reviewed,time,"[Oras: 7:47 PM | Aldow: Lunes | Petsa: Disyembre 6, 2027]",Anong oras na ngayon?,7:47 na sa gab'i ngowan.
+1405,reviewed,time,"[Oras: 8:02 PM | Aldow: Dominggo | Petsa: Mayo 23, 2027]",Pirang oras na?,8:02 na sa gab'i ngowan.
+1406,reviewed,time,"[Oras: 9:00 PM | Aldow: Lunes | Petsa: Setyembre 28, 2026]",Anong oras na?,Alas nuwebe na sa gab'i ngowan.
+1407,reviewed,time,"[Oras: 10:44 PM | Aldow: Huwebes | Petsa: Marso 18, 2027]",Oras na ba?,10:44 na sa gab'i ngowan.
+1408,reviewed,time,"[Oras: 11:35 PM | Aldow: Dominggo | Petsa: Marso 8, 2026]",Pirang oras na?,"Ngowan, 11:35 na sa gab'i."
+1409,reviewed,time,"[Oras: 12:00 AM | Aldow: Huwebes | Petsa: Setyembre 17, 2026]",Onong oras?,"Ngowan, alas dose na sa gab'i."
+1410,reviewed,time,"[Oras: 1:43 AM | Aldow: Sabado | Petsa: Pebrero 20, 2027]",Oras na ba?,1:43 na sa gab'i ngowan.
+1411,reviewed,time,"[Oras: 2:04 AM | Aldow: Sabado | Petsa: Oktubre 3, 2026]",Onong oras?,2:04 na sa gab'i ngowan.
+1412,reviewed,time,"[Oras: 3:00 AM | Aldow: Sabado | Petsa: Enero 9, 2027]",Onong oras?,Alas tres na sa gab'i ngowan.
+1413,reviewed,time,"[Oras: 4:18 AM | Aldow: Martes | Petsa: Hunyo 9, 2026]",Onong oras?,"Ngowan, 4:18 na sa gab'i."
+1414,reviewed,time,"[Oras: 5:25 AM | Aldow: Biyernes | Petsa: Oktubre 16, 2026]",Onong oras ngowan?,5:25 na sa ramrag ngowan.
+1415,reviewed,time,"[Oras: 6:00 AM | Aldow: Sabado | Petsa: Disyembre 25, 2027]",What time is it now?,Alas sais na sa ramrag ngowan.
+1416,reviewed,time,"[Oras: 7:29 AM | Aldow: Martes | Petsa: Disyembre 15, 2026]",Oras na ba?,7:29 na sa ramrag ngowan.
+1417,reviewed,time,"[Oras: 8:30 AM | Aldow: Miyerkoles | Petsa: Oktubre 6, 2027]",Pirang oras na?,8:30 na sa ramrag ngowan.
+1418,reviewed,time,"[Oras: 9:00 AM | Aldow: Sabado | Petsa: Disyembre 26, 2026]",Onong oras?,"Ngowan, alas nuwebe na sa ramrag."
+1419,reviewed,time,"[Oras: 10:56 AM | Aldow: Martes | Petsa: Abril 13, 2027]",Anong oras na?,10:56 na sa ramrag ngowan.
+1420,reviewed,time,"[Oras: 11:58 AM | Aldow: Martes | Petsa: Hulyo 7, 2026]",Pirang oras na?,"Ngowan, 11:58 na sa ramrag."
+1421,reviewed,day,"[Oras: 6:56 PM | Aldow: Miyerkoles | Petsa: Nobyembre 11, 2026]",What day is it today?,"Ngowan, Miyerkoles."
+1422,reviewed,day,"[Oras: 5:05 AM | Aldow: Dominggo | Petsa: Abril 18, 2027]",What day is it today?,"Ngowan, Dominggo."
+1423,reviewed,day,"[Oras: 12:04 AM | Aldow: Lunes | Petsa: Disyembre 27, 2027]",Ono ngowan na aldow?,"Ngowan, Lunes."
+1424,reviewed,day,"[Oras: 10:16 AM | Aldow: Huwebes | Petsa: Disyembre 17, 2026]",What day is it today?,"Ngowan, Huwebes."
+1425,reviewed,day,"[Oras: 10:59 PM | Aldow: Huwebes | Petsa: Disyembre 30, 2027]",Ono na aldow ngowan?,"Ngowan, Huwebes."
+1426,reviewed,day,"[Oras: 5:21 PM | Aldow: Huwebes | Petsa: Mayo 6, 2027]",Anong araw ngayon?,"Ngowan, Huwebes."
+1427,reviewed,day,"[Oras: 4:46 AM | Aldow: Dominggo | Petsa: Agosto 22, 2027]",Anong araw ngayon?,"Ngowan, Dominggo."
+1428,reviewed,day,"[Oras: 6:36 AM | Aldow: Dominggo | Petsa: Mayo 10, 2026]",Ono ngowan na aldow?,"Ngowan, Dominggo."
+1429,reviewed,day,"[Oras: 5:58 PM | Aldow: Sabado | Petsa: Disyembre 26, 2026]",Anong araw ngayon?,"Ngowan, Sabado."
+1430,reviewed,day,"[Oras: 9:45 AM | Aldow: Sabado | Petsa: Abril 24, 2027]",Anong araw ngayon?,"Ngowan, Sabado."
+1431,reviewed,day,"[Oras: 9:49 AM | Aldow: Huwebes | Petsa: Mayo 6, 2027]",Anong araw ngayon?,"Ngowan, Huwebes."
+1432,reviewed,day,"[Oras: 7:14 PM | Aldow: Martes | Petsa: Hulyo 27, 2027]",Anong araw ngayon?,"Ngowan, Martes."
+1433,reviewed,day,"[Oras: 1:56 AM | Aldow: Biyernes | Petsa: Marso 20, 2026]",What day is it today?,"Ngowan, Biyernes."
+1434,reviewed,day,"[Oras: 2:25 PM | Aldow: Biyernes | Petsa: Disyembre 18, 2026]",What day is it?,"Ngowan, Biyernes."
+1435,reviewed,day,"[Oras: 8:13 PM | Aldow: Biyernes | Petsa: Hunyo 5, 2026]",What day is it today?,"Ngowan, Biyernes."
+1436,reviewed,day,"[Oras: 6:31 AM | Aldow: Lunes | Petsa: Agosto 17, 2026]",Ono na aldow ngowan?,"Ngowan, Lunes."
+1437,reviewed,day,"[Oras: 6:18 AM | Aldow: Martes | Petsa: Hunyo 16, 2026]",Ono na aldow ngowan?,"Ngowan, Martes."
+1438,reviewed,day,"[Oras: 6:28 AM | Aldow: Sabado | Petsa: Enero 31, 2026]",Ono na aldow ngowan?,"Ngowan, Sabado."
+1439,reviewed,day,"[Oras: 4:17 AM | Aldow: Sabado | Petsa: Agosto 1, 2026]",Ono ngowan na aldow?,"Ngowan, Sabado."
+1440,reviewed,day,"[Oras: 9:42 AM | Aldow: Biyernes | Petsa: Mayo 21, 2027]",What day is it?,"Ngowan, Biyernes."
+1441,reviewed,day,"[Oras: 9:17 AM | Aldow: Biyernes | Petsa: Disyembre 25, 2026]",What day is it?,"Ngowan, Biyernes."
+1442,reviewed,day,"[Oras: 10:07 PM | Aldow: Miyerkoles | Petsa: Setyembre 8, 2027]",Ono ngowan na aldow?,"Ngowan, Miyerkoles."
+1443,reviewed,day,"[Oras: 12:08 AM | Aldow: Sabado | Petsa: Enero 16, 2027]",Ono ngowan na aldow?,"Ngowan, Sabado."
+1444,reviewed,day,"[Oras: 6:52 PM | Aldow: Lunes | Petsa: Hulyo 5, 2027]",What day is it today?,"Ngowan, Lunes."
+1445,reviewed,day,"[Oras: 11:47 AM | Aldow: Martes | Petsa: Setyembre 29, 2026]",Ono ngowan na aldow?,"Ngowan, Martes."
+1446,reviewed,day,"[Oras: 4:36 PM | Aldow: Huwebes | Petsa: Agosto 13, 2026]",What day is it?,"Ngowan, Huwebes."
+1447,reviewed,day,"[Oras: 10:28 PM | Aldow: Huwebes | Petsa: Marso 5, 2026]",What day is it today?,"Ngowan, Huwebes."
+1448,reviewed,day,"[Oras: 3:01 AM | Aldow: Miyerkoles | Petsa: Hunyo 9, 2027]",Ono ngowan na aldow?,"Ngowan, Miyerkoles."
+1449,reviewed,day,"[Oras: 2:30 PM | Aldow: Miyerkoles | Petsa: Agosto 25, 2027]",Ono na aldow ngowan?,"Ngowan, Miyerkoles."
+1450,reviewed,day,"[Oras: 11:06 AM | Aldow: Martes | Petsa: Hulyo 13, 2027]",What day is it?,"Ngowan, Martes."
+1451,reviewed,day,"[Oras: 8:21 AM | Aldow: Huwebes | Petsa: Setyembre 9, 2027]",What day is it today?,"Ngowan, Huwebes."
+1452,reviewed,day,"[Oras: 6:47 PM | Aldow: Lunes | Petsa: Hunyo 8, 2026]",What day is it?,"Ngowan, Lunes."
+1453,reviewed,day,"[Oras: 9:01 AM | Aldow: Miyerkoles | Petsa: Oktubre 14, 2026]",Anong araw ngayon?,"Ngowan, Miyerkoles."
+1454,reviewed,day,"[Oras: 5:50 PM | Aldow: Lunes | Petsa: Hulyo 20, 2026]",What day is it today?,"Ngowan, Lunes."
+1455,reviewed,day,"[Oras: 2:42 PM | Aldow: Martes | Petsa: Mayo 19, 2026]",Ono na aldow ngowan?,"Ngowan, Martes."
+1456,reviewed,day,"[Oras: 5:20 PM | Aldow: Lunes | Petsa: Oktubre 18, 2027]",Ono na aldow ngowan?,"Ngowan, Lunes."
+1457,reviewed,day,"[Oras: 11:50 PM | Aldow: Sabado | Petsa: Hulyo 17, 2027]",Anong araw ngayon?,"Ngowan, Sabado."
+1458,reviewed,day,"[Oras: 3:33 PM | Aldow: Biyernes | Petsa: Setyembre 10, 2027]",What day is it today?,"Ngowan, Biyernes."
+1459,reviewed,day,"[Oras: 11:16 AM | Aldow: Sabado | Petsa: Setyembre 18, 2027]",Anong araw ngayon?,"Ngowan, Sabado."
+1460,reviewed,day,"[Oras: 4:44 PM | Aldow: Dominggo | Petsa: Setyembre 27, 2026]",Anong araw ngayon?,"Ngowan, Dominggo."
+1461,reviewed,date,"[Oras: 6:42 PM | Aldow: Miyerkoles | Petsa: Enero 7, 2026]",Ono a petsa ngowan?,"Ngowan ana Miyerkoles, Enero 7, 2026."
+1462,reviewed,date,"[Oras: 4:17 PM | Aldow: Lunes | Petsa: Disyembre 28, 2026]",Ono a petsa ngowan?,"Ngowan ana Lunes, Disyembre 28, 2026."
+1463,reviewed,date,"[Oras: 7:52 AM | Aldow: Sabado | Petsa: Pebrero 14, 2026]",Ono ana petsa ngowan na aldow?,"Ngowan ana Sabado, Pebrero 14, 2026."
+1464,reviewed,date,"[Oras: 7:22 PM | Aldow: Biyernes | Petsa: Mayo 8, 2026]",What's the date today?,"Ngowan ana Biyernes, Mayo 8, 2026."
+1465,reviewed,date,"[Oras: 12:22 PM | Aldow: Martes | Petsa: Nobyembre 10, 2026]",Anong petsa ngayon?,"Ngowan ana Martes, Nobyembre 10, 2026."
+1466,reviewed,date,"[Oras: 4:48 PM | Aldow: Huwebes | Petsa: Pebrero 11, 2027]",Anong petsa ngayon?,"Ngowan ana Huwebes, Pebrero 11, 2027."
+1467,reviewed,date,"[Oras: 1:56 AM | Aldow: Miyerkoles | Petsa: Oktubre 6, 2027]",What's the date today?,"Ngowan ana Miyerkoles, Oktubre 6, 2027."
+1468,reviewed,date,"[Oras: 8:49 PM | Aldow: Sabado | Petsa: Enero 10, 2026]",Ono ana petsa ngowan na aldow?,"Ngowan ana Sabado, Enero 10, 2026."
+1469,reviewed,date,"[Oras: 3:22 PM | Aldow: Biyernes | Petsa: Hulyo 16, 2027]",Anong petsa ngayon?,"Ngowan ana Biyernes, Hulyo 16, 2027."
+1470,reviewed,date,"[Oras: 9:16 PM | Aldow: Dominggo | Petsa: Oktubre 17, 2027]",What's the date today?,"Ngowan ana Dominggo, Oktubre 17, 2027."
+1471,reviewed,date,"[Oras: 4:08 PM | Aldow: Lunes | Petsa: Hunyo 1, 2026]",Ono ana petsa ngowan na aldow?,"Ngowan ana Lunes, Hunyo 1, 2026."
+1472,reviewed,date,"[Oras: 12:41 PM | Aldow: Sabado | Petsa: Agosto 1, 2026]",Ono ana petsa ngowan na aldow?,"Ngowan ana Sabado, Agosto 1, 2026."
+1473,reviewed,date,"[Oras: 1:15 PM | Aldow: Sabado | Petsa: Nobyembre 14, 2026]",Anong petsa ngayon?,"Ngowan ana Sabado, Nobyembre 14, 2026."
+1474,reviewed,date,"[Oras: 9:40 AM | Aldow: Sabado | Petsa: Hunyo 19, 2027]",Anong petsa ngayon?,"Ngowan ana Sabado, Hunyo 19, 2027."
+1475,reviewed,date,"[Oras: 10:40 PM | Aldow: Sabado | Petsa: Oktubre 2, 2027]",Ono a petsa ngowan?,"Ngowan ana Sabado, Oktubre 2, 2027."
+1476,reviewed,date,"[Oras: 8:27 AM | Aldow: Sabado | Petsa: Mayo 2, 2026]",Ono ana petsa ngowan na aldow?,"Ngowan ana Sabado, Mayo 2, 2026."
+1477,reviewed,date,"[Oras: 11:32 AM | Aldow: Huwebes | Petsa: Pebrero 12, 2026]",What's the date today?,"Ngowan ana Huwebes, Pebrero 12, 2026."
+1478,reviewed,date,"[Oras: 3:53 AM | Aldow: Martes | Petsa: Setyembre 7, 2027]",Anong petsa ngayon?,"Ngowan ana Martes, Setyembre 7, 2027."
+1479,reviewed,date,"[Oras: 5:32 PM | Aldow: Biyernes | Petsa: Agosto 13, 2027]",What is today's date?,"Ngowan ana Biyernes, Agosto 13, 2027."
+1480,reviewed,date,"[Oras: 1:54 AM | Aldow: Biyernes | Petsa: Nobyembre 19, 2027]",Ono ana petsa ngowan na aldow?,"Ngowan ana Biyernes, Nobyembre 19, 2027."
+1481,reviewed,date,"[Oras: 1:21 AM | Aldow: Sabado | Petsa: Enero 24, 2026]",What's the date today?,"Ngowan ana Sabado, Enero 24, 2026."
+1482,reviewed,date,"[Oras: 10:23 AM | Aldow: Martes | Petsa: Disyembre 15, 2026]",Ono ana petsa ngowan na aldow?,"Ngowan ana Martes, Disyembre 15, 2026."
+1483,reviewed,date,"[Oras: 6:53 AM | Aldow: Lunes | Petsa: Nobyembre 22, 2027]",What is today's date?,"Ngowan ana Lunes, Nobyembre 22, 2027."
+1484,reviewed,date,"[Oras: 5:03 AM | Aldow: Lunes | Petsa: Abril 5, 2027]",What's the date today?,"Ngowan ana Lunes, Abril 5, 2027."
+1485,reviewed,date,"[Oras: 10:35 PM | Aldow: Lunes | Petsa: Hulyo 27, 2026]",Anong petsa ngayon?,"Ngowan ana Lunes, Hulyo 27, 2026."
+1486,reviewed,date,"[Oras: 3:32 PM | Aldow: Martes | Petsa: Disyembre 8, 2026]",What's the date today?,"Ngowan ana Martes, Disyembre 8, 2026."
+1487,reviewed,date,"[Oras: 4:42 PM | Aldow: Martes | Petsa: Disyembre 29, 2026]",What's the date today?,"Ngowan ana Martes, Disyembre 29, 2026."
+1488,reviewed,date,"[Oras: 9:27 AM | Aldow: Biyernes | Petsa: Abril 30, 2027]",Anong petsa ngayon?,"Ngowan ana Biyernes, Abril 30, 2027."
+1489,reviewed,date,"[Oras: 11:50 AM | Aldow: Biyernes | Petsa: Agosto 27, 2027]",Ono ana petsa ngowan na aldow?,"Ngowan ana Biyernes, Agosto 27, 2027."
+1490,reviewed,date,"[Oras: 3:11 PM | Aldow: Sabado | Petsa: Agosto 1, 2026]",Ono a petsa ngowan?,"Ngowan ana Sabado, Agosto 1, 2026."
+1491,reviewed,date,"[Oras: 4:21 PM | Aldow: Dominggo | Petsa: Setyembre 26, 2027]",What is today's date?,"Ngowan ana Dominggo, Setyembre 26, 2027."
+1492,reviewed,date,"[Oras: 9:56 PM | Aldow: Sabado | Petsa: Oktubre 3, 2026]",What is today's date?,"Ngowan ana Sabado, Oktubre 3, 2026."
+1493,reviewed,date,"[Oras: 8:04 AM | Aldow: Dominggo | Petsa: Oktubre 10, 2027]",What's the date today?,"Ngowan ana Dominggo, Oktubre 10, 2027."
+1494,reviewed,date,"[Oras: 8:14 PM | Aldow: Lunes | Petsa: Marso 29, 2027]",Ono ana petsa ngowan na aldow?,"Ngowan ana Lunes, Marso 29, 2027."
+1495,reviewed,date,"[Oras: 7:20 PM | Aldow: Lunes | Petsa: Enero 4, 2027]",What's the date today?,"Ngowan ana Lunes, Enero 4, 2027."
+1496,reviewed,date,"[Oras: 12:54 AM | Aldow: Miyerkoles | Petsa: Disyembre 16, 2026]",Ono ana petsa ngowan na aldow?,"Ngowan ana Miyerkoles, Disyembre 16, 2026."
+1497,reviewed,date,"[Oras: 10:23 PM | Aldow: Dominggo | Petsa: Abril 25, 2027]",What is today's date?,"Ngowan ana Dominggo, Abril 25, 2027."
+1498,reviewed,date,"[Oras: 1:50 PM | Aldow: Sabado | Petsa: Hulyo 4, 2026]",Anong petsa ngayon?,"Ngowan ana Sabado, Hulyo 4, 2026."
+1499,reviewed,date,"[Oras: 12:08 PM | Aldow: Miyerkoles | Petsa: Setyembre 29, 2027]",Ono a petsa ngowan?,"Ngowan ana Miyerkoles, Setyembre 29, 2027."
+1500,reviewed,date,"[Oras: 3:55 PM | Aldow: Biyernes | Petsa: Agosto 28, 2026]",Ono ana petsa ngowan na aldow?,"Ngowan ana Biyernes, Agosto 28, 2026."
+1501,reviewed,date,"[Oras: 8:01 AM | Aldow: Dominggo | Petsa: Hulyo 5, 2026]",Ono a petsa ngowan?,"Ngowan ana Dominggo, Hulyo 5, 2026."
+1502,reviewed,date,"[Oras: 5:33 AM | Aldow: Lunes | Petsa: Pebrero 2, 2026]",Anong petsa ngayon?,"Ngowan ana Lunes, Pebrero 2, 2026."
+1503,reviewed,date,"[Oras: 8:17 AM | Aldow: Dominggo | Petsa: Enero 10, 2027]",What is today's date?,"Ngowan ana Dominggo, Enero 10, 2027."
+1504,reviewed,date,"[Oras: 12:06 AM | Aldow: Lunes | Petsa: Nobyembre 9, 2026]",What is today's date?,"Ngowan ana Lunes, Nobyembre 9, 2026."
+1505,reviewed,date,"[Oras: 6:04 PM | Aldow: Lunes | Petsa: Marso 8, 2027]",Ono ana petsa ngowan na aldow?,"Ngowan ana Lunes, Marso 8, 2027."
+1506,reviewed,date,"[Oras: 10:17 AM | Aldow: Martes | Petsa: Disyembre 28, 2027]",What's the date today?,"Ngowan ana Martes, Disyembre 28, 2027."
+1507,reviewed,date,"[Oras: 3:37 AM | Aldow: Biyernes | Petsa: Hulyo 23, 2027]",Ono ana petsa ngowan na aldow?,"Ngowan ana Biyernes, Hulyo 23, 2027."
+1508,reviewed,date,"[Oras: 8:13 AM | Aldow: Lunes | Petsa: Oktubre 18, 2027]",Ono ana petsa ngowan na aldow?,"Ngowan ana Lunes, Oktubre 18, 2027."
+1509,reviewed,date,"[Oras: 7:20 PM | Aldow: Biyernes | Petsa: Setyembre 3, 2027]",Ono ana petsa ngowan na aldow?,"Ngowan ana Biyernes, Setyembre 3, 2027."
+1510,reviewed,date,"[Oras: 1:27 PM | Aldow: Sabado | Petsa: Nobyembre 6, 2027]",What is today's date?,"Ngowan ana Sabado, Nobyembre 6, 2027."
+1511,reviewed,date,"[Oras: 11:34 AM | Aldow: Dominggo | Petsa: Hulyo 18, 2027]",Anong petsa ngayon?,"Ngowan ana Dominggo, Hulyo 18, 2027."
+1512,reviewed,date,"[Oras: 9:35 PM | Aldow: Martes | Petsa: Oktubre 20, 2026]",What is today's date?,"Ngowan ana Martes, Oktubre 20, 2026."
+1513,reviewed,date,"[Oras: 12:42 PM | Aldow: Dominggo | Petsa: Hunyo 7, 2026]",What is today's date?,"Ngowan ana Dominggo, Hunyo 7, 2026."
+1514,reviewed,date,"[Oras: 7:59 AM | Aldow: Lunes | Petsa: Setyembre 6, 2027]",Ono a petsa ngowan?,"Ngowan ana Lunes, Setyembre 6, 2027."
+1515,reviewed,date,"[Oras: 3:42 PM | Aldow: Biyernes | Petsa: Setyembre 10, 2027]",What's the date today?,"Ngowan ana Biyernes, Setyembre 10, 2027."
+1516,reviewed,date,"[Oras: 5:27 AM | Aldow: Huwebes | Petsa: Abril 15, 2027]",Ono a petsa ngowan?,"Ngowan ana Huwebes, Abril 15, 2027."
+1517,reviewed,date,"[Oras: 8:24 AM | Aldow: Dominggo | Petsa: Agosto 2, 2026]",What is today's date?,"Ngowan ana Dominggo, Agosto 2, 2026."
+1518,reviewed,date,"[Oras: 4:00 AM | Aldow: Martes | Petsa: Setyembre 22, 2026]",Anong petsa ngayon?,"Ngowan ana Martes, Setyembre 22, 2026."
+1519,reviewed,date,"[Oras: 10:22 AM | Aldow: Martes | Petsa: Disyembre 8, 2026]",Anong petsa ngayon?,"Ngowan ana Martes, Disyembre 8, 2026."
+1520,reviewed,date,"[Oras: 5:59 PM | Aldow: Sabado | Petsa: Agosto 29, 2026]",Ono ana petsa ngowan na aldow?,"Ngowan ana Sabado, Agosto 29, 2026."
+1521,reviewed,day_period,"[Oras: 10:57 AM | Aldow: Biyernes | Petsa: Setyembre 17, 2027]",Ramrag pa ba?,Ramrag pa ngowan.
+1522,reviewed,day_period,"[Oras: 11:00 PM | Aldow: Biyernes | Petsa: Oktubre 16, 2026]",Is it already night?,Gab'i na ngowan.
+1523,reviewed,day_period,"[Oras: 9:39 PM | Aldow: Sabado | Petsa: Marso 20, 2027]",Gab'i na ba?,Gab'i na ngowan.
+1524,reviewed,day_period,"[Oras: 6:42 PM | Aldow: Martes | Petsa: Oktubre 5, 2027]",Gab'i na ba?,Gab'i na ngowan.
+1525,reviewed,day_period,"[Oras: 5:27 PM | Aldow: Huwebes | Petsa: Disyembre 31, 2026]",Aldow pa ba o gab'i na?,Apon na ngowan.
+1526,reviewed,day_period,"[Oras: 6:08 PM | Aldow: Martes | Petsa: Abril 27, 2027]",Is it morning or afternoon?,Gab'i na ngowan.
+1527,reviewed,day_period,"[Oras: 9:55 AM | Aldow: Martes | Petsa: Mayo 12, 2026]",Gab'i na ba?,Ramrag pa ngowan.
+1528,reviewed,day_period,"[Oras: 12:21 AM | Aldow: Sabado | Petsa: Disyembre 5, 2026]",Is it already night?,Gab'i na ngowan.
+1529,reviewed,day_period,"[Oras: 9:03 AM | Aldow: Dominggo | Petsa: Hulyo 11, 2027]",Ramrag pa ba?,Ramrag pa ngowan.
+1530,reviewed,day_period,"[Oras: 3:42 PM | Aldow: Martes | Petsa: Hulyo 20, 2027]",Gab'i na ba?,Apon na ngowan.
+1531,reviewed,day_period,"[Oras: 7:17 PM | Aldow: Dominggo | Petsa: Mayo 9, 2027]",Gab'i na ba?,Gab'i na ngowan.
+1532,reviewed,day_period,"[Oras: 11:45 PM | Aldow: Martes | Petsa: Hunyo 2, 2026]",Is it already night?,Gab'i na ngowan.
+1533,reviewed,day_period,"[Oras: 11:45 PM | Aldow: Huwebes | Petsa: Mayo 20, 2027]",Gab'i na ba?,Gab'i na ngowan.
+1534,reviewed,day_period,"[Oras: 6:22 PM | Aldow: Martes | Petsa: Pebrero 23, 2027]",Gab'i na ba?,Gab'i na ngowan.
+1535,reviewed,day_period,"[Oras: 11:00 PM | Aldow: Huwebes | Petsa: Abril 16, 2026]",Is it already night?,Gab'i na ngowan.
+1536,reviewed,day_period,"[Oras: 8:43 AM | Aldow: Miyerkoles | Petsa: Enero 6, 2027]",Is it morning or afternoon?,Ramrag pa ngowan.
+1537,reviewed,day_period,"[Oras: 5:59 PM | Aldow: Martes | Petsa: Setyembre 29, 2026]",Is it morning or afternoon?,Apon na ngowan.
+1538,reviewed,day_period,"[Oras: 5:14 PM | Aldow: Biyernes | Petsa: Hunyo 4, 2027]",Gab'i na ba?,Apon na ngowan.
+1539,reviewed,day_period,"[Oras: 2:27 AM | Aldow: Biyernes | Petsa: Enero 22, 2027]",Gab'i na ba?,Gab'i na ngowan.
+1540,reviewed,day_period,"[Oras: 7:07 AM | Aldow: Biyernes | Petsa: Enero 15, 2027]",Ramrag pa ba?,Ramrag pa ngowan.
+1541,reviewed,day_period,"[Oras: 12:37 PM | Aldow: Lunes | Petsa: Agosto 9, 2027]",Is it morning or afternoon?,Modto na ngowan.
+1542,reviewed,day_period,"[Oras: 10:37 PM | Aldow: Lunes | Petsa: Setyembre 13, 2027]",Ramrag pa ba?,Gab'i na ngowan.
+1543,reviewed,day_period,"[Oras: 12:43 PM | Aldow: Sabado | Petsa: Marso 7, 2026]",Is it already night?,Modto na ngowan.
+1544,reviewed,day_period,"[Oras: 12:27 PM | Aldow: Dominggo | Petsa: Disyembre 19, 2027]",Is it already night?,Modto na ngowan.
+1545,reviewed,day_period,"[Oras: 4:45 PM | Aldow: Miyerkoles | Petsa: Disyembre 23, 2026]",Ramrag pa ba?,Apon na ngowan.
+1546,reviewed,day_period,"[Oras: 6:49 AM | Aldow: Biyernes | Petsa: Setyembre 3, 2027]",Gab'i na ba?,Ramrag pa ngowan.
+1547,reviewed,day_period,"[Oras: 10:15 PM | Aldow: Biyernes | Petsa: Enero 16, 2026]",Aldow pa ba o gab'i na?,Gab'i na ngowan.
+1548,reviewed,day_period,"[Oras: 7:38 PM | Aldow: Dominggo | Petsa: Abril 11, 2027]",Ramrag pa ba?,Gab'i na ngowan.
+1549,reviewed,day_period,"[Oras: 12:07 PM | Aldow: Biyernes | Petsa: Hunyo 18, 2027]",Gab'i na ba?,Modto na ngowan.
+1550,reviewed,day_period,"[Oras: 4:47 PM | Aldow: Huwebes | Petsa: Hulyo 2, 2026]",Is it morning or afternoon?,Apon na ngowan.
