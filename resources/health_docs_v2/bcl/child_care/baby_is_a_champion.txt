@@ -7,19 +7,20 @@ PROTEKSYON SA KOMUNIDAD - diri sana ana kaninyong igin ana naproprotektaran, mas
 MAS TIPID SA GASTUSON - mas barato ana bakuna kasya magpabulong o kaya man magpa-ospital.
 MAS MAKUSOG NA KINAUDMAAN - ana igin na kumpleto sa bakuna ana mas protektado sa ilang.
 IWAS OUTBREAK - nakakatabang na malikayan ana mga ilang sa komunidad.
-
-ONO ANA MGA DAPAT DARAHON KIN MIGPA-BAKUNA
+- ONO ANA MGA DAPAT DARAHON KIN MIGPA-BAKUNA
 - Immuniztaion card kana igin
 - Extra diaper ag bado
 - Gatas o tobig
 - Bulong kin niresetahan
-- ISKEDYUL KANA PAGPAPABAKUNA (DOH EPI)
+
+ISKEDYUL KANA PAGPAPABAKUNA (DOH EPI)
 - KAPANGIGINAN (BIRTH): BCG, Hepatitis B
 - B 1/%, 2%, 3% NA BULAN: Pentavalent Vaccine, Oral Polio Vaccine (OPV), Pneumococcal Conjugate Vaccine (PCV)
 - 3/% BULAN AG 9 NA BULAN: Inactivated Polio Vaccine (IPV)
 - 9 NA BULAN AG 1 TAUNON: Measles, Mumps, Rubella Vaccine (MMR)
-- SUNDON ANA TAMANG ISKEDYUL NA TINAO KANA KANINYONG DOKTOR O HEALTH WORKER.
-- KARANIWAN NA EPEKTAR KANA BAKUNA
+SUNDON ANA TAMANG ISKEDYUL NA TINAO KANA KANINYONG DOKTOR O HEALTH WORKER.
+
+KARANIWAN NA EPEKTAR KANA BAKUNA
 - Mig-ka agko gatikot na kalintora.
 - Pagkulog o pamumula sa lugar na pinag iniksyunan.
 - Pagiging iritble o tungkaon.
@@ -27,4 +28,5 @@ ONO ANA MGA DAPAT DARAHON KIN MIGPA-BAKUNA
 - Alangkaw na kalintora (Labi sa 39°c)
 - Kombolsyon
 - Pagluya kana pag-inga
-- DARAHON TULOS SA HEALTH CENTER O KAYA OSPITAL.
+
+DARAHON TULOS SA HEALTH CENTER O KAYA OSPITAL.

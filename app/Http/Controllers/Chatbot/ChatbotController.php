@@ -32,7 +32,12 @@ class ChatbotController extends Controller
         // FOD comparison switch: "context" = verified datasets + rules,
         // "ai" = locally trained Bikol-Iriga AI model, "cloud" = trained model
         // + cloud Gemma explains the verified answer.
-        $mode = $request->input('mode', 'ai');
+        // The switch is for Bikol-Iriga only; English and Tagalog always use the
+        // original pipeline, whatever "mode" the request carries.
+        $language = $request->input('language', 'bcl');
+        // Local AI model ("ai") and Cloud AI ("cloud") are switched off for now: always "context".
+        // To turn them back on, use `$request->input('mode', 'context')` for Bikol again.
+        $mode = 'context';
         $rag->setAnswerMode($mode);
         // Same switch for unrelated (non-health) messages: ai = trained model, cloud = Gemma, context = no AI.
         BikolSmallTalkService::useMode($mode);
@@ -41,7 +46,6 @@ class ChatbotController extends Controller
         // never trust a client-supplied account_id for who is asking.
         $accountId = $request->session()->get(ResidentAuthenticator::SESSION_ACCOUNT_ID);
 
-        $language = $request->input('language', 'bcl');
         $category = $request->input('category');
         $question = $request->input('question');
 

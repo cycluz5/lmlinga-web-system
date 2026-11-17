@@ -25,6 +25,9 @@ ILLNESS = [
     "malaria", "rabies", "epilepsy", "stroke", "diabetes", "kanser sa soso", "kanser sa baga",
     "kanser sa atay", "atake sa poso", "ilang sa bato", "pagkabongog", "dementia", "autism",
     "kalintora", "obo", "sip'on", "olod", "kolog sa likod", "kakulangan sa micronutrient",
+    # added 2026-11-15 from vocabulary_guide.csv (verified Bikol-Iriga words that have a topic document)
+    "pagkalilipaton", "sipon", "pantal", "disenterya", "sobisobi", "kombulsyon", "epilepsiya",
+    "AIDS", "flu", "kulog kan payo", "nailo sa pagkaon",
 ]
 # Programs / good habits (things you get or do)
 PROGRAM = [

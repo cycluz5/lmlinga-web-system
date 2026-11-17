@@ -19,8 +19,10 @@ Paglikay
 - Magbutang sa screen sa mga bintana
 
 Pagbulong
-Agko mga bulong na ginagamit para malikayan maski mabulong ana malaria. An doktor ana nagpili sa tamang bulong depende sa:
+Agko mga bulong na ginagamit para malikayan maski mabulong ana malaria.
+An doktor ana nagpili sa tamang bulong depende sa:
 - Klase sa malaria na agko ika
 - Edad o timbang kana pasyente
 - Kin ana pasyente mabros
+
 - Kin ana parasite kana malaria ay naglalaban sa osad na particular na bulong.

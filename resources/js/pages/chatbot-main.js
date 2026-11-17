@@ -1702,6 +1702,7 @@ function appendMessage(role, text, points = [], title = null, language = null, i
             if (langLive) {
                 langLive.textContent = `Language changed to ${btn.dataset.lmlLang}`;
             }
+            syncModesVisibility();
         });
     });
 
@@ -1737,6 +1738,8 @@ function syncLanguageButton(languageCode) {
     if (langLive) {
         langLive.textContent = `Language changed to ${targetLabel}`;
     }
+
+    syncModesVisibility();
 }
 
 /** Chatbot type: 'cloud' (default on this branch, Cloud AI Gemma), 'ai' or 'context'. */
@@ -1858,7 +1861,7 @@ if (composer && composerInput) {
                 body: JSON.stringify({
                     question: text,
                     language: getSelectedLanguageCode(),
-                    mode: getSelectedMode(),
+                    mode: getSelectedLanguageCode() === 'bcl' ? getSelectedMode() : 'context',
                     conversation_id: currentConversationId,
                 }),
             });

@@ -1504,6 +1504,15 @@
 }
 
 /* Chatbot type switch (Context-based / Local AI model), above the composer */
+.lml-chatbot-main__modes[hidden] {
+    display: none;
+}
+
+.lml-chatbot-main__mode-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
 .lml-chatbot-main__modes {
     display: flex;
     flex-wrap: wrap;
