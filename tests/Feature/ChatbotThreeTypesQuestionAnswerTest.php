@@ -404,6 +404,66 @@ class ChatbotThreeTypesQuestionAnswerTest extends TestCase
         $this->assertSame([], $reply['sources'], 'an everyday question with tabi must still not be answered from a health document');
     }
 
+    // ------------------------------------------------------------------ topic names that used to reach the wrong document
+    /** @return array<string, array{0: string, 1: list<string>}> */
+    public static function topicNamesThatMissedTheirDocument(): array
+    {
+        // [question, documents that may answer it]
+        return [
+            "sip'on with an apostrophe" => ["Ono ana paglikay sa sip'on?", ['common_cold.txt', 'runny_nose.txt']],
+            'pag udo-udo (diarrhea)' => ['Ono a paglikay sa pag udo-udo?', ['diarrhea.txt', 'diarrhea_2.txt']],
+            'kapansanan sa pag-iisip ka igin' => ['Ono a kwasa ka kapansanan sa pag-iisip ka igin?', ['save_your_baby_mental_retardation.txt']],
+        ];
+    }
+
+    #[DataProvider('topicNamesThatMissedTheirDocument')]
+    public function test_the_names_residents_use_reach_their_own_document(string $question, array $documents): void
+    {
+        $this->fakeModels();
+
+        $reply = $this->askChat($question, 'context');
+
+        $this->assertNotEmpty($reply['sources'], "'{$question}' must be answered from a document");
+        foreach ($reply['sources'] as $source) {
+            $this->assertContains($source, $documents, "'{$question}' was answered from {$source}");
+        }
+    }
+
+    /** @return array<string, array{0: string, 1: list<string>}> */
+    public static function topicsWhoseDocumentHasNoDefinition(): array
+    {
+        return [
+            'pag-aataman ka igin' => ['Ono ana pag-aataman ka igin?', ['baby_is_a_champion.txt']],
+            'kakulangan sa micronutrient' => ['Ono ana kakulangan sa micronutrient?', ['micronutrient_deficiency.txt']],
+        ];
+    }
+
+    /**
+     * These two documents have no definition section, so "no information" is the right reply. What must never happen is an
+     * answer from another document (before the names were added, "pag-aataman ka igin" returned autism.txt).
+     */
+    #[DataProvider('topicsWhoseDocumentHasNoDefinition')]
+    public function test_a_topic_name_never_gets_an_answer_from_another_document(string $question, array $ownDocument): void
+    {
+        $this->fakeModels();
+
+        $reply = $this->askChat($question, 'context');
+
+        foreach ($reply['sources'] as $source) {
+            $this->assertContains($source, $ownDocument, "'{$question}' was answered from {$source}");
+        }
+    }
+
+    public function test_who_are_you_is_not_answered_with_a_health_document_in_context_mode(): void
+    {
+        $this->fakeModels();
+
+        $reply = $this->askChat('Siisay ika?', 'context');
+
+        $this->assertSame([], $reply['sources'], '"Siisay ika?" must not select a health document');
+        $this->assertNoModelWasCalled();
+    }
+
     // ------------------------------------------------------------------ 4. serious message, every type
 
     /** @return array<string, array{0: string}> */

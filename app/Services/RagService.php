@@ -173,6 +173,8 @@ class RagService
         'pamahalaan', 'pamahalaon', 'pamamahala', 'malikayan',
         // polite / filler particles residents add ("Ono tabi a hika?", "Ono raw a dengue?"): never a topic word
         'tabi', 'raw', 'man',
+        // question word: "Siisay ika?" (who are you) must not select a document that says "Siisay ana pwedeng magka ..."
+        'siisay',
     ];
 
     protected function stopwordsFor(?string $language): array
@@ -190,6 +192,11 @@ class RagService
     {
         $bikol = $language === 'bcl';
         $stopwords = $this->stopwordsFor($language);
+
+        // "sip'on" is one word (the configured alias is "sipon"); an apostrophe must not split it into "sip" + "on".
+        if ($bikol) {
+            $question = preg_replace("/(?<=\\p{L})['\u{2019}](?=\\p{L})/u", '', $question) ?? $question;
+        }
 
         preg_match_all('/[a-zA-Z]+/', mb_strtolower($question), $matches);
         $keywords = array_values(array_filter($matches[0], function ($w) use ($bikol, $stopwords) {
