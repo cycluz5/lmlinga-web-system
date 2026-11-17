@@ -2,12 +2,15 @@
 
 namespace App\Http\Requests\Admin;
 
+use App\Rules\DeliverableEmailDomain;
+use App\Rules\PhilippineMobileNumber;
 use App\Support\StaffAccountStatus;
 use App\Support\StaffRole;
 use App\Support\StrongPassword;
 use App\Support\UserManagementErdMode;
 use App\Support\WorkerAssignedZones;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules\Unique;
 use Illuminate\Validation\Validator;
@@ -61,12 +64,13 @@ class UpdateHealthWorkerRequest extends FormRequest
             'hw_dob' => ['required', 'date', 'before:today'],
             'hw_civil_status' => ['required', 'string', Rule::in(['Single', 'Married', 'Widowed', 'Separated', 'Annulled'])],
             'hw_nationality' => ['required', 'string', Rule::in(['Filipino', 'Other'])],
-            'hw_mobile' => ['required', 'string', 'max:20'],
+            'hw_mobile' => ['required', 'string', 'max:20', new PhilippineMobileNumber($this->storedValue($userId, 'mobile_number'))],
             'hw_email' => [
                 'required',
                 'email',
                 'max:255',
                 $this->uniqueStaffIdentifier('email', $userId),
+                new DeliverableEmailDomain($this->storedValue($userId, 'email')),
             ],
             'hw_house_no' => ['required', 'string', 'max:20'],
             'hw_street' => ['required', 'string', 'max:150'],
@@ -121,6 +125,20 @@ class UpdateHealthWorkerRequest extends FormRequest
                 }
             }
         });
+    }
+
+    /** A value currently stored for this account, so an unchanged email or mobile number is not re-checked. */
+    private function storedValue(mixed $userId, string $column): ?string
+    {
+        if (! ctype_digit((string) $userId)) {
+            return null;
+        }
+
+        $value = DB::table(UserManagementErdMode::staffTableName())
+            ->where(UserManagementErdMode::staffKeyName(), (int) $userId)
+            ->value($column);
+
+        return is_string($value) ? $value : null;
     }
 
     private function uniqueStaffIdentifier(string $column, mixed $userId): Unique

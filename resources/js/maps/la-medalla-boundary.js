@@ -1,0 +1,164 @@
+/**
+ * Barangay La Medalla (Iriga City, Camarines Sur) boundary outline for the shared base map.
+ * Display only: the outline and the dimmed outside area are non-interactive, so map clicks
+ * (manual plotting) and markers keep working. Leaflet is passed in so this module can be
+ * tested without a browser.
+ *
+ * The boundary data (la-medalla-boundary.json) is INDICATIVE (NAMRIA/PSA COD-AB), not an
+ * official survey boundary. GeoJSON positions are [longitude, latitude].
+ */
+
+export const BOUNDARY_STYLE = Object.freeze({
+    color: '#15803d',
+    weight: 2,
+    opacity: 0.9,
+    fillColor: '#22c55e',
+    fillOpacity: 0.04,
+});
+
+export const OUTSIDE_MASK_STYLE = Object.freeze({
+    stroke: false,
+    fillColor: '#1f2937',
+    fillOpacity: 0.45,
+    fillRule: 'evenodd',
+});
+
+export const BOUNDARY_FIT_PADDING = Object.freeze([24, 24]);
+
+const WORLD_RING = Object.freeze([[-90, -180], [-90, 180], [90, 180], [90, -180]]);
+
+/** Outer rings ([longitude, latitude] positions) of a Polygon/MultiPolygon Feature, or null when unreadable. */
+function outerRings(feature) {
+    if (feature?.type !== 'Feature') {
+        return null;
+    }
+
+    const { type, coordinates } = feature.geometry ?? {};
+    let rings = null;
+    if (type === 'Polygon' && Array.isArray(coordinates)) {
+        rings = [coordinates[0]];
+    } else if (type === 'MultiPolygon' && Array.isArray(coordinates)) {
+        rings = coordinates.map((polygon) => polygon?.[0]);
+    }
+
+    if (!rings?.length || !rings.every((ring) => Array.isArray(ring) && ring.length >= 4)) {
+        return null;
+    }
+
+    return rings;
+}
+
+/** Ray-casting test of one [longitude, latitude] ring. */
+function ringContains(ring, lat, lng) {
+    let inside = false;
+    for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+        const [xi, yi] = ring[i];
+        const [xj, yj] = ring[j];
+        if ((yi > lat) !== (yj > lat) && lng < ((xj - xi) * (lat - yi)) / (yj - yi) + xi) {
+            inside = !inside;
+        }
+    }
+    return inside;
+}
+
+/**
+ * True when (lat, lng) is inside any outer ring of the boundary, false when outside,
+ * null when the boundary or the point cannot be read (callers decide the fallback).
+ */
+export function isPointInBoundary(feature, lat, lng) {
+    const rings = outerRings(feature);
+    if (!rings || !Number.isFinite(lat) || !Number.isFinite(lng)) {
+        return null;
+    }
+
+    return rings.some((ring) => ringContains(ring, lat, lng));
+}
+
+/**
+ * Slack (metres) allowed beyond the indicative polygon edge. Keep in sync with
+ * App\Support\Geo\LaMedallaBoundary::TOLERANCE_METERS.
+ */
+export const BOUNDARY_TOLERANCE_METERS = 150;
+
+const METERS_PER_DEGREE_LAT = 111320;
+
+/** Distance in metres from a point to the segment a→b, in a local equirectangular projection. */
+function distanceToSegmentMeters(lat, lng, [ax, ay], [bx, by]) {
+    const mx = METERS_PER_DEGREE_LAT * Math.cos((lat * Math.PI) / 180);
+    const px = (lng - ax) * mx;
+    const py = (lat - ay) * METERS_PER_DEGREE_LAT;
+    const sx = (bx - ax) * mx;
+    const sy = (by - ay) * METERS_PER_DEGREE_LAT;
+    const lengthSq = sx * sx + sy * sy;
+    const t = lengthSq === 0 ? 0 : Math.max(0, Math.min(1, (px * sx + py * sy) / lengthSq));
+
+    return Math.hypot(px - t * sx, py - t * sy);
+}
+
+/** Shortest distance in metres from (lat, lng) to any boundary edge, or null when unreadable. */
+export function distanceToBoundaryMeters(feature, lat, lng) {
+    const rings = outerRings(feature);
+    if (!rings || !Number.isFinite(lat) || !Number.isFinite(lng)) {
+        return null;
+    }
+
+    let min = Infinity;
+    for (const ring of rings) {
+        for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
+            min = Math.min(min, distanceToSegmentMeters(lat, lng, ring[j], ring[i]));
+        }
+    }
+
+    return min;
+}
+
+/**
+ * True when inside the boundary or within `meters` of its edge, false otherwise,
+ * null when the boundary or the point cannot be read.
+ */
+export function isPointWithinBoundaryTolerance(feature, lat, lng, meters = BOUNDARY_TOLERANCE_METERS) {
+    const inside = isPointInBoundary(feature, lat, lng);
+    if (inside === null) {
+        return null;
+    }
+    if (inside) {
+        return true;
+    }
+
+    return distanceToBoundaryMeters(feature, lat, lng) <= meters;
+}
+
+/**
+ * Mask rings for the area outside the barangay: a world ring, then each outer boundary ring as a hole.
+ * Rings are [latitude, longitude] for L.polygon. Returns null when the geometry cannot be read.
+ */
+export function outsideMaskLatLngs(feature) {
+    const rings = outerRings(feature);
+    if (!rings) {
+        return null;
+    }
+
+    return [WORLD_RING, ...rings.map((ring) => ring.map(([lng, lat]) => [lat, lng]))];
+}
+
+/**
+ * Draws the dimmed outside area, then the boundary outline, both under the marker pane.
+ * Returns the outline layer (use getBounds() to focus the map), or null when nothing valid was drawn.
+ */
+export function drawBarangayBoundary(map, feature, leaflet) {
+    if (!map || !leaflet?.geoJSON || !leaflet?.polygon) {
+        return null;
+    }
+
+    const maskLatLngs = outsideMaskLatLngs(feature);
+    if (!maskLatLngs) {
+        return null;
+    }
+
+    leaflet.polygon(maskLatLngs, { ...OUTSIDE_MASK_STYLE, interactive: false }).addTo(map);
+
+    return leaflet.geoJSON(feature, {
+        interactive: false,
+        style: () => ({ ...BOUNDARY_STYLE }),
+    }).addTo(map);
+}

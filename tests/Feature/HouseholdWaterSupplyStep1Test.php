@@ -339,8 +339,8 @@ class HouseholdWaterSupplyStep1Test extends TestCase
             'house_head' => 'Ana Reyes',
             'household_type' => 'Non-HHTS',
             'zone' => '2',
-            'lat' => 13.3900,
-            'lng' => 123.4400,
+            'lat' => 13.3780,
+            'lng' => 123.4350,
             'consent' => true,
             'confirm_replot' => true,
             'client_marker_id' => 'client-marker-replot',
@@ -351,8 +351,8 @@ class HouseholdWaterSupplyStep1Test extends TestCase
             ->assertRedirect();
 
         $household->refresh();
-        $this->assertSame('13.39000000', (string) $household->latitude);
-        $this->assertSame('123.44000000', (string) $household->longitude);
+        $this->assertSame('13.37800000', (string) $household->latitude);
+        $this->assertSame('123.43500000', (string) $household->longitude);
 
         // Transient link may show Non-NHTS, but DB profile must stay NHTS.
         $this->assertSame(

@@ -21,7 +21,11 @@ use Illuminate\View\View;
  */
 class ForgotPasswordController extends Controller
 {
-    public const SENT_MESSAGE = 'If an account matches that email, password reset instructions have been sent.';
+    public const SENT_MESSAGE = 'Password reset instructions have been sent to your email.';
+
+    public const NOT_REGISTERED_MESSAGE = 'This email is not registered as a health worker account. Check the address, or ask your barangay administrator to create your account.';
+
+    public const NOT_ELIGIBLE_MESSAGE = 'A password reset link cannot be sent for this account right now. Contact your barangay administrator.';
 
     public const RESET_SUCCESS_MESSAGE = 'Your password has been reset successfully. You may now log in.';
 
@@ -47,11 +51,19 @@ class ForgotPasswordController extends Controller
             ->whereRaw('LOWER(email) = ?', [$email])
             ->first();
 
-        if ($user instanceof User && $user->isActive()) {
-            Password::sendResetLink([
-                'email' => $user->getEmailForPasswordReset(),
-            ]);
+        // Refinement item 2: an email that is not a registered staff account is told so, and no reset link is made.
+        // This reveals whether an address belongs to a health worker; the route's per-IP throttle (6 per minute) limits probing.
+        if (! $user instanceof User) {
+            return back()->withInput($request->only('email'))->withErrors(['email' => self::NOT_REGISTERED_MESSAGE]);
         }
+
+        if (! $user->isActive()) {
+            return back()->withInput($request->only('email'))->withErrors(['email' => self::NOT_ELIGIBLE_MESSAGE]);
+        }
+
+        Password::sendResetLink([
+            'email' => $user->getEmailForPasswordReset(),
+        ]);
 
         return back()->with('status', self::SENT_MESSAGE);
     }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\WithinLaMedallaBoundary;
 use App\Support\DemoCatalog;
 use App\Support\DemoHouseholdWaterSupply;
 use Illuminate\Foundation\Http\FormRequest;
@@ -65,7 +66,7 @@ class IssueSpotMappingHandoffRequest extends FormRequest
                 DemoHouseholdWaterSupply::HOUSEHOLD_TYPE_NON_NHTS,
             ])],
             'zone' => ['required', 'string', 'max:32'],
-            'lat' => ['required', 'numeric', 'between:-90,90'],
+            'lat' => ['required', 'numeric', 'between:-90,90', new WithinLaMedallaBoundary],
             'lng' => ['required', 'numeric', 'between:-180,180'],
             'consent' => ['required', 'accepted'],
             // Future intentional replot only; missing/false blocks replacing plotted coords.

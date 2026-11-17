@@ -19,6 +19,20 @@ return [
     'opaque_urls' => (bool) env('OPAQUE_URLS', true),
 
     /*
+    | Health-worker account checks (admin User Management, create and edit):
+    | - staff_email_dns_check: reject emails whose domain has no mail server (MX/A lookup).
+    | - staff_email_mailbox_probe: for the domains below, also ask the provider's mail server whether the exact
+    |   mailbox exists (SMTP RCPT TO, no email is sent). An unanswerable check accepts the address.
+    | - staff_mobile_dummy_check: reject placeholder mobile numbers (09000000000, 09123456789, ...). The Philippine
+    |   mobile format itself is always required.
+    | Each can be switched off with its LMLINGA_STAFF_* environment variable.
+    */
+    'staff_email_dns_check' => (bool) env('LMLINGA_STAFF_EMAIL_DNS_CHECK', true),
+    'staff_email_mailbox_probe' => (bool) env('LMLINGA_STAFF_EMAIL_MAILBOX_PROBE', true),
+    'staff_email_probe_domains' => ['gmail.com', 'googlemail.com'],
+    'staff_mobile_dummy_check' => (bool) env('LMLINGA_STAFF_MOBILE_DUMMY_CHECK', true),
+
+    /*
     |--------------------------------------------------------------------------
     | LMLinga at-rest field encryption (AES-256-GCM)
     |--------------------------------------------------------------------------
