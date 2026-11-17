@@ -33,6 +33,24 @@ return [
     'staff_mobile_dummy_check' => (bool) env('LMLINGA_STAFF_MOBILE_DUMMY_CHECK', true),
 
     /*
+     | Health-worker email ownership verification. Admin-created staff accounts stay unusable until the worker
+     | enters a 6-digit code emailed to the account address (fixed 5-minute expiry,
+     | StaffEmailVerificationService::EXPIRY_MINUTES). Accounts that existed before this feature are not
+     | affected. enabled=false restores immediate use of newly created accounts (rollback switch).
+     */
+    'staff_email_verification' => [
+        'enabled' => (bool) env('LMLINGA_STAFF_EMAIL_VERIFICATION', true),
+        'max_attempts' => 5,
+        'resend_cooldown_seconds' => 60,
+        'max_sends_per_hour' => 5,
+        'pending_session_minutes' => 30,
+        'reverify_on_email_change' => (bool) env('LMLINGA_STAFF_REVERIFY_ON_EMAIL_CHANGE', true),
+        // Named rate limiters (AppServiceProvider), per IP + pending account.
+        'send_per_10_minutes' => (int) env('LMLINGA_STAFF_EMAIL_OTP_SEND_PER_10_MINUTES', 5),
+        'verify_per_10_minutes' => (int) env('LMLINGA_STAFF_EMAIL_OTP_VERIFY_PER_10_MINUTES', 10),
+    ],
+
+    /*
     |--------------------------------------------------------------------------
     | LMLinga at-rest field encryption (AES-256-GCM)
     |--------------------------------------------------------------------------

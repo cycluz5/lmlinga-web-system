@@ -407,4 +407,17 @@ class StaffForgotPasswordTest extends TestCase
 
         Notification::assertNothingSent();
     }
+
+    public function test_account_with_a_pending_email_verification_gets_no_reset_link(): void
+    {
+        Notification::fake();
+        $pending = $this->createStaff(StaffRole::BHW, ['email' => 'pending.reset@example.test']);
+        app(\App\Services\StaffEmailVerificationService::class)->markPending($pending);
+
+        $this->from(route('password.request'))
+            ->post(route('password.email'), ['email' => $pending->email])
+            ->assertSessionHasErrors(['email' => ForgotPasswordController::NOT_ELIGIBLE_MESSAGE]);
+
+        Notification::assertNothingSent();
+    }
 }

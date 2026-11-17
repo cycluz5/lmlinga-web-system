@@ -146,6 +146,7 @@
                         :zone="$worker['zone']"
                         :status="$worker['status']"
                         :photo="$worker['photo'] ?? null"
+                        :email-pending="(bool) ($worker['email_verification_pending'] ?? false)"
                     />
                 @endforeach
             </div>

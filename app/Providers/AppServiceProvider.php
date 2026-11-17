@@ -70,6 +70,27 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('lmlinga-name-suggest', static fn (Request $request): Limit => Limit::perMinute(60)
             ->by('name-suggest|'.($request->user()?->getAuthIdentifier() ?? $request->ip())));
 
+        // Staff email verification (guest step after a correct password). Keyed by IP and the pending account
+        // bound to this browser session, so one account cannot exhaust another's limit.
+        $staffOtpKey = static function (Request $request): string {
+            $binding = $request->hasSession()
+                ? $request->session()->get(\App\Services\StaffEmailVerificationService::SESSION_KEY)
+                : null;
+            $userId = is_array($binding) ? (string) ($binding['user_id'] ?? '') : '';
+
+            return 'staff-email-otp|'.$request->ip().'|'.$userId;
+        };
+
+        RateLimiter::for('lmlinga-staff-email-otp-send', static fn (Request $request): Limit => Limit::perMinutes(
+            10,
+            max(1, (int) config('lmlinga.staff_email_verification.send_per_10_minutes', 5))
+        )->by($staffOtpKey($request)));
+
+        RateLimiter::for('lmlinga-staff-email-otp-verify', static fn (Request $request): Limit => Limit::perMinutes(
+            10,
+            max(1, (int) config('lmlinga.staff_email_verification.verify_per_10_minutes', 10))
+        )->by($staffOtpKey($request)));
+
         if ($this->app->runningInConsole()) {
             $this->prependMysqlClientToPath();
 

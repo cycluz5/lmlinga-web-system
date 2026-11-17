@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Mail\StaffEmailVerificationOtpMail;
 use App\Models\User;
 use App\Models\WorkerAppointment;
 use App\Support\DemoStaffLogin;
@@ -12,6 +13,7 @@ use App\Support\UiRole;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class HealthWorkerCreateLoginFlowTest extends TestCase
@@ -43,6 +45,7 @@ class HealthWorkerCreateLoginFlowTest extends TestCase
 
     public function test_admin_create_worker_persists_user_and_appointment_then_worker_can_login(): void
     {
+        Mail::fake();
         $admin = $this->seedAdmin();
 
         $this->post(route('login.store'), [
@@ -86,6 +89,21 @@ class HealthWorkerCreateLoginFlowTest extends TestCase
 
         $this->post(route('logout'))->assertRedirect(route('login'));
         $this->assertFalse(Auth::check());
+
+        // Batch 1: the first sign-in proves email ownership with a 6-digit code before any session exists.
+        $this->post(route('login.store'), [
+            'email' => 'created.flow@example.test',
+            'password' => 'WorkerFlow!9',
+        ])->assertRedirect(route('staff.email-verification.show'));
+        $this->assertFalse(Auth::check());
+
+        $code = null;
+        Mail::assertSent(StaffEmailVerificationOtpMail::class, function (StaffEmailVerificationOtpMail $mail) use (&$code): bool {
+            $code = $mail->content()->with['otpCode'];
+
+            return $mail->hasTo('created.flow@example.test');
+        });
+        $this->post(route('staff.email-verification.verify'), ['otp' => $code])->assertRedirect(route('login'));
 
         $this->post(route('login.store'), [
             'email' => 'created.flow@example.test',

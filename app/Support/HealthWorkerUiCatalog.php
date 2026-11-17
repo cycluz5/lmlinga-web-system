@@ -133,6 +133,8 @@ final class HealthWorkerUiCatalog
             'end_of_appointment' => $ended !== null ? $ended->format('Y-m-d') : '',
             'username' => (string) ($user->username ?? ''),
             'source' => 'database',
+            // Batch 1: account cannot be used until the worker verifies this email.
+            'email_verification_pending' => app(\App\Services\StaffEmailVerificationService::class)->isPending($user),
         ];
     }
 
