@@ -477,7 +477,7 @@
     </div>
 </div>
 
-                {{-- FOD comparison: switch between the two chatbot approaches. --}}
+                {{-- FOD comparison: switch between the chatbot approaches (only Context-based is available for now). --}}
                 <div
                     class="lml-chatbot-main__modes"
                     role="group"
@@ -487,11 +487,10 @@
                     <span class="lml-chatbot-main__modes-label">Chatbot:</span>
                     <button
                         type="button"
-                        class="lml-chatbot-main__mode-btn lml-focus-ring"
+                        class="lml-chatbot-main__mode-btn lml-chatbot-main__mode-btn--active lml-focus-ring"
                         data-lml-mode="context"
-                        aria-pressed="false"
-                        disabled
-                        title="Not available on the Cloud AI branch"
+                        aria-pressed="true"
+                        title="Answers only from the uploaded, linguist-verified datasets"
                     >
                         <i class="bi bi-journal-text" aria-hidden="true"></i>
                         Context-based
@@ -502,17 +501,20 @@
                         data-lml-mode="ai"
                         aria-pressed="false"
                         disabled
-                        title="Not available on the Cloud AI branch"
+                        aria-disabled="true"
+                        title="Not available yet"
                     >
                         <i class="bi bi-cpu" aria-hidden="true"></i>
                         Local AI model
                     </button>
                     <button
                         type="button"
-                        class="lml-chatbot-main__mode-btn lml-chatbot-main__mode-btn--active lml-focus-ring"
+                        class="lml-chatbot-main__mode-btn lml-focus-ring"
                         data-lml-mode="cloud"
-                        aria-pressed="true"
-                        title="Cloud Gemma answers in Bikol; health info comes from the verified documents (needs internet)"
+                        aria-pressed="false"
+                        disabled
+                        aria-disabled="true"
+                        title="Not available yet"
                     >
                         <i class="bi bi-cloud" aria-hidden="true"></i>
                         Cloud AI (Gemma)
@@ -525,60 +527,8 @@
                     role="status"
                     aria-live="polite"
                 >
-                    <i class="bi bi-cloud" aria-hidden="true"></i>
-                    <span data-lml-mode-status-text>The chatbot is using Cloud AI (Gemma)</span>
-                </p>
-
-                {{-- FOD comparison: switch between the two chatbot approaches. --}}
-                <div
-                    class="lml-chatbot-main__modes"
-                    role="group"
-                    aria-label="Chatbot type"
-                    data-lml-modes
-                >
-                    <span class="lml-chatbot-main__modes-label">Chatbot:</span>
-                    <button
-                        type="button"
-                        class="lml-chatbot-main__mode-btn lml-focus-ring"
-                        data-lml-mode="context"
-                        aria-pressed="false"
-                        disabled
-                        title="Not available on the training branch (use Local AI model)"
-                    >
-                        <i class="bi bi-journal-text" aria-hidden="true"></i>
-                        Context-based
-                    </button>
-                    <button
-                        type="button"
-                        class="lml-chatbot-main__mode-btn lml-chatbot-main__mode-btn--active lml-focus-ring"
-                        data-lml-mode="ai"
-                        aria-pressed="true"
-                        title="Uses the locally trained Bikol-Iriga AI model to understand the question"
-                    >
-                        <i class="bi bi-cpu" aria-hidden="true"></i>
-                        Local AI model
-                    </button>
-                    <button
-                        type="button"
-                        class="lml-chatbot-main__mode-btn lml-focus-ring"
-                        data-lml-mode="cloud"
-                        aria-pressed="false"
-                        disabled
-                        title="Not available on the training branch (use Local AI model)"
-                    >
-                        <i class="bi bi-cloud" aria-hidden="true"></i>
-                        Cloud AI (Gemma)
-                    </button>
-                </div>
-
-                <p
-                    class="lml-chatbot-main__mode-status"
-                    data-lml-mode-status
-                    role="status"
-                    aria-live="polite"
-                >
-                    <i class="bi bi-cpu" aria-hidden="true"></i>
-                    <span data-lml-mode-status-text>The chatbot is using AI Local Model</span>
+                    <i class="bi bi-journal-text" aria-hidden="true"></i>
+                    <span data-lml-mode-status-text>The chatbot is using Context-based (verified datasets only, no AI)</span>
                 </p>
 
                 <form
