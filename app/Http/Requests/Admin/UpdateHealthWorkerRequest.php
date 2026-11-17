@@ -36,6 +36,12 @@ class UpdateHealthWorkerRequest extends FormRequest
             $this->merge(['hw_remove_photo' => false]);
         }
 
+        // Validate and store emails trimmed + lowercased, like Create. Otherwise "Name@Gmail.com" passes the
+        // unique rule and then hits the case-insensitive unique index (HTTP 500).
+        if (is_string($this->input('hw_email'))) {
+            $this->merge(['hw_email' => strtolower(trim($this->input('hw_email')))]);
+        }
+
         $zones = $this->input('hw_assigned_zone');
         if (is_string($zones) || is_int($zones) || is_float($zones)) {
             $this->merge([

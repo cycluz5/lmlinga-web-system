@@ -169,6 +169,30 @@ Route::post('/reset-password', [
 ])->middleware('throttle:6,1')->name('password.update');
 
 /*
+ | Health-worker email verification. Guest step reached only after the correct password for an account whose
+ | email is still pending; no authenticated session exists until verification succeeds.
+ */
+Route::get('/staff/verify-email', [
+    \App\Http\Controllers\Auth\StaffEmailVerificationController::class,
+    'show',
+])->middleware('auth.nocache')->name('staff.email-verification.show');
+
+Route::post('/staff/verify-email', [
+    \App\Http\Controllers\Auth\StaffEmailVerificationController::class,
+    'verify',
+])->middleware('throttle:lmlinga-staff-email-otp-verify')->name('staff.email-verification.verify');
+
+Route::post('/staff/verify-email/resend', [
+    \App\Http\Controllers\Auth\StaffEmailVerificationController::class,
+    'resend',
+])->middleware('throttle:lmlinga-staff-email-otp-send')->name('staff.email-verification.resend');
+
+Route::post('/staff/verify-email/cancel', [
+    \App\Http\Controllers\Auth\StaffEmailVerificationController::class,
+    'cancel',
+])->name('staff.email-verification.cancel');
+
+/*
  | Voluntary staff password change — authenticated staff only.
  | REF-24: workers are not forced here after login.
  */
