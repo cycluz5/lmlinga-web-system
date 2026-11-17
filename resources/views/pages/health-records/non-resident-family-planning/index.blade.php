@@ -153,7 +153,7 @@
                                 <th scope="col">Actions</th>
                             </tr>
                         </thead>
-                        <tbody data-hr-fp-nr-tbody>
+                        <tbody data-lml-paginate="hr-fp-nr-row" data-lml-paginate-label="clients" data-hr-fp-nr-tbody>
                             @foreach ($clients as $client)
                                 @php
                                     $showUrl = route('health-records.family-planning.non-residents.show', [

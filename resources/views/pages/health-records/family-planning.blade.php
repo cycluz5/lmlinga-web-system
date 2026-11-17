@@ -177,7 +177,7 @@
                                 <th scope="col">Next Sched</th>
                             </tr>
                         </thead>
-                        <tbody data-hr-fp-tbody>
+                        <tbody data-lml-paginate="hr-fp-row" data-lml-paginate-label="clients" data-hr-fp-tbody>
                             @foreach ($rows as $row)
                                 @php
                                     $viewUrl = (string) ($row['view_url'] ?? '');

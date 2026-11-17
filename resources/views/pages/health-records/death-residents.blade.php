@@ -82,7 +82,7 @@
             </div>
 
             <div class="lml-hr-death__table-scroll" tabindex="0">
-                <table class="lml-hr-death__table">
+                <table class="lml-hr-death__table" data-lml-paginate="hr-death-resident-row" data-lml-paginate-label="residents">
                     <caption class="visually-hidden">
                         Residents available for death record submission.
                     </caption>
