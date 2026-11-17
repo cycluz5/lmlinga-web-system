@@ -74,6 +74,7 @@
 @import './pages/death-requests.css';
 @import './pages/announcement.css';
 @import './components/name-suggest.css';
+@import './components/pagination.css';
 
 /*
  * Tailwind theme colors reference tokens.css (:root variables).
