@@ -51,6 +51,7 @@ class User extends Authenticatable
         'password',
         'status',
         'must_change_password',
+        'temp_password_issued_at',
         'created_by',
         'email_verified_at',
     ];
@@ -74,6 +75,7 @@ class User extends Authenticatable
             'deleted_at' => 'datetime',
             'password' => 'hashed',
             'must_change_password' => 'boolean',
+            'temp_password_issued_at' => 'datetime',
         ];
     }
 

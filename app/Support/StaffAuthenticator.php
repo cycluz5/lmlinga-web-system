@@ -110,13 +110,7 @@ final class StaffAuthenticator
             ];
         }
 
-        Auth::login($user);
-        $user->syncUiRoleSession();
-        session([
-            DemoStaffLogin::SESSION_DISPLAY_NAME => $user->composeDisplayName(),
-            DemoStaffLogin::SESSION_EMAIL => (string) $user->email,
-            DemoStaffLogin::SESSION_LOGIN_ESTABLISHED => true,
-        ]);
+        self::establishSession($user);
 
         return [
             'user' => $user,
@@ -125,6 +119,20 @@ final class StaffAuthenticator
             'identity_matched' => true,
             'pending_verification' => null,
         ];
+    }
+
+    /**
+     * Log the staff user in and populate the session keys the app expects after a successful login.
+     */
+    public static function establishSession(User $user): void
+    {
+        Auth::login($user);
+        $user->syncUiRoleSession();
+        session([
+            DemoStaffLogin::SESSION_DISPLAY_NAME => $user->composeDisplayName(),
+            DemoStaffLogin::SESSION_EMAIL => (string) $user->email,
+            DemoStaffLogin::SESSION_LOGIN_ESTABLISHED => true,
+        ]);
     }
 
     public static function logout(): void

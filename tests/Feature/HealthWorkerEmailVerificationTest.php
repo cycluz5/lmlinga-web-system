@@ -58,7 +58,15 @@ class HealthWorkerEmailVerificationTest extends TestCase
         $this->post(route('logout'));
         Auth::forgetGuards();
 
-        return User::query()->whereRaw('LOWER(email) = ?', [strtolower($email)])->firstOrFail();
+        $worker = User::query()->whereRaw('LOWER(email) = ?', [strtolower($email)])->firstOrFail();
+
+        // These tests cover the plain email-code step. The temporary-password variant (code + new password
+        // on one screen) is covered by HealthWorkerFirstLoginPasswordOtpTest, so clear that marker here and
+        // drop the welcome email from the fake.
+        $worker->forceFill(['temp_password_issued_at' => null])->save();
+        Mail::fake();
+
+        return $worker->fresh();
     }
 
     private function loginAs(string $email, string $password = self::PASSWORD)

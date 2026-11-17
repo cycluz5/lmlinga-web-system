@@ -1,0 +1,62 @@
+name: tests
+
+# Runs the PHPUnit suite. Test files are split into shards and each file runs in its own PHP process,
+# because RagService calls set_time_limit(180) and a single process over the whole suite hits that limit.
+on:
+  push:
+    branches: ['feature/**', 'fix/**']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  phpunit:
+    name: PHPUnit (shard ${{ matrix.shard }}/4)
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: bcmath, gd, intl, mbstring, pdo_mysql, pdo_sqlite, sqlite3, zip
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Prepare environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Run tests in this shard
+        shell: bash
+        run: |
+          mapfile -t files < <(ls tests/Unit/*Test.php tests/Feature/*Test.php | sort)
+          failed=0
+          for i in "${!files[@]}"; do
+            if [ $(( i % 4 + 1 )) -ne ${{ matrix.shard }} ]; then continue; fi
+            echo "::group::${files[$i]}"
+            if ! php -d max_execution_time=0 vendor/bin/phpunit --colors=never --no-progress --do-not-cache-result "${files[$i]}"; then
+              failed=1
+              echo "::error::${files[$i]} failed"
+            fi
+            echo "::endgroup::"
+          done
+          exit $failed

@@ -53,11 +53,19 @@ class HealthWorkerAccountController extends Controller
      */
     public function store(StoreHealthWorkerRequest $request): RedirectResponse
     {
-        $user = $this->accounts->createFromSlimForm($request->validated());
+        $data = $request->validated();
+        $user = $this->accounts->createFromSlimForm($data);
+
+        // Sent after the account transaction has committed; a mail failure never undoes the account.
+        $sent = $this->accounts->sendCredentialsEmail($user, (string) $data['password']);
+        $address = strtolower(trim((string) $user->email));
 
         return redirect()
             ->route('user-management.index', ['tab' => 'workers'])
-            ->with('status', 'Health Worker account created successfully.');
+            ->with('status', $sent
+                ? "Health Worker account created successfully. Login details were emailed to {$address}."
+                : "Health Worker account created successfully, but the welcome email to {$address} could not be sent. Check the address or reset the password to resend.")
+            ->with('mail_warning', ! $sent);
     }
 
     public function edit(string $id): View
@@ -91,11 +99,25 @@ class HealthWorkerAccountController extends Controller
                 ]);
         }
 
-        $updated = $this->accounts->update($user, $request->validated());
+        $data = $request->validated();
+        $updated = $this->accounts->update($user, $data);
+
+        $status = 'Health Worker information updated successfully.';
+        $mailWarning = false;
+        if (HealthWorkerAccountService::updateChangesPassword($data)) {
+            $address = strtolower(trim((string) $updated->email));
+            if ($this->accounts->sendCredentialsEmail($updated, (string) $data['hw_password'], true)) {
+                $status .= " The new temporary password was emailed to {$address}.";
+            } else {
+                $mailWarning = true;
+                $status .= " The new password was saved, but the email to {$address} could not be sent. Check the address or reset the password again to resend.";
+            }
+        }
 
         return redirect()
             ->route('user-management.health-workers.view', ['id' => (string) $updated->id])
-            ->with('status', 'Health Worker information updated successfully.');
+            ->with('status', $status)
+            ->with('mail_warning', $mailWarning);
     }
 
     public function show(string $id): View

@@ -45,7 +45,7 @@
                         Create Account
                     </h1>
                     <p class="lml-hw-wizard__subtitle">
-                        Assign a Health Worker account and a temporary password. The worker must change this password on first login.
+                        Assign a Health Worker account and a temporary password. The login details are emailed to the worker. On first login the worker confirms with a code sent to that email and sets a new password.
                     </p>
                 </div>
             </header>

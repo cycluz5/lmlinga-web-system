@@ -2,13 +2,17 @@
 
 namespace Tests\Feature;
 
+use App\Mail\ResidentRegistrationOtpMail;
 use App\Models\RecordRequest;
 use App\Models\ResidentAccount;
+use App\Models\ResidentRegistrationVerification;
 use App\Support\ResidentAuthenticator;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Schema;
 use Tests\Support\ClientTestingErdSchema;
 use Tests\TestCase;
@@ -41,9 +45,10 @@ class ChatbotRegisterAndMainHouseholdUiTest extends TestCase
         $this->assertStringContainsString('name="_token"', $html);
     }
 
-    public function test_successful_registration_creates_one_account_and_redirects_to_login(): void
+    public function test_successful_registration_sends_code_and_creates_account_only_after_verification(): void
     {
         ClientTestingErdSchema::ensure();
+        Mail::fake();
 
         $response = $this->post(route('chatbot.register.store'), [
             'first_name' => 'Ana',
@@ -54,8 +59,17 @@ class ChatbotRegisterAndMainHouseholdUiTest extends TestCase
             'password' => 'SafePassw0rd!x',
         ]);
 
-        $response->assertRedirect(route('chatbot.login'));
-        $response->assertSessionHas('success', 'Account created successfully. You can now log in.');
+        $response->assertRedirect(route('chatbot.register.verify'));
+        Mail::assertSent(ResidentRegistrationOtpMail::class);
+        $this->assertSame(0, ResidentAccount::query()->where('email', 'new.resident@example.test')->count());
+
+        ResidentRegistrationVerification::query()
+            ->where('email', 'new.resident@example.test')
+            ->update(['code_hash' => Hash::make('123456'), 'expires_at' => now()->addMinutes(5)]);
+
+        $this->post(route('chatbot.register.verify.submit'), ['otp' => '123456'])
+            ->assertRedirect(route('chatbot.login'))
+            ->assertSessionHas('success', 'Email verified, account created. You can now log in.');
 
         $this->assertSame(1, ResidentAccount::query()->where('email', 'new.resident@example.test')->count());
     }

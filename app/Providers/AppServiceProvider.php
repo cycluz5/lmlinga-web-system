@@ -91,6 +91,28 @@ class AppServiceProvider extends ServiceProvider
             max(1, (int) config('lmlinga.staff_email_verification.verify_per_10_minutes', 10))
         )->by($staffOtpKey($request)));
 
+        // Resident registration OTP: keyed by IP + pending email (session-bound, or the submitted email on the form POST).
+        $residentOtpKey = static function (Request $request): string {
+            $binding = $request->hasSession()
+                ? $request->session()->get(\App\Services\ResidentRegistrationOtpService::SESSION_KEY)
+                : null;
+            $email = is_array($binding)
+                ? (string) ($binding['email'] ?? '')
+                : strtolower(trim((string) $request->input('email', '')));
+
+            return 'resident-register-otp|'.$request->ip().'|'.$email;
+        };
+
+        RateLimiter::for('lmlinga-resident-register-otp-send', static fn (Request $request): Limit => Limit::perMinutes(
+            10,
+            max(1, (int) config('lmlinga.resident_registration_otp.send_per_10_minutes', 5))
+        )->by($residentOtpKey($request)));
+
+        RateLimiter::for('lmlinga-resident-register-otp-verify', static fn (Request $request): Limit => Limit::perMinutes(
+            10,
+            max(1, (int) config('lmlinga.resident_registration_otp.verify_per_10_minutes', 10))
+        )->by($residentOtpKey($request)));
+
         if ($this->app->runningInConsole()) {
             $this->prependMysqlClientToPath();
 

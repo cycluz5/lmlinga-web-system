@@ -37,6 +37,8 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->dontFlash([
             'hw_password',
             'hw_password_confirmation',
+            'new_password',
+            'new_password_confirmation',
             'email',
             'username',
             'full_name',

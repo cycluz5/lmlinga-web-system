@@ -8,6 +8,7 @@ use App\Support\StrongPassword;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\View\View;
 
 class ChangePasswordController extends Controller
@@ -36,10 +37,16 @@ class ChangePasswordController extends Controller
             'new_password.confirmed' => 'Password and Confirm New Password must match.',
         ]);
 
-        $user->forceFill([
+        $changes = [
             'password' => $validated['new_password'],
             'must_change_password' => false,
-        ])->save();
+        ];
+        // Replacing an admin-issued temporary password also ends the first-login requirement.
+        if (Schema::hasColumn($user->getTable(), 'temp_password_issued_at')) {
+            $changes['temp_password_issued_at'] = null;
+        }
+
+        $user->forceFill($changes)->save();
 
         return redirect()
             ->route('profile.show')

@@ -103,11 +103,25 @@ class HealthWorkerCreateLoginFlowTest extends TestCase
 
             return $mail->hasTo('created.flow@example.test');
         });
-        $this->post(route('staff.email-verification.verify'), ['otp' => $code])->assertRedirect(route('login'));
+        // First login: the code and a new password (replacing the temporary one) are entered together.
+        $this->post(route('staff.email-verification.verify'), [
+            'otp' => $code,
+            'new_password' => 'WorkerOwn!77',
+            'new_password_confirmation' => 'WorkerOwn!77',
+        ])->assertRedirect(route('dashboard'));
+        $worker = $worker->fresh();
+        $this->assertAuthenticatedAs($worker);
+        $this->post(route('logout'))->assertRedirect(route('login'));
 
         $this->post(route('login.store'), [
             'email' => 'created.flow@example.test',
             'password' => 'WorkerFlow!9',
+        ])->assertSessionHasErrors('email');
+        $this->assertFalse(Auth::check());
+
+        $this->post(route('login.store'), [
+            'email' => 'created.flow@example.test',
+            'password' => 'WorkerOwn!77',
         ])->assertRedirect(route('dashboard'));
 
         $this->assertAuthenticatedAs($worker);

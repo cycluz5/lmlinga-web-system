@@ -16,8 +16,14 @@
                 <div class="lml-login-card__intro">
                     <h1 id="staff-verify-heading" class="lml-login-card__heading">Verify Your Email</h1>
                     <p class="lml-login-card__subtitle">
-                        Your account must be verified before first use. Enter the 6-digit code we sent to
-                        <strong>{{ $maskedEmail }}</strong>. The code expires in {{ $expiryMinutes }} minutes.
+                        @if ($requiresNewPassword)
+                            For your security, confirm your email and replace the temporary password before first use.
+                            Enter the 6-digit code we sent to <strong>{{ $maskedEmail }}</strong> and choose a new password.
+                        @else
+                            Your account must be verified before first use. Enter the 6-digit code we sent to
+                            <strong>{{ $maskedEmail }}</strong>.
+                        @endif
+                        The code expires in {{ $expiryMinutes }} minutes.
                     </p>
                 </div>
 
@@ -62,6 +68,41 @@
                         >
                     </div>
 
+                    @if ($requiresNewPassword)
+                        <div class="lml-login-field" data-lml-staff-new-password>
+                            <label for="new_password" class="lml-login-field__label">
+                                <i class="bi bi-lock-fill" aria-hidden="true"></i>
+                                <span>New Password</span>
+                            </label>
+                            <x-lml.password-input
+                                name="new_password"
+                                id="new_password"
+                                placeholder="Enter a new password"
+                                :toggle="true"
+                                :required="true"
+                                autocomplete="new-password"
+                                class="lml-login-field__control w-100"
+                            />
+                            <p class="lml-login-card__subtitle">{{ \App\Support\StrongPassword::MESSAGE }}</p>
+                        </div>
+
+                        <div class="lml-login-field">
+                            <label for="new_password_confirmation" class="lml-login-field__label">
+                                <i class="bi bi-lock-fill" aria-hidden="true"></i>
+                                <span>Confirm Password</span>
+                            </label>
+                            <x-lml.password-input
+                                name="new_password_confirmation"
+                                id="new_password_confirmation"
+                                placeholder="Confirm your new password"
+                                :toggle="true"
+                                :required="true"
+                                autocomplete="new-password"
+                                class="lml-login-field__control w-100"
+                            />
+                        </div>
+                    @endif
+
                     <p class="lml-login-card__subtitle" data-lml-staff-otp-remaining="{{ $secondsRemaining }}">
                         @if ($secondsRemaining > 0)
                             Code valid for about {{ (int) ceil($secondsRemaining / 60) }} more minute(s).
@@ -72,7 +113,7 @@
 
                     <div class="lml-login-actions">
                         <button type="submit" class="lml-register-submit lml-login-submit lml-focus-ring">
-                            Verify
+                            {{ $requiresNewPassword ? 'Verify and set password' : 'Verify' }}
                         </button>
                     </div>
                 </form>

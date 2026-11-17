@@ -38,6 +38,18 @@ return [
      | StaffEmailVerificationService::EXPIRY_MINUTES). Accounts that existed before this feature are not
      | affected. enabled=false restores immediate use of newly created accounts (rollback switch).
      */
+    'resident_registration_otp' => [
+        // When off, /chatbot/register creates the account immediately (no email code).
+        'enabled' => (bool) env('LMLINGA_RESIDENT_REGISTRATION_OTP', true),
+        'max_attempts' => 5,
+        'resend_cooldown_seconds' => 60,
+        'max_sends_per_hour' => 5,
+        'pending_session_minutes' => 30,
+        // Named rate limiters (AppServiceProvider), per IP + pending email.
+        'send_per_10_minutes' => (int) env('LMLINGA_RESIDENT_OTP_SEND_PER_10_MINUTES', 5),
+        'verify_per_10_minutes' => (int) env('LMLINGA_RESIDENT_OTP_VERIFY_PER_10_MINUTES', 10),
+    ],
+
     'staff_email_verification' => [
         'enabled' => (bool) env('LMLINGA_STAFF_EMAIL_VERIFICATION', true),
         'max_attempts' => 5,
