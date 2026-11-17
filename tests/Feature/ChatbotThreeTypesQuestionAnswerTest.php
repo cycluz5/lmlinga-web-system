@@ -367,6 +367,43 @@ class ChatbotThreeTypesQuestionAnswerTest extends TestCase
         $this->assertSame([], $reply['sources']);
     }
 
+    // ------------------------------------------------------------------ polite filler words
+    /** @return array<string, array{0: string, 1: string, 2: string}> */
+    public static function questionsWithFillerWords(): array
+    {
+        // [question with tabi / raw / man, the same question without it, phrase that must come from the document]
+        return [
+            'tabi + a hika' => ['Ono tabi a hika?', 'Ono a hika?', 'osad na pang maubanang kondisyon'],
+            'tabi + ana hika' => ['Ono tabi ana hika?', 'Ono ana hika?', 'osad na pang maubanang kondisyon'],
+            'raw + hika' => ['Ono raw a hika?', 'Ono a hika?', 'osad na pang maubanang kondisyon'],
+            'man + hika' => ['Ono man ana hika?', 'Ono ana hika?', 'osad na pang maubanang kondisyon'],
+            'tabi + dengue' => ['Ono tabi a dengue?', 'Ono a dengue?', 'mga impeksyon na pwedeng magka'],
+            'tabi + autism' => ['Ono tabi ana autism?', 'Ono ana autism?', 'autism'],
+        ];
+    }
+
+    #[DataProvider('questionsWithFillerWords')]
+    public function test_polite_filler_words_do_not_change_which_document_answers(string $withFiller, string $plain, string $phrase): void
+    {
+        $this->fakeModels();
+        $expected = $this->askChat($plain, 'context');
+        $this->assertNotEmpty($expected['sources'], "precondition: '{$plain}' is answered from a document");
+
+        $reply = $this->askChat($withFiller, 'context');
+
+        $this->assertSame($expected['sources'], $reply['sources'], "'{$withFiller}' must use the same document as '{$plain}'");
+        $this->assertStringContainsStringIgnoringCase($phrase, $this->allText($reply));
+    }
+
+    public function test_a_filler_word_alone_does_not_make_an_unrelated_question_match_a_document(): void
+    {
+        $this->fakeModels();
+
+        $reply = $this->askChat('Ono tabi ana presyo kana bigas?', 'ai');
+
+        $this->assertSame([], $reply['sources'], 'an everyday question with tabi must still not be answered from a health document');
+    }
+
     // ------------------------------------------------------------------ 4. serious message, every type
 
     /** @return array<string, array{0: string}> */

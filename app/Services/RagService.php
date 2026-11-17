@@ -171,6 +171,8 @@ class RagService
     protected array $bikolStopwords = [
         'ono', 'paono', 'boko', 'bokong', 'usad', 'osad', 'diri', 'kana', 'kung', 'manga', 'ag',
         'pamahalaan', 'pamahalaon', 'pamamahala', 'malikayan',
+        // polite / filler particles residents add ("Ono tabi a hika?", "Ono raw a dengue?"): never a topic word
+        'tabi', 'raw', 'man',
     ];
 
     protected function stopwordsFor(?string $language): array
