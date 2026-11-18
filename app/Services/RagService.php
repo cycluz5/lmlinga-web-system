@@ -3822,7 +3822,7 @@ protected function detectBikolIntent(string $question): string
     }
 
     // The word "diyagnosis" names the section outright; the trained model has not
-    // seen it and answers "definition" (Local AI / Cloud AI modes).
+    // seen it and answers "definition" (Local Model / Cloud AI modes).
     if (preg_match('/\b(diyagnosis|diagnosis)\b/u', mb_strtolower($question)) === 1) {
         return 'diagnosis';
     }

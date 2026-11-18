@@ -1781,7 +1781,7 @@ function updateModeBarVisibility() {
 /** Text and icon shown under the buttons so the user knows which chatbot is answering. */
 const MODE_STATUS = {
     none: { text: 'Choose a chatbot type to start chatting', icon: 'bi-hand-index-thumb' },
-    ai: { text: 'The chatbot is using AI Local Model', icon: 'bi-cpu' },
+    ai: { text: 'The chatbot is using Local Model', icon: 'bi-cpu' },
     context: { text: 'The chatbot is using Context-based (verified datasets only, no AI)', icon: 'bi-journal-text' },
     cloud: { text: 'The chatbot is using Cloud AI (Gemma)', icon: 'bi-cloud' },
 };
@@ -1906,7 +1906,7 @@ if (answerEl && data.mode) {
         tag.className = 'lml-chatbot-main__mode-tag';
         const modeNames = {
             context: 'Context-based',
-            ai: 'Local AI model',
+            ai: 'Local Model',
             cloud: 'Cloud AI (Gemma)',
         };
         tag.textContent = 'Answered by: ' + (data.answered_by || modeNames[data.mode] || 'Context-based');

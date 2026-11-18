@@ -22,7 +22,7 @@ use Tests\TestCase;
  * are faked (no network):
  *
  *   Context-based   verified documents + rules. No AI model is ever called.
- *   Local AI model  the locally trained Bikol-Iriga model answers everyday (unrelated) messages;
+ *   Local Model  the locally trained Bikol-Iriga model answers everyday (unrelated) messages;
  *                   health questions are answered from the verified documents, never by the model.
  *   Cloud AI        Gemma (cloud) answers everyday messages and re-tells the verified health answer;
  *                   it may not add numbers, and when it is not reachable the resident is told so.
@@ -191,7 +191,7 @@ class ChatbotThreeTypesQuestionAnswerTest extends TestCase
         return trim((string) $reply['answer'] . "\n" . implode("\n", array_map('strval', $reply['points'])));
     }
 
-    // ------------------------------------------------------------------ 1. health questions: Context-based and Local AI
+    // ------------------------------------------------------------------ 1. health questions: Context-based and Local Model
 
     /** @return array<string, array{0: string, 1: string, 2: string, 3: string}> */
     public static function healthQuestions(): array
@@ -469,7 +469,7 @@ class ChatbotThreeTypesQuestionAnswerTest extends TestCase
     /** @return array<string, array{0: string}> */
     public static function threeTypes(): array
     {
-        return ['Context-based' => ['context'], 'Local AI model' => ['ai'], 'Cloud AI (Gemma)' => ['cloud']];
+        return ['Context-based' => ['context'], 'Local Model' => ['ai'], 'Cloud AI (Gemma)' => ['cloud']];
     }
 
     #[DataProvider('threeTypes')]

@@ -16,7 +16,7 @@ use Tests\TestCase;
 use Tests\Support\ClientTestingErdSchema;
 
 /**
- * Bikol - Iriga has three chatbot types (Context-based, Local AI model, Cloud AI) and NO default:
+ * Bikol - Iriga has three chatbot types (Context-based, Local Model, Cloud AI) and NO default:
  * the resident must choose one before chatting. English and Tagalog have no types and are unchanged.
  */
 class ChatbotTypeSelectionTest extends TestCase
@@ -99,7 +99,7 @@ class ChatbotTypeSelectionTest extends TestCase
         $this->askChat(['question' => 'Ono ana dengue?', 'language' => 'bcl'])
             ->assertStatus(422)
             ->assertJsonValidationErrors(['mode'])
-            ->assertJsonPath('errors.mode.0', 'Choose a chatbot type first: Context-based, Local AI model or Cloud AI (Gemma).');
+            ->assertJsonPath('errors.mode.0', 'Choose a chatbot type first: Context-based, Local Model or Cloud AI (Gemma).');
 
         $this->assertSame(0, DB::table('chatbot_conversations')->count());
         $this->assertSame(0, DB::table('chatbot_messages')->count());
@@ -124,7 +124,7 @@ class ChatbotTypeSelectionTest extends TestCase
     /** @return array<string, array{0: string}> */
     public static function chatbotTypes(): array
     {
-        return ['Context-based' => ['context'], 'Local AI model' => ['ai'], 'Cloud AI (Gemma)' => ['cloud']];
+        return ['Context-based' => ['context'], 'Local Model' => ['ai'], 'Cloud AI (Gemma)' => ['cloud']];
     }
 
     #[DataProvider('chatbotTypes')]
