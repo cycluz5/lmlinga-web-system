@@ -24,7 +24,11 @@
 
         @if ($dataset)
             <div class="alert alert-info mb-0" role="note" data-lml-dataset-revision-note>
-                Saving replaces the live text in the chatbot's health information with this version. The earlier version and its history are kept.
+                @if ($dataset['draft_version'])
+                    This is a machine-translated draft. Saving keeps it as a draft; the chatbot does not use it until you verify it.
+                @else
+                    Saving replaces the live text in the chatbot's health information with this version. The earlier version and its history are kept.
+                @endif
             </div>
         @endif
 
@@ -55,9 +59,9 @@
                 <label for="dataset-title" class="lml-form-label lml-form-label--required">Title</label>
                 <input id="dataset-title" type="text" name="title" value="{{ $value('title') }}" maxlength="160" required
                     class="form-control lml-form-control @error('title') is-invalid @enderror">
-                @unless ($dataset)
+                @if (! $dataset && ! $translationOf)
                     <p class="lml-form-help">The title also sets the dataset's source name, which cannot change after the dataset is saved.</p>
-                @endunless
+                @endif
                 @error('title')<p class="lml-form-error">{{ $message }}</p>@enderror
             </div>
 
@@ -76,16 +80,25 @@
                     </select>
                     @error('language')<p class="lml-form-error">{{ $message }}</p>@enderror
                 </div>
-                <div class="lml-language-management__field">
-                    <label for="dataset-category" class="lml-form-label lml-form-label--required">Category</label>
-                    <select id="dataset-category" name="category" required class="form-select lml-form-control @error('category') is-invalid @enderror">
-                        <option value="">Choose a category</option>
-                        @foreach ($categories as $key => $label)
-                            <option value="{{ $key }}" @selected($value('category') === $key)>{{ $label }}</option>
-                        @endforeach
-                    </select>
-                    @error('category')<p class="lml-form-error">{{ $message }}</p>@enderror
-                </div>
+                @if ($translationOf)
+                    <input type="hidden" name="translation_of" value="{{ $translationOf['id'] }}">
+                    <p class="lml-language-management__muted mb-0" data-lml-dataset-translation-note>
+                        Translation of “{{ $translationOf['title'] }}” ({{ $translationOf['language_label'] }}) ·
+                        {{ $translationOf['category_label'] }} · source name {{ $translationOf['source_name'] }}.
+                        Write this dataset in the language you chose; it is the same topic and is saved as its own dataset.
+                    </p>
+                @else
+                    <div class="lml-language-management__field">
+                        <label for="dataset-category" class="lml-form-label lml-form-label--required">Category</label>
+                        <select id="dataset-category" name="category" required class="form-select lml-form-control @error('category') is-invalid @enderror">
+                            <option value="">Choose a category</option>
+                            @foreach ($categories as $key => $label)
+                                <option value="{{ $key }}" @selected($value('category') === $key)>{{ $label }}</option>
+                            @endforeach
+                        </select>
+                        @error('category')<p class="lml-form-error">{{ $message }}</p>@enderror
+                    </div>
+                @endif
             @endif
 
             <div class="lml-language-management__field">

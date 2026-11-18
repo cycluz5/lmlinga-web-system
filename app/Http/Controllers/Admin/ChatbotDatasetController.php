@@ -9,6 +9,7 @@ use App\Models\ChatbotDataset;
 use App\Models\User;
 use App\Services\ChatbotDatasetImporter;
 use App\Services\ChatbotDatasetPublisher;
+use App\Services\ChatbotDatasetTranslator;
 use App\Services\ChatbotDatasetWorkflow;
 use App\Support\ChatbotDatasetCatalog;
 use App\Support\ChatbotDatasetFileInspector;
@@ -32,6 +33,7 @@ class ChatbotDatasetController extends Controller
         private readonly ChatbotDatasetFileInspector $inspector,
         private readonly ChatbotDatasetPublisher $publisher,
         private readonly ChatbotDatasetImporter $importer,
+        private readonly ChatbotDatasetTranslator $translator,
     ) {
     }
 
@@ -64,17 +66,23 @@ class ChatbotDatasetController extends Controller
         }
 
         $datasets = ChatbotDataset::query()
-            ->with(['versions' => fn ($q) => $q->select(['id', 'chatbot_dataset_id', 'version_no', 'title', 'status'])])
+            ->with(['versions' => fn ($q) => $q->select(['id', 'chatbot_dataset_id', 'version_no', 'title', 'status', 'machine_translated'])])
             ->orderBy('category')
             ->orderBy('source_name')
             ->get();
 
         $languageCounts = array_fill_keys(array_keys(ChatbotDatasetCatalog::LANGUAGES), 0);
+        // Languages each topic (category + source name) exists in, for the language chips on every row.
+        $topicLanguages = [];
+        foreach ($datasets as $dataset) {
+            $topicLanguages[$dataset->category.'|'.$dataset->source_name][] = $dataset->language;
+        }
         $rows = [];
         foreach ($datasets as $dataset) {
             $languageCounts[$dataset->language] = ($languageCounts[$dataset->language] ?? 0) + 1;
             if ($dataset->language === $language) {
-                $rows[] = ChatbotDatasetPresenter::row($dataset);
+                $rows[] = ChatbotDatasetPresenter::row($dataset)
+                    + ['languages' => $topicLanguages[$dataset->category.'|'.$dataset->source_name] ?? []];
             }
         }
 
@@ -92,12 +100,25 @@ class ChatbotDatasetController extends Controller
         ]);
     }
 
-    public function create(Request $request): View
+    public function create(Request $request): View|RedirectResponse
     {
         // "Add Dataset" on a language tab opens the form with that language already chosen.
         $language = (string) $request->query('language', '');
+        $defaults = array_key_exists($language, ChatbotDatasetCatalog::LANGUAGES) ? ['language' => $language] : [];
 
-        return $this->formView(null, null, array_key_exists($language, ChatbotDatasetCatalog::LANGUAGES) ? ['language' => $language] : []);
+        // "Add translation" on a dataset page: the same topic (category + source name) in another language.
+        $from = $request->query('from');
+        if ($from !== null) {
+            $original = $this->find((string) $from);
+            if ($defaults === [] || $this->topicExists($original, $defaults['language'])) {
+                return redirect()->route('chatbot-datasets.show', ['datasetId' => $original->id])
+                    ->with('error', 'Choose a language that does not have this topic yet.');
+            }
+
+            return $this->formView(null, null, $defaults + ['translation_of' => $original->id], $original);
+        }
+
+        return $this->formView(null, null, $defaults);
     }
 
     /** A starter .txt file for writing a dataset in the chosen language. */
@@ -115,14 +136,27 @@ class ChatbotDatasetController extends Controller
     public function store(SaveChatbotDatasetRequest $request): RedirectResponse
     {
         $file = $request->file('dataset_file');
-        $dataset = $this->attempt(fn () => $this->workflow->upload($this->admin($request), [
+        $meta = [
             'title' => (string) $request->validated('title'),
             'language' => (string) $request->validated('language'),
             'category' => (string) $request->validated('category'),
             'source_reference' => (string) $request->validated('source_reference'),
             'no_personal_data_confirmed' => true,
             'original_filename' => $file->getClientOriginalName(),
-        ], $this->inspector->inspectUpload($file)));
+        ];
+
+        // A translation reuses the original's category and source name, so it is the same topic in another language.
+        $originalId = $request->validated('translation_of');
+        if ($originalId !== null) {
+            $original = $this->find((string) $originalId);
+            if ($this->topicExists($original, $meta['language'])) {
+                throw ValidationException::withMessages(['language' => 'This topic already exists in that language.']);
+            }
+            $meta['category'] = $original->category;
+            $meta['source_name'] = $original->source_name;
+        }
+
+        $dataset = $this->attempt(fn () => $this->workflow->upload($this->admin($request), $meta, $this->inspector->inspectUpload($file)));
 
         return $this->publishedResponse($dataset, 'Dataset saved');
     }
@@ -161,7 +195,57 @@ class ChatbotDatasetController extends Controller
             'original_filename' => $file?->getClientOriginalName(),
         ], $file !== null ? $this->inspector->inspectUpload($file) : null));
 
+        if ($dataset->fresh(['versions'])->openVersion()?->machine_translated) {
+            return redirect()->route('chatbot-datasets.show', ['datasetId' => $dataset->id])
+                ->with('status', 'Draft saved. The chatbot does not use it until you verify it.');
+        }
+
         return $this->publishedResponse($dataset, 'Changes saved');
+    }
+
+    /** Draft a translation of a live dataset with the local AI model. Not used by the chatbot until verified. */
+    public function translate(Request $request, string $datasetId): RedirectResponse
+    {
+        $admin = $this->admin($request);
+        $original = $this->find($datasetId);
+        $language = (string) $request->input('language');
+        $version = $original->approvedVersion();
+        if ($version === null || $original->isRetired() || ! array_key_exists($language, ChatbotDatasetCatalog::LANGUAGES) || $this->topicExists($original, $language)) {
+            return redirect()->route('chatbot-datasets.show', ['datasetId' => $original->id])
+                ->with('error', 'Choose a language that does not have this topic yet. Only a live dataset can be translated.');
+        }
+
+        try {
+            $content = $this->translator->translate($version->content, $original->language, $language);
+            $title = $this->translator->translate($version->title, $original->language, $language);
+            $draft = $this->workflow->createTranslationDraft(
+                $admin, $original, $language, mb_substr($title, 0, 160),
+                $this->inspector->inspect($content, $original->source_name, $language)
+            );
+        } catch (ChatbotDatasetWorkflowException $e) {
+            $this->abortIfForbidden($e);
+
+            return redirect()->route('chatbot-datasets.show', ['datasetId' => $original->id])->with('error', $e->getMessage());
+        }
+
+        return redirect()->route('chatbot-datasets.show', ['datasetId' => $draft->id])
+            ->with('status', 'Draft translation created. Read and correct it, then verify it. The chatbot does not use it until then.');
+    }
+
+    /** The Admin has checked the machine translation: publish it to the chatbot. */
+    public function verify(Request $request, string $datasetId): RedirectResponse
+    {
+        $admin = $this->admin($request);
+        $dataset = $this->find($datasetId);
+        if (! $request->boolean('no_personal_data_confirmed')) {
+            return redirect()->route('chatbot-datasets.show', ['datasetId' => $dataset->id])
+                ->with('error', 'Confirm that you checked the translation and that it contains no resident personal information.');
+        }
+
+        return $this->act($dataset, function () use ($admin, $dataset): void {
+            $this->workflow->verifyAndPublish($admin, $dataset, true);
+            $this->publisher->publish($dataset->fresh());
+        }, 'Translation verified and sent to the chatbot.');
     }
 
     public function retire(Request $request, string $datasetId): RedirectResponse
@@ -199,7 +283,7 @@ class ChatbotDatasetController extends Controller
     /**
      * @param  array<string, mixed>|null  $detail
      */
-    private function formView(?ChatbotDataset $dataset, ?array $detail, array $defaults = []): View
+    private function formView(?ChatbotDataset $dataset, ?array $detail, array $defaults = [], ?ChatbotDataset $translationOf = null): View
     {
         $editing = $dataset !== null;
         $current = $dataset?->currentVersion();
@@ -209,6 +293,7 @@ class ChatbotDatasetController extends Controller
             'pageTitle' => 'Chatbot Datasets',
             'pageSubtitle' => $editing ? 'Change or replace a dataset.' : 'Upload a dataset.',
             'dataset' => $detail,
+            'translationOf' => $translationOf !== null ? ChatbotDatasetPresenter::row($translationOf) : null,
             'values' => $editing ? ['title' => $current?->title, 'source_reference' => $current?->source_reference] : $defaults,
             'languages' => ChatbotDatasetCatalog::LANGUAGES,
             'categories' => ChatbotDatasetCatalog::CATEGORIES,
@@ -265,6 +350,16 @@ class ChatbotDatasetController extends Controller
         if ($e->status() === 403) {
             abort(403, $e->getMessage());
         }
+    }
+
+    /** True when the original's topic (category + source name) already exists in $language. */
+    private function topicExists(ChatbotDataset $original, string $language): bool
+    {
+        return ChatbotDataset::query()
+            ->where('language', $language)
+            ->where('category', $original->category)
+            ->where('source_name', $original->source_name)
+            ->exists();
     }
 
     private function find(string $datasetId): ChatbotDataset

@@ -27,6 +27,7 @@ final class ChatbotDatasetPresenter
         $current = $dataset->currentVersion();
         $approved = $dataset->approvedVersion();
         $retired = $dataset->isRetired();
+        $unverified = $approved === null && $current?->machine_translated === true;
 
         return [
             'id' => $dataset->id,
@@ -37,6 +38,7 @@ final class ChatbotDatasetPresenter
             'category_label' => ChatbotDatasetCatalog::CATEGORIES[$dataset->category] ?? $dataset->category,
             'source_name' => $dataset->source_name,
             'is_default' => $dataset->isDefault(),
+            'unverified' => $unverified,
             'retired' => $retired,
             'approved' => ! $retired && $approved !== null,
             'updated_at' => self::date($dataset->updated_at),
@@ -56,21 +58,57 @@ final class ChatbotDatasetPresenter
 
         return self::row($dataset) + [
             'approved_version' => $approved !== null ? self::version($approved) : null,
+            'draft_version' => $unverified_draft = ($approved === null && $dataset->openVersion()?->machine_translated) ? self::version($dataset->openVersion()) : null,
             'history' => $default ? [] : $dataset->events
                 ->reject(fn (ChatbotDatasetEvent $e): bool => in_array($e->action, self::REVIEW_ACTIONS, true))
                 ->sortByDesc('id')
                 ->map(fn (ChatbotDatasetEvent $e): array => self::event($e))
                 ->values()
                 ->all(),
+            'translations' => self::translations($dataset),
             'retired' => $retired,
             'can_edit' => $editBlocked === null,
             'edit_blocked_reason' => $editBlocked,
-            'can_retire' => ! $retired && ! $default,
+            'can_retire' => ! $retired && ! $default && $unverified_draft === null,
             'can_restore' => $retired && ! $default,
+            'can_verify' => $unverified_draft !== null && ! $retired,
+            'can_translate' => $approved !== null && ! $retired,
             // Chatbot health information: is the live text written for the chatbot, and searchable (indexed)?
             'in_chatbot' => ! $retired && $approved !== null && app(ChatbotDatasetPublisher::class)->isWritten($dataset),
             'indexed' => ! $retired && $approved !== null && app(ChatbotDatasetPublisher::class)->isIndexed($dataset),
         ];
+    }
+
+    /**
+     * The same topic (category + source name) in each language, existing or missing.
+     *
+     * @return list<array{language: string, label: string, exists: bool, current: bool, id: int|null, title: string|null, retired: bool, unverified: bool}>
+     */
+    public static function translations(ChatbotDataset $dataset): array
+    {
+        $found = ChatbotDataset::query()
+            ->with('versions')
+            ->where('category', $dataset->category)
+            ->where('source_name', $dataset->source_name)
+            ->get()
+            ->keyBy('language');
+
+        $out = [];
+        foreach (ChatbotDatasetCatalog::LANGUAGES as $key => $label) {
+            $match = $found->get($key);
+            $out[] = [
+                'language' => $key,
+                'label' => $label,
+                'exists' => $match !== null,
+                'current' => $match?->id === $dataset->id,
+                'id' => $match?->id,
+                'title' => $match?->currentVersion()?->title,
+                'retired' => $match?->isRetired() ?? false,
+                'unverified' => $match !== null && $match->approvedVersion() === null && $match->openVersion()?->machine_translated === true,
+            ];
+        }
+
+        return $out;
     }
 
     /**
