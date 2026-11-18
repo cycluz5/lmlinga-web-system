@@ -33,6 +33,7 @@ import {
 import { isClientOffline, isNetworkFailure } from '../offline/offline-forms';
 import { OFFLINE_EVENTS } from '../offline/offline-status.js';
 import { initSpotMappingExport } from './spot-mapping-export';
+import { getDuplicateCheck } from '../components/duplicate-check';
 import {
     applyOverlapLayerPlan,
     buildOverlapGroups,
@@ -2118,6 +2119,13 @@ function initSpotMapping() {
             return;
         }
 
+        // Possible-duplicate head: while the live check's warning is shown, hold the request until it is confirmed.
+        const duplicateCheck = getDuplicateCheck(root.querySelector('[data-lml-dup-scope]'));
+        if (duplicateCheck?.isPending()) {
+            duplicateCheck.focusPanel();
+            return;
+        }
+
         const selectedZone = validation.values.zone;
         const selectedType = validation.values.householdType;
         const plotPayload = {
@@ -2136,6 +2144,9 @@ function initSpotMapping() {
             consent: true,
             client_marker_id: String(confirmedMarker.__lmlData?.id || ''),
         };
+        if (duplicateCheck?.isConfirmed()) {
+            plotPayload.confirm_possible_duplicate = '1';
+        }
 
         const createUrl = root.getAttribute('data-plot-new-url') || '/spot-mapping/plot-new';
         const defaultHandoffError = 'Unable to continue because the household plot session is invalid or expired. Please plot the household again.';
@@ -2184,6 +2195,10 @@ function initSpotMapping() {
             }
 
             if (!response.ok) {
+                if (response.status === 422 && Array.isArray(body?.errors?.possible_duplicate) && !duplicateCheck?.hasMatches()) {
+                    // The server found a possible duplicate head: fetch the matches so staff can confirm and resubmit.
+                    void duplicateCheck?.runCheck();
+                }
                 const message = typeof body?.message === 'string' && body.message.trim()
                     ? body.message.trim()
                     : GENERIC_PLOT_FAILURE;

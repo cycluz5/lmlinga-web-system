@@ -10,6 +10,7 @@ import './offline/offline-hp-live';
 import './pages/dashboard-sidebar';
 import './pages/staff-login';
 import './components/name-suggest';
+import './components/duplicate-check';
 import './components/table-pagination';
 import './pages/dashboard-home';
 import './pages/profile';

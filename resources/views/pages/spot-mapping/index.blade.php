@@ -303,7 +303,7 @@
                 </div>
 
                 <div data-spot-map-details-body>
-                <dl class="lml-spot-map__fields">
+                <dl class="lml-spot-map__fields" data-lml-dup-scope>
                     <div class="lml-spot-map__field">
                         <dt>
                             <label id="lml-spot-map-household-number-label" for="lml-spot-map-household-no">
@@ -377,7 +377,7 @@
                             <input
                                 id="lml-spot-map-head-first"
                                 type="text"
-                                name="first_name" data-lml-name-suggest="person" data-lml-name-suggest-heading="Registered residents with a similar name — check before creating a new household" data-lml-name-suggest-url="{{ route('staff.name-suggestions') }}"
+                                name="first_name" data-lml-dup-first data-lml-duplicate-check="head" data-lml-duplicate-check-url="{{ route('staff.duplicate-check') }}" data-lml-name-suggest="person" data-lml-name-suggest-heading="Registered residents with a similar name — check before creating a new household" data-lml-name-suggest-url="{{ route('staff.name-suggestions') }}"
                                 class="lml-spot-map__control lml-focus-ring"
                                 data-spot-map-head-first
                                 maxlength="100"
@@ -423,7 +423,7 @@
                             <input
                                 id="lml-spot-map-head-last"
                                 type="text"
-                                name="last_name" data-lml-name-suggest="person" data-lml-name-suggest-url="{{ route('staff.name-suggestions') }}"
+                                name="last_name" data-lml-dup-last data-lml-name-suggest="person" data-lml-name-suggest-url="{{ route('staff.name-suggestions') }}"
                                 class="lml-spot-map__control lml-focus-ring"
                                 data-spot-map-head-last
                                 maxlength="100"
@@ -452,6 +452,7 @@
                                 id="lml-spot-map-head-birthday"
                                 type="date"
                                 name="birthday"
+                                data-lml-dup-birthday
                                 class="lml-spot-map__control lml-focus-ring"
                                 data-spot-map-head-birthday
                                 max="{{ now()->toDateString() }}"
