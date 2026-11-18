@@ -9,7 +9,7 @@
 - Member match = same first + last name (case, spacing, accents ignored) AND same birthday, within the **same household only**.
 - Household duplicates are detected through the **head's identity** in Spot Mapping: a resident with the same name + birthday anywhere in the worker's zones (admin: all zones).
 - Member edit is checked too, excluding the member being edited.
-- Offline replays of queued creates are never blocked; they send header `X-Offline-Replay: 1`, the server skips enforcement and logs a warning.
+- Offline replays of queued creates are never blocked. (Final design: `/offline/sync` marks its inner requests as replays server-side via `PossibleDuplicateGuard::REPLAY_ATTRIBUTE`; the client `X-Offline-Replay` header is still sent by `offline-replay.js` but the server no longer trusts it. Where this document says "header" below, read "server-side replay marker".)
 - Out of scope: health-record duplicates, autofill of health data, non-resident forms.
 
 ## Global Constraints
