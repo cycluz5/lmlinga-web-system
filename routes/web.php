@@ -195,6 +195,20 @@ Route::get('/staff/name-suggestions', [
 ])->name('staff.name-suggestions');
 
 /*
+ | Live possible-duplicate lookup (JSON) for member and head forms. Same access and middleware as the
+ | name suggestions; payload is the DuplicateFinder contract items only.
+ */
+Route::get('/staff/duplicate-check', \App\Http\Controllers\StaffDuplicateCheckController::class)
+    ->middleware([
+        'auth',
+        'staff.account-usable',
+        'staff.password-current',
+        'ui.role',
+        'auth.nocache',
+        'throttle:lmlinga-duplicate-check',
+    ])->name('staff.duplicate-check');
+
+/*
  | Health-worker email verification. Guest step reached only after the correct password for an account whose
  | email is still pending; no authenticated session exists until verification succeeds.
  */
