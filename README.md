@@ -1,6 +1,90 @@
-# LMLinga — Resident Chatbot Flow
+# LMLinga
 
-This section documents the end-to-end flow for the **resident-facing Smart Health Chatbot** (as opposed to the staff/admin side of the app). It reflects the actual routes and controllers in this codebase, not a planned/ideal design.
+**LMLinga: A Web-based Household Profiling and Automated Spot-Mapping System with Chatbot for the Barangay Health Center of La Medalla, Iriga City.**
+
+This README explains how the system works. Part 1 is the overview. Part 2 is the detailed route-by-route reference for the resident chatbot, the staff dashboard, offline mode and Docker.
+
+## Part 1. How the system works
+
+### Who uses it
+
+| User | Where | What they do |
+|---|---|---|
+| **Resident** | Chatbot (`/chatbot`) | Registers with an email-verified account, asks health questions in English, Tagalog or Bikol-Iriga, and (after verification) views their own household's records read-only. |
+| **Health worker** (`bhw`, `bns`, `bspo`) | Staff dashboard | Profiles households and residents, plots them on the map (spot mapping) and records health services (immunization, nutrition, deworming, risk assessment, family planning, maternal care). |
+| **Admin** | Staff dashboard | Everything a health worker can do, plus user management, household and death request approvals, announcements and the **Chatbot Datasets** (the health information the chatbot answers from). |
+
+### Technology
+
+- **Backend:** Laravel 12 on PHP 8.2+ (production runs PHP-FPM 8.3), MySQL/MariaDB.
+- **Front end:** Blade views, Vite 6, Tailwind 4 and Bootstrap 5, Leaflet for maps, plain JS modules in `resources/js`.
+- **Chatbot AI:** [Ollama](https://ollama.com) (local server) for embeddings and for the chat models.
+- **Hosting:** a Docker image for local use. Production is nginx + PHP-FPM + MariaDB on AWS EC2, deployed by GitHub Actions on every merge to `main` (see `docs/DEPLOYMENT_CICD.md`).
+
+### The main parts
+
+1. **Household profiling and spot mapping.** Health workers create households and members and plot each household on a map. The La Medalla boundary is a polygon (a GeoJSON file); a location is accepted only inside it and is rejected by the server otherwise. Most modules read and write the newer ERD tables (see "ERD mode vs. legacy mode" in Part 2).
+2. **Health records.** Modules per resident: child and adult immunization, nutrition, deworming, risk assessment, family planning, maternal care and death records. Rules such as eligibility and female-only maternal care are enforced on the server.
+3. **Accounts and security.** Staff accounts are created by an Admin. The new person gets a temporary password by email and must enter a 6-digit code (valid 5 minutes, single use) at first sign-in. Residents verify their email with a code when they register. Resident and staff sessions are separate. Sensitive health columns are encrypted at rest (`docs/AT_REST_ENCRYPTION.md`).
+4. **Offline mode.** Health workers can keep working without a connection. Changes are queued in the browser and replayed to the server when it is back (Part 2, section 9).
+5. **Resident chatbot.** Answers health questions from verified documents (below) and gives residents a read-only view of their own household after verification (Part 2).
+6. **Announcements.** Staff post announcements, and matching residents get a notification in the chatbot.
+
+### How the chatbot answers
+
+1. The resident picks a language: English, Tagalog or Bikol-Iriga.
+2. Small talk ("hello") is answered directly. A health question is looked up in the **health documents**: one text file per topic, indexed in the `health_chunks` table. Matching uses topic names and headings first, then Ollama embeddings as a fallback.
+3. A document is only used if it is really *about* the asked topic, so the bot does not answer from a document that merely mentions the word.
+4. If nothing on-topic is found, the bot says it does not have enough information. It never guesses a health answer.
+
+**Bikol-Iriga has three chatbot types** that the resident chooses first (there is no default):
+
+| Type | How it answers |
+|---|---|
+| **Context-based** | Only from the verified health documents. No AI model. |
+| **Local Model** | Health questions are answered from the verified documents. A small Gemma model, trained on Central Bikol text and Bikol-Iriga conversations and run by the local Ollama, chats about everyday topics. The team's Iriga word list is applied to its replies. It never answers health questions. |
+| **Cloud AI (Gemma)** | A hosted Gemma model re-tells the verified answer and chats naturally, using Iriga words. Needs internet. |
+
+English and Tagalog use the document lookup and the chat model, with no type switch.
+
+### Chatbot Datasets (Admin)
+
+The health documents are managed from **Chatbot Datasets** in the admin dashboard (`/chatbot-datasets`):
+
+- **Add Dataset.** The Admin uploads a plain `.txt` file. The form explains how to write it and offers an English, Tagalog and Bikol-Iriga template. The file is screened (real text, size, encoding, no personal data, and the Admin confirms it holds no resident information), then saved and sent to the chatbot at once: it is written to `storage/app/health_docs_admin/<language>/<category>/` and indexed. The chatbot prefers an admin file over a built-in file of the same name.
+- **Default datasets.** The 73 documents shipped in `resources/health_docs_v2` are listed as **Default**: read-only, with no history.
+- **Change, retire, restore, re-index.** Admin datasets can be replaced, removed from the chatbot, restored, and re-indexed if the AI embedding model was unreachable when they were saved. Each change is kept in the dataset's History.
+- **Languages and translations.** A dataset belongs to one language, and only that language's chatbot reads it. The same topic (same category and source name) can exist in all three languages. The dataset page shows which are missing and offers **Add translation**.
+- **Translate with AI (draft).** The Admin can ask the local model for a draft translation of a live dataset. A draft is **not** used by the chatbot until the Admin corrects it and presses **Verify and send to chatbot**.
+- **Finding a new topic.** The chatbot finds a document from its title and headings. Use the words residents say in the title. In English and Tagalog, add a `MAIN TOPIC:` / `PANGUNAHING PAKSA:` line with other names for the topic.
+
+### Where things are in the repo
+
+| Path | What is there |
+|---|---|
+| `app/Http/Controllers`, `app/Services`, `app/Support` | Controllers by area, business rules (services) and helpers such as `RagService` (the chatbot) and `StaffRole`. |
+| `resources/views`, `resources/js`, `resources/css` | Blade views, front-end modules (including `offline/`) and styles. |
+| `resources/health_docs_v2/{en,tl,bcl}` | The 73 built-in chatbot documents per language. |
+| `resources/ml` | Small model files the chatbot reads at run time (intent and word lists). |
+| `ml/` | Training material for the Bikol models and datasets. Not read at run time. |
+| `database/migrations`, `database/schema` | Migrations and the schema dump (see the migration note in Part 2, section 9). |
+| `routes/web.php` | All web routes. |
+| `tests/` | PHP feature and unit tests, and `tests/js` front-end tests. |
+| `.github/workflows`, `scripts/deploy`, `docker/` | CI, deployment and container setup. |
+| `docs/` | Deployment, encryption and QA documents. |
+
+### Run it and test it
+
+- **Docker:** see Part 2, section 10 (`docker compose up -d --build`).
+- **Without Docker:** `composer install`, `npm ci`, copy `.env.example` to `.env`, `php artisan key:generate`, point `.env` at a database, then `npm run dev` and `php artisan serve`. For the chatbot, install Ollama, pull the embedding model and run `php artisan health:index` to index the documents.
+- **Tests:** run only the tests that cover what you changed, for example `php artisan test tests/Feature/ChatbotDatasetsDirectPublishTest.php` or `node --test tests/js/name-suggest.test.mjs`. Do not run the whole suite (see `CLAUDE.md`).
+- **Deploy:** merging to `main` deploys to lmlinga.com. Only migration files that are new since the last deploy are run.
+
+---
+
+## Part 2. Detailed reference
+
+### Resident Chatbot Flow
 
 ## 1. Entry & Account Access
 
@@ -38,7 +122,7 @@ Notifications are populated when staff post an Announcement; `AnnouncementNotifi
 2. **Conversation resolve** — a per-language conversation service (`BikolConversationService` / `TagalogConversationService` / `EnglishConversationService`) first checks for small talk ("hello", "kumusta") and answers it directly ("canned"), bypassing retrieval entirely.
 3. **Retrieval** — for a real health question, `RagService::retrieve()` searches the `health_chunks` table (indexed from `resources/health_docs_v2/{en,tl,bcl}/...txt` via `php artisan health:index`) using keyword matching first, then embedding similarity as a fallback (via a local Ollama instance).
 4. **Topic identity gate** — a retrieved document is only used if it is genuinely *about* the asked topic (matched by title/heading, not just a body mention). This deliberately prevents the bot from answering, e.g., "what is fever?" by paraphrasing an unrelated vaccination document that merely mentions fever in passing.
-5. **Answer generation** — English and Tagalog pass the matched content to the chat model (`gemma4:31b-cloud` via Ollama) to generate a natural-language answer. **Bikol-Iriga is extractive only** — it never calls the chat model; it pulls the answer directly from a matching document heading, to avoid language drift.
+5. **Answer generation** — English and Tagalog pass the matched content to the chat model (`gemma4:31b-cloud` via Ollama) to generate a natural-language answer. **Bikol-Iriga health answers are extractive** — they are pulled directly from a matching document heading to avoid language drift, in all three chatbot types. The type the resident chose (Context-based, Local Model or Cloud AI) only changes how everyday, non-health messages are handled (see Part 1).
 6. **Intent recognition** differs slightly per language — English/Tagalog distinguish Definition / Symptoms / Causes / Prevention / Treatment / Benefits; Bikol merges Prevention and Treatment into one `management` intent and additionally recognizes `warning` (urgent/unsafe-symptom phrasing) and `schedule` (age/month eligibility questions).
 7. If no on-topic content is found, the bot returns a canned "I don't have enough information" message (localized per language) rather than guessing.
 
@@ -49,7 +133,7 @@ Both the user's question and the bot's reply are persisted as rows in `chatbot_m
 The **Access Household Record** button starts a verification flow so a resident can prove they belong to a specific household before seeing any real household/member data:
 
 `GET/POST /chatbot/household/verification` (`chatbot.household.verification`, `.store`) → `HouseholdRecordRequestController`
-→ `GET /chatbot/household/verification/method` (`.otp-method`) — choose SMS or email
+→ `GET /chatbot/household/verification/method` (`.otp-method`) — redirects to the SMS step; the email step has its own routes
 → SMS: `/chatbot/household/verification/sms` (`.sms`, `.sms.send`, `.sms.verify`)
 → Email: `/chatbot/household/verification/email` (`.email`, `.email.send`, `.email.verify`)
 → `GET /chatbot/household/verification/status` (`.status`) — polls approval state
@@ -187,72 +271,3 @@ The app ships as a PHP 8.2 + Apache image (front-end assets are built inside the
 4. Open http://localhost:8080 (change with `APP_PORT`). MySQL is exposed on host port `3307` (`DB_FORWARD_PORT`).
 
 Uploaded files and logs persist in the `app-storage` volume; database data in `db-data`. Migrations do **not** run automatically; set `RUN_MIGRATIONS=true` only on a fresh database built purely from migrations. Run artisan commands with `docker compose exec app php artisan <command>`.
-
----
-
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
-
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
-
-## About Laravel
-
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
-
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
-
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
-
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
