@@ -70,6 +70,10 @@ class AppServiceProvider extends ServiceProvider
         RateLimiter::for('lmlinga-name-suggest', static fn (Request $request): Limit => Limit::perMinute(60)
             ->by('name-suggest|'.($request->user()?->getAuthIdentifier() ?? $request->ip())));
 
+        // Staff live duplicate check: same rate as name suggestions, per signed-in staff user.
+        RateLimiter::for('lmlinga-duplicate-check', static fn (Request $request): Limit => Limit::perMinute(60)
+            ->by('duplicate-check|'.($request->user()?->getAuthIdentifier() ?? $request->ip())));
+
         // Staff email verification (guest step after a correct password). Keyed by IP and the pending account
         // bound to this browser session, so one account cannot exhaust another's limit.
         $staffOtpKey = static function (Request $request): string {

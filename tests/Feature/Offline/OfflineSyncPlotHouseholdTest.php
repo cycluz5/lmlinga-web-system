@@ -11,6 +11,7 @@ use App\Support\Offline\OfflineOperationType;
 use App\Support\UserManagementErdMode;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use Tests\Support\ClientTestingErdSchema;
 use Tests\Support\InteractsWithOfflineSync;
 use Tests\TestCase;
@@ -63,6 +64,32 @@ class OfflineSyncPlotHouseholdTest extends TestCase
         $this->assertMatchesRegularExpression('/^MB-\d+$/', (string) $memberNo);
         $this->assertSame($memberNo, $response->json('resident.member_no'));
         $this->assertSame([], session(SpotMappingHandoffService::SESSION_KEY, []));
+    }
+
+    public function test_replayed_plot_with_a_duplicate_head_is_synced_and_logged(): void
+    {
+        $this->actingAsErdFieldStaff();
+        $this->postOfflineSync($this->offlineEnvelope(
+            OfflineOperationType::PLOT_HOUSEHOLD_WITH_HEAD,
+            $this->plotHouseholdPayload(['household_no' => '121']),
+        ))->assertOk();
+
+        Log::spy();
+        $response = $this->postOfflineSync($this->offlineEnvelope(
+            OfflineOperationType::PLOT_HOUSEHOLD_WITH_HEAD,
+            $this->plotHouseholdPayload(['household_no' => '122']),
+        ));
+
+        $response->assertOk();
+        $response->assertJsonPath('code', 'SYNCED');
+        $this->assertSame(2, Household::query()->count());
+        Log::shouldHaveReceived('warning')
+            ->once()
+            ->with('possible duplicate bypassed for offline replay', \Mockery::on(function ($context): bool {
+                $flat = (string) json_encode($context);
+
+                return is_array($context) && ! str_contains($flat, 'Santos') && ! str_contains($flat, '1988-03-12');
+            }));
     }
 
     public function test_offline_plot_does_not_create_eh_handoff_or_session_state(): void

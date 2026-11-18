@@ -33,6 +33,9 @@
     $showReligionOther = $religionSelect === 'Other';
 @endphp
 
+<x-lml.possible-duplicate-panel kind="member" />
+<div data-lml-dup-slot></div>
+
 {{-- Personal Information --}}
 <section class="lml-hh-member-form__section" aria-labelledby="lml-hh-sec-personal">
     <h3 id="lml-hh-sec-personal" class="lml-hh-member-form__section-title">
@@ -48,7 +51,7 @@
             <input
                 type="text"
                 id="lml-hh-last-name"
-                name="last_name" @if (! empty($nameSuggest)) data-lml-name-suggest="person" data-lml-name-suggest-url="{{ route('staff.name-suggestions') }}" @endif
+                name="last_name" data-lml-dup-last @if (! empty($nameSuggest)) data-lml-name-suggest="person" data-lml-name-suggest-url="{{ route('staff.name-suggestions') }}" @endif
                 class="lml-hh-member-form__control lml-focus-ring"
                 placeholder="Last name"
                 autocomplete="family-name"
@@ -66,7 +69,7 @@
             <input
                 type="text"
                 id="lml-hh-first-name"
-                name="first_name" @if (! empty($nameSuggest)) data-lml-name-suggest="person" data-lml-name-suggest-url="{{ route('staff.name-suggestions') }}" @endif
+                name="first_name" data-lml-dup-first data-lml-duplicate-check="member" data-lml-duplicate-check-url="{{ route('staff.duplicate-check') }}" data-lml-dup-household-no="{{ $householdNo ?? '' }}" @if (! empty($memberId)) data-lml-dup-exclude-member="{{ $memberId }}" @endif @if (! empty($nameSuggest)) data-lml-name-suggest="person" data-lml-name-suggest-url="{{ route('staff.name-suggestions') }}" @endif
                 class="lml-hh-member-form__control lml-focus-ring"
                 placeholder="First name"
                 autocomplete="given-name"
@@ -117,7 +120,7 @@
             <label for="lml-hh-birthday">
                 Birthday <span class="lml-hh-member-form__req" aria-hidden="true">*</span>
             </label>
-            <input type="date" id="lml-hh-birthday" name="birthday" class="lml-hh-member-form__control lml-focus-ring" required aria-required="true" data-hh-max-today value="{{ $v['birthday'] ?? '' }}">
+            <input type="date" id="lml-hh-birthday" name="birthday" data-lml-dup-birthday class="lml-hh-member-form__control lml-focus-ring" required aria-required="true" data-hh-max-today value="{{ $v['birthday'] ?? '' }}">
             <p class="lml-hh-member-form__error" id="err-birthday" hidden></p>
         </div>
 

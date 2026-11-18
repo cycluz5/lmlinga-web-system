@@ -134,6 +134,34 @@ describe('offline replay coordinator', () => {
         assert.ok(already.operation_id);
     });
 
+    it('marks replayed requests so the server skips the possible-duplicate check', async () => {
+        await seed();
+        const headers = [];
+        const fetchImpl = async (url, init) => {
+            headers.push({ url, headers: init.headers });
+            if (url === '/offline/status') {
+                return jsonResponse({ ok: true, user_id: 7, username: 'bhw.ana', csrf_token: 'fresh-csrf', is_active: true, must_change_password: false });
+            }
+            const envelope = JSON.parse(init.body);
+
+            return jsonResponse({ ok: true, code: 'SYNCED', operation_id: envelope.operation_id });
+        };
+
+        const coordinator = createReplayCoordinator({
+            fetch: fetchImpl,
+            root: createRoot(),
+            window: createWin(),
+            onEvent: () => {},
+        });
+        await coordinator.replay();
+
+        const sync = headers.find((h) => h.url !== '/offline/status');
+        assert.ok(sync, 'a sync request was sent');
+        assert.equal(sync.headers['X-Offline-Replay'], '1');
+        const probe = headers.find((h) => h.url === '/offline/status');
+        assert.equal(probe.headers['X-Offline-Replay'], undefined, 'status probe is not a replay');
+    });
+
     it('retains RETRYABLE_ERROR and network failures', async () => {
         const retryable = await seed();
         const network = await seed({ payload: { household_no: '123', zone: 'Zone 3' } });
