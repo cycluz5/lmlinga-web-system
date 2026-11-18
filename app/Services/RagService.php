@@ -1320,10 +1320,37 @@ class RagService
         }
 
         $identityTokens = $this->expandTagalogTopicTokensForIdentity(
-            $this->extractBikolTopicTitleTokens($content, $sourceFile, false)
+            array_merge(
+                $this->extractBikolTopicTitleTokens($content, $sourceFile, false),
+                $this->tagalogTitleLineTokens($content)
+            )
         );
 
         return $this->bikolHeadingTokenOverlap($topicTokens, $identityTokens) !== [];
+    }
+
+    /**
+     * Topic words of a document's first line when it is a short title ("Kanser sa Suso", "Pagkabingi (Deafness)").
+     * Sentences and labels ("Pangunahing paksa: ...") do not count; only the first line is read, so body text never
+     * makes a document match.
+     *
+     * @return list<string>
+     */
+    protected function tagalogTitleLineTokens(string $content): array
+    {
+        foreach (preg_split('/\R/u', $this->stripUtf8Bom($content)) ?: [] as $raw) {
+            $line = trim((string) $raw);
+            if ($line === '') {
+                continue;
+            }
+            if (mb_strlen($line) > 80 || preg_match('/[.:;!?]\s*$/u', $line) === 1 || str_starts_with($line, '-')) {
+                return [];
+            }
+
+            return $this->extractBikolHeadingMatchTokens($line, false);
+        }
+
+        return [];
     }
 
     /**
@@ -7538,6 +7565,11 @@ protected function detectTagalogSupportIntent(string $question): string
         return 'prevention';
     }
 
+    // "Karaniwang epekto / side effects (reaksyon) ng bakuna": the effects section, when the document has one.
+    if (preg_match('/\b(epekto|side\s*effects?|reaksyon)\b/u', $q) === 1) {
+        return 'side_effects';
+    }
+
     // Treatment before definition so "Ano ang paggamot/gamot..." is not treated as definition.
     if (
         preg_match(
@@ -7588,7 +7620,10 @@ protected function tagalogDocumentSupportsQuestion(
     string $intent,
     array $topics
 ): bool {
-    $titleTokens = $this->extractBikolTopicTitleTokens($content, $sourceFile, false);
+    $titleTokens = array_values(array_unique(array_merge(
+        $this->extractBikolTopicTitleTokens($content, $sourceFile, false),
+        $this->tagalogTitleLineTokens($content)
+    )));
     $primary = $topics['primary'];
     $constraints = $topics['constraints'];
 
@@ -7646,6 +7681,8 @@ protected function selectTagalogContextSections(string $content, string $intent)
         'treatment' => ['treatment', 'action'],
         'action' => ['action', 'treatment'],
         'definition' => ['definition'],
+        // The effects section when the document has one, otherwise the definition as before.
+        'side_effects' => trim((string) ($sections['side_effects'] ?? '')) !== '' ? ['side_effects'] : ['definition'],
         default => ['definition'],
     };
 
@@ -7796,9 +7833,12 @@ protected function extractTagalogSectionsByIntent(string $content): array
         'treatment' => [],
         'prevention' => [],
         'action' => [],
+        'side_effects' => [],
         'other' => [],
     ];
     $current = 'other';
+    $intro = [];
+    $introOpen = true;
     $lines = preg_split('/\R+/u', $this->stripUtf8Bom($content)) ?: [];
 
     foreach ($lines as $raw) {
@@ -7809,7 +7849,13 @@ protected function extractTagalogSectionsByIntent(string $content): array
         $lower = mb_strtolower($line, 'UTF-8');
         if ($this->isTagalogSectionHeading($line, $lower)) {
             $current = $this->classifyTagalogSectionIntent($lower);
+            if ($current !== 'other') {
+                $introOpen = false;
+            }
             continue;
+        }
+        if ($introOpen && $current === 'other' && count($intro) < 3) {
+            $intro[] = $line;
         }
         $buckets[$current][] = $line;
     }
@@ -7817,6 +7863,11 @@ protected function extractTagalogSectionsByIntent(string $content): array
     $sections = [];
     foreach ($buckets as $intent => $linesForIntent) {
         $sections[$intent] = implode("\n", $linesForIntent);
+    }
+
+    // A document that opens with a title and an opening paragraph (no "Ano ang ...?" heading): that paragraph is the definition.
+    if (trim($sections['definition']) === '' && $intro !== []) {
+        $sections['definition'] = implode("\n", $intro);
     }
 
     return $sections;
@@ -7892,6 +7943,13 @@ protected function classifyTagalogSectionIntent(string $lower): string
         && mb_strlen($lower) <= 80
     ) {
         return 'symptoms';
+    }
+
+    if (
+        preg_match('/\b(epekto|side\s*effects?|reaksyon)\b/u', $lower) === 1
+        && mb_strlen($lower) <= 100
+    ) {
+        return 'side_effects';
     }
 
     if (preg_match('/^ano\s+ang\b/u', $lower) === 1 && mb_strlen($lower) <= 80) {

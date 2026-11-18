@@ -354,6 +354,11 @@ Route::middleware(['auth', 'staff.account-usable', 'staff.password-current', 'ui
             'verify',
         ])->where('datasetId', '[0-9]+')->name('chatbot-datasets.verify');
 
+        Route::get('/chatbot-datasets/template/{language}', [
+            \App\Http\Controllers\Admin\ChatbotDatasetController::class,
+            'template',
+        ])->where('language', 'en|tl|bcl')->name('chatbot-datasets.template');
+
         Route::post('/chatbot-datasets/{datasetId}/reindex', [
             \App\Http\Controllers\Admin\ChatbotDatasetController::class,
             'reindex',

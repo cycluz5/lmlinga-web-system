@@ -32,6 +32,23 @@
             </div>
         @endif
 
+        @unless ($dataset)
+            <details class="lml-language-management__panel" open data-lml-dataset-instructions>
+                <summary class="fw-semibold">How to write the dataset file</summary>
+                <ol class="mt-2 mb-2">
+                    @foreach ($instructions as $line)
+                        <li>{{ $line }}</li>
+                    @endforeach
+                </ol>
+                <p class="mb-0">
+                    Download a template:
+                    @foreach ($languages as $key => $label)
+                        <a href="{{ route('chatbot-datasets.template', ['language' => $key]) }}" class="lml-focus-ring" data-lml-dataset-template="{{ $key }}">{{ $label }}</a>@if (! $loop->last) · @endif
+                    @endforeach
+                </p>
+            </details>
+        @endunless
+
         <form method="POST" action="{{ $action }}" enctype="multipart/form-data" class="lml-language-management__form" novalidate>
             @csrf
             @if ($method !== 'POST')
