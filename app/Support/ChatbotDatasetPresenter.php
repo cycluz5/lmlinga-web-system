@@ -36,6 +36,7 @@ final class ChatbotDatasetPresenter
             'language_label' => ChatbotDatasetCatalog::LANGUAGES[$dataset->language] ?? $dataset->language,
             'category_label' => ChatbotDatasetCatalog::CATEGORIES[$dataset->category] ?? $dataset->category,
             'source_name' => $dataset->source_name,
+            'is_default' => $dataset->isDefault(),
             'retired' => $retired,
             'approved' => ! $retired && $approved !== null,
             'updated_at' => self::date($dataset->updated_at),
@@ -50,11 +51,12 @@ final class ChatbotDatasetPresenter
         $dataset->loadMissing(['versions.creator', 'events.actor', 'events.version']);
         $approved = $dataset->approvedVersion();
         $retired = $dataset->isRetired();
-        $editBlocked = $retired ? 'Restore this dataset before changing it.' : null;
+        $default = $dataset->isDefault();
+        $editBlocked = $default ? ChatbotDataset::DEFAULT_LOCKED_MESSAGE : ($retired ? 'Restore this dataset before changing it.' : null);
 
         return self::row($dataset) + [
             'approved_version' => $approved !== null ? self::version($approved) : null,
-            'history' => $dataset->events
+            'history' => $default ? [] : $dataset->events
                 ->reject(fn (ChatbotDatasetEvent $e): bool => in_array($e->action, self::REVIEW_ACTIONS, true))
                 ->sortByDesc('id')
                 ->map(fn (ChatbotDatasetEvent $e): array => self::event($e))
@@ -63,8 +65,8 @@ final class ChatbotDatasetPresenter
             'retired' => $retired,
             'can_edit' => $editBlocked === null,
             'edit_blocked_reason' => $editBlocked,
-            'can_retire' => ! $retired,
-            'can_restore' => $retired,
+            'can_retire' => ! $retired && ! $default,
+            'can_restore' => $retired && ! $default,
             // Chatbot health information: is the live text written for the chatbot, and searchable (indexed)?
             'in_chatbot' => ! $retired && $approved !== null && app(ChatbotDatasetPublisher::class)->isWritten($dataset),
             'indexed' => ! $retired && $approved !== null && app(ChatbotDatasetPublisher::class)->isIndexed($dataset),
