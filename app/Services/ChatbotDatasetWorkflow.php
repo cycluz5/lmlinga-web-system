@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\DB;
  * Admin: upload, replace, retire, restore. An Admin save PUBLISHES the version at once: it becomes the approved
  * version and the previous one is superseded, with one 'published' history event. Writing the published text to
  * the chatbot's document folder and indexing it is done by ChatbotDatasetPublisher after the transaction, never
- * here. The submitted/approved/rejected/discarded action constants are kept so old history rows still render.
+ * here.
  */
 class ChatbotDatasetWorkflow
 {
@@ -33,19 +33,11 @@ class ChatbotDatasetWorkflow
 
     public const ACTION_REVISED = 'revised';
 
-    public const ACTION_SUBMITTED = 'submitted';
-
-    public const ACTION_APPROVED = 'approved';
-
-    public const ACTION_REJECTED = 'rejected';
-
     public const ACTION_SUPERSEDED = 'superseded';
 
     public const ACTION_RETIRED = 'retired';
 
     public const ACTION_RESTORED = 'restored';
-
-    public const ACTION_DISCARDED = 'discarded';
 
     /**
      * @param  array{title: string, language: string, category: string, source_reference: string, no_personal_data_confirmed: bool, source_name?: string|null, original_filename?: string|null}  $meta

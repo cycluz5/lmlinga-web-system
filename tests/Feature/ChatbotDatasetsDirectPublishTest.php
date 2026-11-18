@@ -672,6 +672,46 @@ class ChatbotDatasetsDirectPublishTest extends TestCase
         $this->assertSame(1, ChatbotDatasetEvent::query()->where('action', 'published')->where('chatbot_dataset_version_id', $submitted->id)->count());
     }
 
+    public function test_history_never_shows_submitted_for_review_even_if_such_an_event_row_exists(): void
+    {
+        $this->admin();
+        $this->upload()->assertSessionHasNoErrors();
+        $dataset = ChatbotDataset::query()->sole();
+        $dataset->events()->create([
+            'chatbot_dataset_version_id' => $dataset->approvedVersion()->id,
+            'action' => 'submitted',
+            'from_status' => 'draft',
+            'to_status' => 'submitted',
+            'actor_role' => 'Admin',
+        ]);
+
+        $this->get(route('chatbot-datasets.show', ['datasetId' => $dataset->id]))->assertOk()
+            ->assertSee('Published to the chatbot')
+            ->assertDontSee('Submitted for review');
+    }
+
+    public function test_the_migration_deletes_submitted_events_and_keeps_imported_and_published_ones(): void
+    {
+        $this->admin();
+        $this->upload()->assertSessionHasNoErrors();
+        $dataset = ChatbotDataset::query()->sole();
+        $versionId = $dataset->approvedVersion()->id;
+        foreach (['imported', 'submitted', 'published'] as $action) {
+            $dataset->events()->create([
+                'chatbot_dataset_version_id' => $versionId,
+                'action' => $action,
+                'actor_role' => 'Admin',
+            ]);
+        }
+        $publishedBefore = ChatbotDatasetEvent::query()->where('action', 'published')->count();
+
+        (require database_path('migrations/2026_11_18_000003_remove_submitted_chatbot_dataset_events.php'))->up();
+
+        $this->assertSame(0, ChatbotDatasetEvent::query()->where('action', 'submitted')->count());
+        $this->assertSame(1, ChatbotDatasetEvent::query()->where('action', 'imported')->count());
+        $this->assertSame($publishedBefore, ChatbotDatasetEvent::query()->where('action', 'published')->count());
+    }
+
     public function test_the_republish_command_sends_admin_edited_datasets_but_skips_the_built_in_corpus(): void
     {
         $admin = $this->admin();

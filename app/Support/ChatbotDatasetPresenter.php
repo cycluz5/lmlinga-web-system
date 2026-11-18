@@ -16,6 +16,9 @@ use Illuminate\Support\Carbon;
  */
 final class ChatbotDatasetPresenter
 {
+    /** Review-only history actions. Dataset review was removed, so these are never shown. */
+    private const REVIEW_ACTIONS = ['submitted', 'approved', 'rejected', 'discarded'];
+
     /**
      * @return array<string, mixed>
      */
@@ -51,7 +54,12 @@ final class ChatbotDatasetPresenter
 
         return self::row($dataset) + [
             'approved_version' => $approved !== null ? self::version($approved) : null,
-            'history' => $dataset->events->sortByDesc('id')->map(fn (ChatbotDatasetEvent $e): array => self::event($e))->values()->all(),
+            'history' => $dataset->events
+                ->reject(fn (ChatbotDatasetEvent $e): bool => in_array($e->action, self::REVIEW_ACTIONS, true))
+                ->sortByDesc('id')
+                ->map(fn (ChatbotDatasetEvent $e): array => self::event($e))
+                ->values()
+                ->all(),
             'retired' => $retired,
             'can_edit' => $editBlocked === null,
             'edit_blocked_reason' => $editBlocked,
@@ -98,14 +106,10 @@ final class ChatbotDatasetPresenter
                 ChatbotDatasetWorkflow::ACTION_IMPORTED => 'Imported from the existing corpus',
                 ChatbotDatasetWorkflow::ACTION_UPDATED => 'Draft changed',
                 ChatbotDatasetWorkflow::ACTION_REVISED => 'New draft version',
-                ChatbotDatasetWorkflow::ACTION_SUBMITTED => 'Submitted for review',
                 ChatbotDatasetWorkflow::ACTION_PUBLISHED => 'Published to the chatbot',
-                ChatbotDatasetWorkflow::ACTION_APPROVED => 'Approved',
-                ChatbotDatasetWorkflow::ACTION_REJECTED => 'Rejected',
                 ChatbotDatasetWorkflow::ACTION_SUPERSEDED => 'Replaced by newer approved version',
                 ChatbotDatasetWorkflow::ACTION_RETIRED => 'Retired',
                 ChatbotDatasetWorkflow::ACTION_RESTORED => 'Restored',
-                ChatbotDatasetWorkflow::ACTION_DISCARDED => 'Unsubmitted draft deleted',
                 default => ucfirst($e->action),
             },
             'version_no' => $e->relationLoaded('version') ? $e->version?->version_no : null,
