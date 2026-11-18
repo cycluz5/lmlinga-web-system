@@ -66,7 +66,7 @@
                 <h2 id="dataset-approved-heading" class="lml-language-management__panel-title">
                     Current version {{ $dataset['approved_version']['version_no'] }}
                 </h2>
-                @include('pages.chatbot-datasets.partials.version', ['version' => $dataset['approved_version']])
+                @include('pages.chatbot-datasets.partials.version', ['version' => $dataset['approved_version'], 'showScreening' => ! $dataset['is_default']])
             </section>
         @endif
 
