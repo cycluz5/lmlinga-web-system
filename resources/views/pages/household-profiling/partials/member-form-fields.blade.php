@@ -33,6 +33,8 @@
     $showReligionOther = $religionSelect === 'Other';
 @endphp
 
+<x-lml.possible-duplicate-panel kind="member" />
+
 {{-- Personal Information --}}
 <section class="lml-hh-member-form__section" aria-labelledby="lml-hh-sec-personal">
     <h3 id="lml-hh-sec-personal" class="lml-hh-member-form__section-title">

@@ -1,0 +1,37 @@
+/* Possible-duplicate warning panel (server partial components/lml/possible-duplicate-panel.blade.php;
+   the live JS check reuses the same classes). Amber warning, same shape as the form error summary. */
+
+.lml-possible-duplicate {
+    margin: 0.75rem 0;
+    padding: 0.85rem 1rem;
+    border: 1px solid #fcd34d;
+    border-radius: var(--lml-radius-md, 0.5rem);
+    background-color: #fffbeb;
+    color: #92400e;
+}
+
+.lml-possible-duplicate[hidden] {
+    display: none !important;
+}
+
+.lml-possible-duplicate__message {
+    margin: 0 0 0.5rem;
+    font-weight: 600;
+}
+
+.lml-possible-duplicate__list {
+    margin: 0 0 0.75rem;
+    padding-left: 1.25rem;
+}
+
+.lml-possible-duplicate__list a {
+    color: inherit;
+    text-decoration: underline;
+}
+
+.lml-possible-duplicate__confirm {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-weight: 500;
+}

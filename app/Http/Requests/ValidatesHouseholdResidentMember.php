@@ -2,7 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Services\DuplicateFinder;
+use App\Support\HouseholdMemberResolver;
+use App\Support\PossibleDuplicateGuard;
 use App\Support\ResidentMemberFieldMap;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Validation\Rule;
 
 trait ValidatesHouseholdResidentMember
@@ -242,6 +246,48 @@ trait ValidatesHouseholdResidentMember
             ) {
                 $validator->errors()->add('medical_others', 'Please specify the medical history condition.');
             }
+
+            $this->checkPossibleDuplicateMember($validator);
         });
+    }
+
+    /**
+     * Same name + birthday already in this household (the member being edited is excluded).
+     */
+    protected function checkPossibleDuplicateMember($validator): void
+    {
+        if (PossibleDuplicateGuard::identityHasErrors($validator)) {
+            return;
+        }
+
+        $householdNo = $this->route('householdNo');
+        if (! is_string($householdNo) || $householdNo === '') {
+            return;
+        }
+
+        try {
+            $resolver = app(HouseholdMemberResolver::class);
+            $memberId = $this->route('memberId');
+            if (is_string($memberId) && $memberId !== '') {
+                $ctx = $resolver->resolveDbMemberOrFail($householdNo, $memberId);
+                $household = $ctx['household'];
+                $excludeId = (int) $ctx['resident']->getKey();
+            } else {
+                $household = $resolver->resolveDbHouseholdOrFail($householdNo);
+                $excludeId = null;
+            }
+        } catch (ModelNotFoundException) {
+            return; // the controller answers 404 for an unknown household or member
+        }
+
+        $matches = app(DuplicateFinder::class)->forMember(
+            $household,
+            (string) $this->input('first_name'),
+            (string) $this->input('last_name'),
+            (string) $this->input('birthday'),
+            $excludeId,
+        );
+
+        PossibleDuplicateGuard::enforce($validator, $this, 'member', $matches, (string) $household->household_no);
     }
 }

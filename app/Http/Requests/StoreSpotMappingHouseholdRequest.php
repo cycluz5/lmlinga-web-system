@@ -4,7 +4,9 @@ namespace App\Http\Requests;
 
 use App\Rules\WithinLaMedallaBoundary;
 use App\Support\DemoHouseholdWaterSupply;
+use App\Services\DuplicateFinder;
 use App\Support\HouseholdNumber;
+use App\Support\PossibleDuplicateGuard;
 use App\Support\HouseholdZoneResolver;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
@@ -177,6 +179,22 @@ class StoreSpotMappingHouseholdRequest extends FormRequest
             if (HouseholdNumber::isOccupied($value)) {
                 $validator->errors()->add('household_no', HouseholdNumber::DUPLICATE_MESSAGE);
             }
+        });
+
+        // Possible duplicate head: only once the identity fields themselves are valid.
+        $validator->after(function (Validator $validator): void {
+            if (PossibleDuplicateGuard::identityHasErrors($validator) || $this->user() === null) {
+                return;
+            }
+
+            $matches = app(DuplicateFinder::class)->forHead(
+                $this->user(),
+                (string) $this->input('first_name'),
+                (string) $this->input('last_name'),
+                (string) $this->input('birthday'),
+            );
+
+            PossibleDuplicateGuard::enforce($validator, $this, 'head', $matches, null);
         });
     }
 
