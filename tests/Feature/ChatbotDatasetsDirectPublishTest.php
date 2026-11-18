@@ -368,6 +368,7 @@ class ChatbotDatasetsDirectPublishTest extends TestCase
 
         $this->get(route('chatbot-datasets.show', ['datasetId' => $dataset->id]))
             ->assertOk()->assertSee('data-lml-dataset-default', false)
+            ->assertDontSee('data-lml-dataset-screening', false)->assertDontSee('Automated screening')
             ->assertDontSee('Imported from the existing corpus')->assertDontSee('dataset-history-heading', false)
             ->assertDontSee('Change or replace file')->assertDontSee('Retire');
         $this->get(route('chatbot-datasets.index', ['language' => 'en']))->assertOk()->assertSee('data-lml-dataset-default', false);

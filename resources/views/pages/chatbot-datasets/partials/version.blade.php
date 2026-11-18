@@ -11,6 +11,7 @@
     <div><dt>No resident personal information</dt><dd>{{ $version['no_personal_data_confirmed'] ? 'Confirmed by the uploader' : 'Not confirmed' }}</dd></div>
 </dl>
 
+@if ($showScreening ?? true)
 <div class="lml-dataset-screening" data-lml-dataset-screening>
     <p class="lml-dataset-screening__title">Automated screening (preliminary only — not a guarantee)</p>
     @if (count($version['warnings']) === 0)
@@ -23,6 +24,7 @@
         </ul>
     @endif
 </div>
+@endif
 
 @if ($showContent ?? true)
     <details class="lml-dataset-content" {{ ($openContent ?? false) ? 'open' : '' }}>
