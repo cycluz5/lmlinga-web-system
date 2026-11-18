@@ -2,23 +2,18 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 /**
- * Language Management (Bikol-Iriga terms and their Linguist review) was removed. Drops its three tables,
- * children first. The original create migration is kept so a fresh migrate stays consistent: it creates
- * the tables and this migration then drops them. down() recreates the same schema (empty).
+ * Restores the Bikol-Iriga term tables on databases where main's "drop_chatbot_terms_tables" migration already
+ * ran before Language Management was brought back. Creates only what is missing, so it does nothing on a
+ * database that still has the tables. Same schema as 2026_10_31_090000_create_chatbot_terms_tables.
+ * down() is a no-op: the original create migration owns the tables.
  */
 return new class extends Migration
 {
     public function up(): void
-    {
-        Schema::dropIfExists('chatbot_term_events');
-        Schema::dropIfExists('chatbot_term_versions');
-        Schema::dropIfExists('chatbot_terms');
-    }
-
-    public function down(): void
     {
         $staffTable = Schema::hasTable('user_management') && ! Schema::hasTable('users') ? 'user_management' : null;
 
@@ -78,5 +73,10 @@ return new class extends Migration
                 }
             });
         }
+    }
+
+    public function down(): void
+    {
+        // Intentionally empty.
     }
 };

@@ -150,6 +150,8 @@ final class UiRole
             'environmental-health' => ['environmental-health', 'environmental-health.*'],
             'dashboard' => ['dashboard'],
             'profile' => ['profile', 'profile.*'],
+            'language-review' => ['language-review', 'language-review.*'],
+            'language-management' => ['language-management', 'language-management.*'],
             'chatbot-datasets' => ['chatbot-datasets', 'chatbot-datasets.*'],
         ];
 

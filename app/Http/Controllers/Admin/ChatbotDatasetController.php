@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Exceptions\ChatbotDatasetWorkflowException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\ChatbotDatasets\SaveChatbotDatasetRequest;
+use App\Http\Requests\LanguageManagement\SaveChatbotDatasetRequest;
 use App\Models\ChatbotDataset;
 use App\Models\User;
 use App\Services\ChatbotDatasetImporter;
@@ -21,8 +21,9 @@ use Illuminate\View\View;
 
 /**
  * Chatbot Datasets (route middleware `ui.admin`): the Admin adds health datasets in English, Tagalog or
- * Bikol-Iriga. Saving publishes the dataset at once and sends it into the chatbot's health information space
- * (ChatbotDatasetPublisher).
+ * Bikol-Iriga. Saving publishes the dataset and sends it into the chatbot's health information space
+ * (ChatbotDatasetPublisher). With config chatbot_datasets.require_review = true the earlier flow applies:
+ * saves are drafts, submitted for Linguist review.
  */
 class ChatbotDatasetController extends Controller
 {
@@ -55,7 +56,7 @@ class ChatbotDatasetController extends Controller
 
     public function index(Request $request): View
     {
-        // One tab per language (English, Tagalog, Bikol-Iriga). Search and category filter in the browser
+        // One tab per language (English, Tagalog, Bikol-Iriga). Search, category and status filter in the browser
         // (like the other admin listings) and the rows are paged by the shared pagination component.
         $language = (string) $request->query('language', 'en');
         if (! array_key_exists($language, ChatbotDatasetCatalog::LANGUAGES)) {
@@ -77,6 +78,11 @@ class ChatbotDatasetController extends Controller
             }
         }
 
+        $statusOptions = [];
+        foreach ($rows as $row) {
+            $statusOptions[$row['status']] = $row['status_label'];
+        }
+
         return view('pages.chatbot-datasets.index', [
             'active' => 'chatbot-datasets',
             'pageTitle' => 'Chatbot Datasets',
@@ -88,6 +94,7 @@ class ChatbotDatasetController extends Controller
             'languages' => ChatbotDatasetCatalog::LANGUAGES,
             'languageCounts' => $languageCounts,
             'categories' => ChatbotDatasetCatalog::CATEGORIES,
+            'statusOptions' => $statusOptions,
         ]);
     }
 
@@ -111,6 +118,11 @@ class ChatbotDatasetController extends Controller
             'original_filename' => $file->getClientOriginalName(),
         ], $this->inspector->inspectUpload($file)));
 
+        if ($this->workflow->requiresReview()) {
+            return redirect()->route('chatbot-datasets.show', ['datasetId' => $dataset->id])
+                ->with('status', 'Dataset saved as a draft. Check the screening results, then submit it for Linguist review.');
+        }
+
         return $this->publishedResponse($dataset, 'Dataset saved');
     }
 
@@ -121,7 +133,7 @@ class ChatbotDatasetController extends Controller
         return view('pages.chatbot-datasets.show', [
             'active' => 'chatbot-datasets',
             'pageTitle' => 'Chatbot Datasets',
-            'pageSubtitle' => 'Dataset details and history.',
+            'pageSubtitle' => 'Dataset details, review status and history.',
             'dataset' => ChatbotDatasetPresenter::detail($dataset),
         ]);
     }
@@ -148,7 +160,22 @@ class ChatbotDatasetController extends Controller
             'original_filename' => $file?->getClientOriginalName(),
         ], $file !== null ? $this->inspector->inspectUpload($file) : null));
 
-        return $this->publishedResponse($dataset, 'Changes saved');
+        if (! $this->workflow->requiresReview()) {
+            return $this->publishedResponse($dataset, 'Changes saved');
+        }
+
+        $message = $dataset->approvedVersion() !== null
+            ? 'Saved as a new draft version. The approved version stays current until the Linguist approves the new one.'
+            : 'Draft saved.';
+
+        return redirect()->route('chatbot-datasets.show', ['datasetId' => $dataset->id])->with('status', $message);
+    }
+
+    public function submit(Request $request, string $datasetId): RedirectResponse
+    {
+        $dataset = $this->find($datasetId);
+
+        return $this->act($dataset, fn () => $this->workflow->submit($this->admin($request), $dataset), 'Submitted for Linguist review.');
     }
 
     public function retire(Request $request, string $datasetId): RedirectResponse
@@ -164,6 +191,10 @@ class ChatbotDatasetController extends Controller
     public function restore(Request $request, string $datasetId): RedirectResponse
     {
         $dataset = $this->find($datasetId);
+        if ($this->workflow->requiresReview()) {
+            return $this->act($dataset, fn () => $this->workflow->restore($this->admin($request), $dataset), 'Dataset restored as a draft. Submit it for review before it can be approved again.');
+        }
+
         try {
             $this->workflow->restore($this->admin($request), $dataset);
         } catch (ChatbotDatasetWorkflowException $e) {
@@ -181,6 +212,22 @@ class ChatbotDatasetController extends Controller
         $this->admin($request);
 
         return $this->publishedResponse($this->find($datasetId), 'Re-index requested');
+    }
+
+    public function destroy(Request $request, string $datasetId): RedirectResponse
+    {
+        $dataset = $this->find($datasetId);
+        try {
+            $deleted = $this->workflow->deleteDraft($this->admin($request), $dataset);
+        } catch (ChatbotDatasetWorkflowException $e) {
+            $this->abortIfForbidden($e);
+
+            return redirect()->route('chatbot-datasets.show', ['datasetId' => $dataset->id])->with('error', $e->getMessage());
+        }
+
+        return $deleted
+            ? redirect()->route('chatbot-datasets.index')->with('status', 'Draft dataset deleted.')
+            : redirect()->route('chatbot-datasets.show', ['datasetId' => $dataset->id])->with('status', 'Unsubmitted draft deleted. The dataset and its review history are kept.');
     }
 
     /**

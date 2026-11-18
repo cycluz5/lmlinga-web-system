@@ -1,7 +1,8 @@
 {{--
     Chatbot Datasets — Admin only (route middleware ui.admin).
     The health information the chatbot answers from, grouped by language (English, Tagalog, Bikol-Iriga).
-    Saving a dataset sends it into the chatbot's health information at once.
+    Saving a dataset sends it into the chatbot's health information; there is no Linguist review step unless
+    lmlinga.chatbot_datasets.require_review is on.
     Layout follows the standard admin listings: tabs + toolbar (User Management), table (Household Requests),
     rows paged by the shared pagination component (data-lml-paginate).
 --}}
@@ -81,6 +82,19 @@
                     <i class="bi bi-chevron-down lml-user-mgmt__category-icon" aria-hidden="true"></i>
                 </div>
 
+                @if (count($statusOptions) > 1)
+                    <div class="lml-user-mgmt__category">
+                        <label class="visually-hidden" for="lml-cd-status">Status</label>
+                        <select id="lml-cd-status" class="lml-user-mgmt__category-select" data-cd-status>
+                            <option value="all" selected>All Statuses</option>
+                            @foreach ($statusOptions as $key => $label)
+                                <option value="{{ $key }}">{{ $label }}</option>
+                            @endforeach
+                        </select>
+                        <i class="bi bi-chevron-down lml-user-mgmt__category-icon" aria-hidden="true"></i>
+                    </div>
+                @endif
+
                 <a href="{{ route('chatbot-datasets.create', ['language' => $language]) }}" class="lml-user-mgmt__add-btn lml-focus-ring" data-lml-dataset-add>
                     <i class="bi bi-plus-lg" aria-hidden="true"></i>
                     <span>Add Dataset</span>
@@ -91,11 +105,12 @@
         @if (count($rows) > 0)
             <div class="lml-hr-table-wrap" data-cd-table-wrap>
                 <table class="lml-hr-table lml-cd-table">
-                    <caption class="visually-hidden">{{ $languageLabel }} chatbot datasets by title and category</caption>
+                    <caption class="visually-hidden">{{ $languageLabel }} chatbot datasets by title, category and status</caption>
                     <thead>
                         <tr>
                             <th scope="col">Title</th>
                             <th scope="col">Category</th>
+                            <th scope="col">Status</th>
                             <th scope="col">Last updated</th>
                             <th scope="col"><span class="visually-hidden">View</span></th>
                         </tr>
@@ -108,12 +123,19 @@
                                 data-cd-title="{{ $row['title'] }}"
                                 data-cd-source="{{ $row['source_name'] }}"
                                 data-cd-category="{{ $row['category'] }}"
+                                data-cd-status="{{ $row['status'] }}"
                             >
                                 <td class="lml-hr-table__cell" data-label="Title">
                                     <span class="lml-hr-table__name">{{ $row['title'] }}</span>
-                                    <span class="lml-cd__source">{{ $row['source_name'] }}@if ($row['retired']) · Retired @endif</span>
+                                    <span class="lml-cd__source">{{ $row['source_name'] }}</span>
                                 </td>
                                 <td class="lml-hr-table__cell lml-hr-table__cell--zone" data-label="Category">{{ $row['category_label'] }}</td>
+                                <td class="lml-hr-table__cell" data-label="Status">
+                                    <span class="lml-hr-table__status lml-cd__status--{{ $row['status'] }}" data-lml-dataset-status="{{ $row['status'] }}">{{ $row['status_label'] }}</span>
+                                    @if ($row['revision_label'])
+                                        <span class="lml-cd__status-note">{{ $row['revision_label'] }}</span>
+                                    @endif
+                                </td>
                                 <td class="lml-hr-table__cell" data-label="Last updated">{{ $row['updated_at'] }}</td>
                                 <td class="lml-hr-table__cell lml-hr-table__cell--actions" data-label="View">
                                     <a

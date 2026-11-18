@@ -69,6 +69,11 @@ class AppServiceProvider extends ServiceProvider
         Paginator::useBootstrapFive();
         $this->flushSchemaLookupsOnSchemaChange();
 
+        // SR-06: only an active Linguist may approve/reject chatbot terms or datasets (never Admin — D-7).
+        // Used by the SR-05 / SR-07 review actions.
+        Gate::define('review-language-content', static fn (User $user): bool => $user->isActive()
+            && StaffRole::isLinguist($user->role));
+
         // SR-07: dataset uploads/replacements per signed-in Admin.
         RateLimiter::for('lmlinga-dataset-upload', static fn (Request $request): Limit => Limit::perHour(
             max(1, (int) config('lmlinga.chatbot_datasets.uploads_per_hour', 20))

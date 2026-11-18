@@ -1,16 +1,17 @@
 /**
- * Chatbot Datasets — list filters (search, category).
+ * Chatbot Datasets — list filters (search, category, status).
  * Same approach as the other admin listings: rows that do not match get the `hidden` attribute and the shared
  * pagination component (data-lml-paginate) re-pages the rest, going back to page 1.
  */
 
-/** @param {{ title?: string, source?: string, category?: string }} row */
-export function matchesFilters(row, { query = '', category = 'all' } = {}) {
+/** @param {{ title?: string, source?: string, category?: string, status?: string }} row */
+export function matchesFilters(row, { query = '', category = 'all', status = 'all' } = {}) {
     const q = String(query ?? '').trim().toLowerCase();
     const text = `${row.title ?? ''} ${row.source ?? ''}`.toLowerCase();
 
     return (q === '' || text.includes(q))
-        && (!category || category === 'all' || row.category === category);
+        && (!category || category === 'all' || row.category === category)
+        && (!status || status === 'all' || row.status === status);
 }
 
 function applyFilters(root) {
@@ -20,6 +21,7 @@ function applyFilters(root) {
     const filters = {
         query: root.querySelector('[data-cd-search]')?.value ?? '',
         category: root.querySelector('[data-cd-category]')?.value ?? 'all',
+        status: root.querySelector('[data-cd-status]')?.value ?? 'all',
     };
 
     let visible = 0;
@@ -28,6 +30,7 @@ function applyFilters(root) {
             title: row.dataset.cdTitle,
             source: row.dataset.cdSource,
             category: row.dataset.cdCategory,
+            status: row.dataset.cdStatus,
         }, filters);
         row.hidden = !show;
         if (show) {
@@ -46,6 +49,7 @@ function applyFilters(root) {
 function init(root) {
     root.querySelector('[data-cd-search]')?.addEventListener('input', () => applyFilters(root));
     root.querySelector('[data-cd-category]')?.addEventListener('change', () => applyFilters(root));
+    root.querySelector('[data-cd-status]')?.addEventListener('change', () => applyFilters(root));
     applyFilters(root);
 }
 

@@ -5,7 +5,8 @@ namespace App\Support;
 use Illuminate\Support\Str;
 
 /**
- * Dataset version statuses (kept for history), languages and categories (categories match ChatbotController validation).
+ * SR-07 dataset statuses, languages and categories (categories match ChatbotController validation).
+ * A dataset's own state is derived from its versions, like SR-05 terms.
  */
 final class ChatbotDatasetCatalog
 {
@@ -43,15 +44,12 @@ final class ChatbotDatasetCatalog
 
     public static function label(string $status): string
     {
-        return match ($status) {
-            self::DRAFT => 'Draft',
-            self::SUBMITTED => 'Submitted for review',
-            self::APPROVED => 'Live',
-            self::REJECTED => 'Rejected',
-            self::SUPERSEDED => 'Superseded',
-            self::RETIRED => 'Retired',
-            default => ucfirst($status),
-        };
+        // Without Linguist review an approved dataset is simply "Live" in the chatbot.
+        if ($status === self::APPROVED) {
+            return (bool) config('lmlinga.chatbot_datasets.require_review', false) ? 'Approved' : 'Live';
+        }
+
+        return ChatbotTermStatus::label($status);
     }
 
     /** Source name used later as the chatbot's source_file (slug matching), e.g. "asthma_care.txt". */

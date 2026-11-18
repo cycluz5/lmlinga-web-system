@@ -1,5 +1,5 @@
 {{--
-    Upload / change a chatbot dataset (Admin only). The file's real content, size, encoding and type
+    SR-07 Upload / change a chatbot dataset (Admin only). The file's real content, size, encoding and type
     are checked on the server; the file is read once and not kept (only the checked text is stored).
 --}}
 @extends('layouts.dashboard')
@@ -22,9 +22,17 @@
             <a href="{{ $dataset ? route('chatbot-datasets.show', ['datasetId' => $dataset['id']]) : route('chatbot-datasets.index') }}" class="btn btn-outline-secondary lml-focus-ring fw-medium">Cancel</a>
         </header>
 
-        @if ($dataset)
+        @if ($dataset && $dataset['edit_creates_revision'])
             <div class="alert alert-info mb-0" role="note" data-lml-dataset-revision-note>
-                Saving replaces the live text in the chatbot's health information with this version. The earlier version and its history are kept.
+                @if ($dataset['review_required'])
+                    @if ($dataset['approved'])
+                        Saving creates a new draft version. The approved version stays current until a Linguist approves the new one.
+                    @else
+                        Saving creates a new draft version. The reviewed version and its history are kept.
+                    @endif
+                @else
+                    Saving replaces the live text in the chatbot's health information with this version. The earlier version and its history are kept.
+                @endif
             </div>
         @endif
 
@@ -39,7 +47,7 @@
                 <input id="dataset-title" type="text" name="title" value="{{ $value('title') }}" maxlength="160" required
                     class="form-control lml-form-control @error('title') is-invalid @enderror">
                 @unless ($dataset)
-                    <p class="lml-form-help">The title also sets the dataset's source name, which cannot change after the dataset is saved.</p>
+                    <p class="lml-form-help">The title also sets the dataset's source name, which cannot change after submission.</p>
                 @endunless
                 @error('title')<p class="lml-form-error">{{ $message }}</p>@enderror
             </div>
@@ -99,7 +107,7 @@
             </div>
 
             <div class="lml-language-management__actions">
-                <button type="submit" class="btn btn-primary lml-focus-ring fw-medium">Save and send to chatbot</button>
+                <button type="submit" class="btn btn-primary lml-focus-ring fw-medium">{{ config('lmlinga.chatbot_datasets.require_review') ? 'Save draft' : 'Save and send to chatbot' }}</button>
             </div>
         </form>
     </div>

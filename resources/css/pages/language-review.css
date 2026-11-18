@@ -1,0 +1,121 @@
+/**
+ * SR-06 Language Review (Linguist accounts only). Scoped under .lml-language-review.
+ */
+
+.lml-language-review {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 64rem;
+}
+
+.lml-language-review__summary,
+.lml-language-review__section {
+    padding: 1rem 1.15rem;
+    border: 1px solid var(--lml-border, #e5e7eb);
+    border-radius: var(--lml-radius-md, 0.5rem);
+    background-color: #fff;
+}
+
+.lml-language-review__summary-title,
+.lml-language-review__section-title {
+    margin: 0 0 0.35rem;
+    color: var(--lml-dark-green, #14532d);
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.lml-language-review__summary-title .bi {
+    margin-right: 0.35rem;
+}
+
+.lml-language-review__summary-count {
+    margin: 0;
+    color: var(--lml-dark-green, #14532d);
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.lml-language-review__summary-note,
+.lml-language-review__section-description {
+    margin: 0.25rem 0 0;
+    color: #4b5563;
+    font-size: 0.9rem;
+}
+
+.lml-language-review__section-header {
+    margin-bottom: 0.75rem;
+}
+
+.lml-language-review__empty {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0.85rem 1rem;
+    border: 1px dashed #d1d5db;
+    border-radius: var(--lml-radius-md, 0.5rem);
+    background-color: #f9fafb;
+    color: #4b5563;
+    font-size: 0.9rem;
+}
+
+/* SR-05 term queue and review page */
+.lml-language-review__items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.lml-language-review__item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--lml-border, #e5e7eb);
+    border-radius: var(--lml-radius-md, 0.5rem);
+}
+
+.lml-language-review__item-term {
+    margin: 0;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.lml-language-review__item-meta {
+    margin: 0.15rem 0 0;
+    color: #4b5563;
+    font-size: 0.85rem;
+    overflow-wrap: anywhere;
+}
+
+.lml-language-review__term-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.lml-language-review__decisions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    gap: 1rem;
+}
+
+.lml-language-review__decision {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+.lml-language-review__decision textarea {
+    width: 100%;
+}

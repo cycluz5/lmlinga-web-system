@@ -16,7 +16,8 @@ use App\Support\ChatbotDatasetFileInspector;
  *
  * Importing only records the file as a dataset. The document itself, health_chunks and the chatbot are not
  * touched: the built-in file keeps serving the chatbot until the Admin changes the dataset (then the new text is
- * written to the admin folder and replaces it, see ChatbotDatasetPublisher). Each file becomes a Live dataset.
+ * written to the admin folder and replaces it, see ChatbotDatasetPublisher). With Linguist review on, each file
+ * becomes a Submitted dataset (never Approved); without review it becomes a Live dataset.
  * Idempotent: files already listed (same source name, or same content) are skipped.
  */
 class ChatbotDatasetImporter
@@ -71,7 +72,7 @@ class ChatbotDatasetImporter
                     }
 
                     try {
-                        $this->workflow->upload($admin, [
+                        $dataset = $this->workflow->upload($admin, [
                             'title' => $this->titleFromName($name),
                             'language' => $language,
                             'category' => $category,
@@ -80,6 +81,9 @@ class ChatbotDatasetImporter
                             'no_personal_data_confirmed' => true,
                             'original_filename' => $name,
                         ], $inspection, ChatbotDatasetWorkflow::ACTION_IMPORTED);
+                        if ($this->workflow->requiresReview()) {
+                            $this->workflow->submit($admin, $dataset);
+                        }
                     } catch (ChatbotDatasetWorkflowException $e) {
                         $report('blocked', "{$label}: ".$e->getMessage());
                         $counts['new']--;

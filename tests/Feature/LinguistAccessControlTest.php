@@ -18,8 +18,8 @@ use Illuminate\Support\Facades\Route;
 use Tests\TestCase;
 
 /**
- * SR-06 Linguist role: deny-by-default access to every staff route except the own profile, password change
- * and logout. The Language Review and Language Management pages no longer exist.
+ * SR-06 Linguist role: deny-by-default access to every staff route except Language Review, own profile,
+ * password change and logout; Language Review for Linguists only (Admin excluded, D-7/LQ-2).
  */
 class LinguistAccessControlTest extends TestCase
 {
@@ -95,7 +95,8 @@ class LinguistAccessControlTest extends TestCase
         $checked = 0;
         $failures = [];
         foreach ($this->staffRouteRequests() as $request) {
-            if (in_array($request['name'], EnsureLinguistScope::ALLOWED_ROUTES, true) || $request['name'] === 'dashboard') {
+            if (in_array($request['name'], EnsureLinguistScope::ALLOWED_ROUTES, true) || $request['name'] === 'dashboard'
+                || str_starts_with($request['name'], 'language-review.')) {
                 continue;
             }
             $response = $this->call($request['method'], $request['uri']);
@@ -147,14 +148,18 @@ class LinguistAccessControlTest extends TestCase
         $this->getJson(route('offline.household-profiling-bootstrap'))->assertForbidden();
     }
 
-    public function test_linguist_profile_page_has_no_review_sidebar_or_offline_machinery(): void
+    public function test_linguist_sees_only_language_review_with_empty_queues(): void
     {
         $this->actingAsStaff(StaffRole::LINGUIST);
 
-        $html = $this->get(route('profile.show'))->assertOk()->getContent();
+        $html = $this->get(route('language-review.index'))->assertOk()->getContent();
 
-        $this->assertStringNotContainsString('Language Review', $html);
-        $this->assertStringNotContainsString('Language Management', $html);
+        $this->assertSame(2, substr_count($html, 'No items are waiting for review.'));
+        $this->assertStringContainsString('Bikol-Iriga terms', $html);
+        $this->assertStringContainsString('Chatbot datasets', $html);
+        $this->assertMatchesRegularExpression('/data-lml-language-review-count>\s*0\s*</', $html);
+        $this->assertStringContainsString('Language Review', $html);
+        // Sidebar shows no health-worker destinations; no offline machinery for Linguists.
         foreach (['Household Profiling', 'Health Records', 'Spot Mapping', 'User Management'] as $label) {
             $this->assertStringNotContainsString('>'.$label.'<', $html, $label);
         }
@@ -165,46 +170,17 @@ class LinguistAccessControlTest extends TestCase
     {
         $this->actingAsStaff(StaffRole::LINGUIST);
 
-        $this->get(route('dashboard'))->assertRedirect(route('profile.show'));
-        $this->get(route('profile.show'))->assertOk()->assertSee('Linguist')->assertDontSee('data-lml-offline-root', false);
+        $this->get(route('dashboard'))->assertRedirect(route('language-review.index'));
+        $this->get(route('profile.show'))->assertOk()->assertSee('Linguist (Language Review)')->assertDontSee('data-lml-offline-root', false);
         $this->get(route('password.change.required'))->assertOk();
         $this->post(route('logout'))->assertRedirect();
     }
 
-    public function test_language_review_and_language_management_no_longer_exist(): void
-    {
-        $this->assertFalse(Route::has('language-review.index'));
-        $this->assertFalse(Route::has('language-management.index'));
-        $this->assertFalse(Route::has('chatbot-datasets.submit'));
-        foreach (Route::getRoutes()->getRoutes() as $route) {
-            $this->assertStringNotContainsString('language-review', $route->uri());
-            $this->assertStringNotContainsString('language-management', $route->uri());
-        }
-        $this->assertFalse(Gate::has('review-language-content'));
-
-        foreach ([StaffRole::LINGUIST, StaffRole::ADMIN] as $role) {
-            $this->actingAsStaff($role, ['email' => $role.'.gone@example.test', 'username' => $role.'.gone']);
-            $this->get('/language-review')->assertNotFound();
-            $this->get('/language-management')->assertNotFound();
-        }
-    }
-
-    public function test_sidebar_has_no_language_management_or_language_review_link(): void
-    {
-        foreach ([StaffRole::ADMIN, StaffRole::BHW, StaffRole::LINGUIST] as $role) {
-            $this->actingAsStaff($role, ['email' => $role.'.nav@example.test', 'username' => $role.'.nav']);
-            $html = $this->get($role === StaffRole::LINGUIST ? route('profile.show') : route('dashboard'))->assertOk()->getContent();
-            $this->assertStringNotContainsString('Language Management', $html, $role);
-            $this->assertStringNotContainsString('Language Review', $html, $role);
-            $this->assertStringNotContainsString('/language-management', $html, $role);
-            $this->assertStringNotContainsString('/language-review', $html, $role);
-        }
-    }
-
-    public function test_admin_and_health_workers_keep_their_modules(): void
+    public function test_admin_and_health_workers_cannot_open_language_review_but_keep_their_modules(): void
     {
         foreach ([StaffRole::ADMIN, StaffRole::BHW, StaffRole::BNS, StaffRole::BSPO] as $role) {
             $this->actingAsStaff($role, ['email' => $role.'.sr06@example.test', 'username' => $role.'.sr06']);
+            $this->get(route('language-review.index'))->assertForbidden();
             $this->get(route('dashboard'))->assertOk();
             $this->get(route('household-profiling.index'))->assertOk();
             $this->get(route('spot-mapping.index'))->assertOk();
@@ -215,13 +191,26 @@ class LinguistAccessControlTest extends TestCase
         $this->get(route('household-requests.index'))->assertOk();
     }
 
-    public function test_inactive_linguist_cannot_use_the_profile_page(): void
+    public function test_review_gate_allows_only_an_active_linguist(): void
+    {
+        $linguist = $this->actingAsStaff(StaffRole::LINGUIST);
+        $this->assertTrue(Gate::forUser($linguist)->allows('review-language-content'));
+
+        $admin = $this->actingAsStaff(StaffRole::ADMIN, ['email' => 'gate.admin@example.test', 'username' => 'gate.admin']);
+        $this->assertFalse(Gate::forUser($admin)->allows('review-language-content'));
+
+        $inactive = $this->actingAsStaff(StaffRole::LINGUIST, ['email' => 'gate.inactive@example.test', 'username' => 'gate.inactive', 'status' => StaffAccountStatus::INACTIVE]);
+        $this->assertFalse(Gate::forUser($inactive)->allows('review-language-content'));
+    }
+
+    public function test_inactive_linguist_cannot_use_language_review(): void
     {
         $this->actingAsStaff(StaffRole::LINGUIST, ['status' => StaffAccountStatus::INACTIVE]);
 
-        $response = $this->get(route('profile.show'));
+        $response = $this->get(route('language-review.index'));
         $this->assertNotSame(200, $response->getStatusCode());
     }
+
     public function test_role_is_read_from_the_account_not_a_stale_session_value(): void
     {
         $user = $this->actingAsStaff(StaffRole::BHW, ['email' => 'switch.role@example.test', 'username' => 'switch.role']);
@@ -234,10 +223,10 @@ class LinguistAccessControlTest extends TestCase
         $this->withSession([UiRole::SESSION_KEY => StaffRole::BHW]);
 
         $this->get(route('household-profiling.index'))->assertForbidden();
-        $this->get(route('profile.show'))->assertOk();
+        $this->get(route('language-review.index'))->assertOk();
     }
 
-    public function test_real_login_sends_a_linguist_to_the_profile_page(): void
+    public function test_real_login_sends_a_linguist_to_language_review(): void
     {
         $user = User::factory()->create([
             'email' => 'login.linguist@example.test', 'username' => 'login.linguist',
@@ -247,8 +236,8 @@ class LinguistAccessControlTest extends TestCase
 
         $this->post(route('login.store'), ['email' => 'login.linguist@example.test', 'password' => 'Linguist!Pass1'])
             ->assertRedirect(route('dashboard'));
-        $this->get(route('dashboard'))->assertRedirect(route('profile.show'));
-        $this->get(route('profile.show'))->assertOk();
+        $this->get(route('dashboard'))->assertRedirect(route('language-review.index'));
+        $this->get(route('language-review.index'))->assertOk();
     }
 
     public function test_ui_role_never_falls_back_to_a_health_worker_shell_for_a_linguist(): void
