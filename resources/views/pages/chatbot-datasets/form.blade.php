@@ -24,7 +24,11 @@
 
         @if ($dataset)
             <div class="alert alert-info mb-0" role="note" data-lml-dataset-revision-note>
-                Saving replaces the live text in the chatbot's health information with this version. The earlier version and its history are kept.
+                @if ($dataset['draft_version'])
+                    This is a machine-translated draft. Saving keeps it as a draft; the chatbot does not use it until you verify it.
+                @else
+                    Saving replaces the live text in the chatbot's health information with this version. The earlier version and its history are kept.
+                @endif
             </div>
         @endif
 

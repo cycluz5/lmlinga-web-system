@@ -39,6 +39,73 @@ class ChatbotDatasetWorkflow
 
     public const ACTION_RESTORED = 'restored';
 
+    public const ACTION_TRANSLATED = 'translated';
+
+    /**
+     * Save an AI-translated draft of $original in another language. It is NOT published: the chatbot only reads
+     * approved versions, so it is not used until the Admin verifies it (verifyAndPublish).
+     *
+     * @param  array{errors: list<string>, warnings: list<string>, content: string, sha256: string, size_bytes: int, line_count: int, detected_type: string}  $inspection
+     */
+    public function createTranslationDraft(User $admin, ChatbotDataset $original, string $language, string $title, array $inspection): ChatbotDataset
+    {
+        $this->assertAdmin($admin);
+        $this->assertInspectionPassed($inspection);
+        if (! array_key_exists($language, ChatbotDatasetCatalog::LANGUAGES) || $language === $original->language) {
+            throw new ChatbotDatasetWorkflowException('Choose a different supported language.', 422, 'language');
+        }
+        $source = $original->approvedVersion();
+        if ($original->isRetired() || $source === null) {
+            throw new ChatbotDatasetWorkflowException('Only a live dataset can be translated.');
+        }
+        $meta = $this->cleanMeta([
+            'title' => $title,
+            'source_reference' => 'Machine translation of "'.$source->title.'" ('.(ChatbotDatasetCatalog::LANGUAGES[$original->language] ?? $original->language).'): verify before use',
+            'no_personal_data_confirmed' => false,
+            'original_filename' => $original->source_name,
+        ]);
+
+        return DB::transaction(function () use ($admin, $original, $language, $meta, $inspection): ChatbotDataset {
+            $exists = ChatbotDataset::query()
+                ->where('language', $language)->where('category', $original->category)->where('source_name', $original->source_name)->exists();
+            if ($exists) {
+                throw new ChatbotDatasetWorkflowException('This topic already exists in that language.', 422, 'language');
+            }
+            $this->assertNotDuplicate($inspection['sha256'], null);
+
+            $dataset = ChatbotDataset::query()->create([
+                'language' => $language,
+                'category' => $original->category,
+                'source_name' => $original->source_name,
+                'created_by_user_id' => $admin->getKey(),
+            ]);
+            $version = $dataset->versions()->create(
+                ['machine_translated' => true] + $this->versionAttributes($meta, $inspection, $admin, 1, $language)
+            );
+            $this->log($dataset, $version, self::ACTION_TRANSLATED, null, ChatbotDatasetCatalog::DRAFT, $admin, 'Machine translation. Not used by the chatbot until verified.');
+
+            return $dataset;
+        });
+    }
+
+    /** The Admin has read and corrected the machine translation: confirm it holds no personal information and publish it. */
+    public function verifyAndPublish(User $admin, ChatbotDataset $dataset, bool $noPersonalData): ChatbotDatasetVersion
+    {
+        $this->assertAdmin($admin);
+
+        return DB::transaction(function () use ($admin, $dataset, $noPersonalData): ChatbotDatasetVersion {
+            $dataset = $this->lock($dataset);
+            $draft = $dataset->openVersion();
+            if ($dataset->isRetired() || $draft === null || ! $draft->machine_translated) {
+                throw new ChatbotDatasetWorkflowException('There is no machine translation waiting to be verified.');
+            }
+            $draft->fill(['no_personal_data_confirmed' => $noPersonalData, 'machine_translated' => false])->save();
+            $this->publish($dataset, $draft, $admin);
+
+            return $draft;
+        });
+    }
+
     /**
      * @param  array{title: string, language: string, category: string, source_reference: string, no_personal_data_confirmed: bool, source_name?: string|null, original_filename?: string|null}  $meta
      * @param  array{errors: list<string>, warnings: list<string>, content: string, sha256: string, size_bytes: int, line_count: int, detected_type: string}  $inspection
@@ -119,6 +186,17 @@ class ChatbotDatasetWorkflow
                 throw new ChatbotDatasetWorkflowException('Nothing changed. Edit the title, source reference or file before saving.', 422, 'title');
             }
 
+            if ($open?->status === ChatbotDatasetCatalog::DRAFT && $open->machine_translated) {
+                // An unverified machine translation is corrected in place and stays a draft: only verifyAndPublish publishes it.
+                $open->fill(
+                    ['machine_translated' => true, 'no_personal_data_confirmed' => false]
+                    + $this->versionAttributes($meta, $inspection, $admin, $open->version_no, $dataset->language)
+                )->save();
+                $this->log($dataset, $open, self::ACTION_UPDATED, ChatbotDatasetCatalog::DRAFT, ChatbotDatasetCatalog::DRAFT, $admin);
+
+                return $open;
+            }
+
             if ($open?->status === ChatbotDatasetCatalog::DRAFT) {
                 $open->fill($this->versionAttributes($meta, $inspection, $admin, $open->version_no, $dataset->language))->save();
                 $this->log($dataset, $open, self::ACTION_UPDATED, ChatbotDatasetCatalog::DRAFT, ChatbotDatasetCatalog::DRAFT, $admin);
@@ -165,6 +243,9 @@ class ChatbotDatasetWorkflow
         return DB::transaction(function () use ($admin, $dataset): ChatbotDataset {
             $dataset = $this->lock($dataset);
             $this->assertNotDefault($dataset);
+            if ($dataset->openVersion()?->machine_translated) {
+                throw new ChatbotDatasetWorkflowException('Verify this machine translation before it is used.');
+            }
             if (! $dataset->isRetired()) {
                 throw new ChatbotDatasetWorkflowException('Only a retired dataset can be restored.');
             }

@@ -61,6 +61,29 @@
             @endif
         </section>
 
+        @if ($dataset['draft_version'])
+            <section class="lml-language-management__panel" aria-labelledby="dataset-draft-heading" data-lml-dataset-draft>
+                <h2 id="dataset-draft-heading" class="lml-language-management__panel-title">Machine-translated draft: not used by the chatbot yet</h2>
+                <p class="mb-2">
+                    This text was translated by the AI model and may contain mistakes. Read it, correct it with
+                    “Change or replace file”, then verify it. Only a verified translation is sent to the chatbot.
+                </p>
+                @include('pages.chatbot-datasets.partials.version', ['version' => $dataset['draft_version'], 'showContent' => true, 'openContent' => true, 'showScreening' => false])
+                @if ($dataset['can_verify'])
+                    <form method="POST" action="{{ route('chatbot-datasets.verify', ['datasetId' => $dataset['id']]) }}" class="mt-3">
+                        @csrf
+                        <div class="form-check mb-2">
+                            <input id="verify-confirm" type="checkbox" name="no_personal_data_confirmed" value="1" required class="form-check-input">
+                            <label for="verify-confirm" class="form-check-label">
+                                I read this translation, corrected it where needed, and confirm it contains no resident or patient personal information.
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary lml-focus-ring fw-medium" data-lml-dataset-verify>Verify and send to chatbot</button>
+                    </form>
+                @endif
+            </section>
+        @endif
+
         <section class="lml-language-management__panel" aria-labelledby="dataset-languages-heading" data-lml-dataset-languages>
             <h2 id="dataset-languages-heading" class="lml-language-management__panel-title">Languages</h2>
             <ul class="list-unstyled mb-0">
@@ -70,10 +93,17 @@
                         @if ($t['current'])
                             <span class="lml-language-management__muted">This dataset</span>
                         @elseif ($t['exists'])
-                            <a href="{{ route('chatbot-datasets.show', ['datasetId' => $t['id']]) }}" class="lml-focus-ring">{{ $t['title'] }}@if ($t['retired']) · Retired @endif</a>
+                            <a href="{{ route('chatbot-datasets.show', ['datasetId' => $t['id']]) }}" class="lml-focus-ring">{{ $t['title'] }}@if ($t['retired']) · Retired @endif @if ($t['unverified']) · Draft, not verified @endif</a>
                         @else
                             <span class="lml-language-management__muted">Missing</span>
                             <a href="{{ route('chatbot-datasets.create', ['from' => $dataset['id'], 'language' => $t['language']]) }}" class="btn btn-sm btn-outline-primary lml-focus-ring fw-medium" data-lml-dataset-add-translation>Add translation</a>
+                            @if ($dataset['can_translate'])
+                                <form method="POST" action="{{ route('chatbot-datasets.translate', ['datasetId' => $dataset['id']]) }}" class="d-inline">
+                                    @csrf
+                                    <input type="hidden" name="language" value="{{ $t['language'] }}">
+                                    <button type="submit" class="btn btn-sm btn-outline-secondary lml-focus-ring fw-medium" data-lml-dataset-translate title="Creates a draft with the AI model. The chatbot does not use it until you verify it.">Translate with AI (draft)</button>
+                                </form>
+                            @endif
                         @endif
                     </li>
                 @endforeach

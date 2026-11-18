@@ -30,7 +30,7 @@ class ChatbotDatasetVersion extends Model
     protected $fillable = [
         'chatbot_dataset_id', 'version_no', 'title', 'source_reference', 'content', 'content_sha256',
         'size_bytes', 'line_count', 'original_filename', 'screening', 'no_personal_data_confirmed', 'status',
-        'created_by_user_id',
+        'created_by_user_id', 'machine_translated',
     ];
 
     protected function casts(): array
@@ -38,6 +38,7 @@ class ChatbotDatasetVersion extends Model
         return [
             'screening' => 'array',
             'no_personal_data_confirmed' => 'boolean',
+            'machine_translated' => 'boolean',
         ];
     }
 

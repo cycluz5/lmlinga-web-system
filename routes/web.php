@@ -344,6 +344,16 @@ Route::middleware(['auth', 'staff.account-usable', 'staff.password-current', 'ui
             'restore',
         ])->where('datasetId', '[0-9]+')->name('chatbot-datasets.restore');
 
+        Route::post('/chatbot-datasets/{datasetId}/translate', [
+            \App\Http\Controllers\Admin\ChatbotDatasetController::class,
+            'translate',
+        ])->where('datasetId', '[0-9]+')->middleware('throttle:lmlinga-dataset-upload')->name('chatbot-datasets.translate');
+
+        Route::post('/chatbot-datasets/{datasetId}/verify', [
+            \App\Http\Controllers\Admin\ChatbotDatasetController::class,
+            'verify',
+        ])->where('datasetId', '[0-9]+')->name('chatbot-datasets.verify');
+
         Route::post('/chatbot-datasets/{datasetId}/reindex', [
             \App\Http\Controllers\Admin\ChatbotDatasetController::class,
             'reindex',

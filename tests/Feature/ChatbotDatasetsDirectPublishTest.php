@@ -479,6 +479,102 @@ class ChatbotDatasetsDirectPublishTest extends TestCase
         $this->assertSame(0, ChatbotDatasetEvent::query()->where('chatbot_dataset_id', $original->id)->count());
     }
 
+    // ------------------------------------------------------------------ machine-translated drafts
+
+    private function liveEnglishDataset(): ChatbotDataset
+    {
+        $this->admin();
+        $this->post(route('chatbot-datasets.store'), $this->payload('alpha', 'en', 'child_care'))->assertSessionHasNoErrors();
+
+        return ChatbotDataset::query()->firstOrFail();
+    }
+
+    private function fakeTranslator(bool $up = true): void
+    {
+        Http::fake(['*/api/chat' => $up
+            ? Http::response(['message' => ['content' => "Isinalin na teksto\n\n".str_repeat('Ini an placeholder na hinsabihan para sa pagsubok. ', 6)]])
+            : Http::response('model not reachable', 500)]);
+    }
+
+    public function test_an_ai_translation_is_a_draft_that_the_chatbot_does_not_use(): void
+    {
+        $original = $this->liveEnglishDataset();
+        $this->fakeTranslator();
+
+        $this->post(route('chatbot-datasets.translate', ['datasetId' => $original->id]), ['language' => 'bcl'])
+            ->assertSessionMissing('error')->assertSessionHas('status');
+
+        $draft = ChatbotDataset::query()->where('language', 'bcl')->firstOrFail();
+        $this->assertSame($original->source_name, $draft->source_name);
+        $this->assertNull($draft->approvedVersion());
+        $this->assertTrue($draft->openVersion()->machine_translated);
+        $this->assertFileDoesNotExist($this->file('bcl', 'child_care', $draft->source_name));
+        $this->assertSame(0, HealthChunk::query()->where('language', 'bcl')->count());
+        $this->assertNotContains($draft->source_name, array_column(array_filter(ApprovedChatbotDatasets::all(), fn ($d) => ($d['language'] ?? '') === 'bcl'), 'source_name'));
+
+        $this->get(route('chatbot-datasets.show', ['datasetId' => $draft->id]))
+            ->assertOk()->assertSee('data-lml-dataset-draft', false)->assertSee('data-lml-dataset-verify', false)
+            ->assertDontSee('data-lml-dataset-indexed', false);
+        $this->get(route('chatbot-datasets.index', ['language' => 'bcl']))->assertOk()->assertSee('data-lml-dataset-unverified', false);
+    }
+
+    public function test_verifying_a_draft_translation_publishes_it_to_the_chatbot(): void
+    {
+        $original = $this->liveEnglishDataset();
+        $this->fakeTranslator();
+        $this->post(route('chatbot-datasets.translate', ['datasetId' => $original->id]), ['language' => 'bcl']);
+        $draft = ChatbotDataset::query()->where('language', 'bcl')->firstOrFail();
+
+        $this->post(route('chatbot-datasets.verify', ['datasetId' => $draft->id]))->assertSessionHas('error');
+        $this->assertNull($draft->fresh(['versions'])->approvedVersion(), 'the confirmation is required');
+
+        $this->post(route('chatbot-datasets.verify', ['datasetId' => $draft->id]), ['no_personal_data_confirmed' => '1'])
+            ->assertSessionHasNoErrors()->assertSessionHas('status');
+
+        $draft = $draft->fresh(['versions']);
+        $this->assertNotNull($draft->approvedVersion());
+        $this->assertFalse($draft->approvedVersion()->machine_translated);
+        $this->assertFileExists($this->file('bcl', 'child_care', $draft->source_name));
+        $this->assertGreaterThan(0, HealthChunk::query()->where('language', 'bcl')->count());
+    }
+
+    public function test_correcting_a_draft_translation_keeps_it_a_draft(): void
+    {
+        $original = $this->liveEnglishDataset();
+        $this->fakeTranslator();
+        $this->post(route('chatbot-datasets.translate', ['datasetId' => $original->id]), ['language' => 'tl']);
+        $draft = ChatbotDataset::query()->where('language', 'tl')->firstOrFail();
+
+        $this->put(route('chatbot-datasets.update', ['datasetId' => $draft->id]), [
+            'title' => 'Naitamang pamagat',
+            'source_reference' => 'Placeholder source reference for testing',
+            'dataset_file' => UploadedFile::fake()->createWithContent('fixed.txt', $this->text('tagalog fixed')),
+            'no_personal_data_confirmed' => '1',
+        ])->assertSessionHasNoErrors();
+
+        $draft = $draft->fresh(['versions']);
+        $this->assertNull($draft->approvedVersion());
+        $this->assertTrue($draft->openVersion()->machine_translated);
+        $this->assertSame('Naitamang pamagat', $draft->openVersion()->title);
+        $this->assertFileDoesNotExist($this->file('tl', 'child_care', $draft->source_name));
+        $this->post(route('chatbot-datasets.restore', ['datasetId' => $draft->id]));
+        $this->assertNull($draft->fresh(['versions'])->approvedVersion());
+    }
+
+    public function test_no_draft_is_created_when_the_translation_model_is_down_or_the_topic_exists(): void
+    {
+        $original = $this->liveEnglishDataset();
+        $this->fakeTranslator(false);
+
+        $this->post(route('chatbot-datasets.translate', ['datasetId' => $original->id]), ['language' => 'bcl'])
+            ->assertSessionHas('error');
+        $this->assertSame(1, ChatbotDataset::query()->count());
+
+        $this->fakeTranslator();
+        $this->post(route('chatbot-datasets.translate', ['datasetId' => $original->id]), ['language' => 'en'])->assertSessionHas('error');
+        $this->assertSame(1, ChatbotDataset::query()->count());
+    }
+
     // ------------------------------------------------------------------ grouped by language
 
     private function addDatasets(): void

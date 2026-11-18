@@ -97,6 +97,10 @@ return [
         // Where published datasets are written for the chatbot: <path>/<language>/<category>/<source>.txt.
         // Outside resources/ so deploys never overwrite it; the chatbot reads this folder as well as resources/health_docs.
         'admin_docs_path' => storage_path('app/health_docs_admin'),
+
+        // Draft translations (never used by the chatbot until the Admin verifies them): the local Ollama model.
+        'translation_model' => env('DATASET_TRANSLATION_MODEL', 'gemma3:4b'),
+        'translation_timeout' => (int) env('DATASET_TRANSLATION_TIMEOUT', 180),
     ],
 
 ];

@@ -9,6 +9,7 @@ use App\Models\ChatbotDataset;
 use App\Models\User;
 use App\Services\ChatbotDatasetImporter;
 use App\Services\ChatbotDatasetPublisher;
+use App\Services\ChatbotDatasetTranslator;
 use App\Services\ChatbotDatasetWorkflow;
 use App\Support\ChatbotDatasetCatalog;
 use App\Support\ChatbotDatasetFileInspector;
@@ -31,6 +32,7 @@ class ChatbotDatasetController extends Controller
         private readonly ChatbotDatasetFileInspector $inspector,
         private readonly ChatbotDatasetPublisher $publisher,
         private readonly ChatbotDatasetImporter $importer,
+        private readonly ChatbotDatasetTranslator $translator,
     ) {
     }
 
@@ -63,7 +65,7 @@ class ChatbotDatasetController extends Controller
         }
 
         $datasets = ChatbotDataset::query()
-            ->with(['versions' => fn ($q) => $q->select(['id', 'chatbot_dataset_id', 'version_no', 'title', 'status'])])
+            ->with(['versions' => fn ($q) => $q->select(['id', 'chatbot_dataset_id', 'version_no', 'title', 'status', 'machine_translated'])])
             ->orderBy('category')
             ->orderBy('source_name')
             ->get();
@@ -180,7 +182,57 @@ class ChatbotDatasetController extends Controller
             'original_filename' => $file?->getClientOriginalName(),
         ], $file !== null ? $this->inspector->inspectUpload($file) : null));
 
+        if ($dataset->fresh(['versions'])->openVersion()?->machine_translated) {
+            return redirect()->route('chatbot-datasets.show', ['datasetId' => $dataset->id])
+                ->with('status', 'Draft saved. The chatbot does not use it until you verify it.');
+        }
+
         return $this->publishedResponse($dataset, 'Changes saved');
+    }
+
+    /** Draft a translation of a live dataset with the local AI model. Not used by the chatbot until verified. */
+    public function translate(Request $request, string $datasetId): RedirectResponse
+    {
+        $admin = $this->admin($request);
+        $original = $this->find($datasetId);
+        $language = (string) $request->input('language');
+        $version = $original->approvedVersion();
+        if ($version === null || $original->isRetired() || ! array_key_exists($language, ChatbotDatasetCatalog::LANGUAGES) || $this->topicExists($original, $language)) {
+            return redirect()->route('chatbot-datasets.show', ['datasetId' => $original->id])
+                ->with('error', 'Choose a language that does not have this topic yet. Only a live dataset can be translated.');
+        }
+
+        try {
+            $content = $this->translator->translate($version->content, $original->language, $language);
+            $title = $this->translator->translate($version->title, $original->language, $language);
+            $draft = $this->workflow->createTranslationDraft(
+                $admin, $original, $language, mb_substr($title, 0, 160),
+                $this->inspector->inspect($content, $original->source_name, $language)
+            );
+        } catch (ChatbotDatasetWorkflowException $e) {
+            $this->abortIfForbidden($e);
+
+            return redirect()->route('chatbot-datasets.show', ['datasetId' => $original->id])->with('error', $e->getMessage());
+        }
+
+        return redirect()->route('chatbot-datasets.show', ['datasetId' => $draft->id])
+            ->with('status', 'Draft translation created. Read and correct it, then verify it. The chatbot does not use it until then.');
+    }
+
+    /** The Admin has checked the machine translation: publish it to the chatbot. */
+    public function verify(Request $request, string $datasetId): RedirectResponse
+    {
+        $admin = $this->admin($request);
+        $dataset = $this->find($datasetId);
+        if (! $request->boolean('no_personal_data_confirmed')) {
+            return redirect()->route('chatbot-datasets.show', ['datasetId' => $dataset->id])
+                ->with('error', 'Confirm that you checked the translation and that it contains no resident personal information.');
+        }
+
+        return $this->act($dataset, function () use ($admin, $dataset): void {
+            $this->workflow->verifyAndPublish($admin, $dataset, true);
+            $this->publisher->publish($dataset->fresh());
+        }, 'Translation verified and sent to the chatbot.');
     }
 
     public function retire(Request $request, string $datasetId): RedirectResponse
