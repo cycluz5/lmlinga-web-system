@@ -26,10 +26,8 @@ final class OpaqueUrl
             'clientKey' => 'k',
             'announcement' => 'a',
             'deathRequest' => 'd',
-            'termId' => 'b', // SR-05 Bikol-Iriga term
-            'versionId' => 'g', // SR-05 term version under Linguist review
             'datasetId' => 'f', // SR-07 chatbot dataset
-            'datasetVersionId' => 'j', // SR-07 dataset version under Linguist review
+            'datasetVersionId' => 'j', // SR-07 dataset version
             'id' => match (true) {
                 str_starts_with($routeUri, 'user-management/health-workers') => 'w',
                 str_starts_with($routeUri, 'user-management/residents') => 't',

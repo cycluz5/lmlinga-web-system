@@ -10,8 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Collection;
 
 /**
- * SR-07 chatbot dataset (identity). Content lives in versions; the approved version stays current while a
- * replacement waits for Linguist review. Not used by the chatbot until activation is approved.
+ * Chatbot dataset (identity). Content lives in versions; an Admin save publishes the new version at once.
  *
  * @property int $id
  * @property string $language
@@ -83,13 +82,6 @@ class ChatbotDataset extends Model
         }
 
         return $this->openVersion()?->status ?? ChatbotDatasetCatalog::DRAFT;
-    }
-
-    public function isNeverSubmittedDraft(): bool
-    {
-        $versions = $this->versionsLoaded();
-
-        return $versions->count() === 1 && $versions->first()->status === ChatbotDatasetCatalog::DRAFT;
     }
 
     /**

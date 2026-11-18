@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\LanguageManagement;
+namespace App\Http\Requests\ChatbotDatasets;
 
 use App\Support\ChatbotDatasetCatalog;
 use Illuminate\Foundation\Http\FormRequest;

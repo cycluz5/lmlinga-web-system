@@ -10,9 +10,6 @@ import { pathToFileURL } from 'node:url';
 const moduleUrl = pathToFileURL(path.resolve('resources/js/pages/user-management-edit.js')).href;
 const { LINGUIST_ROLE, isLinguistRole, syncLinguistZoneGroup } = await import(moduleUrl);
 
-const policyUrl = pathToFileURL(path.resolve('resources/js/offline/offline-sw-policy.js')).href;
-const { isNeverCachePath } = await import(policyUrl);
-
 function createRoot(role, { withGroup = true } = {}) {
     const roleSelect = { value: role };
     const group = { hidden: false };
@@ -65,12 +62,5 @@ describe('Linguist zone group', () => {
 
     it('is a no-op on pages without the zone group', () => {
         assert.doesNotThrow(() => syncLinguistZoneGroup(createRoot('Linguist', { withGroup: false })));
-    });
-});
-
-describe('Language Review offline policy', () => {
-    it('never caches Language Review pages', () => {
-        assert.equal(isNeverCachePath('/language-review'), true);
-        assert.equal(isNeverCachePath('/language-review/anything'), true);
     });
 });

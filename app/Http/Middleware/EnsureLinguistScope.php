@@ -23,14 +23,13 @@ class EnsureLinguistScope
 {
     /** Route names a Linguist may use (LQ-1: own profile view and password change). */
     public const ALLOWED_ROUTES = [
-        'language-review.index',
         'password.change.required',
         'password.change.store',
         'profile.show',
         'logout',
     ];
 
-    public const DENIED_MESSAGE = 'Linguist accounts can only use Language Review.';
+    public const DENIED_MESSAGE = 'Linguist accounts can only view their profile.';
 
     public function handle(Request $request, Closure $next): Response
     {
@@ -46,13 +45,13 @@ class EnsureLinguistScope
 
         $name = (string) $route->getName();
 
-        if (in_array($name, self::ALLOWED_ROUTES, true) || str_starts_with($name, 'language-review.')) {
+        if (in_array($name, self::ALLOWED_ROUTES, true)) {
             return $next($request);
         }
 
-        // LQ-6: the staff dashboard (also the post-login / post-password-change target) → Language Review.
+        // LQ-6: the staff dashboard (also the post-login / post-password-change target) goes to the profile page.
         if ($name === 'dashboard' && $request->isMethodSafe()) {
-            return redirect()->route('language-review.index');
+            return redirect()->route('profile.show');
         }
 
         if ($request->expectsJson() || $request->isJson()) {

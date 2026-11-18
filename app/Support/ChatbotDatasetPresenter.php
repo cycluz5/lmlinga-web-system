@@ -11,7 +11,7 @@ use App\Services\ChatbotDatasetWorkflow;
 use Illuminate\Support\Carbon;
 
 /**
- * SR-07 view data for Chatbot Datasets (Admin) and Language Review (Linguist).
+ * View data for Chatbot Datasets (Admin).
  * Plain strings only; Blade escapes everything (dataset text is shown as preformatted plain text).
  */
 final class ChatbotDatasetPresenter
@@ -22,21 +22,8 @@ final class ChatbotDatasetPresenter
     public static function row(ChatbotDataset $dataset): array
     {
         $current = $dataset->currentVersion();
-        $open = $dataset->openVersion();
         $approved = $dataset->approvedVersion();
         $retired = $dataset->isRetired();
-
-        $filters = [];
-        if ($retired) {
-            $filters[] = ChatbotDatasetCatalog::RETIRED;
-        } else {
-            if ($approved !== null) {
-                $filters[] = ChatbotDatasetCatalog::APPROVED;
-            }
-            if ($open !== null) {
-                $filters[] = $open->status;
-            }
-        }
 
         return [
             'id' => $dataset->id,
@@ -46,13 +33,8 @@ final class ChatbotDatasetPresenter
             'language_label' => ChatbotDatasetCatalog::LANGUAGES[$dataset->language] ?? $dataset->language,
             'category_label' => ChatbotDatasetCatalog::CATEGORIES[$dataset->category] ?? $dataset->category,
             'source_name' => $dataset->source_name,
-            'status' => $dataset->displayStatus(),
-            'status_label' => ChatbotDatasetCatalog::label($dataset->displayStatus()),
-            'revision_label' => ! $retired && $approved !== null && $open !== null
-                ? 'Replacement: '.ChatbotDatasetCatalog::label($open->status)
-                : null,
+            'retired' => $retired,
             'approved' => ! $retired && $approved !== null,
-            'filters' => $filters,
             'updated_at' => self::date($dataset->updated_at),
         ];
     }
@@ -63,74 +45,21 @@ final class ChatbotDatasetPresenter
     public static function detail(ChatbotDataset $dataset): array
     {
         $dataset->loadMissing(['versions.creator', 'events.actor', 'events.version']);
-        $open = $dataset->openVersion();
         $approved = $dataset->approvedVersion();
         $retired = $dataset->isRetired();
-        $submitted = $open?->status === ChatbotDatasetCatalog::SUBMITTED;
-
-        $editBlocked = match (true) {
-            $retired => 'Restore this dataset before changing it.',
-            $submitted => 'This dataset is waiting for Linguist review and cannot be changed now.',
-            default => null,
-        };
+        $editBlocked = $retired ? 'Restore this dataset before changing it.' : null;
 
         return self::row($dataset) + [
             'approved_version' => $approved !== null ? self::version($approved) : null,
-            'open_version' => $open !== null ? self::version($open) : null,
             'history' => $dataset->events->sortByDesc('id')->map(fn (ChatbotDatasetEvent $e): array => self::event($e))->values()->all(),
             'retired' => $retired,
             'can_edit' => $editBlocked === null,
             'edit_blocked_reason' => $editBlocked,
-            'edit_creates_revision' => ! $retired && $open?->status !== ChatbotDatasetCatalog::DRAFT,
-            'can_submit' => ! $retired && $open?->status === ChatbotDatasetCatalog::DRAFT,
-            'can_retire' => ! $retired && ! $submitted,
+            'can_retire' => ! $retired,
             'can_restore' => $retired,
-            'can_delete' => $open?->status === ChatbotDatasetCatalog::DRAFT,
-            'deletes_whole_dataset' => $dataset->isNeverSubmittedDraft(),
-            'review_required' => (bool) config('lmlinga.chatbot_datasets.require_review', false),
             // Chatbot health information: is the live text written for the chatbot, and searchable (indexed)?
             'in_chatbot' => ! $retired && $approved !== null && app(ChatbotDatasetPublisher::class)->isWritten($dataset),
             'indexed' => ! $retired && $approved !== null && app(ChatbotDatasetPublisher::class)->isIndexed($dataset),
-        ];
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public static function reviewItem(ChatbotDatasetVersion $version): array
-    {
-        $dataset = $version->chatbotDataset;
-        $dataset->loadMissing(['versions', 'events.actor', 'events.version']);
-        $approved = $dataset->approvedVersion();
-
-        return [
-            'version_id' => $version->id,
-            'dataset' => self::row($dataset),
-            'version' => self::version($version),
-            'is_revision' => $approved !== null && $approved->id !== $version->id,
-            'approved' => $approved !== null && $approved->id !== $version->id ? self::version($approved) : null,
-            'pending' => $version->status === ChatbotDatasetCatalog::SUBMITTED && ! $dataset->isRetired(),
-            'history' => $dataset->events->sortByDesc('id')
-                ->filter(fn (ChatbotDatasetEvent $e): bool => in_array($e->action, [
-                    ChatbotDatasetWorkflow::ACTION_SUBMITTED, ChatbotDatasetWorkflow::ACTION_APPROVED, ChatbotDatasetWorkflow::ACTION_REJECTED,
-                ], true))
-                ->map(fn (ChatbotDatasetEvent $e): array => self::event($e))->values()->all(),
-        ];
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    public static function queueItem(ChatbotDatasetVersion $version, string $language, string $category, bool $isRevision): array
-    {
-        return [
-            'version_id' => $version->id,
-            'title' => $version->title,
-            'language_label' => ChatbotDatasetCatalog::LANGUAGES[$language] ?? $language,
-            'category_label' => ChatbotDatasetCatalog::CATEGORIES[$category] ?? $category,
-            'warning_count' => count($version->screening['warnings'] ?? []),
-            'is_revision' => $isRevision,
-            'submitted_at' => self::date($version->updated_at),
         ];
     }
 
@@ -175,7 +104,7 @@ final class ChatbotDatasetPresenter
                 ChatbotDatasetWorkflow::ACTION_REJECTED => 'Rejected',
                 ChatbotDatasetWorkflow::ACTION_SUPERSEDED => 'Replaced by newer approved version',
                 ChatbotDatasetWorkflow::ACTION_RETIRED => 'Retired',
-                ChatbotDatasetWorkflow::ACTION_RESTORED => 'Restored as draft',
+                ChatbotDatasetWorkflow::ACTION_RESTORED => 'Restored',
                 ChatbotDatasetWorkflow::ACTION_DISCARDED => 'Unsubmitted draft deleted',
                 default => ucfirst($e->action),
             },

@@ -1,6 +1,6 @@
 {{--
-    SR-07 one dataset version: metadata, screening notes and the full text as escaped plain text.
-    Screening is a preliminary safeguard only; the Linguist's review is the decision.
+    One dataset version: metadata, screening notes and the full text as escaped plain text.
+    Screening is a preliminary safeguard only; the Admin checks the text.
 --}}
 <dl class="lml-term-version" data-lml-dataset-version="{{ $version['version_no'] }}">
     <div><dt>Title</dt><dd class="fw-semibold">{{ $version['title'] }}</dd></div>
@@ -14,7 +14,7 @@
 <div class="lml-dataset-screening" data-lml-dataset-screening>
     <p class="lml-dataset-screening__title">Automated screening (preliminary only — not a guarantee)</p>
     @if (count($version['warnings']) === 0)
-        <p class="lml-dataset-screening__ok" data-lml-dataset-screening-clear>No warnings. Read the full text before deciding.</p>
+        <p class="lml-dataset-screening__ok" data-lml-dataset-screening-clear>No warnings. Read the full text to be sure.</p>
     @else
         <ul class="lml-dataset-screening__list">
             @foreach ($version['warnings'] as $warning)

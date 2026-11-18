@@ -34,7 +34,6 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'ui.role' => \App\Http\Middleware\PersistUiRole::class,
             'ui.admin' => \App\Http\Middleware\EnsureAdminRole::class,
-            'ui.linguist' => \App\Http\Middleware\EnsureLinguistRole::class,
             'staff.password-current' => \App\Http\Middleware\EnsurePasswordIsCurrent::class,
             'staff.account-usable' => \App\Http\Middleware\EnsureStaffAccountIsUsable::class,
             'resident.chatbot' => \App\Http\Middleware\EnsureResidentChatbotAccount::class,

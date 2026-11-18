@@ -17,7 +17,7 @@ final class StaffRole
     public const BSPO = 'bspo';
 
     /**
-     * SR-06: reviews Bikol-Iriga terms/datasets only. Deny-by-default for every other staff
+     * SR-06: profile-only account (no review or editing duties). Deny-by-default for every other staff
      * route (EnsureLinguistScope); never a health worker; has no zones.
      */
     public const LINGUIST = 'linguist';

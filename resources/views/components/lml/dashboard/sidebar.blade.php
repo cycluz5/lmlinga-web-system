@@ -41,14 +41,6 @@
 
     $defaultItems = [
         [
-            // SR-06: the only destination a Linguist sees (no other item lists 'linguist').
-            'key' => 'language-review',
-            'label' => 'Language Review',
-            'icon' => 'bi-translate',
-            'href' => \Illuminate\Support\Facades\Route::has('language-review.index') ? route('language-review.index') : null,
-            'roles' => ['linguist'],
-        ],
-        [
             'key' => 'dashboard',
             'label' => 'Dashboard',
             'icon' => 'bi-grid-1x2-fill',
@@ -98,14 +90,6 @@
                 'announcement.index',
             ]),
             'roles' => ['admin', 'bhw', 'bns', 'bspo'],
-        ],
-        [
-            // Admin adds and manages Bikol-Iriga terms; a Linguist verifies them before the chatbot uses them.
-            'key' => 'language-management',
-            'label' => 'Language Management',
-            'icon' => 'bi-translate',
-            'href' => $resolveNamedHref(['language-management.index']),
-            'roles' => ['admin'],
         ],
         [
             // Admin manages the chatbot's health information (existing documents and new datasets).

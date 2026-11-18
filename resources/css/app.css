@@ -76,8 +76,6 @@
 @import './components/name-suggest.css';
 @import './components/possible-duplicate.css';
 @import './components/pagination.css';
-@import './pages/language-review.css';
-@import './pages/language-management.css';
 @import './pages/chatbot-datasets.css';
 
 /*

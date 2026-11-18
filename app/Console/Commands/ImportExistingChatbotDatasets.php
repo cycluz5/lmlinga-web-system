@@ -10,8 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 /**
  * SR-07 (D-S6): list the existing chatbot corpus (resources/health_docs/{bcl,en,tl}/{category}/*.txt) as chatbot
- * datasets. Dry run by default. With --execute each file becomes a dataset (Submitted when Linguist review is on,
- * Live otherwise; never approved by this command's own authority). Idempotent. The corpus files, health_chunks and
+ * datasets. Dry run by default. With --execute each file becomes a Live dataset. Idempotent. The corpus files, health_chunks and
  * the chatbot are not touched. The logic lives in ChatbotDatasetImporter, shared with the Admin button.
  */
 class ImportExistingChatbotDatasets extends Command
