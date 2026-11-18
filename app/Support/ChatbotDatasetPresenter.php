@@ -62,6 +62,7 @@ final class ChatbotDatasetPresenter
                 ->map(fn (ChatbotDatasetEvent $e): array => self::event($e))
                 ->values()
                 ->all(),
+            'translations' => self::translations($dataset),
             'retired' => $retired,
             'can_edit' => $editBlocked === null,
             'edit_blocked_reason' => $editBlocked,
@@ -71,6 +72,37 @@ final class ChatbotDatasetPresenter
             'in_chatbot' => ! $retired && $approved !== null && app(ChatbotDatasetPublisher::class)->isWritten($dataset),
             'indexed' => ! $retired && $approved !== null && app(ChatbotDatasetPublisher::class)->isIndexed($dataset),
         ];
+    }
+
+    /**
+     * The same topic (category + source name) in each language, existing or missing.
+     *
+     * @return list<array{language: string, label: string, exists: bool, current: bool, id: int|null, title: string|null, retired: bool}>
+     */
+    public static function translations(ChatbotDataset $dataset): array
+    {
+        $found = ChatbotDataset::query()
+            ->with('versions')
+            ->where('category', $dataset->category)
+            ->where('source_name', $dataset->source_name)
+            ->get()
+            ->keyBy('language');
+
+        $out = [];
+        foreach (ChatbotDatasetCatalog::LANGUAGES as $key => $label) {
+            $match = $found->get($key);
+            $out[] = [
+                'language' => $key,
+                'label' => $label,
+                'exists' => $match !== null,
+                'current' => $match?->id === $dataset->id,
+                'id' => $match?->id,
+                'title' => $match?->currentVersion()?->title,
+                'retired' => $match?->isRetired() ?? false,
+            ];
+        }
+
+        return $out;
     }
 
     /**

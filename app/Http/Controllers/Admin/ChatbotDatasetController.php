@@ -69,11 +69,17 @@ class ChatbotDatasetController extends Controller
             ->get();
 
         $languageCounts = array_fill_keys(array_keys(ChatbotDatasetCatalog::LANGUAGES), 0);
+        // Languages each topic (category + source name) exists in, for the language chips on every row.
+        $topicLanguages = [];
+        foreach ($datasets as $dataset) {
+            $topicLanguages[$dataset->category.'|'.$dataset->source_name][] = $dataset->language;
+        }
         $rows = [];
         foreach ($datasets as $dataset) {
             $languageCounts[$dataset->language] = ($languageCounts[$dataset->language] ?? 0) + 1;
             if ($dataset->language === $language) {
-                $rows[] = ChatbotDatasetPresenter::row($dataset);
+                $rows[] = ChatbotDatasetPresenter::row($dataset)
+                    + ['languages' => $topicLanguages[$dataset->category.'|'.$dataset->source_name] ?? []];
             }
         }
 
@@ -91,25 +97,51 @@ class ChatbotDatasetController extends Controller
         ]);
     }
 
-    public function create(Request $request): View
+    public function create(Request $request): View|RedirectResponse
     {
         // "Add Dataset" on a language tab opens the form with that language already chosen.
         $language = (string) $request->query('language', '');
+        $defaults = array_key_exists($language, ChatbotDatasetCatalog::LANGUAGES) ? ['language' => $language] : [];
 
-        return $this->formView(null, null, array_key_exists($language, ChatbotDatasetCatalog::LANGUAGES) ? ['language' => $language] : []);
+        // "Add translation" on a dataset page: the same topic (category + source name) in another language.
+        $from = $request->query('from');
+        if ($from !== null) {
+            $original = $this->find((string) $from);
+            if ($defaults === [] || $this->topicExists($original, $defaults['language'])) {
+                return redirect()->route('chatbot-datasets.show', ['datasetId' => $original->id])
+                    ->with('error', 'Choose a language that does not have this topic yet.');
+            }
+
+            return $this->formView(null, null, $defaults + ['translation_of' => $original->id], $original);
+        }
+
+        return $this->formView(null, null, $defaults);
     }
 
     public function store(SaveChatbotDatasetRequest $request): RedirectResponse
     {
         $file = $request->file('dataset_file');
-        $dataset = $this->attempt(fn () => $this->workflow->upload($this->admin($request), [
+        $meta = [
             'title' => (string) $request->validated('title'),
             'language' => (string) $request->validated('language'),
             'category' => (string) $request->validated('category'),
             'source_reference' => (string) $request->validated('source_reference'),
             'no_personal_data_confirmed' => true,
             'original_filename' => $file->getClientOriginalName(),
-        ], $this->inspector->inspectUpload($file)));
+        ];
+
+        // A translation reuses the original's category and source name, so it is the same topic in another language.
+        $originalId = $request->validated('translation_of');
+        if ($originalId !== null) {
+            $original = $this->find((string) $originalId);
+            if ($this->topicExists($original, $meta['language'])) {
+                throw ValidationException::withMessages(['language' => 'This topic already exists in that language.']);
+            }
+            $meta['category'] = $original->category;
+            $meta['source_name'] = $original->source_name;
+        }
+
+        $dataset = $this->attempt(fn () => $this->workflow->upload($this->admin($request), $meta, $this->inspector->inspectUpload($file)));
 
         return $this->publishedResponse($dataset, 'Dataset saved');
     }
@@ -186,7 +218,7 @@ class ChatbotDatasetController extends Controller
     /**
      * @param  array<string, mixed>|null  $detail
      */
-    private function formView(?ChatbotDataset $dataset, ?array $detail, array $defaults = []): View
+    private function formView(?ChatbotDataset $dataset, ?array $detail, array $defaults = [], ?ChatbotDataset $translationOf = null): View
     {
         $editing = $dataset !== null;
         $current = $dataset?->currentVersion();
@@ -196,6 +228,7 @@ class ChatbotDatasetController extends Controller
             'pageTitle' => 'Chatbot Datasets',
             'pageSubtitle' => $editing ? 'Change or replace a dataset.' : 'Upload a dataset.',
             'dataset' => $detail,
+            'translationOf' => $translationOf !== null ? ChatbotDatasetPresenter::row($translationOf) : null,
             'values' => $editing ? ['title' => $current?->title, 'source_reference' => $current?->source_reference] : $defaults,
             'languages' => ChatbotDatasetCatalog::LANGUAGES,
             'categories' => ChatbotDatasetCatalog::CATEGORIES,
@@ -251,6 +284,16 @@ class ChatbotDatasetController extends Controller
         if ($e->status() === 403) {
             abort(403, $e->getMessage());
         }
+    }
+
+    /** True when the original's topic (category + source name) already exists in $language. */
+    private function topicExists(ChatbotDataset $original, string $language): bool
+    {
+        return ChatbotDataset::query()
+            ->where('language', $language)
+            ->where('category', $original->category)
+            ->where('source_name', $original->source_name)
+            ->exists();
     }
 
     private function find(string $datasetId): ChatbotDataset

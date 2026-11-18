@@ -61,6 +61,25 @@
             @endif
         </section>
 
+        <section class="lml-language-management__panel" aria-labelledby="dataset-languages-heading" data-lml-dataset-languages>
+            <h2 id="dataset-languages-heading" class="lml-language-management__panel-title">Languages</h2>
+            <ul class="list-unstyled mb-0">
+                @foreach ($dataset['translations'] as $t)
+                    <li class="d-flex align-items-center gap-2 py-1" data-lml-dataset-language-item="{{ $t['language'] }}">
+                        <strong>{{ $t['label'] }}</strong>
+                        @if ($t['current'])
+                            <span class="lml-language-management__muted">This dataset</span>
+                        @elseif ($t['exists'])
+                            <a href="{{ route('chatbot-datasets.show', ['datasetId' => $t['id']]) }}" class="lml-focus-ring">{{ $t['title'] }}@if ($t['retired']) · Retired @endif</a>
+                        @else
+                            <span class="lml-language-management__muted">Missing</span>
+                            <a href="{{ route('chatbot-datasets.create', ['from' => $dataset['id'], 'language' => $t['language']]) }}" class="btn btn-sm btn-outline-primary lml-focus-ring fw-medium" data-lml-dataset-add-translation>Add translation</a>
+                        @endif
+                    </li>
+                @endforeach
+            </ul>
+        </section>
+
         @if ($dataset['approved_version'])
             <section class="lml-language-management__panel" aria-labelledby="dataset-approved-heading" data-lml-dataset-approved>
                 <h2 id="dataset-approved-heading" class="lml-language-management__panel-title">

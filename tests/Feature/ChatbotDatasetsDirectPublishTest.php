@@ -415,6 +415,70 @@ class ChatbotDatasetsDirectPublishTest extends TestCase
         $this->assertGreaterThan(0, $ownEvents);
     }
 
+    // ------------------------------------------------------------------ linked translations
+
+    public function test_adding_a_translation_saves_the_same_topic_in_another_language(): void
+    {
+        $this->admin();
+        $this->post(route('chatbot-datasets.store'), $this->payload('alpha', 'en', 'child_care'))->assertSessionHasNoErrors();
+        $original = ChatbotDataset::query()->firstOrFail();
+
+        $this->get(route('chatbot-datasets.show', ['datasetId' => $original->id]))
+            ->assertOk()->assertSee('data-lml-dataset-languages', false)
+            ->assertSee('data-lml-dataset-add-translation', false);
+        $this->get(route('chatbot-datasets.create', ['from' => $original->id, 'language' => 'tl']))
+            ->assertOk()->assertSee('data-lml-dataset-translation-note', false)
+            ->assertSee('name="translation_of"', false)->assertDontSee('name="category"', false);
+
+        $payload = $this->payload('alpha tagalog', 'tl', 'other') + ['translation_of' => $original->id];
+        $this->post(route('chatbot-datasets.store'), $payload)->assertSessionHasNoErrors();
+
+        $translation = ChatbotDataset::query()->where('language', 'tl')->firstOrFail();
+        $this->assertSame($original->category, $translation->category, 'the category comes from the original, not the form');
+        $this->assertSame($original->source_name, $translation->source_name);
+        $this->assertSame(2, ChatbotDataset::query()->count());
+        $this->assertFileExists($this->file('tl', 'child_care', $original->source_name));
+        $this->assertFileExists($this->file('en', 'child_care', $original->source_name), 'the original stays');
+
+        $this->get(route('chatbot-datasets.show', ['datasetId' => $original->id]))
+            ->assertOk()->assertSee(route('chatbot-datasets.show', ['datasetId' => $translation->id]), false);
+        $this->get(route('chatbot-datasets.index', ['language' => 'en']))->assertOk()->assertSee('data-lml-dataset-langs', false);
+    }
+
+    public function test_a_translation_is_refused_when_the_language_already_has_the_topic_or_the_original_is_unknown(): void
+    {
+        $this->admin();
+        $this->post(route('chatbot-datasets.store'), $this->payload('alpha', 'en', 'child_care'));
+        $original = ChatbotDataset::query()->firstOrFail();
+
+        $this->post(route('chatbot-datasets.store'), $this->payload('beta', 'en', 'child_care') + ['translation_of' => $original->id])
+            ->assertSessionHasErrors('language');
+        $this->get(route('chatbot-datasets.create', ['from' => $original->id, 'language' => 'en']))
+            ->assertRedirect(route('chatbot-datasets.show', ['datasetId' => $original->id]));
+        $this->post(route('chatbot-datasets.store'), $this->payload('gamma', 'tl') + ['translation_of' => 999999])
+            ->assertSessionHasErrors('translation_of');
+
+        $this->assertSame(1, ChatbotDataset::query()->count());
+    }
+
+    public function test_a_default_dataset_can_get_a_translation_without_being_changed(): void
+    {
+        $this->admin();
+        $this->post(route('chatbot-datasets.import-existing'), ['no_personal_data_confirmed' => '1']);
+        $original = ChatbotDataset::query()->where('language', 'en')->orderBy('id')->firstOrFail();
+        ChatbotDataset::query()->where('category', $original->category)->where('source_name', $original->source_name)
+            ->where('language', '!=', 'en')->delete();
+
+        $this->get(route('chatbot-datasets.show', ['datasetId' => $original->id]))
+            ->assertOk()->assertSee('data-lml-dataset-default', false)->assertSee('data-lml-dataset-add-translation', false);
+        $this->post(route('chatbot-datasets.store'), $this->payload('default translation', 'tl', 'other') + ['translation_of' => $original->id])
+            ->assertSessionHasNoErrors();
+
+        $this->assertTrue($original->fresh()->isDefault());
+        $this->assertSame(1, $original->versions()->count());
+        $this->assertSame(0, ChatbotDatasetEvent::query()->where('chatbot_dataset_id', $original->id)->count());
+    }
+
     // ------------------------------------------------------------------ grouped by language
 
     private function addDatasets(): void

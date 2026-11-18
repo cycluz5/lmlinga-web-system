@@ -111,6 +111,11 @@
                             >
                                 <td class="lml-hr-table__cell" data-label="Title">
                                     <span class="lml-hr-table__name">{{ $row['title'] }}</span>
+                                    <span class="lml-cd__langs" data-lml-dataset-langs aria-label="Available in">
+                                        @foreach ($languages as $key => $label)
+                                            <span class="badge {{ in_array($key, $row['languages'], true) ? 'text-bg-success' : 'text-bg-light border' }}" title="{{ $label }}{{ in_array($key, $row['languages'], true) ? '' : ' (missing)' }}">{{ strtoupper($key) }}</span>
+                                        @endforeach
+                                    </span>
                                     <span class="lml-cd__source">{{ $row['source_name'] }}@if ($row['retired']) · Retired @endif @if ($row['is_default']) <span class="badge text-bg-secondary" data-lml-dataset-default>Default</span> @endif</span>
                                 </td>
                                 <td class="lml-hr-table__cell lml-hr-table__cell--zone" data-label="Category">{{ $row['category_label'] }}</td>

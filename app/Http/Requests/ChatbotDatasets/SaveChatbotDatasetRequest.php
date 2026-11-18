@@ -30,7 +30,9 @@ class SaveChatbotDatasetRequest extends FormRequest
             'title' => ['required', 'string', 'max:160', 'not_regex:/[\x00-\x1F\x7F]/u'],
             'source_reference' => ['required', 'string', 'max:255', 'not_regex:/[\x00-\x1F\x7F]/u'],
             'language' => $creating ? ['required', 'string', Rule::in(array_keys(ChatbotDatasetCatalog::LANGUAGES))] : ['prohibited'],
-            'category' => $creating ? ['required', 'string', Rule::in(array_keys(ChatbotDatasetCatalog::CATEGORIES))] : ['prohibited'],
+            // A translation takes its category from the original dataset, so the form does not send one.
+            'category' => $creating ? ['required_without:translation_of', 'nullable', 'string', Rule::in(array_keys(ChatbotDatasetCatalog::CATEGORIES))] : ['prohibited'],
+            'translation_of' => $creating ? ['nullable', 'integer', 'exists:chatbot_datasets,id'] : ['prohibited'],
             'dataset_file' => [$creating ? 'required' : 'nullable', 'file', 'max:'.$maxKb, 'extensions:txt'],
             'no_personal_data_confirmed' => ['accepted'],
         ];
