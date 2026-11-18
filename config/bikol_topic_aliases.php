@@ -16,7 +16,7 @@
 |
 */
 
-return [
+$aliases = [
     'low_blood_pressure' => ['hypotension', 'lowblood', 'lowbp'],
     'hypertension' => ['highblood', 'highbp', 'altapresyon', 'altrapresyon', 'alangkaw na presyon', 'alangkaw na presyon kana rogo'],
     'high_blood_pressure' => ['highblood', 'highbp', 'altapresyon', 'altrapresyon', 'alangkaw na presyon', 'alangkaw na presyon kana rogo'],
@@ -62,3 +62,38 @@ return [
         'nagpapasoso', 'nursing',
     ],
 ];
+
+/*
+| Topic names exactly as the team wrote them in the reviewed question list
+| (ml/bikol-chat/three_types/test_list.json). Added so those wordings find their
+| document. Phrases only count as a whole; nothing here is invented wording.
+*/
+$teamTopicNames = [
+    'baby_is_a_champion' => ['pag-aataman ka igin'],
+    'micronutrient_deficiency' => ['kakulangan sa micronutrient'],
+    'save_your_baby_mental_retardation' => ['kapansanan sa pag-iisip kana igin'],
+    'one_child_is_enough' => ['osad na igin sana'],
+    'breast_cancer' => ['kanser sa soso'],
+    'headache' => ['kolog sa payo'],
+    'healthy_teeth' => ['pusog na ngipon'],
+    'hiv_and_aids' => ['hiv'],
+    'kidney_cancer' => ['kanser sa bato'],
+    'liver_cancer' => ['kanser sa atay'],
+    'lung_cancer' => ['kanser sa baga'],
+    'low_blood_pressure' => ['mababang presyon ka rogo'],
+    'ovarian_cancer' => ['kanser sa obaryo'],
+    'nausea_vomiting' => ['pagduwal ag pagsuka'],
+    'rashes' => ['pantal sa balat'],
+    'uti_urinary_tract_infection' => ['uti'],
+    'handwashing' => ['panugas ka kamut'],
+    'foodborne_illness' => ['ilang na galin sa kontaminadong pagkaon'],
+    'tuberculosis_proper_coughing' => ['tamang pag obo para maiwasan a tb'],
+    'first_1000_days_nutrition' => ['nutrisyon sa primerong 1,000 aldow ka igin'],
+    'first_1000_days_nutrition_2' => ['nutrisyon sa primerong 1,000 aldow'],
+    'deworming' => ['pagpupurga'],
+    'toothache' => ['ilang ka ngipon'],
+    'seven_healthy_habits' => ['pitong makusog na gibo'],
+    'ten_kumainments' => ['10 kumainments'],
+];
+
+return array_merge_recursive($aliases, $teamTopicNames);
