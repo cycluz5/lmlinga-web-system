@@ -384,3 +384,70 @@ describe('programmatic API (Spot Mapping)', () => {
         assert.equal(getDuplicateCheck(null), null);
     });
 });
+
+const MSG_422 = 'Possible duplicate: this head is already registered in household HH-0009. Confirm it is a different household to continue.';
+const BODY_422 = { message: MSG_422, errors: { possible_duplicate: [MSG_422] } };
+
+describe('Spot Mapping 422 possible_duplicate flow', () => {
+    it('422 -> live check -> panel -> confirm -> resubmit is allowed', async () => {
+        const t = setup(ITEMS, { kind: 'head' });
+        fill(t);
+        assert.equal(await t.api.handleServerDuplicate(BODY_422), true);
+        assert.equal(t.api.panel.hidden, false);
+        assert.equal(checkboxes(t.api.panel).length, 1);
+        assert.equal(t.api.isPending(), true, 'resubmit is held until confirmed');
+        checkboxes(t.api.panel)[0].checked = true;
+        assert.equal(t.api.isPending(), false);
+        assert.equal(t.api.isConfirmed(), true);
+    });
+
+    for (const [label, opts] of [
+        ['the live check returns no matches', { json: { items: [] } }],
+        ['the live check fails', { ok: false }],
+        ['the browser is offline', { online: false }],
+    ]) {
+        it(`still builds a confirmable panel from the server message when ${label}`, async () => {
+            const t = setup([], { kind: 'head', ...opts });
+            fill(t);
+            assert.equal(await t.api.handleServerDuplicate(BODY_422), true);
+            const text = t.api.panel.walk().map((n) => n.textContent).join(' ');
+            assert.equal(t.api.panel.hidden, false);
+            assert.match(text, /already registered in household HH-0009/);
+            assert.match(text, /This is a different household/);
+            assert.equal(checkboxes(t.api.panel).length, 1);
+            assert.equal(t.api.isPending(), true);
+            checkboxes(t.api.panel)[0].checked = true;
+            assert.equal(t.api.isConfirmed(), true);
+            assert.equal(t.api.isPending(), false);
+        });
+    }
+
+    it('ignores a 422 without possible_duplicate so other errors keep the overlay', async () => {
+        const t = setup([], { kind: 'head' });
+        fill(t);
+        assert.equal(await t.api.handleServerDuplicate({ message: 'x', errors: { zone: ['bad'] } }), false);
+        assert.equal(await t.api.handleServerDuplicate(null), false);
+        assert.equal(t.api.panel.hidden, true);
+    });
+
+    it('does not duplicate the checkbox when a panel is already pending', async () => {
+        const t = setup(ITEMS, { kind: 'head' });
+        await typeAll(t);
+        assert.equal(await t.api.handleServerDuplicate(BODY_422), true);
+        assert.equal(checkboxes(t.api.panel).length, 1);
+    });
+});
+
+describe('change event without a value change', () => {
+    it('keeps the panel and the tick', async () => {
+        const t = setup(ITEMS);
+        await typeAll(t);
+        checkboxes(t.api.panel)[0].checked = true;
+        t.last.fire('change');
+        t.birthday.fire('change');
+        assert.equal(t.calls.fetch.length, 1);
+        assert.equal(checkboxes(t.api.panel).length, 1);
+        assert.equal(checkboxes(t.api.panel)[0].checked, true);
+        assert.equal(t.scope.fire('submit').defaultPrevented, false);
+    });
+});

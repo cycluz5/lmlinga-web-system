@@ -2195,9 +2195,15 @@ function initSpotMapping() {
             }
 
             if (!response.ok) {
-                if (response.status === 422 && Array.isArray(body?.errors?.possible_duplicate) && !duplicateCheck?.hasMatches()) {
-                    // The server found a possible duplicate head: fetch the matches so staff can confirm and resubmit.
-                    void duplicateCheck?.runCheck();
+                if (response.status === 422 && duplicateCheck && await duplicateCheck.handleServerDuplicate(body)) {
+                    // Possible duplicate head: the panel (matches or the server message) now asks for confirmation.
+                    if (panelNote) {
+                        panelNote.textContent = '';
+                        panelNote.hidden = true;
+                    }
+                    confirmBtn.disabled = false;
+                    confirmBtn.removeAttribute('aria-busy');
+                    return;
                 }
                 const message = typeof body?.message === 'string' && body.message.trim()
                     ? body.message.trim()

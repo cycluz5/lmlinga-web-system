@@ -160,16 +160,16 @@ export function attachDuplicateCheck(scope, win = window) {
         clearOwn();
     }
 
-    function render(items) {
+    function render(items, forcedMessage = null) {
         const matches = Array.isArray(items) ? items.filter((i) => i && typeof i === 'object') : [];
-        if (matches.length === 0) {
+        if (matches.length === 0 && !forcedMessage) {
             clearOwn();
             return;
         }
         const origin = win.location.origin;
         const text = doc.createElement('p');
         text.className = 'lml-possible-duplicate__message';
-        text.textContent = message;
+        text.textContent = forcedMessage || message;
 
         const list = doc.createElement('ul');
         list.className = 'lml-possible-duplicate__list';
@@ -207,7 +207,7 @@ export function attachDuplicateCheck(scope, win = window) {
         caption.textContent = confirmLabel;
         label.append(box, caption);
 
-        ownPanel.replaceChildren(text, list, label);
+        ownPanel.replaceChildren(...(matches.length > 0 ? [text, list, label] : [text, label]));
         ownPanel.confirmBox = box;
         state.ownMatches = true;
         place();
@@ -245,7 +245,33 @@ export function attachDuplicateCheck(scope, win = window) {
         }
     }
 
+    /**
+     * The server rejected a save with errors.possible_duplicate (Spot Mapping, JSON). Show the matches if the live
+     * check finds them, otherwise a panel built from the server message, so staff can always confirm and resubmit.
+     * Returns true when the error was handled here (the caller should not also show a generic error).
+     */
+    async function handleServerDuplicate(body) {
+        const errors = body?.errors?.possible_duplicate;
+        if (!Array.isArray(errors) || errors.length === 0) return false;
+        if (!hasMatches()) {
+            await runCheck();
+            if (!hasMatches()) {
+                const serverMessage = typeof errors[0] === 'string' && errors[0].trim() !== '' ? errors[0].trim() : message;
+                render([], serverMessage);
+            }
+        }
+        activePanel().focus?.();
+
+        return true;
+    }
+
+    const identityKey = () => [first.value, last.value, birthday.value].map(trimmed).join('|');
+    let lastKey = identityKey();
+
     function onIdentityChange() {
+        const key = identityKey();
+        if (key === lastKey) return; // e.g. `change` after `input`, or blur caused by clicking the confirm checkbox
+        lastKey = key;
         clear();
         state.timer = win.setTimeout(() => { void runCheck(); }, DEBOUNCE_MS);
     }
@@ -268,6 +294,7 @@ export function attachDuplicateCheck(scope, win = window) {
         get panel() { return activePanel(); },
         state,
         runCheck,
+        handleServerDuplicate,
         isPending,
         isConfirmed,
         hasMatches,

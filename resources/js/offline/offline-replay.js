@@ -225,7 +225,6 @@ export function createReplayCoordinator(options = {}) {
                 headers: {
                     Accept: 'application/json',
                     'X-Requested-With': 'XMLHttpRequest',
-                    'X-Offline-Replay': '1',
                 },
                 signal: controller ? controller.signal : undefined,
             });

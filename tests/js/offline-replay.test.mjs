@@ -158,6 +158,8 @@ describe('offline replay coordinator', () => {
         const sync = headers.find((h) => h.url !== '/offline/status');
         assert.ok(sync, 'a sync request was sent');
         assert.equal(sync.headers['X-Offline-Replay'], '1');
+        const probe = headers.find((h) => h.url === '/offline/status');
+        assert.equal(probe.headers['X-Offline-Replay'], undefined, 'status probe is not a replay');
     });
 
     it('retains RETRYABLE_ERROR and network failures', async () => {
