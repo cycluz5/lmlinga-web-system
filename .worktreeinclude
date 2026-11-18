@@ -1,0 +1,4 @@
+# Git-ignored files copied from the main checkout into new worktrees
+# (read by scripts/new-worktree.sh, and by Claude Code when it creates worktrees).
+# Dependencies (vendor/, node_modules/) are installed fresh by the script, not copied.
+.env

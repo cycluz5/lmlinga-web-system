@@ -86,13 +86,14 @@
                     <p class="lml-hh-member-form__context" role="status">{{ session('status') }}</p>
                 @endif
 
-                @if ($errors->any())
+                @php($summaryErrors = collect($errors->getBag('default')->toArray())->except(\App\Support\PossibleDuplicateGuard::ERROR_KEY)->flatten()->all())
+                @if ($summaryErrors !== [])
                     <div class="lml-hh-member-form__summary" id="lml-hh-member-summary" data-hh-member-summary role="alert" tabindex="-1">
                         <p class="lml-hh-member-form__summary-text">
                             Please complete the required fields before adding this member.
                         </p>
                         <ul class="lml-hh-member-form__summary-list" data-hh-member-summary-list>
-                            @foreach ($errors->all() as $error)
+                            @foreach ($summaryErrors as $error)
                                 <li>{{ $error }}</li>
                             @endforeach
                         </ul>

@@ -266,6 +266,7 @@ export function createReplayCoordinator(options = {}) {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
                 'X-Requested-With': 'XMLHttpRequest',
+                'X-Offline-Replay': '1',
                 'X-CSRF-TOKEN': csrfToken,
             },
             body: JSON.stringify(envelope),
