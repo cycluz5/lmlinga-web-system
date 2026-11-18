@@ -451,3 +451,36 @@ describe('change event without a value change', () => {
         assert.equal(t.scope.fire('submit').defaultPrevented, false);
     });
 });
+
+describe('reset()', () => {
+    it('drops the warning and tick without an input event, and does not refetch', async () => {
+        const t = setup(ITEMS);
+        await typeAll(t);
+        checkboxes(t.api.panel)[0].checked = true;
+        assert.equal(t.api.hasMatches(), true);
+
+        t.first.value = 'Maria'; // programmatic change: no event fired
+        t.api.reset();
+
+        assert.equal(t.api.panel.hidden, true);
+        assert.equal(t.api.hasMatches(), false);
+        assert.equal(t.api.isPending(), false);
+        assert.equal(t.scope.fire('submit').defaultPrevented, false);
+        assert.equal(t.calls.fetch.length, 1);
+
+        // baseline moved: a change event with the same values is a no-op, a real edit still checks
+        t.last.fire('change');
+        assert.equal(t.calls.fetch.length, 1);
+        t.last.value = 'Santos';
+        t.last.fire('input');
+        await flush();
+        assert.equal(t.calls.fetch.length, 2);
+    });
+
+    it('also removes a server-rendered panel', () => {
+        const t = setup([], { existingPanel: true });
+        assert.equal(t.api.hasMatches(), true);
+        t.api.reset();
+        assert.equal(t.api.hasMatches(), false);
+    });
+});

@@ -36,7 +36,7 @@ final class DuplicateFinder
             return [];
         }
 
-        $query = $this->baseQuery($date, $firstName, $lastName)
+        $query = $this->baseQuery($date)
             ->where('household_id', $household->getKey());
 
         if ($excludeResidentId !== null) {
@@ -63,11 +63,12 @@ final class DuplicateFinder
             return [];
         }
 
-        $query = $this->baseQuery($date, $firstName, $lastName)
+        $query = $this->baseQuery($date)
             ->whereHas('household', function (Builder $household) use ($zones): void {
                 $table = (new Household)->getTable();
                 if (Schema::hasColumn($table, 'household_no')) {
-                    $household->where('household_no', '!=', NonResidentFamilyPlanningService::SENTINEL_HOUSEHOLD_NO);
+                    $household->where(static fn (Builder $q) => $q->whereNull('household_no')
+                        ->orWhere('household_no', '!=', NonResidentFamilyPlanningService::SENTINEL_HOUSEHOLD_NO));
                 }
                 if (Schema::hasColumn($table, 'deleted_at')) {
                     $household->whereNull($table.'.deleted_at');
@@ -111,7 +112,7 @@ final class DuplicateFinder
     /**
      * @return Builder<Resident>
      */
-    private function baseQuery(string $date, string $firstName, string $lastName): Builder
+    private function baseQuery(string $date): Builder
     {
         $query = Resident::query()->with('household')->whereDate('birthday', $date);
 

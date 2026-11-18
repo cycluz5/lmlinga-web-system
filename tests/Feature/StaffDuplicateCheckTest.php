@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Household;
 use App\Models\Resident;
 use App\Models\ResidentAccount;
+use App\Models\User;
 use App\Support\ResidentAuthenticator;
 use App\Support\StaffRole;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -200,7 +201,7 @@ class StaffDuplicateCheckTest extends TestCase
     {
         // StaffRole has no linguist role; a signed-in user with no staff appointment is the closest case.
         $this->member($this->household('Zone 1'));
-        $this->actingAs(\App\Models\User::factory()->create());
+        $this->actingAs(User::factory()->create());
 
         $response = $this->check($this->headQuery());
 
@@ -217,5 +218,36 @@ class StaffDuplicateCheckTest extends TestCase
         }
 
         $this->check($this->headQuery())->assertStatus(429);
+    }
+
+    public function test_unresolvable_exclude_member_still_returns_real_matches(): void
+    {
+        $hh = $this->household('Zone 1');
+        $this->member($hh);
+        $this->actingAsStaff(StaffRole::ADMIN);
+
+        $this->assertCount(1, $this->check($this->memberQuery($hh, ['exclude_member' => 'MB-NOPE-9']))->json('items'));
+    }
+
+    public function test_array_valued_params_return_empty_items_without_error(): void
+    {
+        $this->member($this->household('Zone 1'));
+        $this->actingAsStaff(StaffRole::ADMIN);
+
+        $this->getJson(route('staff.duplicate-check').'?kind=head&first_name[]=x&last_name=Delacruz&birthday='.self::BIRTHDAY)
+            ->assertOk()->assertExactJson(['items' => []]);
+        $this->getJson(route('staff.duplicate-check').'?kind[]=head')->assertStatus(422);
+    }
+
+    public function test_bhw_without_assigned_zones_gets_nothing(): void
+    {
+        $this->member($this->household('Zone 1'));
+        $worker = $this->actingAsStaff(StaffRole::BHW);
+        $worker->currentAppointment->forceFill(['assigned_zone' => null])->save();
+        if (method_exists($worker->currentAppointment, 'syncAssignedZones')) {
+            $worker->currentAppointment->syncAssignedZones([]);
+        }
+
+        $this->check($this->headQuery())->assertOk()->assertExactJson(['items' => []]);
     }
 }

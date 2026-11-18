@@ -10,7 +10,7 @@ use Illuminate\Validation\Validator;
  * Shared save-time handling of possible-duplicate matches (members and Spot Mapping heads).
  *
  * Matches come from App\Services\DuplicateFinder. Without staff confirmation the validator gets a
- * `possible_duplicate` error; offline replays are never blocked (header X-Offline-Replay: 1).
+ * `possible_duplicate` error; offline replays (marked server-side by OfflineInnerRequestValidator) are never blocked.
  */
 final class PossibleDuplicateGuard
 {
@@ -18,7 +18,8 @@ final class PossibleDuplicateGuard
 
     public const CONFIRM_FIELD = 'confirm_possible_duplicate';
 
-    public const REPLAY_HEADER = 'X-Offline-Replay';
+    /** Request attribute set by OfflineInnerRequestValidator on the inner request of an /offline/sync replay. */
+    public const REPLAY_ATTRIBUTE = 'offline.replay';
 
     public const FLASH_KEY = 'possible_duplicate_matches';
 
@@ -44,7 +45,7 @@ final class PossibleDuplicateGuard
             return;
         }
 
-        if ((string) $request->header(self::REPLAY_HEADER) === '1') {
+        if ($request->attributes->get(self::REPLAY_ATTRIBUTE) === true) {
             Log::warning('possible duplicate bypassed for offline replay', [
                 'kind' => $kind,
                 'household_no' => $householdNo,
@@ -65,7 +66,7 @@ final class PossibleDuplicateGuard
         $validator->errors()->add(self::ERROR_KEY, $message);
 
         // Server-derived matches for the re-displayed form (never taken from user input).
-        if ($request->hasSession()) {
+        if (! $request->expectsJson() && $request->hasSession()) {
             $request->session()->flash(self::FLASH_KEY, ['kind' => $kind, 'items' => $matches]);
         }
     }

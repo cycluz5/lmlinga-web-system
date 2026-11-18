@@ -290,7 +290,17 @@ export function attachDuplicateCheck(scope, win = window) {
         activePanel().scrollIntoView?.({ block: 'center' });
     }, true);
 
+    /**
+     * Programmatic value changes (e.g. Spot Mapping filling the head fields for another plot) fire no input events:
+     * drop any warning and tick, and treat the current values as the baseline for change detection.
+     */
+    function reset() {
+        clear();
+        lastKey = identityKey();
+    }
+
     const api = {
+        reset,
         get panel() { return activePanel(); },
         state,
         runCheck,

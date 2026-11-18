@@ -7,8 +7,6 @@ use App\Models\Resident;
 use App\Support\DemoHouseholdWaterSupply;
 use App\Support\StaffRole;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Log;
-use Mockery;
 use Tests\Support\AuthenticatesStaff;
 use Tests\TestCase;
 
@@ -115,27 +113,36 @@ class DuplicateEnforcementTest extends TestCase
         $this->assertSame(2, Resident::query()->where('household_id', $hh->getKey())->count());
     }
 
-    public function test_offline_replay_header_bypasses_enforcement_and_logs_without_personal_data(): void
+    public function test_client_replay_header_on_a_direct_request_is_not_a_bypass(): void
     {
         $this->actingAsStaff(StaffRole::ADMIN);
         $hh = $this->household();
         $this->existing($hh);
-        Log::spy();
 
         $this->withHeader('X-Offline-Replay', '1')
             ->post($this->storeUrl(), $this->memberPayload())
-            ->assertSessionHasNoErrors();
+            ->assertSessionHasErrors(['possible_duplicate']);
 
-        $this->assertSame(2, Resident::query()->where('household_id', $hh->getKey())->count());
-        Log::shouldHaveReceived('warning')
-            ->once()
-            ->with('possible duplicate bypassed for offline replay', Mockery::on(function ($context): bool {
-                $flat = json_encode($context);
+        $this->assertSame(1, Resident::query()->where('household_id', $hh->getKey())->count());
+    }
 
-                return is_array($context)
-                    && ! str_contains((string) $flat, 'Santos')
-                    && ! str_contains((string) $flat, self::BIRTHDAY);
-            }));
+    public function test_member_summary_is_not_shown_when_only_possible_duplicate_failed(): void
+    {
+        $this->withoutVite();
+        $this->actingAsStaff(StaffRole::ADMIN);
+        $hh = $this->household();
+        $this->existing($hh);
+
+        $html = $this->followingRedirects()
+            ->from(route('household-profiling.members.create', ['householdNo' => $hh->household_no]))
+            ->post($this->storeUrl(), $this->memberPayload())
+            ->assertOk()
+            ->getContent();
+
+        $this->assertStringContainsString('data-lml-possible-duplicate-panel', $html);
+        $this->assertMatchesRegularExpression('/data-hh-member-summary[^>]*hidden>/', $html);
+        $this->assertStringNotContainsString('Possible duplicate: a record</li>', $html);
+        $this->assertDoesNotMatchRegularExpression('/<ul[^>]*data-hh-member-summary-list>\s*<li>/', $html);
     }
 
     public function test_non_duplicate_member_saves_normally(): void
@@ -236,27 +243,15 @@ class DuplicateEnforcementTest extends TestCase
         $this->assertSame(2, Household::query()->count());
     }
 
-    public function test_spot_mapping_offline_replay_header_bypasses_enforcement(): void
-    {
-        $this->actingAsStaff(StaffRole::ADMIN);
-        $this->existing($this->household('HH-6001', 'Zone 2'));
-        Log::spy();
-
-        $this->withHeader('X-Offline-Replay', '1')
-            ->postJson(route('spot-mapping.plot-new'), $this->headPayload())
-            ->assertOk();
-
-        Log::shouldHaveReceived('warning')
-            ->once()
-            ->with('possible duplicate bypassed for offline replay', Mockery::type('array'));
-    }
-
     public function test_spot_mapping_bhw_is_not_flagged_for_head_outside_assigned_zone(): void
     {
         $this->actingAsStaff(StaffRole::BHW); // assigned to Zone 1
         $this->existing($this->household('HH-6001', 'Zone 3'));
 
         $this->postJson(route('spot-mapping.plot-new'), $this->headPayload())
-            ->assertOk();
+            ->assertOk()
+            ->assertJsonMissingValidationErrors(['possible_duplicate']);
+
+        $this->assertSame(2, Household::query()->count());
     }
 }

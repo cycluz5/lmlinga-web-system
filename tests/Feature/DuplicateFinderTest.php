@@ -8,6 +8,7 @@ use App\Services\DuplicateFinder;
 use App\Support\NonResidentFamilyPlanningService;
 use App\Support\StaffRole;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Schema;
 use Tests\Support\AuthenticatesStaff;
 use Tests\TestCase;
 
@@ -172,5 +173,58 @@ class DuplicateFinderTest extends TestCase
         }
 
         $this->assertCount(3, $this->finder()->forHead($admin, 'Juan', 'Delacruz', self::BIRTHDAY));
+    }
+
+    public function test_extra_first_name_token_does_not_match(): void
+    {
+        $hh = $this->household();
+        $this->member($hh, 'Maria', 'Delacruz');
+
+        $this->assertSame([], $this->finder()->forMember($hh, 'Maria Teresa', 'Delacruz', self::BIRTHDAY));
+    }
+
+    public function test_hyphen_and_apostrophe_names_match_themselves_only(): void
+    {
+        $hh = $this->household();
+        $this->member($hh, 'Sean', "O'Brien");
+        $this->member($hh, 'Ana', 'De la Cruz-Santos');
+
+        $this->assertCount(1, $this->finder()->forMember($hh, 'Sean', "O'Brien", self::BIRTHDAY));
+        $this->assertCount(1, $this->finder()->forMember($hh, 'ana', 'de  la cruz-santos', self::BIRTHDAY));
+        $this->assertSame([], $this->finder()->forMember($hh, 'Ana', 'De la Cruz Santos', self::BIRTHDAY));
+        $this->assertSame([], $this->finder()->forMember($hh, 'Sean', 'OBrien', self::BIRTHDAY));
+    }
+
+    public function test_results_are_ordered_by_last_name_then_first_name(): void
+    {
+        $admin = $this->actingAsStaff(StaffRole::ADMIN);
+        $hh = $this->household();
+        $this->member($hh, 'Juan', 'Delacruz', self::BIRTHDAY, ['middle_name' => 'Beta']);
+        $this->member($hh, 'Juan', 'Delacruz', self::BIRTHDAY, ['middle_name' => 'Alpha']);
+
+        $items = $this->finder()->forHead($admin, 'Juan', 'Delacruz', self::BIRTHDAY);
+        $this->assertCount(2, $items);
+        $this->assertSame(['Delacruz, Juan B.', 'Delacruz, Juan A.'], array_column($items, 'name'));
+    }
+
+    public function test_datetime_stored_birthday_still_matches(): void
+    {
+        $hh = $this->household();
+        $this->member($hh, 'Juan', 'Delacruz', self::BIRTHDAY.' 00:00:00');
+
+        $this->assertCount(1, $this->finder()->forMember($hh, 'Juan', 'Delacruz', self::BIRTHDAY));
+    }
+
+    public function test_head_in_soft_deleted_household_is_ignored(): void
+    {
+        $admin = $this->actingAsStaff(StaffRole::ADMIN);
+        $hh = $this->household();
+        $this->member($hh, 'Juan', 'Delacruz');
+        if (! Schema::hasColumn($hh->getTable(), 'deleted_at')) {
+            $this->markTestSkipped('households has no deleted_at column in this schema.');
+        }
+        $hh->newQuery()->whereKey($hh->getKey())->update(['deleted_at' => now()]);
+
+        $this->assertSame([], $this->finder()->forHead($admin, 'Juan', 'Delacruz', self::BIRTHDAY));
     }
 }

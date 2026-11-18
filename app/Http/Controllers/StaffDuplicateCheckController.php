@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Household;
 use App\Models\User;
 use App\Services\DuplicateFinder;
 use App\Services\StaffNameSuggestionService;
@@ -61,15 +62,19 @@ class StaffDuplicateCheckController extends Controller
 
         $excludeMember = $this->text($request, 'exclude_member');
 
+        $household = null;
+        $excludeId = null;
         try {
             if ($excludeMember !== '') {
-                $ctx = $resolver->resolveDbMemberOrFail($householdNo, $excludeMember);
-                $household = $ctx['household'];
-                $excludeId = (int) $ctx['resident']->getKey();
-            } else {
-                $household = $resolver->resolveDbHouseholdOrFail($householdNo);
-                $excludeId = null;
+                try {
+                    $ctx = $resolver->resolveDbMemberOrFail($householdNo, $excludeMember);
+                    $household = $ctx['household'];
+                    $excludeId = (int) $ctx['resident']->getKey();
+                } catch (ModelNotFoundException) {
+                    // Unresolvable exclude_member: still check the household, just without the exclusion.
+                }
             }
+            $household ??= $resolver->resolveDbHouseholdOrFail($householdNo);
         } catch (ModelNotFoundException) {
             return [];
         }
@@ -84,7 +89,7 @@ class StaffDuplicateCheckController extends Controller
     /**
      * Admin sees every household; other staff only households in their assigned zones.
      */
-    private function mayAccessHousehold(User $actor, \App\Models\Household $household): bool
+    private function mayAccessHousehold(User $actor, Household $household): bool
     {
         $zones = app(StaffNameSuggestionService::class)->zonesFor($actor);
         if ($zones === ['*']) {
@@ -108,7 +113,7 @@ class StaffDuplicateCheckController extends Controller
     {
         $value = $request->query($key);
 
-        return is_string($value) ? trim($value) : '';
+        return is_string($value) ? mb_substr(trim($value), 0, 100) : '';
     }
 
     private function validDate(string $value): bool

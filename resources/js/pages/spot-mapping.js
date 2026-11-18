@@ -582,6 +582,8 @@ function initSpotMapping() {
             headLastEl.value = editable ? last : displayOrDash(last);
             headLastEl.readOnly = !editable;
         }
+        // Programmatic value changes fire no input events: drop a stale duplicate warning and tick.
+        getDuplicateCheck(root.querySelector('[data-lml-dup-scope]'))?.reset();
     }
 
     function persistHeadNameDraft() {
@@ -1351,6 +1353,7 @@ function initSpotMapping() {
             || (document.activeElement instanceof HTMLElement ? document.activeElement : null);
         selectedId = data.id;
         fillPanel(data);
+        getDuplicateCheck(root.querySelector('[data-lml-dup-scope]'))?.reset(); // birthday is also set programmatically
         clearAllFieldErrors();
         panel.hidden = false;
         refreshMarkerSelection();

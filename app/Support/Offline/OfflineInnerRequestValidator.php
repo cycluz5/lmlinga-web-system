@@ -2,6 +2,7 @@
 
 namespace App\Support\Offline;
 
+use App\Support\PossibleDuplicateGuard;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -38,6 +39,7 @@ final class OfflineInnerRequestValidator
         /** @var TFormRequest $formRequest */
         $formRequest = $formRequestClass::create('/', 'POST', $input);
         $formRequest->headers->set('Accept', 'application/json');
+        $formRequest->attributes->set(PossibleDuplicateGuard::REPLAY_ATTRIBUTE, true);
         $formRequest->replace($input);
         $formRequest->setContainer(app());
         $formRequest->setRedirector(app('redirect'));
