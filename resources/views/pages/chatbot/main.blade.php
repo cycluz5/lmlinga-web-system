@@ -503,7 +503,7 @@
                         title="The locally trained Bikol-Iriga model chats about everyday topics; health questions are answered from the verified datasets"
                     >
                         <i class="bi bi-cpu" aria-hidden="true"></i>
-                        Local AI model
+                        Local Model
                     </button>
                     <button
                         type="button"

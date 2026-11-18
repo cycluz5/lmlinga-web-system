@@ -29,8 +29,8 @@ class ChatbotController extends Controller
             // Bikol - Iriga: the resident must choose a chatbot type; there is no default.
             'mode'            => [Rule::requiredIf(fn () => ($request->input('language') ?? 'bcl') === 'bcl'), 'nullable', 'string', 'in:context,ai,cloud'],
         ], [
-            'mode.required' => 'Choose a chatbot type first: Context-based, Local AI model or Cloud AI (Gemma).',
-            'mode.in'       => 'Choose a chatbot type first: Context-based, Local AI model or Cloud AI (Gemma).',
+            'mode.required' => 'Choose a chatbot type first: Context-based, Local Model or Cloud AI (Gemma).',
+            'mode.in'       => 'Choose a chatbot type first: Context-based, Local Model or Cloud AI (Gemma).',
         ]);
 
         // FOD comparison switch: "context" = verified datasets + rules,

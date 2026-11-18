@@ -65,7 +65,7 @@ class BikolRetrievalTest extends TestCase
 
     public function test_diagnosis_and_management_questions_in_the_local_ai_mode(): void
     {
-        // "Local AI model": the trained intent classifier picks the intent first.
+        // "Local Model": the trained intent classifier picks the intent first.
         $this->assertStringContainsString(
             'Diri madaling maisihan ana hika',
             $this->ask('Ono ana diyagnosis kana hika?', null, null, 'ai')
