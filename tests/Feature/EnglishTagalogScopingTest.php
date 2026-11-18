@@ -154,4 +154,28 @@ class EnglishTagalogScopingTest extends TestCase
         $this->assertStringContainsString('environmental', $causes['context']);
         $this->assertStringNotContainsString('psychosocial interventions', $causes['context']);
     }
+
+    public function test_tagalog_vaccine_side_effects_questions_get_the_effects_section(): void
+    {
+        foreach ([
+            'karaniwang side effects (reaksyon) ng bakuna',
+            'karaniwang epekto ng bakuna',
+            'karaniwang reaksyon ng bakuna',
+        ] as $question) {
+            $sent = $this->sentToModel($question, 'tl');
+
+            $this->assertContains('baby_is_a_champion.txt', $sent['sources'], $question);
+            $this->assertStringContainsString('Bahagyang lagnat', $sent['context'], $question);
+        }
+    }
+
+    public function test_tagalog_effects_question_without_an_effects_section_still_uses_the_definition(): void
+    {
+        $this->assertSame('side_effects', $this->invoke('detectTagalogSupportIntent', 'Ano ang epekto ng paninigarilyo?'));
+        $selected = $this->invoke('selectTagalogContextSections', "ANO ANG UBO?
+Ang ubo ay isang karaniwang sintomas.
+", 'side_effects');
+
+        $this->assertStringContainsString('isang karaniwang sintomas', $selected['text']);
+    }
 }

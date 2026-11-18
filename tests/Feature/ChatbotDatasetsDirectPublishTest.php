@@ -415,6 +415,31 @@ class ChatbotDatasetsDirectPublishTest extends TestCase
         $this->assertGreaterThan(0, $ownEvents);
     }
 
+    public function test_the_upload_form_shows_instructions_and_offers_a_template_per_language(): void
+    {
+        $this->admin();
+
+        $this->get(route('chatbot-datasets.create'))
+            ->assertOk()->assertSee('data-lml-dataset-instructions', false)
+            ->assertSee('How to write the dataset file')
+            ->assertSee('data-lml-dataset-template="en"', false)->assertSee('data-lml-dataset-template="tl"', false)
+            ->assertSee('data-lml-dataset-template="bcl"', false);
+
+        foreach (['en' => 'MAIN TOPIC:', 'tl' => 'PANGUNAHING PAKSA:', 'bcl' => 'Mga Sinyales'] as $language => $marker) {
+            $response = $this->get(route('chatbot-datasets.template', ['language' => $language]))->assertOk();
+            $this->assertStringContainsString("dataset_template_{$language}.txt", (string) $response->headers->get('Content-Disposition'));
+            $this->assertStringContainsString($marker, $response->getContent());
+        }
+        $this->get('/chatbot-datasets/template/xx')->assertNotFound();
+    }
+
+    public function test_only_an_admin_can_download_a_dataset_template(): void
+    {
+        $this->actingAsStaff(StaffRole::BHW, ['email' => 'tpl.bhw@example.test', 'username' => 'tpl.bhw']);
+
+        $this->get(route('chatbot-datasets.template', ['language' => 'en']))->assertForbidden();
+    }
+
     // ------------------------------------------------------------------ grouped by language
 
     private function addDatasets(): void

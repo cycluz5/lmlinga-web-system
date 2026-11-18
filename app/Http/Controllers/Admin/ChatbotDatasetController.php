@@ -13,6 +13,7 @@ use App\Services\ChatbotDatasetWorkflow;
 use App\Support\ChatbotDatasetCatalog;
 use App\Support\ChatbotDatasetFileInspector;
 use App\Support\ChatbotDatasetPresenter;
+use App\Support\ChatbotDatasetTemplate;
 use Closure;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -97,6 +98,18 @@ class ChatbotDatasetController extends Controller
         $language = (string) $request->query('language', '');
 
         return $this->formView(null, null, array_key_exists($language, ChatbotDatasetCatalog::LANGUAGES) ? ['language' => $language] : []);
+    }
+
+    /** A starter .txt file for writing a dataset in the chosen language. */
+    public function template(Request $request, string $language)
+    {
+        $this->admin($request);
+        abort_unless(array_key_exists($language, ChatbotDatasetCatalog::LANGUAGES), 404);
+
+        return response(ChatbotDatasetTemplate::content($language), 200, [
+            'Content-Type' => 'text/plain; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="'.ChatbotDatasetTemplate::filename($language).'"',
+        ]);
     }
 
     public function store(SaveChatbotDatasetRequest $request): RedirectResponse
@@ -200,6 +213,7 @@ class ChatbotDatasetController extends Controller
             'languages' => ChatbotDatasetCatalog::LANGUAGES,
             'categories' => ChatbotDatasetCatalog::CATEGORIES,
             'maxKilobytes' => $this->inspector->maxKilobytes(),
+            'instructions' => ChatbotDatasetTemplate::instructions(),
             'action' => $editing ? route('chatbot-datasets.update', ['datasetId' => $dataset->id]) : route('chatbot-datasets.store'),
             'method' => $editing ? 'PUT' : 'POST',
         ]);
