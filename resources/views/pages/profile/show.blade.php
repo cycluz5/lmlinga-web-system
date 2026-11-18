@@ -15,6 +15,7 @@
         'BNS' => 'Barangay Nutrition Scholar (BNS)',
         'BSPO' => 'Barangay Service Point Officer (BSPO)',
         'Admin' => 'Administrator (Admin)',
+        'Linguist' => 'Linguist',
     ];
 
     $formatDate = static function (?string $value): string {

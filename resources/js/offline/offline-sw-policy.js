@@ -127,6 +127,7 @@ export const NEVER_CACHE_PATH_PREFIXES = [
     '/change-password',
     '/offline', // /offline/status and /offline/sync
     '/chatbot',
+    '/chatbot-datasets', // SR-07: Admin dataset uploads are online-only and never cached
     '/storage',
     '/sanctum',
     '/up',
@@ -818,6 +819,9 @@ export function moduleLabelForPath(pathname) {
     }
     if (path.startsWith('/profile')) {
         return 'Profile';
+    }
+    if (path.startsWith('/chatbot-datasets')) {
+        return 'Chatbot Datasets';
     }
     return 'This page';
 }

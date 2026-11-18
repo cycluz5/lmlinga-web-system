@@ -16,6 +16,7 @@
         'BNS' => 'BNS',
         'BSPO' => 'BSPO',
         'Admin' => 'Admin',
+        'Linguist' => 'Linguist',
     ];
     $zoneOptions = [
         'all' => 'All Zones',

@@ -298,6 +298,57 @@ Route::middleware(['auth', 'staff.account-usable', 'staff.password-current', 'ui
      | Admin-only modules — route layer matches sidebar visibility.
      */
     Route::middleware('ui.admin')->group(function () {
+        // SR-07 Chatbot Datasets: Admin uploads .txt datasets, which go live in the chatbot on save.
+        Route::get('/chatbot-datasets', [
+            \App\Http\Controllers\Admin\ChatbotDatasetController::class,
+            'index',
+        ])->name('chatbot-datasets.index');
+
+        Route::get('/chatbot-datasets/create', [
+            \App\Http\Controllers\Admin\ChatbotDatasetController::class,
+            'create',
+        ])->name('chatbot-datasets.create');
+
+        Route::post('/chatbot-datasets', [
+            \App\Http\Controllers\Admin\ChatbotDatasetController::class,
+            'store',
+        ])->middleware('throttle:lmlinga-dataset-upload')->name('chatbot-datasets.store');
+
+        Route::post('/chatbot-datasets/import-existing', [
+            \App\Http\Controllers\Admin\ChatbotDatasetController::class,
+            'importExisting',
+        ])->middleware('throttle:lmlinga-dataset-upload')->name('chatbot-datasets.import-existing');
+
+        Route::get('/chatbot-datasets/{datasetId}', [
+            \App\Http\Controllers\Admin\ChatbotDatasetController::class,
+            'show',
+        ])->where('datasetId', '[0-9]+')->name('chatbot-datasets.show');
+
+        Route::get('/chatbot-datasets/{datasetId}/edit', [
+            \App\Http\Controllers\Admin\ChatbotDatasetController::class,
+            'edit',
+        ])->where('datasetId', '[0-9]+')->name('chatbot-datasets.edit');
+
+        Route::put('/chatbot-datasets/{datasetId}', [
+            \App\Http\Controllers\Admin\ChatbotDatasetController::class,
+            'update',
+        ])->where('datasetId', '[0-9]+')->middleware('throttle:lmlinga-dataset-upload')->name('chatbot-datasets.update');
+
+        Route::post('/chatbot-datasets/{datasetId}/retire', [
+            \App\Http\Controllers\Admin\ChatbotDatasetController::class,
+            'retire',
+        ])->where('datasetId', '[0-9]+')->name('chatbot-datasets.retire');
+
+        Route::post('/chatbot-datasets/{datasetId}/restore', [
+            \App\Http\Controllers\Admin\ChatbotDatasetController::class,
+            'restore',
+        ])->where('datasetId', '[0-9]+')->name('chatbot-datasets.restore');
+
+        Route::post('/chatbot-datasets/{datasetId}/reindex', [
+            \App\Http\Controllers\Admin\ChatbotDatasetController::class,
+            'reindex',
+        ])->where('datasetId', '[0-9]+')->middleware('throttle:lmlinga-dataset-upload')->name('chatbot-datasets.reindex');
+
         Route::get('/user-management', [
             \App\Http\Controllers\Admin\HealthWorkerAccountController::class,
             'index',

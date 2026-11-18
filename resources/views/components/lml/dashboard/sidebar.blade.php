@@ -92,6 +92,14 @@
             'roles' => ['admin', 'bhw', 'bns', 'bspo'],
         ],
         [
+            // Admin manages the chatbot's health information (existing documents and new datasets).
+            'key' => 'chatbot-datasets',
+            'label' => 'Chatbot Datasets',
+            'icon' => 'bi-journal-text',
+            'href' => $resolveNamedHref(['chatbot-datasets.index']),
+            'roles' => ['admin'],
+        ],
+        [
             'key' => 'spot-mapping',
             'label' => 'Spot Mapping',
             'icon' => 'bi-geo-alt-fill',

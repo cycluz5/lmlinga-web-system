@@ -24,6 +24,7 @@
         'BNS' => 'BNS',
         'BSPO' => 'BSPO',
         'Admin' => 'Admin',
+        'Linguist' => 'Linguist',
     ];
     $zoneOptions = [
         'Zone 1' => 'Zone 1',
@@ -373,7 +374,8 @@
                                 <x-lml.text-input id="hw_assigned_barangay" name="hw_assigned_barangay" :required="true" :value="$worker['assigned_barangay'] ?? ''" data-hw-field="assigned_barangay" />
                                 <div class="lml-form-error" id="hw_assigned_barangay-error" hidden data-hw-error="assigned_barangay"></div>
                             </x-lml.form-group>
-                            <x-lml.form-group label="Assigned Zones" name="hw_assigned_zone" for="hw_assigned_zone" :required="true" class="lml-hw-wizard__field">
+                            {{-- SR-06: Linguists have no assigned zones (hidden; user-management-edit.js toggles on role change). --}}
+                            <x-lml.form-group label="Assigned Zones" name="hw_assigned_zone" for="hw_assigned_zone" :required="true" class="lml-hw-wizard__field" data-hw-zone-group :hidden="old('hw_role', $worker['role'] ?? null) === 'Linguist'">
                                 @php
                                     $selectedAssignedZones = old('hw_assigned_zone', $worker['assigned_zones'] ?? null);
                                     if (! is_array($selectedAssignedZones)) {

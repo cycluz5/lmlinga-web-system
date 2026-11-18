@@ -20,8 +20,16 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(prepend: [
             \App\Http\Middleware\EnsureOfflineJsonRequests::class,
         ], append: [
+            // SR-06: deny-by-default for Linguist accounts on every staff route (incl. future routes).
+            \App\Http\Middleware\EnsureLinguistScope::class,
             \App\Http\Middleware\EnsureOpaqueRouteParameters::class,
         ]);
+
+        // Refuse a Linguist before any route-model binding / record lookup happens.
+        $middleware->prependToPriorityList(
+            before: \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            prepend: \App\Http\Middleware\EnsureLinguistScope::class,
+        );
 
         $middleware->alias([
             'ui.role' => \App\Http\Middleware\PersistUiRole::class,

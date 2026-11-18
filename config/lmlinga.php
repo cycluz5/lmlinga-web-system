@@ -85,4 +85,18 @@ return [
         'display_unavailable' => '[Decryption unavailable]',
     ],
 
+    /*
+     | Chatbot dataset uploads (Admin). A saved dataset is sent to the chatbot at once.
+     */
+    'chatbot_datasets' => [
+        'max_kilobytes' => 100,
+        'min_characters' => 200,
+        'max_line_length' => 5000,
+        'uploads_per_hour' => (int) env('LMLINGA_DATASET_UPLOADS_PER_HOUR', 20),
+
+        // Where published datasets are written for the chatbot: <path>/<language>/<category>/<source>.txt.
+        // Outside resources/ so deploys never overwrite it; the chatbot reads this folder as well as resources/health_docs.
+        'admin_docs_path' => storage_path('app/health_docs_admin'),
+    ],
+
 ];

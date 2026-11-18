@@ -15,7 +15,7 @@ class StoreAnnouncementRequest extends FormRequest
     {
         $role = UiRole::current();
 
-        return $role !== null && in_array($role, UiRole::ALLOWED, true);
+        return $role !== null && in_array($role, UiRole::HEALTH_WORKER_ROLES, true);
     }
 
     /**

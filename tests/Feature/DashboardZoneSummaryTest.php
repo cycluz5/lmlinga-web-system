@@ -254,7 +254,7 @@ class DashboardZoneSummaryTest extends TestCase
         $this->assertSame(1, $zoneThree['households']);
         $this->assertSame(2, $zoneThree['population']);
 
-        foreach (UiRole::ALLOWED as $role) {
+        foreach (UiRole::HEALTH_WORKER_ROLES as $role) {
             $this->actingAsStaff($role);
         $html = $this->get(route('dashboard'))
                 ->assertOk()

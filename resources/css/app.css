@@ -76,6 +76,7 @@
 @import './components/name-suggest.css';
 @import './components/possible-duplicate.css';
 @import './components/pagination.css';
+@import './pages/chatbot-datasets.css';
 
 /*
  * Tailwind theme colors reference tokens.css (:root variables).

@@ -6,6 +6,7 @@ use App\Models\HealthChunk;
 use App\Services\Prompts\BikolPrompts;
 use App\Services\Prompts\TagalogPrompts;
 use App\Services\Prompts\EnglishPrompts;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Log;
@@ -121,8 +122,77 @@ class RagService
             $log[] = "Indexed language: {$lang}";
         }
 
+        // Datasets published by the Admin (Chatbot Datasets) live outside resources/ and are indexed too, so a
+        // full rebuild never drops them. A file here replaces a built-in file of the same name.
+        $adminRoot = $this->adminDocsRoot();
+        if (File::isDirectory($adminRoot)) {
+            foreach (File::allFiles($adminRoot) as $file) {
+                if ($file->getExtension() !== 'txt') {
+                    continue;
+                }
+                $parts = explode('/', str_replace('\\', '/', $file->getRelativePathname()));
+                if (count($parts) !== 3 || !in_array($parts[0], $languages, true)) {
+                    continue;
+                }
+                $totalChunks += $this->indexDocument($parts[0], $parts[1], $parts[2], File::get($file->getPathname()));
+            }
+            $log[] = 'Indexed admin-published datasets.';
+        }
+
         $log[] = "Done. Total chunks indexed: {$totalChunks}";
         return $log;
+    }
+
+    public function adminDocsRoot(): string
+    {
+        return rtrim((string) config('lmlinga.chatbot_datasets.admin_docs_path'), '/\\');
+    }
+
+    /** Admin-published copy when it exists, otherwise the built-in document. */
+    public function healthDocPath(string $language, string $category, string $source): string
+    {
+        $admin = $this->adminDocsRoot() . "/{$language}/{$category}/{$source}";
+
+        return File::exists($admin) ? $admin : $this->healthDocsPath("{$language}/{$category}/{$source}");
+    }
+
+    /**
+     * Index (or re-index) ONE document: embeddings are computed first, so if the embedding model is unreachable
+     * the existing chunks stay untouched; then the old chunks of this document are replaced in one transaction.
+     *
+     * @return int number of chunks stored
+     */
+    public function indexDocument(string $language, string $category, string $filename, string $text): int
+    {
+        $rows = [];
+        foreach ($this->chunkText($text) as $i => $chunk) {
+            $rows[] = [
+                'language'    => $language,
+                'category'    => $category,
+                'source_file' => $filename,
+                'chunk_index' => $i,
+                'content'     => $chunk,
+                'embedding'   => $this->embed($chunk),
+            ];
+        }
+
+        DB::transaction(function () use ($language, $category, $filename, $rows): void {
+            $this->forgetDocument($language, $category, $filename);
+            foreach ($rows as $row) {
+                HealthChunk::create($row);
+            }
+        });
+
+        return count($rows);
+    }
+
+    public function forgetDocument(string $language, string $category, string $filename): void
+    {
+        HealthChunk::query()
+            ->where('language', $language)
+            ->where('category', $category)
+            ->where('source_file', $filename)
+            ->delete();
     }
 
     protected function chunkText(string $text): array
@@ -416,9 +486,7 @@ class RagService
         $resolveCurrentText = function ($file) use (&$fullTextCache): ?string {
             $cacheKey = $file->language . '|' . $file->category . '|' . $file->source_file;
             if (!array_key_exists($cacheKey, $fullTextCache)) {
-                $path = $this->healthDocsPath(
-                    "{$file->language}/{$file->category}/{$file->source_file}"
-                );
+                $path = $this->healthDocPath($file->language, $file->category, $file->source_file);
                 $fullTextCache[$cacheKey] = File::exists($path)
                     ? (string) File::get($path)
                     : null;
@@ -1371,7 +1439,7 @@ class RagService
             return $this->resolvedDocumentTextCache[$cacheKey];
         }
 
-        $path = $this->healthDocsPath("{$language}/{$category}/{$source}");
+        $path = $this->healthDocPath($language, $category, $source);
         if (File::exists($path)) {
             return $this->resolvedDocumentTextCache[$cacheKey] = trim((string) File::get($path));
         }

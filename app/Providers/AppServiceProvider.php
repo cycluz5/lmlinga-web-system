@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use App\Support\AtRestEncrypter;
+use App\Support\StaffRole;
 use App\Support\Database\CachingSchemaBuilder;
 use App\Support\Database\SchemaLookupCache;
 use Database\Seeders\SuperAdminSeeder;
@@ -17,6 +19,7 @@ use Illuminate\Database\Events\TransactionRolledBack;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
 
@@ -65,6 +68,11 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrapFive();
         $this->flushSchemaLookupsOnSchemaChange();
+
+        // SR-07: dataset uploads/replacements per signed-in Admin.
+        RateLimiter::for('lmlinga-dataset-upload', static fn (Request $request): Limit => Limit::perHour(
+            max(1, (int) config('lmlinga.chatbot_datasets.uploads_per_hour', 20))
+        )->by('staff:'.($request->user()?->getAuthIdentifier() ?? $request->ip())));
 
         // Staff name suggestions: per signed-in staff user (typing is debounced client-side).
         RateLimiter::for('lmlinga-name-suggest', static fn (Request $request): Limit => Limit::perMinute(60)
