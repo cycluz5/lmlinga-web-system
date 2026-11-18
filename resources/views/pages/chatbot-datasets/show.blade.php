@@ -16,7 +16,7 @@
 
         <header class="lml-language-management__header">
             <div>
-                <h1 class="lml-language-management__title">{{ $dataset['title'] }}</h1>
+                <h1 class="lml-language-management__title">{{ $dataset['title'] }}@if ($dataset['is_default']) <span class="badge text-bg-secondary fs-6 align-middle" data-lml-dataset-default>Default</span>@endif</h1>
                 <p class="lml-language-management__subtitle">
                     <span class="lml-language-management__muted">
                         {{ $dataset['language_label'] }} · {{ $dataset['category_label'] }} · {{ $dataset['source_name'] }}
@@ -70,9 +70,11 @@
             </section>
         @endif
 
-        <section class="lml-language-management__panel" aria-labelledby="dataset-history-heading">
-            <h2 id="dataset-history-heading" class="lml-language-management__panel-title">History</h2>
-            @include('pages.chatbot-datasets.partials.history', ['history' => $dataset['history']])
-        </section>
+        @unless ($dataset['is_default'])
+            <section class="lml-language-management__panel" aria-labelledby="dataset-history-heading">
+                <h2 id="dataset-history-heading" class="lml-language-management__panel-title">History</h2>
+                @include('pages.chatbot-datasets.partials.history', ['history' => $dataset['history']])
+            </section>
+        @endunless
     </div>
 @endsection

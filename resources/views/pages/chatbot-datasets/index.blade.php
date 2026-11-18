@@ -111,7 +111,7 @@
                             >
                                 <td class="lml-hr-table__cell" data-label="Title">
                                     <span class="lml-hr-table__name">{{ $row['title'] }}</span>
-                                    <span class="lml-cd__source">{{ $row['source_name'] }}@if ($row['retired']) · Retired @endif</span>
+                                    <span class="lml-cd__source">{{ $row['source_name'] }}@if ($row['retired']) · Retired @endif @if ($row['is_default']) <span class="badge text-bg-secondary" data-lml-dataset-default>Default</span> @endif</span>
                                 </td>
                                 <td class="lml-hr-table__cell lml-hr-table__cell--zone" data-label="Category">{{ $row['category_label'] }}</td>
                                 <td class="lml-hr-table__cell" data-label="Last updated">{{ $row['updated_at'] }}</td>

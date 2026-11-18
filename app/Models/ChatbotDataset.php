@@ -17,15 +17,18 @@ use Illuminate\Support\Collection;
  * @property string $category
  * @property string $source_name
  * @property \Illuminate\Support\Carbon|null $retired_at
+ * @property bool $is_default
  * @property int|null $created_by_user_id
  */
 class ChatbotDataset extends Model
 {
-    protected $fillable = ['language', 'category', 'source_name', 'retired_at', 'created_by_user_id'];
+    public const DEFAULT_LOCKED_MESSAGE = 'This is a default dataset. It cannot be changed or retired.';
+
+    protected $fillable = ['language', 'category', 'source_name', 'is_default', 'retired_at', 'created_by_user_id'];
 
     protected function casts(): array
     {
-        return ['retired_at' => 'datetime'];
+        return ['retired_at' => 'datetime', 'is_default' => 'boolean'];
     }
 
     public function versions(): HasMany
@@ -42,6 +45,11 @@ class ChatbotDataset extends Model
     {
         return $this->belongsTo(User::class, 'created_by_user_id', (new User)->getKeyName())
             ->withoutGlobalScope(StaffNotDeletedScope::class);
+    }
+
+    public function isDefault(): bool
+    {
+        return (bool) $this->is_default;
     }
 
     public function isRetired(): bool

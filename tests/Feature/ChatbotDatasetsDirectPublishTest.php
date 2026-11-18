@@ -351,28 +351,67 @@ class ChatbotDatasetsDirectPublishTest extends TestCase
         $this->assertSame(0, ChatbotDataset::query()->count());
     }
 
-    public function test_changing_a_listed_existing_document_replaces_the_built_in_one_for_the_chatbot(): void
+    public function test_imported_existing_documents_are_default_locked_and_have_no_history(): void
     {
         $this->admin();
         $this->post(route('chatbot-datasets.import-existing'), ['no_personal_data_confirmed' => '1']);
         $dataset = ChatbotDataset::query()->where('language', 'en')->orderBy('id')->firstOrFail();
         $builtIn = resource_path("health_docs_v2/en/{$dataset->category}/{$dataset->source_name}");
+
+        $this->assertTrue($dataset->isDefault());
+        $this->assertSame(0, ChatbotDataset::query()->where('is_default', false)->count());
+        $this->assertSame(0, ChatbotDatasetEvent::query()->count(), 'default datasets keep no history');
         $this->assertSame(
             str_replace('\\', '/', $builtIn),
             str_replace('\\', '/', app(RagService::class)->healthDocPath('en', $dataset->category, $dataset->source_name))
         );
 
+        $this->get(route('chatbot-datasets.show', ['datasetId' => $dataset->id]))
+            ->assertOk()->assertSee('data-lml-dataset-default', false)
+            ->assertDontSee('Imported from the existing corpus')->assertDontSee('dataset-history-heading', false)
+            ->assertDontSee('Change or replace file')->assertDontSee('Retire');
+        $this->get(route('chatbot-datasets.index', ['language' => 'en']))->assertOk()->assertSee('data-lml-dataset-default', false);
+
+        $this->get(route('chatbot-datasets.edit', ['datasetId' => $dataset->id]))->assertRedirect();
         $this->put(route('chatbot-datasets.update', ['datasetId' => $dataset->id]), [
-            'title' => 'Changed '.$dataset->currentVersion()->title,
+            'title' => 'Changed',
             'source_reference' => 'Placeholder source reference for testing',
             'dataset_file' => UploadedFile::fake()->createWithContent('changed.txt', $this->text('replacement')),
             'no_personal_data_confirmed' => '1',
-        ])->assertSessionHasNoErrors();
+        ])->assertSessionHasErrors();
+        $this->post(route('chatbot-datasets.retire', ['datasetId' => $dataset->id]));
 
-        $adminCopy = $this->file('en', $dataset->category, $dataset->source_name);
-        $this->assertFileExists($adminCopy);
-        $this->assertSame($adminCopy, app(RagService::class)->healthDocPath('en', $dataset->category, $dataset->source_name));
-        $this->assertFileExists($builtIn, 'the built-in file is never modified');
+        $this->assertFileDoesNotExist($this->file('en', $dataset->category, $dataset->source_name));
+        $this->assertFalse($dataset->fresh()->isRetired());
+        $this->assertSame(1, $dataset->versions()->count());
+        $this->assertSame(0, ChatbotDatasetEvent::query()->count());
+        $this->assertFileExists($builtIn);
+    }
+
+    public function test_the_default_migration_flags_imported_datasets_and_deletes_only_their_history(): void
+    {
+        $this->admin();
+        $this->post(route('chatbot-datasets.import-existing'), ['no_personal_data_confirmed' => '1']);
+        $this->post(route('chatbot-datasets.store'), $this->payload('own', 'en', 'child_care'))->assertSessionHasNoErrors();
+        $own = ChatbotDataset::query()->where('is_default', false)->firstOrFail();
+
+        // Recreate the pre-migration state: imported datasets unflagged, with imported + published events.
+        $imported = ChatbotDataset::query()->where('is_default', true)->pluck('id');
+        ChatbotDataset::query()->whereIn('id', $imported)->update(['is_default' => false]);
+        foreach ($imported as $id) {
+            foreach (['imported', 'published'] as $action) {
+                ChatbotDatasetEvent::query()->create(['chatbot_dataset_id' => $id, 'action' => $action, 'actor_role' => 'Admin']);
+            }
+        }
+        $ownEvents = ChatbotDatasetEvent::query()->where('chatbot_dataset_id', $own->id)->count();
+
+        (require database_path('migrations/2026_11_18_000004_add_is_default_to_chatbot_datasets.php'))->up();
+
+        $this->assertSame($imported->count(), ChatbotDataset::query()->where('is_default', true)->count());
+        $this->assertFalse($own->fresh()->isDefault());
+        $this->assertSame(0, ChatbotDatasetEvent::query()->whereIn('chatbot_dataset_id', $imported)->count());
+        $this->assertSame($ownEvents, ChatbotDatasetEvent::query()->where('chatbot_dataset_id', $own->id)->count());
+        $this->assertGreaterThan(0, $ownEvents);
     }
 
     // ------------------------------------------------------------------ grouped by language

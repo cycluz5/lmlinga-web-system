@@ -71,6 +71,7 @@ class ChatbotDatasetWorkflow
                 'language' => $meta['language'],
                 'category' => $meta['category'],
                 'source_name' => $sourceName,
+                'is_default' => $action === self::ACTION_IMPORTED,
                 'created_by_user_id' => $admin->getKey(),
             ]);
             $version = $dataset->versions()->create($this->versionAttributes($meta, $inspection, $admin, 1, $meta['language']));
@@ -97,6 +98,7 @@ class ChatbotDatasetWorkflow
 
         return DB::transaction(function () use ($admin, $dataset, $meta, $inspection): ChatbotDatasetVersion {
             $dataset = $this->lock($dataset);
+            $this->assertNotDefault($dataset);
             if ($dataset->isRetired()) {
                 throw new ChatbotDatasetWorkflowException('Restore this dataset before changing it.');
             }
@@ -141,6 +143,7 @@ class ChatbotDatasetWorkflow
 
         return DB::transaction(function () use ($admin, $dataset): ChatbotDataset {
             $dataset = $this->lock($dataset);
+            $this->assertNotDefault($dataset);
             if ($dataset->isRetired()) {
                 throw new ChatbotDatasetWorkflowException('This dataset is already retired.');
             }
@@ -161,6 +164,7 @@ class ChatbotDatasetWorkflow
 
         return DB::transaction(function () use ($admin, $dataset): ChatbotDataset {
             $dataset = $this->lock($dataset);
+            $this->assertNotDefault($dataset);
             if (! $dataset->isRetired()) {
                 throw new ChatbotDatasetWorkflowException('Only a retired dataset can be restored.');
             }
@@ -215,6 +219,14 @@ class ChatbotDatasetWorkflow
         $locked->load('versions');
 
         return $locked;
+    }
+
+    /** Default datasets (the built-in corpus) are read-only. */
+    private function assertNotDefault(ChatbotDataset $dataset): void
+    {
+        if ($dataset->isDefault()) {
+            throw new ChatbotDatasetWorkflowException(ChatbotDataset::DEFAULT_LOCKED_MESSAGE);
+        }
     }
 
     private function assertAdmin(User $user): void
@@ -305,6 +317,11 @@ class ChatbotDatasetWorkflow
         User $actor,
         ?string $note = null,
     ): void {
+        // Default datasets keep no history.
+        if ($dataset->isDefault()) {
+            return;
+        }
+
         ChatbotDatasetEvent::query()->create([
             'chatbot_dataset_id' => $dataset->id,
             'chatbot_dataset_version_id' => $version?->id,
